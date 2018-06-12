@@ -17,8 +17,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    
-    [[UITabBar appearance] setBackgroundColor:kThemeColor];
+    [self customeNavTabView];
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
@@ -56,5 +55,17 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
-
+-(void)customeNavTabView{
+    [[UINavigationBar appearance] setBarTintColor:kThemeColor];
+    [[UINavigationBar appearance] setShadowImage:[UIImage new]];
+    [UINavigationBar appearance].translucent = NO;
+    NSDictionary *titleAttribute = @{NSFontAttributeName:kTextFont(17),
+                                     NSForegroundColorAttributeName:kColor(0xff, 0xff, 0xff)};
+    [[UINavigationBar appearance] setTitleTextAttributes:titleAttribute];
+    //去掉阴影线
+    [UINavigationBar appearance].shadowImage = [UIImage new];
+    
+    [[UITabBarItem appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:kTabYellow} forState:UIControlStateSelected];
+    [[UITabBarItem appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:kTabGray} forState:UIControlStateNormal];
+}
 @end
