@@ -56,11 +56,12 @@
 }
 
 -(void)customeNavTabView{
+    [[UINavigationBar appearance] setTintColor:kTabGray];
     [[UINavigationBar appearance] setBarTintColor:kThemeColor];
     [[UINavigationBar appearance] setShadowImage:[UIImage new]];
     [UINavigationBar appearance].translucent = NO;
     NSDictionary *titleAttribute = @{NSFontAttributeName:kTextFont(17),
-                                     NSForegroundColorAttributeName:kColor(0xff, 0xff, 0xff)};
+                                     NSForegroundColorAttributeName:kTabGray};
     [[UINavigationBar appearance] setTitleTextAttributes:titleAttribute];
     //去掉阴影线
     [UINavigationBar appearance].shadowImage = [UIImage new];

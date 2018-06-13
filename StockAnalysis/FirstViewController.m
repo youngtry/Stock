@@ -8,7 +8,7 @@
 
 #import "FirstViewController.h"
 #import "FirstView.h"
-
+#import "LoginViewController.h"
 @interface FirstViewController ()
 @property (strong, nonatomic) IBOutlet FirstView *firstview;
 
@@ -23,8 +23,17 @@
 //    _firstview = [[FirstView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
 //    [self.view addSubview:_firstview];
     [_firstview addUI];
+    
+    UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:@"登录" style:UIBarButtonItemStylePlain target:self action:@selector(clickLogin:)];
+    self.navigationItem.rightBarButtonItem = right;
+    
+    self.title = @"ZEDA";
 }
 
+-(void)clickLogin:(id)sender{
+    LoginViewController *vc = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];
+    [self.navigationController pushViewController:vc animated:YES];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

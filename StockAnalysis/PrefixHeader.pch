@@ -21,4 +21,6 @@
 
 #define kTextFont(a) [UIFont systemFontOfSize:a]
 #define kTextBoldFont(a) [UIFont boldSystemFontOfSize:a]
+
+#define Dlog(s) NSLog(@"%@",s)
 #endif /* PrefixHeader_pch */
