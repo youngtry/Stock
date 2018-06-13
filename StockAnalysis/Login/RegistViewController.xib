@@ -37,23 +37,36 @@
                         <constraint firstAttribute="width" constant="59" id="zcL-pm-YLp"/>
                     </constraints>
                 </imageView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Eic-8n-bxo">
-                    <rect key="frame" x="57" y="533" width="92" height="30"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pJq-ym-9jo">
+                    <rect key="frame" x="57" y="553" width="92" height="20"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="92" id="6Cg-cZ-5MC"/>
-                        <constraint firstAttribute="height" constant="30" id="8OY-hi-VSt"/>
+                        <constraint firstAttribute="width" constant="92" id="60U-e5-zkg"/>
+                        <constraint firstAttribute="height" constant="20" id="cM0-tN-r78"/>
                     </constraints>
-                    <state key="normal" title="使用邮箱登录">
+                    <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                    <state key="normal" title="ZEDA网络服务条款">
+                        <color key="titleColor" red="0.2156862745" green="0.2156862745" blue="0.2156862745" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Eic-8n-bxo">
+                    <rect key="frame" x="57" y="533" width="150" height="20"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="150" id="6Cg-cZ-5MC"/>
+                        <constraint firstAttribute="height" constant="20" id="8OY-hi-VSt"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                    <state key="normal" title="点击“注册”按钮，即表示您同意">
                         <color key="titleColor" red="0.2156862745" green="0.2156862745" blue="0.2156862745" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ctt-C7-y2b">
-                    <rect key="frame" x="256" y="533" width="62" height="30"/>
+                    <rect key="frame" x="236" y="533" width="82" height="20"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="30" id="3Pe-Ad-jFi"/>
-                        <constraint firstAttribute="width" constant="62" id="lgD-bR-bs8"/>
+                        <constraint firstAttribute="height" constant="20" id="3Pe-Ad-jFi"/>
+                        <constraint firstAttribute="width" constant="82" id="lgD-bR-bs8"/>
                     </constraints>
-                    <state key="normal" title="忘记密码">
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <state key="normal" title="手机号注册">
                         <color key="titleColor" red="0.2156862745" green="0.2156862745" blue="0.2156862745" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                 </button>
@@ -154,13 +167,14 @@
                         <constraint firstAttribute="height" constant="35" id="GrI-p4-ECK"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                    <state key="normal" title="登录">
+                    <state key="normal" title="注册">
                         <color key="titleColor" red="0.7843137255" green="0.63921568630000003" blue="0.20784313730000001" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                 </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="pJq-ym-9jo" firstAttribute="top" secondItem="TJf-lr-aVE" secondAttribute="top" constant="60" id="53I-wi-VJT"/>
                 <constraint firstItem="sDg-Q8-tYi" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="AO5-Wn-j3n"/>
                 <constraint firstItem="sDg-Q8-tYi" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="Bpm-wM-Mti"/>
                 <constraint firstItem="T5q-GZ-fHT" firstAttribute="centerX" secondItem="jxk-Qk-3PM" secondAttribute="centerX" constant="2" id="CMT-c6-yei"/>
@@ -170,6 +184,7 @@
                 <constraint firstItem="TJf-lr-aVE" firstAttribute="leading" secondItem="sDg-Q8-tYi" secondAttribute="leading" constant="37" id="aSP-Fb-qfI"/>
                 <constraint firstItem="TJf-lr-aVE" firstAttribute="trailing" secondItem="sDg-Q8-tYi" secondAttribute="trailing" constant="-37" id="bJd-pZ-qLB"/>
                 <constraint firstItem="jxk-Qk-3PM" firstAttribute="centerX" secondItem="Q5M-cg-NOt" secondAttribute="centerX" id="ihS-31-66h"/>
+                <constraint firstItem="pJq-ym-9jo" firstAttribute="leading" secondItem="TJf-lr-aVE" secondAttribute="leading" constant="20" id="ngn-J8-f19"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="top" secondItem="jxk-Qk-3PM" secondAttribute="top" constant="-55" id="ntc-D3-3VK"/>
                 <constraint firstItem="T5q-GZ-fHT" firstAttribute="top" secondItem="jxk-Qk-3PM" secondAttribute="top" constant="60" id="o74-7p-3os"/>
                 <constraint firstItem="sDg-Q8-tYi" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="235" id="pxU-Po-0vh"/>
@@ -178,14 +193,6 @@
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
             <point key="canvasLocation" x="32.5" y="60.5"/>
-        </view>
-        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RVJ-0S-kTU" userLabel="line">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-            <color key="backgroundColor" white="0.75" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-            <constraints>
-                <constraint firstAttribute="height" constant="1" id="Rbp-su-Qml"/>
-            </constraints>
-            <viewLayoutGuide key="safeArea" id="swC-1l-4g3"/>
         </view>
     </objects>
     <resources>
