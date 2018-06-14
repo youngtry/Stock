@@ -22,5 +22,18 @@
 #define kTextFont(a) [UIFont systemFontOfSize:a]
 #define kTextBoldFont(a) [UIFont boldSystemFontOfSize:a]
 
-#define Dlog(s) NSLog(@"%@",s)
+
+
+
+#ifdef DEBUG
+    #define Dlog(s) NSLog(@"%@",s)
+#else
+    #define Dlog(...)
+#endif
+#define IsStrEmpty(_ref)    (!_ref || [(_ref)isEqualToString:@""])
+#define IsArrayEmpty(_ref)  (!_ref || _ref.count  == 0)
+
+
+
+#import "HUDUtil.h"
 #endif /* PrefixHeader_pch */

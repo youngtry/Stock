@@ -19,7 +19,16 @@
 		517F9EEE20AE5E0D00CC14C9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 517F9EED20AE5E0D00CC14C9 /* Assets.xcassets */; };
 		517F9EF120AE5E0D00CC14C9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 517F9EEF20AE5E0D00CC14C9 /* LaunchScreen.storyboard */; };
 		517F9EF420AE5E0D00CC14C9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 517F9EF320AE5E0D00CC14C9 /* main.m */; };
+		C5090E5920D201F0009D2A3E /* WSAuthCode.m in Sources */ = {isa = PBXBuildFile; fileRef = C5090E5820D201F0009D2A3E /* WSAuthCode.m */; };
+		C5090E5D20D2044D009D2A3E /* ResetPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5090E5B20D2044D009D2A3E /* ResetPasswordViewController.m */; };
+		C5090E5E20D2044D009D2A3E /* ResetPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5090E5C20D2044D009D2A3E /* ResetPasswordViewController.xib */; };
+		C5090E6120D21CC1009D2A3E /* HUDUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = C5090E6020D21CC1009D2A3E /* HUDUtil.m */; };
+		C5090E6420D21D1C009D2A3E /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = C5090E6220D21D1C009D2A3E /* MBProgressHUD.m */; };
 		C5D53ED320CFB22E00037C5C /* TabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D53ED220CFB22E00037C5C /* TabViewController.m */; };
+		C5F91A3720D0B418002DB977 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5F91A3520D0B418002DB977 /* LoginViewController.m */; };
+		C5F91A3820D0B418002DB977 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5F91A3620D0B418002DB977 /* LoginViewController.xib */; };
+		C5F91A3C20D0C4CE002DB977 /* RegistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5F91A3A20D0C4CE002DB977 /* RegistViewController.m */; };
+		C5F91A3D20D0C4CE002DB977 /* RegistViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5F91A3B20D0C4CE002DB977 /* RegistViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,9 +54,24 @@
 		517F9EF020AE5E0D00CC14C9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		517F9EF220AE5E0D00CC14C9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		517F9EF320AE5E0D00CC14C9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		C5090E5720D201F0009D2A3E /* WSAuthCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSAuthCode.h; sourceTree = "<group>"; };
+		C5090E5820D201F0009D2A3E /* WSAuthCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSAuthCode.m; sourceTree = "<group>"; };
+		C5090E5A20D2044D009D2A3E /* ResetPasswordViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResetPasswordViewController.h; sourceTree = "<group>"; };
+		C5090E5B20D2044D009D2A3E /* ResetPasswordViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ResetPasswordViewController.m; sourceTree = "<group>"; };
+		C5090E5C20D2044D009D2A3E /* ResetPasswordViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ResetPasswordViewController.xib; sourceTree = "<group>"; };
+		C5090E5F20D21CC1009D2A3E /* HUDUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUDUtil.h; sourceTree = "<group>"; };
+		C5090E6020D21CC1009D2A3E /* HUDUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUDUtil.m; sourceTree = "<group>"; };
+		C5090E6220D21D1C009D2A3E /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		C5090E6320D21D1C009D2A3E /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		C5D53ED120CFB22E00037C5C /* TabViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TabViewController.h; sourceTree = "<group>"; };
 		C5D53ED220CFB22E00037C5C /* TabViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TabViewController.m; sourceTree = "<group>"; };
 		C5D53ED420CFB7C500037C5C /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		C5F91A3420D0B418002DB977 /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		C5F91A3520D0B418002DB977 /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		C5F91A3620D0B418002DB977 /* LoginViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
+		C5F91A3920D0C4CE002DB977 /* RegistViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RegistViewController.h; sourceTree = "<group>"; };
+		C5F91A3A20D0C4CE002DB977 /* RegistViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RegistViewController.m; sourceTree = "<group>"; };
+		C5F91A3B20D0C4CE002DB977 /* RegistViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RegistViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +88,8 @@
 		51230C1320C8D58C00386A9A /* tool */ = {
 			isa = PBXGroup;
 			children = (
+				C5090E5F20D21CC1009D2A3E /* HUDUtil.h */,
+				C5090E6020D21CC1009D2A3E /* HUDUtil.m */,
 				51230C1420C8D5AB00386A9A /* TTAutoRunLabel.h */,
 				51230C1520C8D5AB00386A9A /* TTAutoRunLabel.m */,
 				512DE79E20CA6F7B00C59E95 /* OrderView.h */,
@@ -91,6 +117,8 @@
 		517F9EE020AE5E0D00CC14C9 /* StockAnalysis */ = {
 			isa = PBXGroup;
 			children = (
+				C5090E5620D201F0009D2A3E /* ThirdParty */,
+				C5F91A3320D0B375002DB977 /* Login */,
 				51230C1320C8D58C00386A9A /* tool */,
 				517F9EE120AE5E0D00CC14C9 /* AppDelegate.h */,
 				517F9EE220AE5E0D00CC14C9 /* AppDelegate.m */,
@@ -114,6 +142,33 @@
 				C5D53ED420CFB7C500037C5C /* PrefixHeader.pch */,
 			);
 			path = StockAnalysis;
+			sourceTree = "<group>";
+		};
+		C5090E5620D201F0009D2A3E /* ThirdParty */ = {
+			isa = PBXGroup;
+			children = (
+				C5090E6320D21D1C009D2A3E /* MBProgressHUD.h */,
+				C5090E6220D21D1C009D2A3E /* MBProgressHUD.m */,
+				C5090E5720D201F0009D2A3E /* WSAuthCode.h */,
+				C5090E5820D201F0009D2A3E /* WSAuthCode.m */,
+			);
+			path = ThirdParty;
+			sourceTree = "<group>";
+		};
+		C5F91A3320D0B375002DB977 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				C5F91A3420D0B418002DB977 /* LoginViewController.h */,
+				C5F91A3520D0B418002DB977 /* LoginViewController.m */,
+				C5F91A3620D0B418002DB977 /* LoginViewController.xib */,
+				C5F91A3920D0C4CE002DB977 /* RegistViewController.h */,
+				C5F91A3A20D0C4CE002DB977 /* RegistViewController.m */,
+				C5F91A3B20D0C4CE002DB977 /* RegistViewController.xib */,
+				C5090E5A20D2044D009D2A3E /* ResetPasswordViewController.h */,
+				C5090E5B20D2044D009D2A3E /* ResetPasswordViewController.m */,
+				C5090E5C20D2044D009D2A3E /* ResetPasswordViewController.xib */,
+			);
+			path = Login;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -174,9 +229,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C5F91A3820D0B418002DB977 /* LoginViewController.xib in Resources */,
 				517F9EF120AE5E0D00CC14C9 /* LaunchScreen.storyboard in Resources */,
+				C5F91A3D20D0C4CE002DB977 /* RegistViewController.xib in Resources */,
 				517F9EEE20AE5E0D00CC14C9 /* Assets.xcassets in Resources */,
 				517F9EEC20AE5E0D00CC14C9 /* Main.storyboard in Resources */,
+				C5090E5E20D2044D009D2A3E /* ResetPasswordViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -189,14 +247,20 @@
 			files = (
 				512DE7A020CA6F7B00C59E95 /* OrderView.m in Sources */,
 				517F9EE920AE5E0D00CC14C9 /* SecondViewController.m in Sources */,
+				C5F91A3C20D0C4CE002DB977 /* RegistViewController.m in Sources */,
 				51230C1620C8D5AB00386A9A /* TTAutoRunLabel.m in Sources */,
+				C5090E5920D201F0009D2A3E /* WSAuthCode.m in Sources */,
 				516433EA20BBA40A0016BB8D /* ThirdViewController.m in Sources */,
 				C5D53ED320CFB22E00037C5C /* TabViewController.m in Sources */,
+				C5090E5D20D2044D009D2A3E /* ResetPasswordViewController.m in Sources */,
 				516433ED20BBA42B0016BB8D /* ForthViewController.m in Sources */,
 				517F9EE320AE5E0D00CC14C9 /* AppDelegate.m in Sources */,
 				516433F020BBAA000016BB8D /* FirstView.m in Sources */,
 				517F9EF420AE5E0D00CC14C9 /* main.m in Sources */,
+				C5090E6120D21CC1009D2A3E /* HUDUtil.m in Sources */,
+				C5F91A3720D0B418002DB977 /* LoginViewController.m in Sources */,
 				517F9EE620AE5E0D00CC14C9 /* FirstViewController.m in Sources */,
+				C5090E6420D21D1C009D2A3E /* MBProgressHUD.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

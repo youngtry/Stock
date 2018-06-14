@@ -8,6 +8,7 @@
 
 #import "LoginViewController.h"
 #import "RegistViewController.h"
+#import "ResetPasswordViewController.h"
 @interface LoginViewController ()
 
 @end
@@ -33,6 +34,10 @@
     Dlog(@"clickRegist");
     
     RegistViewController *vc = [[RegistViewController alloc] initWithNibName:@"RegistViewController" bundle:nil];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+- (IBAction)clickForgetPassword:(id)sender {
+    ResetPasswordViewController *vc = [[ResetPasswordViewController alloc] initWithNibName:@"ResetPasswordViewController" bundle:nil];
     [self.navigationController pushViewController:vc animated:YES];
 }
 /*
