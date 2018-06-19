@@ -9,6 +9,7 @@
 #import "FirstViewController.h"
 #import "FirstView.h"
 #import "LoginViewController.h"
+#import "HomeViewController.h"
 @interface FirstViewController ()
 @property (strong, nonatomic) IBOutlet FirstView *firstview;
 
@@ -22,12 +23,15 @@
     
 //    _firstview = [[FirstView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
 //    [self.view addSubview:_firstview];
-    [_firstview addUI];
+//    [_firstview addUI];
     
-    UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:@"登录" style:UIBarButtonItemStylePlain target:self action:@selector(clickLogin:)];
-    self.navigationItem.rightBarButtonItem = right;
+//    UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:@"登录" style:UIBarButtonItemStylePlain target:self action:@selector(clickLogin:)];
+//    self.navigationItem.rightBarButtonItem = right;
+//
+//    self.title = @"ZEDA";
     
-    self.title = @"ZEDA";
+    HomeViewController *vc = [[HomeViewController alloc] initWithNibName:@"HomeViewController" bundle:nil];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 -(void)clickLogin:(id)sender{

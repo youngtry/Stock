@@ -33,12 +33,12 @@
 -(instancetype)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     if(self){
-//        _viewsize = self.bounds.size;
-//        [self addSubview:self.topview];
-//        [self addSubview:self.loginButton];
-//        [self addSubview:self.purchaseButton];
-//        [self addSubview:self.guideButton];
-        //        [self addSubview:self.username];
+        _viewsize = self.bounds.size;
+        [self addSubview:self.topview];
+        [self addSubview:self.loginButton];
+        [self addSubview:self.purchaseButton];
+        [self addSubview:self.guideButton];
+//                [self addSubview:self.username];
     }
     
     return self;

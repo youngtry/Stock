@@ -11,6 +11,7 @@
 #import "SecondViewController.h"
 #import "ThirdViewController.h"
 #import "ForthViewController.h"
+#import "HomeViewController.h"
 @interface TabViewController ()
 
 @end
@@ -26,8 +27,9 @@
 }
 
 -(NSArray*)getControllers{
-    FirstViewController *c1 = [FirstViewController new];
+    HomeViewController *c1 = [[HomeViewController alloc] initWithNibName:@"HomeViewController" bundle:nil];
     UINavigationController *nav1 = [[UINavigationController alloc] initWithRootViewController:c1];
+    
     nav1.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"ZEDA" image:[UIImage imageNamed:@"tabbar_1_n"] selectedImage:[UIImage imageNamed:@"tabbar_1_s"]];
     
     SecondViewController *c2 = [SecondViewController new];
@@ -56,7 +58,13 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    //返回白色
+    return UIStatusBarStyleLightContent;
+    //返回黑色
+    //return UIStatusBarStyleDefault;
+}
 /*
 #pragma mark - Navigation
 
