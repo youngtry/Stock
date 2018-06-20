@@ -12,6 +12,8 @@
 #import "ThirdViewController.h"
 #import "ForthViewController.h"
 #import "HomeViewController.h"
+#import "AllInfoViewController.h"
+#import "UserFirstViewController.h"
 @interface TabViewController ()
 
 @property(nonatomic,strong)UINavigationController* nav1;
@@ -32,13 +34,26 @@
 }
 
 -(NSArray*)getControllers{
-    HomeViewController *c1 = [[HomeViewController alloc] initWithNibName:@"HomeViewController" bundle:nil];
-    self.nav1 = [[UINavigationController alloc] initWithRootViewController:c1];
+    NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
+    
+    BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
+    islogin = YES;
+    if(islogin){
+        UserFirstViewController *c1 = [[UserFirstViewController alloc] initWithNibName:@"UserFirstViewController" bundle:nil];
+        self.nav1 = [[UINavigationController alloc] initWithRootViewController:c1];
+    }else{
+        HomeViewController *c1 = [[HomeViewController alloc] initWithNibName:@"HomeViewController" bundle:nil];
+        self.nav1 = [[UINavigationController alloc] initWithRootViewController:c1];
+    }
+    
+//    HomeViewController *c1 = [[HomeViewController alloc] initWithNibName:@"HomeViewController" bundle:nil];
+//    self.nav1 = [[UINavigationController alloc] initWithRootViewController:c1];
     [self.nav1 setNavigationBarHidden:YES];
     self.nav1.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"ZEDA" image:[UIImage imageNamed:@"tabbar_1_n"] selectedImage:[UIImage imageNamed:@"tabbar_1_s"]];
     
-    SecondViewController *c2 = [SecondViewController new];
+    AllInfoViewController *c2 = [[AllInfoViewController alloc] initWithNibName:@"AllInfoViewController" bundle:nil];
     self.nav2 = [[UINavigationController alloc] initWithRootViewController:c2];
+    [self.nav2 setNavigationBarHidden:YES];
     self.nav2.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"行情" image:[UIImage imageNamed:@"tabbar_2_n"] selectedImage:[UIImage imageNamed:@"tabbar_2_s"]];
     
     ThirdViewController *c3 = [ThirdViewController new];

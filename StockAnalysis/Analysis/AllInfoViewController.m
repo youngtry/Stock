@@ -1,46 +1,31 @@
 //
-//  HomeViewController.m
+//  AllInfoViewController.m
 //  StockAnalysis
 //
-//  Created by try on 2018/6/19.
+//  Created by Macbook on 2018/6/20.
 //  Copyright © 2018年 try. All rights reserved.
 //
 
-#import "HomeViewController.h"
-#import "LoginViewController.h"
+#import "AllInfoViewController.h"
 
-@interface HomeViewController ()
-
-@property (weak, nonatomic) IBOutlet UIView *activityContainer;
+@interface AllInfoViewController ()
+@property (weak, nonatomic) IBOutlet UIView *titleView;
+@property(nonatomic, assign) UIColor* borderUIColor;
 @end
 
-@implementation HomeViewController
+@implementation AllInfoViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self setBorderUIColor:[UIColor lightGrayColor]];
     // Do any additional setup after loading the view from its nib.
-}
-
-- (void)viewWillAppear:(BOOL)animated{
-//    NSLog(@"viewWillAppear");
-    [self.navigationController setNavigationBarHidden:YES];
-}
-
-
-- (void)viewDidAppear:(BOOL)animated{
-//    NSLog(@"viewdidappear");
-    
-}
-- (IBAction)LoginCallback:(id)sender {
-    [self.navigationController setNavigationBarHidden:NO];
-    LoginViewController *vc = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];
-    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     //返回白色
@@ -48,6 +33,16 @@
     //返回黑色
     //return UIStatusBarStyleDefault;
 }
+
+-(void)setBorderUIColor:(UIColor*)color
+{
+    self.titleView.layer.borderColor=color.CGColor;
+}
+-(UIColor*)borderUIColor
+{
+    return [UIColor colorWithCGColor:self.titleView.layer.borderColor];
+}
+
 /*
 #pragma mark - Navigation
 

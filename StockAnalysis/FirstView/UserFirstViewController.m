@@ -1,20 +1,18 @@
 //
-//  HomeViewController.m
+//  UserFirstViewController.m
 //  StockAnalysis
 //
-//  Created by try on 2018/6/19.
+//  Created by Macbook on 2018/6/20.
 //  Copyright © 2018年 try. All rights reserved.
 //
 
-#import "HomeViewController.h"
-#import "LoginViewController.h"
+#import "UserFirstViewController.h"
+#import "ExchangeViewController.h"
+@interface UserFirstViewController ()
 
-@interface HomeViewController ()
-
-@property (weak, nonatomic) IBOutlet UIView *activityContainer;
 @end
 
-@implementation HomeViewController
+@implementation UserFirstViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -22,25 +20,15 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated{
-//    NSLog(@"viewWillAppear");
+    //    NSLog(@"viewWillAppear");
     [self.navigationController setNavigationBarHidden:YES];
-}
-
-
-- (void)viewDidAppear:(BOOL)animated{
-//    NSLog(@"viewdidappear");
-    
-}
-- (IBAction)LoginCallback:(id)sender {
-    [self.navigationController setNavigationBarHidden:NO];
-    LoginViewController *vc = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];
-    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     //返回白色
@@ -48,6 +36,13 @@
     //返回黑色
     //return UIStatusBarStyleDefault;
 }
+
+- (IBAction)clickExchange:(id)sender {
+    [self.navigationController setNavigationBarHidden:NO];
+    ExchangeViewController *vc = [[ExchangeViewController alloc] initWithNibName:@"ExchangeViewController" bundle:nil];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 /*
 #pragma mark - Navigation
 
