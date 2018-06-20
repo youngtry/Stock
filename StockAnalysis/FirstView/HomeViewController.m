@@ -7,6 +7,7 @@
 //
 
 #import "HomeViewController.h"
+#import "LoginViewController.h"
 
 @interface HomeViewController ()
 
@@ -17,6 +18,22 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+//    NSLog(@"viewWillAppear");
+    [self.navigationController setNavigationBarHidden:YES];
+}
+
+
+- (void)viewDidAppear:(BOOL)animated{
+//    NSLog(@"viewdidappear");
+    
+}
+- (IBAction)LoginCallback:(id)sender {
+    [self.navigationController setNavigationBarHidden:NO];
+    LoginViewController *vc = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -7,8 +7,10 @@
 //
 
 #import "RegistViewController.h"
-
-@interface RegistViewController ()
+#import "XWCountryCodeController.h"
+#import "MailRegistViewController.h"
+@interface RegistViewController ()<XWCountryCodeControllerDelegate>
+@property (weak, nonatomic) IBOutlet UIButton *countryCodeButton;
 
 @end
 
@@ -23,7 +25,33 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+- (IBAction)clickMainRegist:(id)sender {
+    MailRegistViewController *vc = [[MailRegistViewController alloc] initWithNibName:@"MailRegistViewController" bundle:nil];
+    [self.navigationController pushViewController:vc animated:YES];
+    
+}
+- (IBAction)clickCountryCode:(id)sender {
+    
+    XWCountryCodeController* countrycodeVC = [[XWCountryCodeController alloc] init];
+    countrycodeVC.deleagete = self;
+    [countrycodeVC toReturnCountryCode:^(NSString *countryCodeStr) {
+        NSLog(@"countryCodeStr = %@",countryCodeStr);
+        countryCodeStr = [countryCodeStr substringFromIndex:[countryCodeStr rangeOfString:@"+"].location];
+        NSLog(@"countryCodeStr = %@",countryCodeStr);
+        [self.countryCodeButton.titleLabel setText:countryCodeStr];
+    }];
+    
+    [self presentViewController:countrycodeVC animated:YES completion:nil];
+    
+}
+//1.代理传值
+#pragma mark - XWCountryCodeControllerDelegate
+-(void)returnCountryCode:(NSString *)countryCode{
+    
+    countryCode = [countryCode substringFromIndex:[countryCode rangeOfString:@"+"].location];
+    NSLog(@"countryCode = %@",countryCode);
+    [self.countryCodeButton.titleLabel setText:countryCode];
+}
 /*
 #pragma mark - Navigation
 

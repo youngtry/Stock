@@ -14,6 +14,11 @@
 #import "HomeViewController.h"
 @interface TabViewController ()
 
+@property(nonatomic,strong)UINavigationController* nav1;
+@property(nonatomic,strong)UINavigationController* nav2;
+@property(nonatomic,strong)UINavigationController* nav3;
+@property(nonatomic,strong)UINavigationController* nav4;
+
 @end
 
 @implementation TabViewController
@@ -28,23 +33,23 @@
 
 -(NSArray*)getControllers{
     HomeViewController *c1 = [[HomeViewController alloc] initWithNibName:@"HomeViewController" bundle:nil];
-    UINavigationController *nav1 = [[UINavigationController alloc] initWithRootViewController:c1];
-    
-    nav1.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"ZEDA" image:[UIImage imageNamed:@"tabbar_1_n"] selectedImage:[UIImage imageNamed:@"tabbar_1_s"]];
+    self.nav1 = [[UINavigationController alloc] initWithRootViewController:c1];
+    [self.nav1 setNavigationBarHidden:YES];
+    self.nav1.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"ZEDA" image:[UIImage imageNamed:@"tabbar_1_n"] selectedImage:[UIImage imageNamed:@"tabbar_1_s"]];
     
     SecondViewController *c2 = [SecondViewController new];
-    UINavigationController *nav2 = [[UINavigationController alloc] initWithRootViewController:c2];
-    nav2.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"行情" image:[UIImage imageNamed:@"tabbar_2_n"] selectedImage:[UIImage imageNamed:@"tabbar_2_s"]];
+    self.nav2 = [[UINavigationController alloc] initWithRootViewController:c2];
+    self.nav2.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"行情" image:[UIImage imageNamed:@"tabbar_2_n"] selectedImage:[UIImage imageNamed:@"tabbar_2_s"]];
     
     ThirdViewController *c3 = [ThirdViewController new];
-    UINavigationController *nav3 = [[UINavigationController alloc] initWithRootViewController:c3];
-    nav3.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"交易" image:[UIImage imageNamed:@"tabbar_3_n"] selectedImage:[UIImage imageNamed:@"tabbar_3_s"]];
+    self.nav3 = [[UINavigationController alloc] initWithRootViewController:c3];
+    self.nav3.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"交易" image:[UIImage imageNamed:@"tabbar_3_n"] selectedImage:[UIImage imageNamed:@"tabbar_3_s"]];
     
     ForthViewController *c4 = [ForthViewController new];
-    UINavigationController *nav4 = [[UINavigationController alloc] initWithRootViewController:c4];
-    nav4.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"商城" image:[UIImage imageNamed:@"tabbar_4_n"] selectedImage:[UIImage imageNamed:@"tabbar_4_s"]];
+    self.nav4 = [[UINavigationController alloc] initWithRootViewController:c4];
+    self.nav4.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"商城" image:[UIImage imageNamed:@"tabbar_4_n"] selectedImage:[UIImage imageNamed:@"tabbar_4_s"]];
     
-    return @[nav1,nav2,nav3,nav4];
+    return @[self.nav1,self.nav2,self.nav3,self.nav4];
 }
 
 - (void)viewDidLoad {
