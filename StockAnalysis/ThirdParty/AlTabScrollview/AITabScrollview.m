@@ -22,6 +22,9 @@
 }
 
 -(void)configParameter:(DirectionStyle)directionStyle viewArr:(NSArray<UIView*>*)viewArr tabWidth:(NSInteger)tabWidth tabHeight:(NSInteger)tabHeight index:(NSInteger)index block:(TabClickBlock) clickBlock{
+    //add
+    [self removeAllSubviews];
+    
     _viewArr=viewArr;
     _tabHeight=tabHeight;
     _tabWidth=tabWidth;

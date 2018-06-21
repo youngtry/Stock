@@ -39,9 +39,10 @@
 
 
 #ifdef DEBUG
-    #define Dlog(s) NSLog(@"%@",s)
+//    #define Dlog(s) NSLog(@"%@",s)
+    #define DLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
 #else
-    #define Dlog(...)
+    #define DLog(...)
 #endif
 #define IsStrEmpty(_ref)    (!_ref || [(_ref)isEqualToString:@""])
 #define IsArrayEmpty(_ref)  (!_ref || _ref.count  == 0)

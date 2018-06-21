@@ -39,7 +39,7 @@
 }
 
 -(void)clickRegist:(id)sender{
-    Dlog(@"clickRegist");
+    DLog(@"clickRegist");
     
     RegistViewController *vc = [[RegistViewController alloc] initWithNibName:@"RegistViewController" bundle:nil];
     [self.navigationController pushViewController:vc animated:YES];
