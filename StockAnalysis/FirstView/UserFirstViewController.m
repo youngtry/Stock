@@ -8,6 +8,7 @@
 
 #import "UserFirstViewController.h"
 #import "ExchangeViewController.h"
+#import "Business ViewController.h"
 @interface UserFirstViewController ()
 
 @end
@@ -40,6 +41,12 @@
 - (IBAction)clickExchange:(id)sender {
     [self.navigationController setNavigationBarHidden:NO];
     ExchangeViewController *vc = [[ExchangeViewController alloc] initWithNibName:@"ExchangeViewController" bundle:nil];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+- (IBAction)clickBusiness:(id)sender {
+    
+    [self.navigationController setNavigationBarHidden:NO];
+    Business_ViewController *vc = [[Business_ViewController alloc] initWithNibName:@"Business ViewController" bundle:nil];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
