@@ -46,7 +46,8 @@
 #define IsStrEmpty(_ref)    (!_ref || [(_ref)isEqualToString:@""])
 #define IsArrayEmpty(_ref)  (!_ref || _ref.count  == 0)
 
-
+#define WeakSelf(weakSelf)  __weak __typeof(&*self)weakSelf = self;
 
 #import "HUDUtil.h"
+#import "UIView+Additions.h"
 #endif /* PrefixHeader_pch */

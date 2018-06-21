@@ -10,6 +10,7 @@
 #import "AITabScrollview.h"
 #import "AITabContentView.h"
 #import "Masonry.h"
+#import "StockInfoViewController.h"
 @interface AllInfoViewController ()
 
 @property(nonatomic,strong)UISegmentedControl* segment;
@@ -36,13 +37,7 @@
         tab.textColor=[UIColor blackColor];
         [_titleLabs addObject:tab];
         
-        int r = (arc4random() % 256) ;
-        int g = (arc4random() % 256) ;
-        int b = (arc4random() % 256) ;
-        
-        //TODO 在此定义vc
-        UIViewController *vc = [[UIViewController alloc] init];
-        vc.view.backgroundColor = kColor(r, g, b);
+        StockInfoViewController *vc = [[StockInfoViewController alloc] init];
         [_contentVCs addObject:vc];
     }
     
