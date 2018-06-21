@@ -14,7 +14,8 @@
 
 #define kColorRGBA(r,g,b,a) [UIColor colorWithRed:r/255.0f green:g/255.0f blue:b/255.0f alpha:a]
 #define kColor(r,g,b) kColorRGBA(r,g,b,1)
-#define kThemeColor kColor(37,44,50)//主题色
+#define kThemeColor kColor(37,44,50)//主题黑
+#define kThemeYellow kColor(200,163,53)//主题黄
 
 #define kTabYellow kColor(200,163,53)
 #define kTabGray kColor(220,220,220)
@@ -23,6 +24,18 @@
 #define kTextBoldFont(a) [UIFont boldSystemFontOfSize:a]
 
 
+
+//常用尺寸定义>>>>>>>>>>>>>>>>
+//屏幕宽度
+#define kScreenWidth        [[UIScreen mainScreen] bounds].size.width
+//屏幕高度
+#define kScreenHeight       [[UIScreen mainScreen] bounds].size.height
+//导航高度
+#define kNaviHeight         64
+//tabbar高度
+#define kTabBarHeight       49
+
+#define Localize(key) NSLocalizedString(key,nil)
 
 
 #ifdef DEBUG

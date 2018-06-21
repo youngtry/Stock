@@ -51,9 +51,8 @@
     [self.nav1 setNavigationBarHidden:YES];
     self.nav1.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"ZEDA" image:[UIImage imageNamed:@"tabbar_1_n"] selectedImage:[UIImage imageNamed:@"tabbar_1_s"]];
     
-    AllInfoViewController *c2 = [[AllInfoViewController alloc] initWithNibName:@"AllInfoViewController" bundle:nil];
+    AllInfoViewController *c2 = [[AllInfoViewController alloc] init];
     self.nav2 = [[UINavigationController alloc] initWithRootViewController:c2];
-    [self.nav2 setNavigationBarHidden:YES];
     self.nav2.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"行情" image:[UIImage imageNamed:@"tabbar_2_n"] selectedImage:[UIImage imageNamed:@"tabbar_2_s"]];
     
     ThirdViewController *c3 = [ThirdViewController new];
