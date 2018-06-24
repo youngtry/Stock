@@ -72,5 +72,5 @@ typedef NS_ENUM(NSInteger, DirectionStyle) {
  @param index 默认的tab是第几个
   @param clickBlock 回调点击位置的block
  */
--(void)configParameter:(DirectionStyle)directionStyle viewArr:(NSArray<UIView*>*)viewArr tabWidth:(NSInteger)tabWidth tabHeight:(NSInteger)tabHeight index:(NSInteger)index block:(TabClickBlock) clickBlock;
+-(void)configParameter:(DirectionStyle)directionStyle viewArr:(NSArray*)viewArr tabWidth:(NSInteger)tabWidth tabHeight:(NSInteger)tabHeight index:(NSInteger)index block:(TabClickBlock) clickBlock;
 @end

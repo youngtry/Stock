@@ -21,9 +21,10 @@
     return self;
 }
 
--(void)configParameter:(DirectionStyle)directionStyle viewArr:(NSArray<UIView*>*)viewArr tabWidth:(NSInteger)tabWidth tabHeight:(NSInteger)tabHeight index:(NSInteger)index block:(TabClickBlock) clickBlock{
+-(void)configParameter:(DirectionStyle)directionStyle viewArr:(NSArray*)titleArr tabWidth:(NSInteger)tabWidth tabHeight:(NSInteger)tabHeight index:(NSInteger)index block:(TabClickBlock) clickBlock{
     //add
     [self removeAllSubviews];
+    NSArray*viewArr = [self createLabs:titleArr];
     
     _viewArr=viewArr;
     _tabHeight=tabHeight;
@@ -375,4 +376,16 @@
     }
 }
 
+-(NSArray*)createLabs:(NSArray*)labs{
+    NSMutableArray* views = [NSMutableArray new];
+    for (int i=0; i<labs.count; i++) {
+        NSString *titleStr= labs[i];
+        UILabel *tab=[[UILabel alloc]init];
+        tab.textAlignment=NSTextAlignmentCenter;
+        tab.text=titleStr;
+        tab.textColor=[UIColor blackColor];
+        [views addObject:tab];
+    }
+    return views;
+}
 @end

@@ -14,6 +14,8 @@
 #import "HomeViewController.h"
 #import "AllInfoViewController.h"
 #import "UserFirstViewController.h"
+
+#import "TradeViewController.h"
 @interface TabViewController ()
 
 @property(nonatomic,strong)UINavigationController* nav1;
@@ -55,7 +57,7 @@
     self.nav2 = [[UINavigationController alloc] initWithRootViewController:c2];
     self.nav2.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"行情" image:[UIImage imageNamed:@"tabbar_2_n"] selectedImage:[UIImage imageNamed:@"tabbar_2_s"]];
     
-    ThirdViewController *c3 = [ThirdViewController new];
+    TradeViewController *c3 = [TradeViewController new];
     self.nav3 = [[UINavigationController alloc] initWithRootViewController:c3];
     self.nav3.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"交易" image:[UIImage imageNamed:@"tabbar_3_n"] selectedImage:[UIImage imageNamed:@"tabbar_3_s"]];
     
