@@ -12,6 +12,7 @@
 #import "Masonry.h"
 #import "TradePurchaseViewController.h"
 #import "PendingOrderViewController.h"
+#import "PendingOrderHistoryViewController.h"
 @interface TradeViewController ()
 @property(nonatomic,strong) AITabScrollview *scrollTitle;
 @property(nonatomic,strong) AITabContentView*scrollContent;
@@ -40,16 +41,27 @@
     NSMutableArray* vcs = [NSMutableArray new];
     NSArray *titles = @[@"买入",@"卖出",@"挂单",@"历史"];
     
-    for (int i=0; i<titles.count; i++) {
-        if(i==2){
-            PendingOrderViewController*vc = [PendingOrderViewController new];
-            [vcs addObject:vc];
-            continue;
-        }
-        TradePurchaseViewController *vc = [[TradePurchaseViewController alloc] initWithNibName:@"TradePurchaseViewController" bundle:nil];
-        [vcs addObject:vc];
+    {
+        TradePurchaseViewController *vc1 = [[TradePurchaseViewController alloc] initWithNibName:@"TradePurchaseViewController" bundle:nil];
+        [vcs addObject:vc1];
+        
+        TradePurchaseViewController *vc2 = [[TradePurchaseViewController alloc] initWithNibName:@"TradePurchaseViewController" bundle:nil];
+        [vcs addObject:vc2];
+        
+        PendingOrderViewController*vc3 = [PendingOrderViewController new];
+        [vcs addObject:vc3];
+        
+        //vc4 历史不能滑动 需求！
     }
+    
+    WeakSelf(weakSelf)
     [_scrollTitle configParameter:horizontal viewArr:titles tabWidth:kScreenWidth/titles.count tabHeight:42 index:0 block:^(NSInteger index) {
+        if(index==3){
+            //历史记录
+            PendingOrderHistoryViewController *vc = [PendingOrderHistoryViewController new];
+            [weakSelf.navigationController pushViewController:vc animated:YES];
+            return ;
+        }
         [_scrollContent updateTab:index];
     }];
     [_scrollContent configParam:vcs Index:0 block:^(NSInteger index) {
