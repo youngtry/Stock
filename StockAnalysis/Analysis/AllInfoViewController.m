@@ -80,21 +80,13 @@
 
 -(void)changeToGlobal{
     NSMutableArray* vcs = [NSMutableArray new];
-    NSMutableArray* labs = [NSMutableArray new];
     
     NSArray *titles = @[@"期货一",@"期货二"];
     for (int i=0; i<titles.count; i++) {
-        NSString *titleStr= titles[i];
-        UILabel *tab=[[UILabel alloc]init];
-        tab.textAlignment=NSTextAlignmentCenter;
-        tab.text=titleStr;
-        tab.textColor=[UIColor blackColor];
-        [labs addObject:tab];
-        
         StockInfoViewController *vc = [[StockInfoViewController alloc] init];
         [vcs addObject:vc];
     }
-    [_scrollTitle configParameter:horizontal viewArr:labs tabWidth:kScreenWidth/titles.count tabHeight:42 index:0 block:^(NSInteger index) {
+    [_scrollTitle configParameter:horizontal viewArr:titles tabWidth:kScreenWidth/titles.count tabHeight:42 index:0 block:^(NSInteger index) {
         [_scrollContent updateTab:index];
     }];
     [_scrollContent configParam:vcs Index:0 block:^(NSInteger index) {
