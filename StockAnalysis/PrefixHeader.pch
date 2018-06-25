@@ -34,6 +34,8 @@
 #define kNaviHeight         64
 //tabbar高度
 #define kTabBarHeight       49
+//滑动title
+#define kScrollTitleHeight       42
 
 #define Localize(key) NSLocalizedString(key,nil)
 

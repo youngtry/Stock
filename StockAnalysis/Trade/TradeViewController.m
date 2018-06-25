@@ -11,6 +11,7 @@
 #import "AITabContentView.h"
 #import "Masonry.h"
 #import "TradePurchaseViewController.h"
+#import "PendingOrderViewController.h"
 @interface TradeViewController ()
 @property(nonatomic,strong) AITabScrollview *scrollTitle;
 @property(nonatomic,strong) AITabContentView*scrollContent;
@@ -40,6 +41,11 @@
     NSArray *titles = @[@"买入",@"卖出",@"挂单",@"历史"];
     
     for (int i=0; i<titles.count; i++) {
+        if(i==2){
+            PendingOrderViewController*vc = [PendingOrderViewController new];
+            [vcs addObject:vc];
+            continue;
+        }
         TradePurchaseViewController *vc = [[TradePurchaseViewController alloc] initWithNibName:@"TradePurchaseViewController" bundle:nil];
         [vcs addObject:vc];
     }
