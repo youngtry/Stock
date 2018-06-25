@@ -22,6 +22,14 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    //导航栏
+    self.title = @"交易";
+    
+    UIBarButtonItem *search = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"search"] style:UIBarButtonItemStylePlain target:self action:@selector(clickSearch:)];
+    self.navigationItem.leftBarButtonItem = search;
+    
+    UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:@"全部挂单" style:UIBarButtonItemStylePlain target:self action:@selector(clickAllTrade:)];
+    self.navigationItem.rightBarButtonItem = right;
     //标题滑动
     [self scrollTitle];
     
@@ -76,14 +84,12 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+-(void)clickSearch:(id)sender{
+    DLog(@"clickSearch");
 }
-*/
+
+-(void)clickAllTrade:(id)sender{
+    DLog(@"clickAllTrade");
+}
 
 @end

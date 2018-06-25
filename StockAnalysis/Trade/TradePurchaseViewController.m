@@ -7,13 +7,14 @@
 //
 
 #import "TradePurchaseViewController.h"
-
+#import "RadioButton.h"
 @interface TradePurchaseViewController ()
 @property (weak, nonatomic) IBOutlet UIView *editNumContainer;
 @property (weak, nonatomic) IBOutlet UIView *editPriceContainer;
 @property (weak, nonatomic) IBOutlet UIView *editPercentContainer;
 @property (weak, nonatomic) IBOutlet UIButton *purchaseBtn;
 
+@property (nonatomic,strong)RadioButton *radioBtn;
 @end
 
 @implementation TradePurchaseViewController
@@ -21,7 +22,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
     [self customeView];
+    
+    //单选按钮
+    NSArray *tiles = @[@"25%",@"50%",@"75%",@"100%"];
+    self.radioBtn = [[RadioButton alloc] initWithFrame:self.editPercentContainer.bounds titles:tiles selectIndex:-1];
+    [self.editPercentContainer addSubview:self.radioBtn];
+    self.editPercentContainer.backgroundColor = [UIColor whiteColor];
+    self.radioBtn.indexChangeBlock = ^(NSInteger index){
+        DLog(@"index:%li",index);
+    };
 }
 
 -(void)customeView{
@@ -35,6 +46,15 @@
     
     self.editPercentContainer.layer.cornerRadius = 12;//self.editNumContainer.height/2.0f;
     self.purchaseBtn.layer.cornerRadius = 15;
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated]; 
+}
+
+-(void)viewDidLayoutSubviews{
+    [super viewDidLayoutSubviews];
+    [self.radioBtn reloadFrame:self.editPercentContainer.bounds];
 }
 
 - (void)didReceiveMemoryWarning {
