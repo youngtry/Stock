@@ -10,4 +10,9 @@
 
 @interface AppData : NSObject
 
++(instancetype)getInstance;
+
+-(instancetype)init;
+-(void)setExchangeButtonIndex:(int)index;
+-(int)getExchangeButtonIndex;
 @end

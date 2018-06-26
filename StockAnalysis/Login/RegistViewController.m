@@ -9,6 +9,7 @@
 #import "RegistViewController.h"
 #import "XWCountryCodeController.h"
 #import "MailRegistViewController.h"
+#import "HttpRequest.h"
 @interface RegistViewController ()<XWCountryCodeControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *countryCodeButton;
 
@@ -43,6 +44,13 @@
     
     [self presentViewController:countrycodeVC animated:YES completion:nil];
     
+}
+- (IBAction)clickGetVerify:(id)sender {
+    
+    NSString* url = @"https://www.oneitfarm.com/api-tool/mockserver.php/app/vfe35iuoyzqkcn0fijglprsbdrmoakch/captcha/phone";
+    NSDictionary* params = @{@"phone":@"+8617751766214",
+                             };
+    [[HttpRequest getInstance] getWithUrl:url data:params];
 }
 //1.代理传值
 #pragma mark - XWCountryCodeControllerDelegate

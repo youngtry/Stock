@@ -7,6 +7,8 @@
 //
 
 #import "ExchangeViewController.h"
+#import "ChargeViewController.h"
+#import "AppData.h"
 
 @interface ExchangeViewController ()
 
@@ -32,6 +34,21 @@
     return UIStatusBarStyleLightContent;
     //返回黑色
     //return UIStatusBarStyleDefault;
+}
+- (IBAction)clickChargeButton:(id)sender {
+//    [self.navigationController setNavigationBarHidden:NO];
+    ChargeViewController *vc = [[ChargeViewController alloc] initWithNibName:@"ChargeViewController" bundle:nil];
+    [self.navigationController pushViewController:vc animated:YES];
+    [[AppData getInstance] setExchangeButtonIndex:0];
+}
+- (IBAction)clickTixianButton:(id)sender {
+    ChargeViewController *vc = [[ChargeViewController alloc] initWithNibName:@"ChargeViewController" bundle:nil];
+    [self.navigationController pushViewController:vc animated:YES];
+    [[AppData getInstance] setExchangeButtonIndex:1];
+}
+- (IBAction)clickMoneyInOutButton:(id)sender {
+}
+- (IBAction)clickBillButton:(id)sender {
 }
 
 /*

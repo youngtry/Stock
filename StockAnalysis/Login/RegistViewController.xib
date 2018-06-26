@@ -118,6 +118,9 @@
                             <state key="normal" title="发送验证码">
                                 <color key="titleColor" white="0.75" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </state>
+                            <connections>
+                                <action selector="clickGetVerify:" destination="-1" eventType="touchUpInside" id="Xzh-Jj-0Tn"/>
+                            </connections>
                         </button>
                         <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="短信验证码" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jYf-P3-7NK">
                             <rect key="frame" x="37" y="77" width="216" height="30"/>

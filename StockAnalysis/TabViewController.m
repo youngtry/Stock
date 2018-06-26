@@ -39,7 +39,7 @@
     NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
     
     BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
-    islogin = YES;
+    islogin = NO;
     if(islogin){
         UserFirstViewController *c1 = [[UserFirstViewController alloc] initWithNibName:@"UserFirstViewController" bundle:nil];
         self.nav1 = [[UINavigationController alloc] initWithRootViewController:c1];

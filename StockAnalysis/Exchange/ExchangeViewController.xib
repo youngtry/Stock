@@ -82,6 +82,9 @@
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vkz-eL-4Qi">
                             <rect key="frame" x="0.0" y="0.0" width="95" height="83"/>
+                            <connections>
+                                <action selector="clickChargeButton:" destination="-1" eventType="touchUpInside" id="YNw-nD-iDo"/>
+                            </connections>
                         </button>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="chongzhi" translatesAutoresizingMaskIntoConstraints="NO" id="3lP-sl-3DZ">
                             <rect key="frame" x="24" y="14" width="40" height="37"/>
@@ -103,10 +106,13 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cYH-nJ-CJY" userLabel="体现">
-                    <rect key="frame" x="95" y="157" width="95" height="83"/>
+                    <rect key="frame" x="95" y="157" width="94.5" height="83"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yvI-ga-ngY">
-                            <rect key="frame" x="0.0" y="0.0" width="95" height="83"/>
+                            <rect key="frame" x="0.0" y="0.0" width="94.5" height="83"/>
+                            <connections>
+                                <action selector="clickTixianButton:" destination="-1" eventType="touchUpInside" id="JAE-wn-lYu"/>
+                            </connections>
                         </button>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="tixian" translatesAutoresizingMaskIntoConstraints="NO" id="n4s-uP-ZFx">
                             <rect key="frame" x="27" y="12" width="40" height="37"/>
@@ -129,10 +135,13 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2y8-a0-FV1" userLabel="资金">
-                    <rect key="frame" x="189" y="157" width="95.5" height="83"/>
+                    <rect key="frame" x="188.5" y="157" width="95.5" height="83"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QXh-Nc-5eD">
                             <rect key="frame" x="0.0" y="0.0" width="95.5" height="83"/>
+                            <connections>
+                                <action selector="clickMoneyInOutButton:" destination="-1" eventType="touchUpInside" id="1Av-lK-4lq"/>
+                            </connections>
                         </button>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="huazhuan" translatesAutoresizingMaskIntoConstraints="NO" id="rsM-cb-tE1">
                             <rect key="frame" x="27" y="14" width="40" height="37"/>
@@ -155,10 +164,13 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vzb-DH-e65" userLabel="账单">
-                    <rect key="frame" x="280.5" y="157" width="94.5" height="83"/>
+                    <rect key="frame" x="280" y="157" width="95" height="83"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UDm-oa-Ox2">
-                            <rect key="frame" x="0.0" y="0.0" width="94.5" height="83"/>
+                            <rect key="frame" x="0.0" y="0.0" width="95" height="83"/>
+                            <connections>
+                                <action selector="clickBillButton:" destination="-1" eventType="touchUpInside" id="mEI-Iq-sfH"/>
+                            </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="交易账单" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qRY-8W-cSx">
                             <rect key="frame" x="17" y="57" width="61" height="21"/>

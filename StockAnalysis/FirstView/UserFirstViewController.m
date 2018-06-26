@@ -9,6 +9,7 @@
 #import "UserFirstViewController.h"
 #import "ExchangeViewController.h"
 #import "Business ViewController.h"
+#import "UserInfoViewController.h"
 @interface UserFirstViewController ()
 
 @end
@@ -47,6 +48,12 @@
     
     [self.navigationController setNavigationBarHidden:NO];
     Business_ViewController *vc = [[Business_ViewController alloc] initWithNibName:@"Business ViewController" bundle:nil];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+- (IBAction)clickUserInfo:(id)sender {
+    
+    [self.navigationController setNavigationBarHidden:NO];
+    UserInfoViewController *vc = [[UserInfoViewController alloc] initWithNibName:@"UserInfoViewController" bundle:nil];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
