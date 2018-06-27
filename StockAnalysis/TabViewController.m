@@ -14,7 +14,7 @@
 #import "HomeViewController.h"
 #import "AllInfoViewController.h"
 #import "UserFirstViewController.h"
-
+#import "StoreViewController.h"
 #import "TradeViewController.h"
 @interface TabViewController ()
 
@@ -61,7 +61,7 @@
     self.nav3 = [[UINavigationController alloc] initWithRootViewController:c3];
     self.nav3.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"交易" image:[UIImage imageNamed:@"tabbar_3_n"] selectedImage:[UIImage imageNamed:@"tabbar_3_s"]];
     
-    ForthViewController *c4 = [ForthViewController new];
+    StoreViewController *c4 = [StoreViewController new];
     self.nav4 = [[UINavigationController alloc] initWithRootViewController:c4];
     self.nav4.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"商城" image:[UIImage imageNamed:@"tabbar_4_n"] selectedImage:[UIImage imageNamed:@"tabbar_4_s"]];
     
