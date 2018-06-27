@@ -1,23 +1,23 @@
 //
-//  SafeViewController.m
+//  SetPasswordViewController.m
 //  StockAnalysis
 //
-//  Created by try on 2018/6/21.
+//  Created by try on 2018/6/27.
 //  Copyright © 2018年 try. All rights reserved.
 //
 
-#import "SafeViewController.h"
+#import "SetPasswordViewController.h"
 
-@interface SafeViewController ()
+@interface SetPasswordViewController ()
 
 @end
 
-@implementation SafeViewController
+@implementation SetPasswordViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.title = @"安全中心";
+    self.title = @"设置资金密码";
 }
 
 - (void)didReceiveMemoryWarning {
