@@ -37,13 +37,13 @@
         StorePurchaseViewController *vc1 = [StorePurchaseViewController new];
         [vcs addObject:vc1];
         
-        UIViewController *vc2 = [UIViewController new];
+        StorePurchaseViewController *vc2 = [StorePurchaseViewController new];
         [vcs addObject:vc2];
         
-        UIViewController*vc3 = [UIViewController new];
+        StorePurchaseViewController*vc3 = [StorePurchaseViewController new];
         [vcs addObject:vc3];
         
-        UIViewController*vc4 = [UIViewController new];
+        StorePurchaseViewController*vc4 = [StorePurchaseViewController new];
         [vcs addObject:vc4];
         
     }
