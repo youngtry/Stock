@@ -14,6 +14,9 @@
 -(instancetype)init;
 
 
--(NSDictionary *)postWithUrl:(NSString *)url data:(NSDictionary *)requestData;
+-(NSDictionary *)postWithUrl:(NSString *)url data:(NSArray *)requestData;
 -(NSDictionary *)getWithUrl:(NSString *)url data:(NSDictionary *)requestData;
+
+
+- (NSString *) md5:(NSString *) input;
 @end
