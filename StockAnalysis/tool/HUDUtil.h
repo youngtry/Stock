@@ -69,4 +69,7 @@
  @param labelText 提示
  */
 +(void) updateLabelText:(NSString*) labelText;
+
+
++(void)showSystemTipView:(UIViewController*)vc  title:(NSString *)title withContent:(NSString *)content;
 @end

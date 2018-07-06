@@ -1,33 +1,28 @@
 //
-//  UserInfoViewController.m
+//  SetMoneyPasswordViewController.m
 //  StockAnalysis
 //
-//  Created by try on 2018/6/21.
+//  Created by Macbook on 2018/7/2.
 //  Copyright © 2018年 try. All rights reserved.
 //
 
-#import "UserInfoViewController.h"
-#import "SafeViewController.h"
+#import "SetMoneyPasswordViewController.h"
 
-@interface UserInfoViewController ()
+@interface SetMoneyPasswordViewController ()
 
 @end
 
-@implementation UserInfoViewController
+@implementation SetMoneyPasswordViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.title = @"我的";
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-- (IBAction)clickSafeInfo:(id)sender {
-    SafeViewController* vc = [[SafeViewController alloc] initWithNibName:@"SafeViewController" bundle:nil];
-    [self.navigationController pushViewController:vc animated:YES];}
 
 /*
 #pragma mark - Navigation

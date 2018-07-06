@@ -17,6 +17,7 @@
 -(NSDictionary *)postWithUrl:(NSString *)url data:(NSArray *)requestData;
 -(NSDictionary *)getWithUrl:(NSString *)url data:(NSDictionary *)requestData;
 
+-(NSDictionary* )httpBack;
 
 - (NSString *) md5:(NSString *) input;
 @end

@@ -31,6 +31,7 @@
     self = [super init];
     if(self){
         self.viewControllers = [self getControllers];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeAfterLogin) name:@"ChangeAfterLogin" object:nil];
     }
     return self;
 }
@@ -39,7 +40,7 @@
     NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
     
     BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
-    islogin = NO;
+//    islogin = NO;
     if(islogin){
         UserFirstViewController *c1 = [[UserFirstViewController alloc] initWithNibName:@"UserFirstViewController" bundle:nil];
         self.nav1 = [[UINavigationController alloc] initWithRootViewController:c1];
@@ -66,6 +67,11 @@
     self.nav4.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"商城" image:[UIImage imageNamed:@"tabbar_4_n"] selectedImage:[UIImage imageNamed:@"tabbar_4_s"]];
     
     return @[self.nav1,self.nav2,self.nav3,self.nav4];
+}
+
+-(void)changeAfterLogin{
+    self.viewControllers = [self getControllers];
+    
 }
 
 - (void)viewDidLoad {

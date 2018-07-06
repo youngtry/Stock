@@ -12,6 +12,8 @@
 #include <arpa/inet.h>
 #import <net/if.h>
 
+
+
 @interface HttpRequest()
 @property(nonatomic,strong)NSDictionary* dataDictionary;
 @end
@@ -37,11 +39,15 @@
     return self;
 }
 
+-(NSDictionary* )httpBack{
+    return _dataDictionary;
+}
+
 -(NSDictionary *)postWithUrl:(NSString *)url data:(NSArray *)requestData{
     
     NSDictionary *headers = @{ @"content-type": @"multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
                                //                               @"Content-Type": @"application/x-www-form-urlencoded",
-                               @"authorization": @"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJhY2NvdW50X2lkIjoiOTBiMTYwYzEyNTliNDgzMTg1NjgxNGZmM2YyNDE2MTkiLCJjaWFjY291bnRfdG9rZW4iOiJqMG1GWTFOUDhRNUpvRVpwLlBMY01CZEE4RkkxUlp4dUsuMWVjMTcxNWU1OThkYTYzNmViNjFhNTdkMDM3ZjNhOGMiLCJleHAiOjE1MzAzNDY2MzF9.xCpz2bzjQAUUv62UeW4GKFCbnjw1OF8nNvZTbzNm5Q0",
+                               @"authorization": @"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyOCwiYWNjb3VudF9pZCI6IjQwOTMzMjMxMzE0MTQ5ZWQ4OGFmOGEzYWRjNTM5YWQxIiwiY2lhY2NvdW50X3Rva2VuIjoiUVBkNmxoZmkwYUdCNDdURS5ydThPeHdLTWN2STRzbjBBLjVkNDFmYTE2N2RiNTQ4ZTNjN2U3MWJiZTdkMGQyZDRmIiwiZXhwIjoxNTMxMDM1MjY4fQ.8lLP9ztuKl4-la4Uxsh8nFzwBXG0RyVQvCkA7qXGWtw",
                                @"Cache-Control": @"no-cache",
                                @"Postman-Token": @"57bb5e1b-7c27-4f1d-a5c2-fd56b5604d38" };
     NSString *boundary = @"----WebKitFormBoundary7MA4YWxkTrZu0gW";
@@ -90,10 +96,31 @@
                                                         //                                                        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
                                                         //                                                        NSLog(@"%@", httpResponse);
                                                         
-                                                        NSDictionary* _dataDictionary =[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil ];
+                                                        _dataDictionary =[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil ];
                                                         NSLog(@"post返回数据为：%@",_dataDictionary);
-                                                        NSString* msg = [_dataDictionary objectForKey:@"msg"];
-                                                        NSLog(@"mesg = %@",msg);
+                                                        if([url isEqualToString:@"http://exchange-test.oneitfarm.com/server/account/login/phone"]){
+                                                            //登陆请求应答，保存新的account_token
+                                                            dispatch_sync(dispatch_get_main_queue(), ^{
+                                                                [[NSNotificationCenter defaultCenter] postNotificationName:@"LoginSuccess" object:nil];
+                                                            });
+                                                        }
+                                                        
+                                                        if([url isEqualToString:@"http://exchange-test.oneitfarm.com/server/register/phone"]){
+                                                            //注册请求应答
+                                                            
+                                                            dispatch_sync(dispatch_get_main_queue(), ^{
+                                                                [[NSNotificationCenter defaultCenter] postNotificationName:@"RegisteBack" object:nil];
+                                                            });
+                                                        }
+                                                        if([url isEqualToString:@"http://exchange-test.oneitfarm.com/server/register/email"]){
+                                                            //邮箱注册请求应答
+                                                            
+                                                            dispatch_sync(dispatch_get_main_queue(), ^{
+                                                                [[NSNotificationCenter defaultCenter] postNotificationName:@"MailRegisteBack" object:nil];
+                                                            });
+                                                        }
+                                                        
+                                                       
                                                     }
                                                 }];
 

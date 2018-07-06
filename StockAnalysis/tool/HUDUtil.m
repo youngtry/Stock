@@ -77,4 +77,15 @@ static MBProgressHUD *hud;
         hud.labelText = labelText;
     }
 }
+
++(void)showSystemTipView:(UIViewController*)vc  title:(NSString *)title withContent:(NSString *)content{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:content preferredStyle:  UIAlertControllerStyleAlert];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+        
+    }]];
+    
+    //弹出提示框；
+    [vc presentViewController:alert animated:true completion:nil];
+}
 @end

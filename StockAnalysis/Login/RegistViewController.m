@@ -10,8 +10,12 @@
 #import "XWCountryCodeController.h"
 #import "MailRegistViewController.h"
 #import "HttpRequest.h"
+#import "HUDUtil.h"
 @interface RegistViewController ()<XWCountryCodeControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *countryCodeButton;
+@property (weak, nonatomic) IBOutlet UITextField *phoneInput;
+@property (weak, nonatomic) IBOutlet UITextField *verifyInput;
+@property (weak, nonatomic) IBOutlet UITextField *passwordInput;
 
 @end
 
@@ -20,6 +24,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registeBack) name:@"RegisteBack" object:nil];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -60,6 +67,48 @@
     NSString* url = @"http://exchange-test.oneitfarm.com/server/register/phone";
 
     [[HttpRequest getInstance] postWithUrl:url data:parameters];
+}
+- (IBAction)clickPhoneRegiste:(id)sender {
+    
+    if(self.phoneInput.text.length != 11){
+        [HUDUtil showSystemTipView:self title:@"提示" withContent:@"请输入正确的手机号码"];
+        return;
+    }
+    
+    if(self.verifyInput.text.length == 0){
+        [HUDUtil showSystemTipView:self title:@"提示" withContent:@"请输入验证码"];
+        return;
+    }
+    
+    if(self.passwordInput.text.length == 0){
+        [HUDUtil showSystemTipView:self title:@"提示" withContent:@"请输入密码"];
+        return;
+    }
+    
+    NSArray *parameters = @[ @{ @"name": @"phone", @"value": self.phoneInput.text },
+                             @{ @"name": @"captcha", @"value": self.verifyInput.text },
+                             @{ @"name": @"password", @"value": self.passwordInput.text },
+                             @{ @"name": @"district", @"value": self.countryCodeButton.titleLabel.text },
+                             @{ @"name": @"appkey", @"value": @"5yupjrc7tbhwufl8oandzidjyrmg6blc" },
+                             @{ @"name": @"channel", @"value": @"0" } ];
+    
+    
+    NSString* url = @"http://exchange-test.oneitfarm.com/server/register/phone";
+    
+    [[HttpRequest getInstance] postWithUrl:url data:parameters];
+}
+
+-(void)registeBack{
+    NSDictionary* data = [[HttpRequest getInstance] httpBack];
+    NSLog(@"data = %@",data);
+    NSNumber* number = [data objectForKey:@"ret"];
+    if([number intValue] == -1){
+        //注册失败
+        [HUDUtil showSystemTipView:self title:@"提示" withContent:[data objectForKey:@"msg"]];
+    }else if([number intValue] == 1){
+        //注册成功
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 //1.代理传值
 #pragma mark - XWCountryCodeControllerDelegate

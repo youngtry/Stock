@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SafeViewController">
             <connections>
+                <outlet property="mailBindImage" destination="yWR-RI-Z3I" id="V2X-86-Ew7"/>
+                <outlet property="mailBindLabel" destination="4WU-JD-9Wd" id="daG-kv-I22"/>
+                <outlet property="phoneBindImage" destination="7e1-dE-mNk" id="ebQ-v9-ywW"/>
+                <outlet property="phoneBindLabel" destination="PeL-qJ-YDu" id="Z84-ce-nRc"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -31,6 +35,9 @@
                         </label>
                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sdd-PC-QrN">
                             <rect key="frame" x="302" y="7" width="51" height="31"/>
+                            <connections>
+                                <action selector="clickTwiceVerify:" destination="-1" eventType="valueChanged" id="kMu-3X-o3J"/>
+                            </connections>
                         </switch>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JDk-XN-cw2">
                             <rect key="frame" x="25" y="44" width="350" height="1"/>
@@ -66,6 +73,9 @@
                             <constraints>
                                 <constraint firstAttribute="height" constant="31" id="UaI-8C-xiH"/>
                             </constraints>
+                            <connections>
+                                <action selector="clickGestureVerify:" destination="-1" eventType="valueChanged" id="WQg-jK-JcR"/>
+                            </connections>
                         </switch>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WhF-hR-XOv">
                             <rect key="frame" x="25" y="44" width="350" height="1"/>
@@ -156,6 +166,9 @@
                         </imageView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UDA-eZ-Rfb">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="45"/>
+                            <connections>
+                                <action selector="clickPassword:" destination="-1" eventType="touchUpInside" id="f9j-At-4wV"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -195,6 +208,9 @@
                         </imageView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ii5-71-HmC">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="45"/>
+                            <connections>
+                                <action selector="clickBindPhone:" destination="-1" eventType="touchUpInside" id="Su6-UC-AaR"/>
+                            </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="已绑定" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PeL-qJ-YDu">
                             <rect key="frame" x="296" y="14" width="43" height="17"/>
@@ -242,6 +258,9 @@
                         </imageView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="orC-z2-nRH">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="45"/>
+                            <connections>
+                                <action selector="clickBindMail:" destination="-1" eventType="touchUpInside" id="Qs2-IY-rEM"/>
+                            </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="已绑定" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4WU-JD-9Wd">
                             <rect key="frame" x="296" y="14" width="43" height="17"/>
@@ -289,6 +308,9 @@
                         </imageView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4ds-jK-V46">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
+                            <connections>
+                                <action selector="clickMoneyPassword:" destination="-1" eventType="touchUpInside" id="tqo-3T-nWP"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -313,7 +335,7 @@
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <color key="backgroundColor" red="0.99019607843137258" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" red="0.9744161346533432" green="0.98615608808290156" blue="0.98615608808290156" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="s7H-k6-Ht2" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="0XY-VI-g6w"/>
                 <constraint firstItem="19e-4E-Y5H" firstAttribute="top" secondItem="VPV-GK-Wns" secondAttribute="bottom" constant="8" id="1iK-ya-Gtx"/>
