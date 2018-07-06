@@ -24,6 +24,10 @@
 		C5090E5E20D2044D009D2A3E /* ResetPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5090E5C20D2044D009D2A3E /* ResetPasswordViewController.xib */; };
 		C5090E6120D21CC1009D2A3E /* HUDUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = C5090E6020D21CC1009D2A3E /* HUDUtil.m */; };
 		C5090E6420D21D1C009D2A3E /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = C5090E6220D21D1C009D2A3E /* MBProgressHUD.m */; };
+		C56FFBFD20EF5CD0002FB550 /* AuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C56FFBFC20EF5CD0002FB550 /* AuthViewController.m */; };
+		C56FFC0020EF65B9002FB550 /* AuthApproveLevelOneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C56FFBFF20EF65B9002FB550 /* AuthApproveLevelOneViewController.m */; };
+		C56FFC0420EF7077002FB550 /* AuthApprove21ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C56FFC0220EF7077002FB550 /* AuthApprove21ViewController.m */; };
+		C56FFC0520EF7077002FB550 /* AuthApprove21ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C56FFC0320EF7077002FB550 /* AuthApprove21ViewController.xib */; };
 		C5D53ED320CFB22E00037C5C /* TabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D53ED220CFB22E00037C5C /* TabViewController.m */; };
 		C5F91A3720D0B418002DB977 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5F91A3520D0B418002DB977 /* LoginViewController.m */; };
 		C5F91A3820D0B418002DB977 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5F91A3620D0B418002DB977 /* LoginViewController.xib */; };
@@ -134,6 +138,13 @@
 		C5090E6020D21CC1009D2A3E /* HUDUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUDUtil.m; sourceTree = "<group>"; };
 		C5090E6220D21D1C009D2A3E /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		C5090E6320D21D1C009D2A3E /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		C56FFBFB20EF5CD0002FB550 /* AuthViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AuthViewController.h; sourceTree = "<group>"; };
+		C56FFBFC20EF5CD0002FB550 /* AuthViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AuthViewController.m; sourceTree = "<group>"; };
+		C56FFBFE20EF65B9002FB550 /* AuthApproveLevelOneViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AuthApproveLevelOneViewController.h; sourceTree = "<group>"; };
+		C56FFBFF20EF65B9002FB550 /* AuthApproveLevelOneViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AuthApproveLevelOneViewController.m; sourceTree = "<group>"; };
+		C56FFC0120EF7077002FB550 /* AuthApprove21ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AuthApprove21ViewController.h; sourceTree = "<group>"; };
+		C56FFC0220EF7077002FB550 /* AuthApprove21ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AuthApprove21ViewController.m; sourceTree = "<group>"; };
+		C56FFC0320EF7077002FB550 /* AuthApprove21ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AuthApprove21ViewController.xib; sourceTree = "<group>"; };
 		C5D53ED120CFB22E00037C5C /* TabViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TabViewController.h; sourceTree = "<group>"; };
 		C5D53ED220CFB22E00037C5C /* TabViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TabViewController.m; sourceTree = "<group>"; };
 		C5D53ED420CFB7C500037C5C /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
@@ -366,6 +377,20 @@
 			path = ThirdParty;
 			sourceTree = "<group>";
 		};
+		C56FFBFA20EF5CB0002FB550 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				C56FFBFB20EF5CD0002FB550 /* AuthViewController.h */,
+				C56FFBFC20EF5CD0002FB550 /* AuthViewController.m */,
+				C56FFBFE20EF65B9002FB550 /* AuthApproveLevelOneViewController.h */,
+				C56FFBFF20EF65B9002FB550 /* AuthApproveLevelOneViewController.m */,
+				C56FFC0120EF7077002FB550 /* AuthApprove21ViewController.h */,
+				C56FFC0220EF7077002FB550 /* AuthApprove21ViewController.m */,
+				C56FFC0320EF7077002FB550 /* AuthApprove21ViewController.xib */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
 		C5F91A3320D0B375002DB977 /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -518,6 +543,7 @@
 		FA8FF94120DE39F900D5D876 /* UserInfo */ = {
 			isa = PBXGroup;
 			children = (
+				C56FFBFA20EF5CB0002FB550 /* Auth */,
 				FA8FF9C820E9FA0800D5D876 /* SetPasswordViewController.h */,
 				FA8FF9C620E9FA0800D5D876 /* SetPasswordViewController.m */,
 				FA8FF9C720E9FA0800D5D876 /* SetPasswordViewController.xib */,
@@ -643,6 +669,7 @@
 				FA8FF9BD20E9F9FE00D5D876 /* ChargeAddressViewController.xib in Resources */,
 				FA0D56F120DA7C3F005BAC11 /* sortedChnames.plist in Resources */,
 				FA8FF9E920E9FA3F00D5D876 /* StoreCell.xib in Resources */,
+				C56FFC0520EF7077002FB550 /* AuthApprove21ViewController.xib in Resources */,
 				FA0D573620DA8E3F005BAC11 /* ExchangeViewController.xib in Resources */,
 				FA8FF9D420E9FA1100D5D876 /* PendingOrderTableViewCell.xib in Resources */,
 				FA8FF9EF20E9FB6700D5D876 /* GetMoneyViewController.xib in Resources */,
@@ -674,6 +701,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C56FFBFD20EF5CD0002FB550 /* AuthViewController.m in Sources */,
 				FA0D56F320DA7C3F005BAC11 /* XWCountryCodeController.m in Sources */,
 				512DE7A020CA6F7B00C59E95 /* OrderView.m in Sources */,
 				FA8FF93920DE39DD00D5D876 /* ChargeViewController.m in Sources */,
@@ -716,12 +744,14 @@
 				FA8FF9D220E9FA1100D5D876 /* PendingOrderTableViewCell.m in Sources */,
 				517F9EF420AE5E0D00CC14C9 /* main.m in Sources */,
 				FA8FF92E20DE39C700D5D876 /* MASViewConstraint.m in Sources */,
+				C56FFC0420EF7077002FB550 /* AuthApprove21ViewController.m in Sources */,
 				C5090E6120D21CC1009D2A3E /* HUDUtil.m in Sources */,
 				C5F91A3720D0B418002DB977 /* LoginViewController.m in Sources */,
 				FA8FF9C920E9FA0800D5D876 /* SetPasswordViewController.m in Sources */,
 				FA8FF95320DE3A0D00D5D876 /* SortView.m in Sources */,
 				FA8FF9EB20E9FA3F00D5D876 /* StoreViewController.m in Sources */,
 				FA8FF92A20DE39C700D5D876 /* MASLayoutConstraint.m in Sources */,
+				C56FFC0020EF65B9002FB550 /* AuthApproveLevelOneViewController.m in Sources */,
 				FA8FF9C120E9F9FE00D5D876 /* ChargeAddressViewController.m in Sources */,
 				FA8FF93A20DE39DD00D5D876 /* MoneyInOutViewController.m in Sources */,
 				517F9EE620AE5E0D00CC14C9 /* FirstViewController.m in Sources */,

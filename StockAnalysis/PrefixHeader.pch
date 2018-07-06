@@ -52,5 +52,6 @@
 #define WeakSelf(weakSelf)  __weak __typeof(&*self)weakSelf = self;
 
 #import "HUDUtil.h"
+#import "Util.h"
 #import "UIView+Additions.h"
 #endif /* PrefixHeader_pch */

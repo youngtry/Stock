@@ -1,36 +1,27 @@
 //
-//  UserInfoViewController.m
+//  AuthApprove21ViewController.m
 //  StockAnalysis
 //
-//  Created by try on 2018/6/21.
+//  Created by ymx on 2018/7/6.
 //  Copyright © 2018年 try. All rights reserved.
 //
 
-#import "UserInfoViewController.h"
-#import "SafeViewController.h"
-#import "AuthViewController.h"
-@interface UserInfoViewController ()
+#import "AuthApprove21ViewController.h"
+
+@interface AuthApprove21ViewController ()
 
 @end
 
-@implementation UserInfoViewController
+@implementation AuthApprove21ViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.title = @"我的";
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-- (IBAction)clickSafeInfo:(id)sender {
-    SafeViewController* vc = [[SafeViewController alloc] initWithNibName:@"SafeViewController" bundle:nil];
-    [self.navigationController pushViewController:vc animated:YES];}
-- (IBAction)clickAuth:(id)sender {
-    AuthViewController*vc = [AuthViewController new];
-    [self.navigationController pushViewController:vc animated:YES];
 }
 
 /*
