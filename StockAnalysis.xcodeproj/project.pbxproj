@@ -108,6 +108,9 @@
 		FAE6B88120F0AD61002EFF89 /* AuthApprove22VC.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAE6B87F20F0AD61002EFF89 /* AuthApprove22VC.xib */; };
 		FAE6B88520F0B1C0002EFF89 /* AuthApprove23VC.m in Sources */ = {isa = PBXBuildFile; fileRef = FAE6B88320F0B1C0002EFF89 /* AuthApprove23VC.m */; };
 		FAE6B88620F0B1C0002EFF89 /* AuthApprove23VC.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAE6B88420F0B1C0002EFF89 /* AuthApprove23VC.xib */; };
+		FAE6B88A20F0BC4F002EFF89 /* FeedbackVC.m in Sources */ = {isa = PBXBuildFile; fileRef = FAE6B88920F0BC4F002EFF89 /* FeedbackVC.m */; };
+		FAE6B88D20F0BF4F002EFF89 /* FeedbackTypeListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = FAE6B88C20F0BF4F002EFF89 /* FeedbackTypeListVC.m */; };
+		FAE6B89020F0CB58002EFF89 /* FeedbackMyListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = FAE6B88F20F0CB58002EFF89 /* FeedbackMyListVC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -287,6 +290,12 @@
 		FAE6B88220F0B1C0002EFF89 /* AuthApprove23VC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AuthApprove23VC.h; sourceTree = "<group>"; };
 		FAE6B88320F0B1C0002EFF89 /* AuthApprove23VC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AuthApprove23VC.m; sourceTree = "<group>"; };
 		FAE6B88420F0B1C0002EFF89 /* AuthApprove23VC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AuthApprove23VC.xib; sourceTree = "<group>"; };
+		FAE6B88820F0BC4F002EFF89 /* FeedbackVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FeedbackVC.h; sourceTree = "<group>"; };
+		FAE6B88920F0BC4F002EFF89 /* FeedbackVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FeedbackVC.m; sourceTree = "<group>"; };
+		FAE6B88B20F0BF4F002EFF89 /* FeedbackTypeListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FeedbackTypeListVC.h; sourceTree = "<group>"; };
+		FAE6B88C20F0BF4F002EFF89 /* FeedbackTypeListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FeedbackTypeListVC.m; sourceTree = "<group>"; };
+		FAE6B88E20F0CB58002EFF89 /* FeedbackMyListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FeedbackMyListVC.h; sourceTree = "<group>"; };
+		FAE6B88F20F0CB58002EFF89 /* FeedbackMyListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FeedbackMyListVC.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -559,16 +568,17 @@
 		FA8FF94120DE39F900D5D876 /* UserInfo */ = {
 			isa = PBXGroup;
 			children = (
+				FAE6B88720F0B9FD002EFF89 /* FeedBack */,
 				C56FFBFA20EF5CB0002FB550 /* Auth */,
 				FA8FF9C820E9FA0800D5D876 /* SetPasswordViewController.h */,
 				FA8FF9C620E9FA0800D5D876 /* SetPasswordViewController.m */,
 				FA8FF9C720E9FA0800D5D876 /* SetPasswordViewController.xib */,
 				FA8FF94220DE39F900D5D876 /* UserInfoViewController.h */,
-				FA8FF94320DE39F900D5D876 /* SafeViewController.m */,
-				FA8FF94420DE39F900D5D876 /* UserInfoViewController.xib */,
-				FA8FF94520DE39F900D5D876 /* SafeViewController.xib */,
 				FA8FF94620DE39F900D5D876 /* UserInfoViewController.m */,
+				FA8FF94420DE39F900D5D876 /* UserInfoViewController.xib */,
 				FA8FF94720DE39F900D5D876 /* SafeViewController.h */,
+				FA8FF94320DE39F900D5D876 /* SafeViewController.m */,
+				FA8FF94520DE39F900D5D876 /* SafeViewController.xib */,
 				FA8FF9F120EA238E00D5D876 /* SetMoneyPasswordViewController.h */,
 				FA8FF9F220EA238E00D5D876 /* SetMoneyPasswordViewController.m */,
 				FA8FF9F320EA238E00D5D876 /* SetMoneyPasswordViewController.xib */,
@@ -616,6 +626,19 @@
 				FA8FF9E620E9FA3F00D5D876 /* StoreViewController.m */,
 			);
 			path = Store;
+			sourceTree = "<group>";
+		};
+		FAE6B88720F0B9FD002EFF89 /* FeedBack */ = {
+			isa = PBXGroup;
+			children = (
+				FAE6B88820F0BC4F002EFF89 /* FeedbackVC.h */,
+				FAE6B88920F0BC4F002EFF89 /* FeedbackVC.m */,
+				FAE6B88B20F0BF4F002EFF89 /* FeedbackTypeListVC.h */,
+				FAE6B88C20F0BF4F002EFF89 /* FeedbackTypeListVC.m */,
+				FAE6B88E20F0CB58002EFF89 /* FeedbackMyListVC.h */,
+				FAE6B88F20F0CB58002EFF89 /* FeedbackMyListVC.m */,
+			);
+			path = FeedBack;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -738,6 +761,7 @@
 				FA0D572F20DA8B70005BAC11 /* UserFirstViewController.m in Sources */,
 				FA8FF95420DE3A0D00D5D876 /* StockInfoViewController.m in Sources */,
 				C5090E5920D201F0009D2A3E /* WSAuthCode.m in Sources */,
+				FAE6B88A20F0BC4F002EFF89 /* FeedbackVC.m in Sources */,
 				FA8FF9F020E9FB6700D5D876 /* GetMoneyViewController.m in Sources */,
 				FA8FF9C320E9F9FE00D5D876 /* AppData.m in Sources */,
 				516433EA20BBA40A0016BB8D /* ThirdViewController.m in Sources */,
@@ -745,6 +769,7 @@
 				FA8FF9C420E9F9FE00D5D876 /* ChargeDetailViewController.m in Sources */,
 				FA8FF92920DE39C700D5D876 /* MASConstraintMaker.m in Sources */,
 				C5090E5D20D2044D009D2A3E /* ResetPasswordViewController.m in Sources */,
+				FAE6B88D20F0BF4F002EFF89 /* FeedbackTypeListVC.m in Sources */,
 				FA8FF92F20DE39C700D5D876 /* MASViewAttribute.m in Sources */,
 				516433ED20BBA42B0016BB8D /* ForthViewController.m in Sources */,
 				FA8FF92620DE39C700D5D876 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
@@ -783,6 +808,7 @@
 				FA8FF92820DE39C700D5D876 /* MASCompositeConstraint.m in Sources */,
 				FA8FF9E820E9FA3F00D5D876 /* StoreCell.m in Sources */,
 				FA8FF9D520E9FA1100D5D876 /* PendingOrderHistoryViewController.m in Sources */,
+				FAE6B89020F0CB58002EFF89 /* FeedbackMyListVC.m in Sources */,
 				FA8FF9F420EA238E00D5D876 /* SetMoneyPasswordViewController.m in Sources */,
 				FA0D572A20DA831F005BAC11 /* AllInfoViewController.m in Sources */,
 				C5090E6420D21D1C009D2A3E /* MBProgressHUD.m in Sources */,

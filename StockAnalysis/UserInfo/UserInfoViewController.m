@@ -9,6 +9,7 @@
 #import "UserInfoViewController.h"
 #import "SafeViewController.h"
 #import "AuthViewController.h"
+#import "FeedbackVC.h"
 @interface UserInfoViewController ()
 
 @end
@@ -30,6 +31,10 @@
     [self.navigationController pushViewController:vc animated:YES];}
 - (IBAction)clickAuth:(id)sender {
     AuthViewController*vc = [AuthViewController new];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+- (IBAction)clickFeedback:(id)sender {
+    FeedbackVC *vc = [FeedbackVC new];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
