@@ -7,7 +7,7 @@
 //
 
 #import "FeedbackTypeListVC.h"
-
+#import "FeedbackEditVC.h"
 @interface FeedbackTypeListVC ()<UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic,strong)UITableView *tableView;
 @property(nonatomic,strong)NSMutableArray* data;
@@ -121,5 +121,11 @@
         return ;
     }
     
+    FeedbackEditVC *vc = [[FeedbackEditVC alloc] initWithNibName:@"FeedbackEditVC" bundle:nil];
+    vc.title1 = _data[indexPath.section][0];
+    vc.title2 = _data[indexPath.section][indexPath.row];
+    UITabBarController*bar = [UIApplication sharedApplication].keyWindow.rootViewController;
+    UINavigationController*nav = bar.viewControllers[0];
+    [nav pushViewController:vc animated:YES];
 }
 @end

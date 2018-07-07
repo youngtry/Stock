@@ -22,4 +22,19 @@
     
     return image;
 }
+
++(UIViewController *)getParentVC:(UIView*)v { 
+    UIResponder *nextResponder = [v nextResponder];
+    do {
+        if ([nextResponder isKindOfClass:[UIViewController class]]) {
+            
+            return (UIViewController *)nextResponder;
+            
+        }
+        nextResponder = [nextResponder nextResponder];
+        
+    } while (nextResponder != nil);
+    return nil;
+    
+}
 @end

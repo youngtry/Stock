@@ -111,6 +111,8 @@
 		FAE6B88A20F0BC4F002EFF89 /* FeedbackVC.m in Sources */ = {isa = PBXBuildFile; fileRef = FAE6B88920F0BC4F002EFF89 /* FeedbackVC.m */; };
 		FAE6B88D20F0BF4F002EFF89 /* FeedbackTypeListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = FAE6B88C20F0BF4F002EFF89 /* FeedbackTypeListVC.m */; };
 		FAE6B89020F0CB58002EFF89 /* FeedbackMyListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = FAE6B88F20F0CB58002EFF89 /* FeedbackMyListVC.m */; };
+		FAE6B89420F0D9C8002EFF89 /* FeedbackEditVC.m in Sources */ = {isa = PBXBuildFile; fileRef = FAE6B89220F0D9C8002EFF89 /* FeedbackEditVC.m */; };
+		FAE6B89520F0D9C8002EFF89 /* FeedbackEditVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAE6B89320F0D9C8002EFF89 /* FeedbackEditVC.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -296,6 +298,9 @@
 		FAE6B88C20F0BF4F002EFF89 /* FeedbackTypeListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FeedbackTypeListVC.m; sourceTree = "<group>"; };
 		FAE6B88E20F0CB58002EFF89 /* FeedbackMyListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FeedbackMyListVC.h; sourceTree = "<group>"; };
 		FAE6B88F20F0CB58002EFF89 /* FeedbackMyListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FeedbackMyListVC.m; sourceTree = "<group>"; };
+		FAE6B89120F0D9C8002EFF89 /* FeedbackEditVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FeedbackEditVC.h; sourceTree = "<group>"; };
+		FAE6B89220F0D9C8002EFF89 /* FeedbackEditVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FeedbackEditVC.m; sourceTree = "<group>"; };
+		FAE6B89320F0D9C8002EFF89 /* FeedbackEditVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeedbackEditVC.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -637,6 +642,9 @@
 				FAE6B88C20F0BF4F002EFF89 /* FeedbackTypeListVC.m */,
 				FAE6B88E20F0CB58002EFF89 /* FeedbackMyListVC.h */,
 				FAE6B88F20F0CB58002EFF89 /* FeedbackMyListVC.m */,
+				FAE6B89120F0D9C8002EFF89 /* FeedbackEditVC.h */,
+				FAE6B89220F0D9C8002EFF89 /* FeedbackEditVC.m */,
+				FAE6B89320F0D9C8002EFF89 /* FeedbackEditVC.xib */,
 			);
 			path = FeedBack;
 			sourceTree = "<group>";
@@ -718,6 +726,7 @@
 				FA8FF94020DE39F100D5D876 /* Business ViewController.xib in Resources */,
 				FAE6B88120F0AD61002EFF89 /* AuthApprove22VC.xib in Resources */,
 				FA8FF9C020E9F9FE00D5D876 /* ChargeRecordTableViewCell.xib in Resources */,
+				FAE6B89520F0D9C8002EFF89 /* FeedbackEditVC.xib in Resources */,
 				517F9EEE20AE5E0D00CC14C9 /* Assets.xcassets in Resources */,
 				FA8FF94920DE39F900D5D876 /* UserInfoViewController.xib in Resources */,
 				FA8FF9F520EA238E00D5D876 /* SetMoneyPasswordViewController.xib in Resources */,
@@ -805,6 +814,7 @@
 				FA8FF92720DE39C700D5D876 /* ViewController+MASAdditions.m in Sources */,
 				FAE6B88020F0AD61002EFF89 /* AuthApprove22VC.m in Sources */,
 				FA8FF9EA20E9FA3F00D5D876 /* StorePurchaseViewController.m in Sources */,
+				FAE6B89420F0D9C8002EFF89 /* FeedbackEditVC.m in Sources */,
 				FA8FF92820DE39C700D5D876 /* MASCompositeConstraint.m in Sources */,
 				FA8FF9E820E9FA3F00D5D876 /* StoreCell.m in Sources */,
 				FA8FF9D520E9FA1100D5D876 /* PendingOrderHistoryViewController.m in Sources */,
