@@ -7,6 +7,8 @@
 //
 
 #import "SetPasswordViewController.h"
+#import "HttpRequest.h"
+#import "HUDUtil.h"
 
 #define ScreenHeight [[UIScreen mainScreen] bounds].size.height
 #define ScreenWidth [[UIScreen mainScreen] bounds].size.width
@@ -43,6 +45,7 @@
             [btn setImage:[UIImage imageNamed:@"pbg"] forState:UIControlStateNormal];
             [btn setImage:[UIImage imageNamed:@"pbg01"] forState:UIControlStateHighlighted];
             btn.userInteractionEnabled = NO;
+            [btn setTag:i*3+j];
             [self.buttonArr addObject:btn];
             [self.imageView addSubview:btn];
         }
@@ -136,7 +139,12 @@
                 if (isAdd) {//未添加的选中按键，添加并修改状态
                     [self.selectorArr addObject:btn];
                     btn.highlighted = YES;
+                    
+//                    NSInteger tag = [btn tag];
+//                    NSLog(@"move tag = %ld",(long)tag);
                 }
+                
+                
                 
             }
         }
@@ -147,6 +155,22 @@
 //手势结束触发
 -(void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
+    NSString* gesture =  @"";
+    for (UIButton *btn in self.selectorArr) {
+        NSInteger tag = [btn tag];
+        NSLog(@"select tag = %ld",(long)tag);
+        gesture = [NSString stringWithFormat:@"%@%ld",gesture,tag];
+    }
+    NSLog(@"gesture =%@",gesture);
+    
+    NSArray *parameters = @[ @{ @"name": @"gesture", @"value": gesture },
+                             @{ @"name": @"appkey", @"value": @"5yupjrc7tbhwufl8oandzidjyrmg6blc" },
+                             @{ @"name": @"channel", @"value": @"0" } ];
+    
+    
+    NSString* url = @"http://exchange-test.oneitfarm.com/server/account/set_gesture";
+    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"SetGestureBack"];
+    
     self.imageView.image = nil;
     self.selectorArr = nil;
     for (UIButton *btn in self.buttonArr) {

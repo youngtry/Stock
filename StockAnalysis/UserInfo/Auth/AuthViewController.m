@@ -7,7 +7,8 @@
 //
 
 #import "AuthViewController.h"
-#import "AuthApproveLevelOneViewController.h"
+#import "AuthApprove1VC.h"
+#import "AuthApprove21ViewController.h"
 @interface AuthViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic,strong)UITableView *table;
 @property(nonatomic,assign)NSInteger authLevel;
@@ -18,8 +19,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-    self.authLevel = 0;
+    self.title = @"身份认证";
+    self.authLevel = 2;
     [self.view addSubview:self.table];
 }
 
@@ -40,6 +41,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"id"];
     if(!cell){
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"id"];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     NSInteger row = indexPath.row;
     if(row == 0)
@@ -48,6 +50,7 @@
         cell.textLabel.text = @"级别1";
         if(row>=_authLevel){
             cell.detailTextLabel.text = @"去认证";
+            cell.detailTextLabel.textColor = kThemeYellow;
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }else{
             cell.detailTextLabel.text = @"已完成";
@@ -64,6 +67,7 @@
                 cell.accessoryType = UITableViewCellAccessoryNone;
             }else{
                 cell.detailTextLabel.text = @"去认证";
+                cell.detailTextLabel.textColor = kThemeYellow;
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             }
             
@@ -81,6 +85,7 @@
                 cell.accessoryType = UITableViewCellAccessoryNone;
             }else{
                 cell.detailTextLabel.text = @"去认证";
+                cell.detailTextLabel.textColor = kThemeYellow;
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             }
             
@@ -94,7 +99,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if(indexPath.row==0){
-        AuthApproveLevelOneViewController*vc = [AuthApproveLevelOneViewController new];
+        AuthApprove1VC*vc = [AuthApprove1VC new];
+        [self.navigationController pushViewController:vc animated:YES];
+    }else if (indexPath.row == 1){
+        AuthApprove21ViewController *vc = [[AuthApprove21ViewController alloc] initWithNibName:@"AuthApprove21ViewController" bundle:nil];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

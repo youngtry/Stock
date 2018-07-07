@@ -13,6 +13,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ExchangeViewController">
             <connections>
+                <outlet property="RMBLabel" destination="joF-NK-Au7" id="uEW-is-GAZ"/>
+                <outlet property="USDLabel" destination="Nq9-uS-XAb" id="TPa-jQ-a1j"/>
+                <outlet property="moneyList" destination="fYb-TW-Wpn" id="EsV-Mr-9dI"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -78,10 +81,10 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jKe-gE-l6t" userLabel="充值">
-                    <rect key="frame" x="0.0" y="157" width="95" height="83"/>
+                    <rect key="frame" x="0.0" y="157" width="95.5" height="83"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vkz-eL-4Qi">
-                            <rect key="frame" x="0.0" y="0.0" width="95" height="83"/>
+                            <rect key="frame" x="0.0" y="0.0" width="95.5" height="83"/>
                             <connections>
                                 <action selector="clickChargeButton:" destination="-1" eventType="touchUpInside" id="YNw-nD-iDo"/>
                             </connections>
@@ -106,10 +109,10 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cYH-nJ-CJY" userLabel="体现">
-                    <rect key="frame" x="95" y="157" width="94.5" height="83"/>
+                    <rect key="frame" x="95.5" y="157" width="95" height="83"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yvI-ga-ngY">
-                            <rect key="frame" x="0.0" y="0.0" width="94.5" height="83"/>
+                            <rect key="frame" x="0.0" y="0.0" width="95" height="83"/>
                             <connections>
                                 <action selector="clickTixianButton:" destination="-1" eventType="touchUpInside" id="JAE-wn-lYu"/>
                             </connections>
@@ -135,10 +138,10 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2y8-a0-FV1" userLabel="资金">
-                    <rect key="frame" x="188.5" y="157" width="95.5" height="83"/>
+                    <rect key="frame" x="189.5" y="157" width="95" height="83"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QXh-Nc-5eD">
-                            <rect key="frame" x="0.0" y="0.0" width="95.5" height="83"/>
+                            <rect key="frame" x="0.0" y="0.0" width="95" height="83"/>
                             <connections>
                                 <action selector="clickMoneyInOutButton:" destination="-1" eventType="touchUpInside" id="1Av-lK-4lq"/>
                             </connections>
@@ -164,10 +167,10 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vzb-DH-e65" userLabel="账单">
-                    <rect key="frame" x="280" y="157" width="95" height="83"/>
+                    <rect key="frame" x="280.5" y="157" width="94.5" height="83"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UDm-oa-Ox2">
-                            <rect key="frame" x="0.0" y="0.0" width="95" height="83"/>
+                            <rect key="frame" x="0.0" y="0.0" width="94.5" height="83"/>
                             <connections>
                                 <action selector="clickBillButton:" destination="-1" eventType="touchUpInside" id="mEI-Iq-sfH"/>
                             </connections>
@@ -210,6 +213,9 @@
                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="guM-hf-6hE">
                             <rect key="frame" x="233" y="7" width="49" height="31"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                            <connections>
+                                <action selector="hideZero:" destination="-1" eventType="valueChanged" id="XZ4-fJ-zKV"/>
+                            </connections>
                         </switch>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="隐藏0余额" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qxR-Jj-bp2">
                             <rect key="frame" x="288" y="18" width="57" height="15"/>

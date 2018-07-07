@@ -48,7 +48,7 @@
     
     NSString* url = @"http://exchange-test.oneitfarm.com/server/account/login/email";
     
-    [[HttpRequest getInstance] postWithUrl:url data:parameters];
+    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"MailLoginBack"];
     
     [HUDUtil showHudViewInSuperView:self.view withMessage:@"登陆中……"];
 }

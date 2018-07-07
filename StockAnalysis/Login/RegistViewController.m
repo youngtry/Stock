@@ -66,7 +66,7 @@
     
     NSString* url = @"http://exchange-test.oneitfarm.com/server/register/phone";
 
-    [[HttpRequest getInstance] postWithUrl:url data:parameters];
+    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"RegisteBack"];
 }
 - (IBAction)clickPhoneRegiste:(id)sender {
     
@@ -95,7 +95,7 @@
     
     NSString* url = @"http://exchange-test.oneitfarm.com/server/register/phone";
     
-    [[HttpRequest getInstance] postWithUrl:url data:parameters];
+    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"RegisteBack"];
 }
 
 -(void)registeBack{

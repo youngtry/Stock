@@ -25,7 +25,7 @@
 		C5090E6120D21CC1009D2A3E /* HUDUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = C5090E6020D21CC1009D2A3E /* HUDUtil.m */; };
 		C5090E6420D21D1C009D2A3E /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = C5090E6220D21D1C009D2A3E /* MBProgressHUD.m */; };
 		C56FFBFD20EF5CD0002FB550 /* AuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C56FFBFC20EF5CD0002FB550 /* AuthViewController.m */; };
-		C56FFC0020EF65B9002FB550 /* AuthApproveLevelOneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C56FFBFF20EF65B9002FB550 /* AuthApproveLevelOneViewController.m */; };
+		C56FFC0020EF65B9002FB550 /* AuthApprove1VC.m in Sources */ = {isa = PBXBuildFile; fileRef = C56FFBFF20EF65B9002FB550 /* AuthApprove1VC.m */; };
 		C56FFC0420EF7077002FB550 /* AuthApprove21ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C56FFC0220EF7077002FB550 /* AuthApprove21ViewController.m */; };
 		C56FFC0520EF7077002FB550 /* AuthApprove21ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C56FFC0320EF7077002FB550 /* AuthApprove21ViewController.xib */; };
 		C5D53ED320CFB22E00037C5C /* TabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D53ED220CFB22E00037C5C /* TabViewController.m */; };
@@ -104,6 +104,10 @@
 		FA8FF9F520EA238E00D5D876 /* SetMoneyPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA8FF9F320EA238E00D5D876 /* SetMoneyPasswordViewController.xib */; };
 		FA8FF9F920EE238E00D5D876 /* MailLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8FF9F720EE238E00D5D876 /* MailLoginViewController.m */; };
 		FA8FF9FA20EE238E00D5D876 /* MailLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA8FF9F820EE238E00D5D876 /* MailLoginViewController.xib */; };
+		FAE6B88020F0AD61002EFF89 /* AuthApprove22VC.m in Sources */ = {isa = PBXBuildFile; fileRef = FAE6B87E20F0AD61002EFF89 /* AuthApprove22VC.m */; };
+		FAE6B88120F0AD61002EFF89 /* AuthApprove22VC.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAE6B87F20F0AD61002EFF89 /* AuthApprove22VC.xib */; };
+		FAE6B88520F0B1C0002EFF89 /* AuthApprove23VC.m in Sources */ = {isa = PBXBuildFile; fileRef = FAE6B88320F0B1C0002EFF89 /* AuthApprove23VC.m */; };
+		FAE6B88620F0B1C0002EFF89 /* AuthApprove23VC.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAE6B88420F0B1C0002EFF89 /* AuthApprove23VC.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -140,8 +144,8 @@
 		C5090E6320D21D1C009D2A3E /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		C56FFBFB20EF5CD0002FB550 /* AuthViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AuthViewController.h; sourceTree = "<group>"; };
 		C56FFBFC20EF5CD0002FB550 /* AuthViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AuthViewController.m; sourceTree = "<group>"; };
-		C56FFBFE20EF65B9002FB550 /* AuthApproveLevelOneViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AuthApproveLevelOneViewController.h; sourceTree = "<group>"; };
-		C56FFBFF20EF65B9002FB550 /* AuthApproveLevelOneViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AuthApproveLevelOneViewController.m; sourceTree = "<group>"; };
+		C56FFBFE20EF65B9002FB550 /* AuthApprove1VC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AuthApprove1VC.h; sourceTree = "<group>"; };
+		C56FFBFF20EF65B9002FB550 /* AuthApprove1VC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AuthApprove1VC.m; sourceTree = "<group>"; };
 		C56FFC0120EF7077002FB550 /* AuthApprove21ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AuthApprove21ViewController.h; sourceTree = "<group>"; };
 		C56FFC0220EF7077002FB550 /* AuthApprove21ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AuthApprove21ViewController.m; sourceTree = "<group>"; };
 		C56FFC0320EF7077002FB550 /* AuthApprove21ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AuthApprove21ViewController.xib; sourceTree = "<group>"; };
@@ -277,6 +281,12 @@
 		FA8FF9F620EE238E00D5D876 /* MailLoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MailLoginViewController.h; sourceTree = "<group>"; };
 		FA8FF9F720EE238E00D5D876 /* MailLoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MailLoginViewController.m; sourceTree = "<group>"; };
 		FA8FF9F820EE238E00D5D876 /* MailLoginViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MailLoginViewController.xib; sourceTree = "<group>"; };
+		FAE6B87D20F0AD61002EFF89 /* AuthApprove22VC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AuthApprove22VC.h; sourceTree = "<group>"; };
+		FAE6B87E20F0AD61002EFF89 /* AuthApprove22VC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AuthApprove22VC.m; sourceTree = "<group>"; };
+		FAE6B87F20F0AD61002EFF89 /* AuthApprove22VC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AuthApprove22VC.xib; sourceTree = "<group>"; };
+		FAE6B88220F0B1C0002EFF89 /* AuthApprove23VC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AuthApprove23VC.h; sourceTree = "<group>"; };
+		FAE6B88320F0B1C0002EFF89 /* AuthApprove23VC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AuthApprove23VC.m; sourceTree = "<group>"; };
+		FAE6B88420F0B1C0002EFF89 /* AuthApprove23VC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AuthApprove23VC.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -382,11 +392,17 @@
 			children = (
 				C56FFBFB20EF5CD0002FB550 /* AuthViewController.h */,
 				C56FFBFC20EF5CD0002FB550 /* AuthViewController.m */,
-				C56FFBFE20EF65B9002FB550 /* AuthApproveLevelOneViewController.h */,
-				C56FFBFF20EF65B9002FB550 /* AuthApproveLevelOneViewController.m */,
+				C56FFBFE20EF65B9002FB550 /* AuthApprove1VC.h */,
+				C56FFBFF20EF65B9002FB550 /* AuthApprove1VC.m */,
 				C56FFC0120EF7077002FB550 /* AuthApprove21ViewController.h */,
 				C56FFC0220EF7077002FB550 /* AuthApprove21ViewController.m */,
 				C56FFC0320EF7077002FB550 /* AuthApprove21ViewController.xib */,
+				FAE6B87D20F0AD61002EFF89 /* AuthApprove22VC.h */,
+				FAE6B87E20F0AD61002EFF89 /* AuthApprove22VC.m */,
+				FAE6B87F20F0AD61002EFF89 /* AuthApprove22VC.xib */,
+				FAE6B88220F0B1C0002EFF89 /* AuthApprove23VC.h */,
+				FAE6B88320F0B1C0002EFF89 /* AuthApprove23VC.m */,
+				FAE6B88420F0B1C0002EFF89 /* AuthApprove23VC.xib */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -675,7 +691,9 @@
 				FA8FF9EF20E9FB6700D5D876 /* GetMoneyViewController.xib in Resources */,
 				C5F91A3D20D0C4CE002DB977 /* RegistViewController.xib in Resources */,
 				FA8FF9CA20E9FA0800D5D876 /* SetPasswordViewController.xib in Resources */,
+				FAE6B88620F0B1C0002EFF89 /* AuthApprove23VC.xib in Resources */,
 				FA8FF94020DE39F100D5D876 /* Business ViewController.xib in Resources */,
+				FAE6B88120F0AD61002EFF89 /* AuthApprove22VC.xib in Resources */,
 				FA8FF9C020E9F9FE00D5D876 /* ChargeRecordTableViewCell.xib in Resources */,
 				517F9EEE20AE5E0D00CC14C9 /* Assets.xcassets in Resources */,
 				FA8FF94920DE39F900D5D876 /* UserInfoViewController.xib in Resources */,
@@ -730,6 +748,7 @@
 				FA8FF92F20DE39C700D5D876 /* MASViewAttribute.m in Sources */,
 				516433ED20BBA42B0016BB8D /* ForthViewController.m in Sources */,
 				FA8FF92620DE39C700D5D876 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
+				FAE6B88520F0B1C0002EFF89 /* AuthApprove23VC.m in Sources */,
 				FA0D56FE20DA7C5C005BAC11 /* MailRegistViewController.m in Sources */,
 				FA8FF92520DE39C700D5D876 /* AITabScrollview.m in Sources */,
 				FA8FF9DB20E9FA2800D5D876 /* RadioButton.m in Sources */,
@@ -751,7 +770,7 @@
 				FA8FF95320DE3A0D00D5D876 /* SortView.m in Sources */,
 				FA8FF9EB20E9FA3F00D5D876 /* StoreViewController.m in Sources */,
 				FA8FF92A20DE39C700D5D876 /* MASLayoutConstraint.m in Sources */,
-				C56FFC0020EF65B9002FB550 /* AuthApproveLevelOneViewController.m in Sources */,
+				C56FFC0020EF65B9002FB550 /* AuthApprove1VC.m in Sources */,
 				FA8FF9C120E9F9FE00D5D876 /* ChargeAddressViewController.m in Sources */,
 				FA8FF93A20DE39DD00D5D876 /* MoneyInOutViewController.m in Sources */,
 				517F9EE620AE5E0D00CC14C9 /* FirstViewController.m in Sources */,
@@ -759,6 +778,7 @@
 				FA8FF9D320E9FA1100D5D876 /* PendingOrderViewController.m in Sources */,
 				FA8FF9C220E9F9FE00D5D876 /* ChargeRecordTableViewCell.m in Sources */,
 				FA8FF92720DE39C700D5D876 /* ViewController+MASAdditions.m in Sources */,
+				FAE6B88020F0AD61002EFF89 /* AuthApprove22VC.m in Sources */,
 				FA8FF9EA20E9FA3F00D5D876 /* StorePurchaseViewController.m in Sources */,
 				FA8FF92820DE39C700D5D876 /* MASCompositeConstraint.m in Sources */,
 				FA8FF9E820E9FA3F00D5D876 /* StoreCell.m in Sources */,

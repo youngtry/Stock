@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "HUDUtil.h"
 
 @interface HttpRequest : NSObject
 
@@ -14,7 +15,7 @@
 -(instancetype)init;
 
 
--(NSDictionary *)postWithUrl:(NSString *)url data:(NSArray *)requestData;
+-(NSDictionary *)postWithUrl:(NSString *)url data:(NSArray *)requestData notification:(NSString*)notice;
 -(NSDictionary *)getWithUrl:(NSString *)url data:(NSDictionary *)requestData;
 
 -(NSDictionary* )httpBack;

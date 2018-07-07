@@ -99,7 +99,7 @@
     
     NSString* url = @"http://exchange-test.oneitfarm.com/server/account/resetpwd_by_phone";
     
-    [[HttpRequest getInstance] postWithUrl:url data:parameters];
+    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"ResetPwdBack"];
     
 }
 

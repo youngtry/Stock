@@ -18,8 +18,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *countryCodeButton;
 @property (weak, nonatomic) IBOutlet UITextField *usernameInput;
 @property (weak, nonatomic) IBOutlet UITextField *passwordInput;
-
-
 @end
 
 @implementation LoginViewController
@@ -34,6 +32,14 @@
     self.title = @"登录";
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(phoneLoginSuccess) name:@"LoginSuccess" object:nil];
+    
+    UITapGestureRecognizer *f = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(test)];
+    [self.view addGestureRecognizer:f];
+    self.view.userInteractionEnabled = YES;
+}
+
+-(void)test{
+    [self.view endEditing:YES];
 }
 
 -(void)phoneLoginSuccess{
@@ -76,7 +82,7 @@
     
     NSString* url = @"http://exchange-test.oneitfarm.com/server/account/login/phone";
     
-    [[HttpRequest getInstance] postWithUrl:url data:parameters];
+    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"LoginSuccess"];
     
     [HUDUtil showHudViewInSuperView:self.view withMessage:@"登陆中……"];
     

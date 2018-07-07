@@ -43,7 +43,7 @@
     return _dataDictionary;
 }
 
--(NSDictionary *)postWithUrl:(NSString *)url data:(NSArray *)requestData{
+-(NSDictionary *)postWithUrl:(NSString *)url data:(NSArray *)requestData notification:(NSString *)notice{
     
     NSDictionary *headers = @{ @"content-type": @"multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
                                //                               @"Content-Type": @"application/x-www-form-urlencoded",
@@ -98,29 +98,15 @@
                                                         
                                                         _dataDictionary =[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil ];
                                                         NSLog(@"post返回数据为：%@",_dataDictionary);
+                                                        
+                                                        dispatch_sync(dispatch_get_main_queue(), ^{
+                                                            [[NSNotificationCenter defaultCenter] postNotificationName:notice object:nil];
+                                                        });
+                                                        
                                                         if([url isEqualToString:@"http://exchange-test.oneitfarm.com/server/account/login/phone"]){
                                                             //登陆请求应答，保存新的account_token
-                                                            dispatch_sync(dispatch_get_main_queue(), ^{
-                                                                [[NSNotificationCenter defaultCenter] postNotificationName:@"LoginSuccess" object:nil];
-                                                            });
-                                                        }
-                                                        
-                                                        if([url isEqualToString:@"http://exchange-test.oneitfarm.com/server/register/phone"]){
-                                                            //注册请求应答
                                                             
-                                                            dispatch_sync(dispatch_get_main_queue(), ^{
-                                                                [[NSNotificationCenter defaultCenter] postNotificationName:@"RegisteBack" object:nil];
-                                                            });
                                                         }
-                                                        if([url isEqualToString:@"http://exchange-test.oneitfarm.com/server/register/email"]){
-                                                            //邮箱注册请求应答
-                                                            
-                                                            dispatch_sync(dispatch_get_main_queue(), ^{
-                                                                [[NSNotificationCenter defaultCenter] postNotificationName:@"MailRegisteBack" object:nil];
-                                                            });
-                                                        }
-                                                        
-                                                       
                                                     }
                                                 }];
 

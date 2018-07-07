@@ -6,9 +6,9 @@
 //  Copyright © 2018年 try. All rights reserved.
 //
 
-#import "AuthApproveLevelOneViewController.h"
+#import "AuthApprove1VC.h"
 
-@interface AuthApproveLevelOneViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
+@interface AuthApprove1VC ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
 @property(nonatomic,strong)UITableView *table;
 
 @property(nonatomic,strong)UITextField* fieldName;
@@ -17,7 +17,7 @@
 @property(nonatomic,strong)UIButton *commitBtn;
 @end
 
-@implementation AuthApproveLevelOneViewController
+@implementation AuthApprove1VC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -70,11 +70,12 @@
         _commitBtn = [[UIButton alloc] initWithFrame:CGRectMake(16, 0, kScreenWidth-32, 50)];
         [_commitBtn setTitle:@"提交" forState:UIControlStateNormal];
         [_commitBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_commitBtn setBackgroundImage:[Util imageWithColor:[UIColor blueColor]] forState:UIControlStateNormal];
-        [_commitBtn setBackgroundImage:[Util imageWithColor:[UIColor grayColor]] forState:UIControlStateDisabled];
+        [_commitBtn setBackgroundImage:[UIImage imageNamed:@"color_blue"] forState:UIControlStateNormal];
+        [_commitBtn setBackgroundImage:[UIImage imageNamed:@"color_gray"] forState:UIControlStateDisabled];
         [_commitBtn setEnabled:NO];
         _commitBtn.layer.cornerRadius = 25;
         _commitBtn.layer.masksToBounds = YES;
+        [_commitBtn addTarget:self action:@selector(clickCommit:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _commitBtn;
 }
@@ -126,4 +127,7 @@
     return cell;
 }
 
+-(void)clickCommit:(id)sender{
+    [self.navigationController popViewControllerAnimated:YES];
+}
 @end

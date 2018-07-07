@@ -9,6 +9,9 @@
 #import "SetMoneyPasswordViewController.h"
 
 @interface SetMoneyPasswordViewController ()
+@property (weak, nonatomic) IBOutlet UITextField *moneyPassword;
+@property (weak, nonatomic) IBOutlet UITextField *moneyAgainPassword;
+@property (weak, nonatomic) IBOutlet UITextField *verifyInput;
 
 @end
 
@@ -22,6 +25,14 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+- (IBAction)clickLookPassword:(id)sender {
+}
+- (IBAction)clickAgainPassword:(id)sender {
+}
+- (IBAction)clickVerify:(id)sender {
+}
+- (IBAction)clickResetPassword:(id)sender {
 }
 
 /*

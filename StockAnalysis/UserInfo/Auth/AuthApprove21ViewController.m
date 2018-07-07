@@ -7,8 +7,10 @@
 //
 
 #import "AuthApprove21ViewController.h"
-
+#import "AuthApprove22VC.h"
 @interface AuthApprove21ViewController ()
+@property (weak, nonatomic) IBOutlet UIImageView *authImage;
+@property (weak, nonatomic) IBOutlet UIButton *nextButton;
 
 @end
 
@@ -17,6 +19,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    self.title = @"级别2";
+    self.nextButton.layer.cornerRadius = 25;
+    self.nextButton.layer.masksToBounds = YES;
+    self.nextButton.enabled = YES;
+}
+- (IBAction)clickNext:(id)sender {
+    AuthApprove22VC *vc = [[AuthApprove22VC alloc] initWithNibName:@"AuthApprove22VC" bundle:nil];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

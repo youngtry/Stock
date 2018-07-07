@@ -10,7 +10,16 @@
 #import "ExchangeViewController.h"
 #import "Business ViewController.h"
 #import "UserInfoViewController.h"
+#import "HttpRequest.h"
 @interface UserFirstViewController ()
+@property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *exchangeRMBLabel;
+@property (weak, nonatomic) IBOutlet UILabel *exchangeUSDLabel;
+@property (weak, nonatomic) IBOutlet UILabel *shopRMBLabel;
+@property (weak, nonatomic) IBOutlet UILabel *shopUSDLabel;
+@property (weak, nonatomic) IBOutlet UIView *autoRunActivityView;
+@property (weak, nonatomic) IBOutlet UIView *adView;
+@property (weak, nonatomic) IBOutlet UITableView *randList;
 
 @end
 
@@ -19,6 +28,40 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setAccountInfo) name:@"GetMoneyBack" object:nil];
+    
+    NSArray *parameters = @[ @{ @"name": @"appkey", @"value": @"5yupjrc7tbhwufl8oandzidjyrmg6blc" },
+                             @{ @"name": @"channel", @"value": @"0" } ];
+    
+    NSString* url = @"http://exchange-test.oneitfarm.com/server/wallet/balance";
+    
+    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"GetMoneyBack"];
+}
+
+-(void)setAccountInfo{
+    NSDictionary* data = [[HttpRequest getInstance] httpBack];
+    NSLog(@"data = %@,%ld",data,[data count]);
+    
+    NSDictionary* exchange = [[data objectForKey:@"data"] objectForKey:@"exchange"];
+    NSLog(@"exchange = %@",exchange);
+    
+    NSString* exchangeRMB = [[exchange objectForKey:@"RMB"] objectForKey:@"available"];
+    self.exchangeRMBLabel.text = exchangeRMB;
+    
+    NSString* exchangeUSD = [[exchange objectForKey:@"USD"] objectForKey:@"available"];
+    
+    self.exchangeUSDLabel.text = [NSString stringWithFormat:@"$%@",exchangeUSD];
+    
+    NSDictionary* shop = [[data objectForKey:@"data"] objectForKey:@"shop"];
+    NSLog(@"shop = %@",shop);
+    
+//    NSString* shopRMB = [[exchange objectForKey:@"RMB"] objectForKey:@"available"];
+//    self.shopRMBLabel.text = shopRMB;
+//
+//    NSString* shopUSD = [[exchange objectForKey:@"USD"] objectForKey:@"available"];
+//
+//    self.shopUSDLabel.text = [NSString stringWithFormat:@"$%@",shopUSD];
 }
 
 - (void)viewWillAppear:(BOOL)animated{

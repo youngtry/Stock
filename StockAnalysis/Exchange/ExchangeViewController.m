@@ -9,8 +9,12 @@
 #import "ExchangeViewController.h"
 #import "ChargeViewController.h"
 #import "AppData.h"
+#import "HttpRequest.h"
 
 @interface ExchangeViewController ()
+@property (weak, nonatomic) IBOutlet UILabel *RMBLabel;
+@property (weak, nonatomic) IBOutlet UILabel *USDLabel;
+@property (weak, nonatomic) IBOutlet UITableView *moneyList;
 
 @end
 
@@ -21,6 +25,15 @@
     // Do any additional setup after loading the view from its nib.
     
     self.title = @"交易账户";
+    
+    NSArray *parameters = @[ @{ @"name": @"type", @"value": @"exchange" },
+                             @{ @"name": @"appkey", @"value": @"5yupjrc7tbhwufl8oandzidjyrmg6blc" },
+                             @{ @"name": @"channel", @"value": @"0" } ];
+    
+    NSString* url = @"http://exchange-test.oneitfarm.com/server/wallet/balance";
+    
+    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"GetExchangeBack"];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -49,6 +62,8 @@
 - (IBAction)clickMoneyInOutButton:(id)sender {
 }
 - (IBAction)clickBillButton:(id)sender {
+}
+- (IBAction)hideZero:(id)sender {
 }
 
 /*

@@ -59,7 +59,7 @@
     
     NSString* url = @"http://exchange-test.oneitfarm.com/server/register/email";
     
-    [[HttpRequest getInstance] postWithUrl:url data:parameters];
+    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"MailRegisteBack"];
 }
 
 -(void)mailRegisteBack{
