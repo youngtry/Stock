@@ -42,7 +42,7 @@
  @brief  显示成功提示，并定时隐藏
  @param message 提示消息
  */
-//+(void) hideHudViewWithSuccessMessage:(NSString*) message;
++(void) hideHudViewWithSuccessMessage:(NSString*) message;
 
 /**
  @author ymx
@@ -50,7 +50,7 @@
  @brief  显示失败提示，并定时隐藏
  @param message 提示消息
  */
-//+(void) hideHudViewWithFailureMessage:(NSString *)message;
++(void) hideHudViewWithFailureMessage:(NSString *)message;
 
 /**
  @author ymx

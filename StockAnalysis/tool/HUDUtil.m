@@ -41,8 +41,9 @@ static MBProgressHUD *hud;
     {
         return;
     }
-    hud.mode = MBProgressHUDModeCustomView;
-    hud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ic_hud_success"]];
+//    hud.mode = MBProgressHUDModeCustomView;
+//    hud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ic_hud_success"]];
+    hud.mode = MBProgressHUDModeText;
     hud.labelText = message;
     hud.animationType = MBProgressHUDAnimationZoomOut;
     [hud hide:YES afterDelay:kTipDelay];
