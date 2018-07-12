@@ -26,6 +26,8 @@
     
     self.title = @"交易账户";
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getExchangeBack) name:@"GetExchangeBack" object:nil];
+    
     NSArray *parameters = @[ @{ @"name": @"type", @"value": @"exchange" },
                              @{ @"name": @"appkey", @"value": @"5yupjrc7tbhwufl8oandzidjyrmg6blc" },
                              @{ @"name": @"channel", @"value": @"0" } ];
@@ -34,6 +36,31 @@
     
     [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"GetExchangeBack"];
     
+}
+
+-(void)getExchangeBack{
+    NSDictionary* data = [[HttpRequest getInstance] httpBack];
+    NSNumber* ret = [data objectForKey:@"ret"];
+    if([ret intValue] == 1){
+        //获取成功
+        NSDictionary* info = [data objectForKey:@"data"];
+        NSLog(@"info = %@",info);
+        
+        NSDictionary* exchange = [info objectForKey:@"exchange"];
+        NSLog(@"exchange = %@",exchange);
+        
+        NSString* exchangeRMB = [[exchange objectForKey:@"RMB"] objectForKey:@"available"];
+        self.RMBLabel.text = exchangeRMB;
+        
+        NSString* exchangeUSD = [[exchange objectForKey:@"USD"] objectForKey:@"available"];
+        
+        self.USDLabel.text = [NSString stringWithFormat:@"$%@",exchangeUSD];
+        
+    }else{
+        NSString* msg = [data objectForKey:@"msg"];
+        
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:msg];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

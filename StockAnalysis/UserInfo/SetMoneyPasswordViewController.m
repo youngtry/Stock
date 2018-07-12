@@ -7,6 +7,7 @@
 //
 
 #import "SetMoneyPasswordViewController.h"
+#import "HttpRequest.h"
 
 @interface SetMoneyPasswordViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *moneyPassword;
@@ -20,6 +21,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setMoneyPasswordBack) name:@"SetMoneyPasswordBack" object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -33,6 +36,49 @@
 - (IBAction)clickVerify:(id)sender {
 }
 - (IBAction)clickResetPassword:(id)sender {
+    if(self.moneyPassword.text.length == 0){
+        [HUDUtil showSystemTipView:self title:@"提示" withContent:@"请输入密码"];
+        return;
+    }
+    if(self.moneyAgainPassword.text.length == 0){
+        [HUDUtil showSystemTipView:self title:@"提示" withContent:@"请再次输入密码"];
+        return;
+    }
+    
+//    if(![self.moneyAgainPassword.text isEqualToString:self.moneyPassword.text]){
+//        [HUDUtil showSystemTipView:self title:@"提示" withContent:@"两次输入不一致，请重新输入"];
+//        return;
+//    }
+    
+    if(self.verifyInput.text.length == 0){
+        [HUDUtil showSystemTipView:self title:@"提示" withContent:@"请输入验证码"];
+        return;
+    }
+    
+    NSArray *parameters = @[ @{ @"name": @"asset_password", @"value": self.moneyPassword.text },
+                             @{ @"name": @"phone_captcha", @"value": self.moneyAgainPassword.text },
+                             @{ @"name": @"email_captcha", @"value": self.verifyInput.text },
+                             @{ @"name": @"appkey", @"value": @"5yupjrc7tbhwufl8oandzidjyrmg6blc" },
+                             @{ @"name": @"channel", @"value": @"0" } ];
+    
+    NSString* url = @"http://exchange-test.oneitfarm.com/server/account/set_assetpwd";
+    
+    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"SetMoneyPasswordBack"];
+    
+}
+
+-(void)setMoneyPasswordBack{
+    NSDictionary* data = [[HttpRequest getInstance] httpBack];
+    NSNumber* ret = [data objectForKey:@"ret"];
+    if([ret intValue] == 1){
+        //设置成功
+        [self.navigationController popViewControllerAnimated:YES];
+        
+    }else{
+        NSString* msg = [data objectForKey:@"msg"];
+        
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:msg];
+    }
 }
 
 /*

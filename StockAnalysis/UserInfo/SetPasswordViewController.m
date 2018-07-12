@@ -19,6 +19,8 @@
 @property (nonatomic,assign)CGPoint startPoint;//记录开始选中的按键坐标
 @property (nonatomic,assign)CGPoint endPoint;//记录结束时的手势坐标
 @property (nonatomic,strong)UIImageView *imageView;//画图所需
+
+@property (nonatomic,strong)UILabel* settitle;
 @end
 
 @implementation SetPasswordViewController
@@ -30,13 +32,25 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setGestureBack) name:@"SetGestureBack" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(verifyGestureBack) name:@"VerifyGestureBack" object:nil];
+    
     
     if (!_buttonArr) {
         _buttonArr = [[NSMutableArray alloc]initWithCapacity:9];
     }
     
+    
+    
     self.imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
     [self.view addSubview:self.imageView];
+    
+    self.settitle = [[UILabel alloc] initWithFrame:CGRectMake(0, ScreenHeight*0.1, ScreenWidth, 50)];
+    self.settitle.text = @"设置手势密码";
+    [self.settitle setTextAlignment:NSTextAlignmentCenter];
+    
+    [self.imageView addSubview:self.settitle];
     
     for (int i=0; i<3; i++) {
         for (int j=0; j<3; j++) {
@@ -159,7 +173,7 @@
     for (UIButton *btn in self.selectorArr) {
         NSInteger tag = [btn tag];
         NSLog(@"select tag = %ld",(long)tag);
-        gesture = [NSString stringWithFormat:@"%@%ld",gesture,tag];
+        gesture = [NSString stringWithFormat:@"%@%ld",gesture,(long)tag];
     }
     NSLog(@"gesture =%@",gesture);
     
@@ -167,9 +181,15 @@
                              @{ @"name": @"appkey", @"value": @"5yupjrc7tbhwufl8oandzidjyrmg6blc" },
                              @{ @"name": @"channel", @"value": @"0" } ];
     
+    if([self.settitle.text isEqualToString:@"设置手势密码"]){
+        NSString* url = @"http://exchange-test.oneitfarm.com/server/account/set_gesture";
+        [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"SetGestureBack"];
+    }else if([self.settitle.text isEqualToString:@"验证手势密码"]){
+        NSString* url = @"http://exchange-test.oneitfarm.com/server/account/check_gesture";
+        [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"VerifyGestureBack"];
+    }
     
-    NSString* url = @"http://exchange-test.oneitfarm.com/server/account/set_gesture";
-    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"SetGestureBack"];
+    
     
     self.imageView.image = nil;
     self.selectorArr = nil;
@@ -178,6 +198,34 @@
     }
 }
 
+-(void)setGestureBack{
+    NSDictionary* data = [[HttpRequest getInstance] httpBack];
+    NSNumber* ret = [data objectForKey:@"ret"];
+    if([ret intValue] == 1){
+        //设置成功
+        self.settitle.text = @"验证手势密码";
+        
+    }else{
+        //设置失败
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"设置失败，请重新设置"];
+    }
+}
+
+-(void)verifyGestureBack{
+    NSDictionary* data = [[HttpRequest getInstance] httpBack];
+    NSNumber* ret = [data objectForKey:@"ret"];
+    if([ret intValue] == 1){
+        //验证成功
+        self.settitle.text = @"设置手势密码";
+        
+        [self.navigationController popViewControllerAnimated:YES];
+        
+    }else{
+        NSString* msg = [data objectForKey:@"msg"];
+        
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:msg];
+    }
+}
 /*
 #pragma mark - Navigation
 

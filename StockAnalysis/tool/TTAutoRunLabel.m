@@ -37,7 +37,7 @@
         _width = frame.size.width;
         _height = frame.size.height;
         
-        self.backgroundColor = [UIColor colorWithRed:16./255.0 green:142.0/255.0 blue:233.0/255.0 alpha:0.1];
+        self.backgroundColor = [UIColor colorWithRed:16./255.0 green:142.0/255.0 blue:233.0/255.0 alpha:0.0];
         self.speed = 1.0f;
         self.directionType = Leftype;
         self.layer.masksToBounds = YES;

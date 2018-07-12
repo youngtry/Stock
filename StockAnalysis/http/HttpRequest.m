@@ -12,10 +12,9 @@
 #include <arpa/inet.h>
 #import <net/if.h>
 
-
-
 @interface HttpRequest()
 @property(nonatomic,strong)NSDictionary* dataDictionary;
+@property(nonatomic,strong)NSString* token;
 @end
 
 @implementation HttpRequest
@@ -46,9 +45,10 @@
 
 -(NSDictionary *)postWithUrl:(NSString *)url data:(NSArray *)requestData notification:(NSString *)notice{
     
+    NSLog(@"token = %@",_token);
     NSDictionary *headers = @{ @"content-type": @"multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
                                //                               @"Content-Type": @"application/x-www-form-urlencoded",
-                               @"authorization": @"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyOCwiYWNjb3VudF9pZCI6IjQwOTMzMjMxMzE0MTQ5ZWQ4OGFmOGEzYWRjNTM5YWQxIiwiY2lhY2NvdW50X3Rva2VuIjoiUVBkNmxoZmkwYUdCNDdURS5ydThPeHdLTWN2STRzbjBBLjVkNDFmYTE2N2RiNTQ4ZTNjN2U3MWJiZTdkMGQyZDRmIiwiZXhwIjoxNTMxMDM1MjY4fQ.8lLP9ztuKl4-la4Uxsh8nFzwBXG0RyVQvCkA7qXGWtw",
+                               @"authorization": [NSString stringWithFormat:@"Bearer %@",_token],
                                @"Cache-Control": @"no-cache",
                                @"Postman-Token": @"57bb5e1b-7c27-4f1d-a5c2-fd56b5604d38" };
     NSString *boundary = @"----WebKitFormBoundary7MA4YWxkTrZu0gW";
@@ -100,14 +100,21 @@
                                                         _dataDictionary =[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil ];
                                                         NSLog(@"post返回数据为：%@",_dataDictionary);
                                                         
+                                                        if([url isEqualToString:@"http://exchange-test.oneitfarm.com/server/account/login/phone"] || [url isEqualToString:@"http://exchange-test.oneitfarm.com/server/account/login/email"]){
+                                                            //登陆请求应答，保存新的account_token
+                                                            NSNumber* number = [_dataDictionary objectForKey:@"ret"];
+                                                            if([number intValue] == 1){
+                                                                _token = [[_dataDictionary objectForKey:@"data"] objectForKey:@"account_token"];
+                                                                NSLog(@"获取到的token = %@",_token);
+                                                            }
+                                                            
+                                                        }
+                                                        
                                                         dispatch_sync(dispatch_get_main_queue(), ^{
                                                             [[NSNotificationCenter defaultCenter] postNotificationName:notice object:nil];
                                                         });
                                                         
-                                                        if([url isEqualToString:@"http://exchange-test.oneitfarm.com/server/account/login/phone"]){
-                                                            //登陆请求应答，保存新的account_token
-                                                            
-                                                        }
+                                                        
                                                     }
                                                 }];
 
@@ -115,35 +122,38 @@
     return _dataDictionary;
 }
 
--(NSDictionary *)getWithUrl:(NSString *)url data:(NSDictionary *)requestData{
+-(void)clearToken{
+    _token = @"";
+}
+
+-(NSDictionary *)getWithUrl:(NSString *)url notification:(NSString*)notice{
     
     
-    NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
+    NSDictionary *headers = @{ @"Authorization":[NSString stringWithFormat:@"Bearer %@",_token],
+                               @"Cache-Control": @"no-cache",
+                               @"Postman-Token": @"3fbc6071-4774-429b-a7f9-2b8456756b67" };
     
-//    request.HTTPMethod = @"POST";
-//
-//    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-//
-//    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]
+                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                       timeoutInterval:10.0];
+    [request setHTTPMethod:@"GET"];
+    [request setAllHTTPHeaderFields:headers];
     
-    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:requestData options:0 error:NULL];
-    NSURLSession * session = [NSURLSession sharedSession];
-    NSURLSessionDataTask * sessionDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        if(error == nil){
-            /*
-             请求完成,成功或者失败的处理
-             */
-            
-            _dataDictionary =[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil ];
-            NSLog(@"get返回数据为：%@",_dataDictionary);
-            
-        }else{
-            /*
-             请求失败
-             */
-        }
-    }];
-    [sessionDataTask resume];
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
+                                                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                                                    if (error) {
+                                                        NSLog(@"%@", error);
+                                                    } else {
+                                                        _dataDictionary =[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil ];
+                                                        NSLog(@"get返回数据为：%@",_dataDictionary);
+                                                        
+                                                        dispatch_sync(dispatch_get_main_queue(), ^{
+                                                            [[NSNotificationCenter defaultCenter] postNotificationName:notice object:nil];
+                                                        });
+                                                    }
+                                                }];
+    [dataTask resume];
     return _dataDictionary;
 }
 

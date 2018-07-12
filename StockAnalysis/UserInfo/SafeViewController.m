@@ -9,6 +9,7 @@
 #import "SafeViewController.h"
 #import "SetPasswordViewController.h"
 #import "SetMoneyPasswordViewController.h"
+#import "HttpRequest.h"
 @interface SafeViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *phoneBindLabel;
 @property (weak, nonatomic) IBOutlet UILabel *mailBindLabel;
@@ -23,6 +24,45 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.title = @"安全中心";
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getBindBack) name:@"GetUserBindInfo" object:nil];
+    
+    NSArray *parameters = @[ @{ @"name": @"appkey", @"value": @"5yupjrc7tbhwufl8oandzidjyrmg6blc" },
+                             @{ @"name": @"channel", @"value": @"0" } ];
+    
+    NSString* url = @"http://exchange-test.oneitfarm.com/server/account/bindInfo";
+    
+    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"GetUserBindInfo"];
+    
+}
+
+-(void)getBindBack{
+    
+    NSDictionary* data = [[HttpRequest getInstance] httpBack];
+    NSLog(@"data = %@",data);
+    
+    NSNumber* number = [data objectForKey:@"ret"];
+    if([number intValue] == 1){
+        NSDictionary* info = [data objectForKey:@"data"];
+        NSLog(@"info = %@",info);
+        NSString* email = [info objectForKey:@"email"];
+        if([email containsString:@"@"]){
+            self.mailBindImage.hidden = YES;
+            self.mailBindLabel.hidden = NO;
+        }else{
+            self.mailBindLabel.hidden = YES;
+            self.mailBindImage.hidden = NO;
+        }
+         NSString* phone = [info objectForKey:@"phone"];
+        if(phone.length>0){
+            self.phoneBindImage.hidden = YES;
+            self.phoneBindLabel.hidden = NO;
+        }else{
+            self.phoneBindLabel.hidden = YES;
+            self.phoneBindImage.hidden = NO;
+        }
+    }
+    
 }
 - (IBAction)clickGestureVerify:(id)sender {
     UISwitch* btn = (UISwitch*)sender;

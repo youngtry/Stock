@@ -10,6 +10,7 @@
 #import "ResetPasswordViewController.h"
 #import "HttpRequest.h"
 #import "HUDUtil.h"
+#import "GameData.h"
 @interface MailLoginViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *mailInput;
 @property (weak, nonatomic) IBOutlet UITextField *passwordInput
@@ -30,8 +31,8 @@
     // Dispose of any resources that can be recreated.
 }
 - (IBAction)clickLogin:(id)sender {
-    if(self.mailInput.text.length != 11){
-        [HUDUtil showSystemTipView:self title:@"提示" withContent:@"请输入正确的手机号"];
+    if(![self.mailInput.text containsString:@"@"]){
+        [HUDUtil showSystemTipView:self title:@"提示" withContent:@"请输入正确的邮箱"];
         return;
     }
     
@@ -63,13 +64,23 @@
 -(void)mailLoginBack{
     [HUDUtil hideHudView];
     
-    [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"登陆成功"];
+    NSDictionary* data = [[HttpRequest getInstance] httpBack];
     
-    NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
-    [defaultdata setBool:YES forKey:@"IsLogin"];
+    NSNumber* number = [data objectForKey:@"ret"];
+    if([number intValue] == 1){
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"登陆成功"];
+        [GameData setUserAccount:self.mailInput.text];
+        [GameData setUserPassword:self.passwordInput.text];
+        NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
+        [defaultdata setBool:YES forKey:@"IsLogin"];
+        
+        [self.navigationController popViewControllerAnimated:YES];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"ChangeAfterLogin" object:nil];
+    }else{
+        //登陆失败
+        [HUDUtil showSystemTipView:self title:@"提示" withContent:[data objectForKey:@"msg"]];
+    }
     
-    [self.navigationController popViewControllerAnimated:YES];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"ChangeAfterLogin" object:nil];
 }
 /*
 #pragma mark - Navigation

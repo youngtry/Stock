@@ -54,4 +54,5 @@
 #import "HUDUtil.h"
 #import "Util.h"
 #import "UIView+Additions.h"
+#import "JSONKit.h"
 #endif /* PrefixHeader_pch */

@@ -332,6 +332,9 @@
                     <state key="normal" title="退出当前用户">
                         <color key="titleColor" red="0.74901960784313726" green="0.75686274509803919" blue="0.75294117647058822" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
+                    <connections>
+                        <action selector="clickExitAccount:" destination="-1" eventType="touchUpInside" id="R1P-vU-5Yj"/>
+                    </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" red="0.97227032230640986" green="0.97920274172980748" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

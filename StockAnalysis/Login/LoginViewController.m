@@ -14,6 +14,7 @@
 #import "HUDUtil.h"
 #import "HttpRequest.h"
 #import "MailLoginViewController.h"
+#import "GameData.h"
 @interface LoginViewController ()<XWCountryCodeControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *countryCodeButton;
 @property (weak, nonatomic) IBOutlet UITextField *usernameInput;
@@ -44,19 +45,28 @@
 
 -(void)phoneLoginSuccess{
     [HUDUtil hideHudView];
+    NSDictionary* data = [[HttpRequest getInstance] httpBack];
+    NSNumber* number = [data objectForKey:@"ret"];
+    if([number intValue] == 1){
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"登陆成功"];
+        
+        [GameData setUserAccount:self.usernameInput.text];
+        [GameData setUserPassword:self.passwordInput.text];
+        
+        NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
+        [defaultdata setBool:YES forKey:@"IsLogin"];
+        
+        [self.navigationController popViewControllerAnimated:YES];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"ChangeAfterLogin" object:nil];
+    }else{
+        //登陆失败
+        [HUDUtil showSystemTipView:self title:@"提示" withContent:[data objectForKey:@"msg"]];
+    }
     
-    [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"登陆成功"];
-    
-    NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
-    [defaultdata setBool:YES forKey:@"IsLogin"];
-    
-    [self.navigationController popViewControllerAnimated:YES];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"ChangeAfterLogin" object:nil];
 }
 - (IBAction)clickMailRegist:(id)sender {
     MailLoginViewController *vc = [[MailLoginViewController alloc] initWithNibName:@"MailLoginViewController" bundle:nil];
     [self.navigationController pushViewController:vc animated:YES];
-    
 }
 
 - (void)didReceiveMemoryWarning {

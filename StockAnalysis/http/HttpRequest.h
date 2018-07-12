@@ -19,9 +19,10 @@ typedef void(^httpResult)(BOOL success,id data);
 
 
 -(NSDictionary *)postWithUrl:(NSString *)url data:(NSArray *)requestData notification:(NSString*)notice;
--(NSDictionary *)getWithUrl:(NSString *)url data:(NSDictionary *)requestData;
+-(NSDictionary *)getWithUrl:(NSString *)url notification:(NSString*)notice;
 
 -(NSDictionary* )httpBack;
+-(void)clearToken;
 
 - (NSString *) md5:(NSString *) input;
 

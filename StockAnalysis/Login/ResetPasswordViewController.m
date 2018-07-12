@@ -29,6 +29,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetBack) name:@"ResetPwdBack" object:nil];
+    
     self.secondContainer.hidden = YES;
     
     [self.authCodeContainer addSubview:self.authCode];
@@ -69,7 +71,7 @@
     self.firstContainer.hidden = YES;
 }
 - (IBAction)clickReset:(id)sender {
-    if(self.passwordInput.text.length != 11){
+    if(self.passwordInput.text.length == 0){
         [HUDUtil showSystemTipView:self title:@"提示" withContent:@"请输入密码"];
         return;
     }
@@ -88,23 +90,49 @@
         return;
     }
     
+    if([self.userNameTextField.text containsString:@"@"]){
+        //邮箱重置
+        NSArray *parameters = @[ @{ @"name": @"email", @"value": self.userNameTextField.text },
+                                 @{ @"name": @"captcha", @"value": self.verifyInput.text },
+                                 @{ @"name": @"password", @"value": self.passwordInput.text },
+                                 
+                                 @{ @"name": @"appkey", @"value": @"5yupjrc7tbhwufl8oandzidjyrmg6blc" },
+                                 @{ @"name": @"channel", @"value": @"0" } ];
+        
+        
+        NSString* url = @"http://exchange-test.oneitfarm.com/server/account/resetpwd_by_email";
+        
+        [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"ResetPwdBack"];
+    }else{
+        NSArray *parameters = @[ @{ @"name": @"phone", @"value": self.userNameTextField.text },
+                                 @{ @"name": @"captcha", @"value": self.verifyInput.text },
+                                 @{ @"name": @"password", @"value": self.passwordInput.text },
+                                 
+                                 @{ @"name": @"appkey", @"value": @"5yupjrc7tbhwufl8oandzidjyrmg6blc" },
+                                 @{ @"name": @"channel", @"value": @"0" } ];
+        
+        
+        NSString* url = @"http://exchange-test.oneitfarm.com/server/account/resetpwd_by_phone";
+        
+        [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"ResetPwdBack"];
+    }
     
-    NSArray *parameters = @[ @{ @"name": @"phone", @"value": self.userNameTextField.text },
-                             @{ @"name": @"captcha", @"value": self.verifyInput.text },
-                             @{ @"name": @"password", @"value": self.passwordInput.text },
-
-                             @{ @"name": @"appkey", @"value": @"5yupjrc7tbhwufl8oandzidjyrmg6blc" },
-                             @{ @"name": @"channel", @"value": @"0" } ];
     
-    
-    NSString* url = @"http://exchange-test.oneitfarm.com/server/account/resetpwd_by_phone";
-    
-    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"ResetPwdBack"];
     
 }
 
 -(void)resetBack{
-    
+    NSDictionary* data = [[HttpRequest getInstance] httpBack];
+    NSNumber* ret = [data objectForKey:@"ret"];
+    if([ret intValue] == 1){
+        //设置成功
+        [self.navigationController popViewControllerAnimated:YES];
+        
+    }else{
+        NSString* msg = [data objectForKey:@"msg"];
+        
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:msg];
+    }
 }
 
 /*
