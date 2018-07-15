@@ -92,37 +92,47 @@
     
     if([self.userNameTextField.text containsString:@"@"]){
         //邮箱重置
-        NSArray *parameters = @[ @{ @"name": @"email", @"value": self.userNameTextField.text },
-                                 @{ @"name": @"captcha", @"value": self.verifyInput.text },
-                                 @{ @"name": @"password", @"value": self.passwordInput.text },
-                                 
-                                 @{ @"name": @"appkey", @"value": @"5yupjrc7tbhwufl8oandzidjyrmg6blc" },
-                                 @{ @"name": @"channel", @"value": @"0" } ];
+        NSDictionary *parameters = @{ @"email": self.userNameTextField.text ,
+                                @"captcha": self.verifyInput.text ,
+                                @"password": self.passwordInput.text};
         
+//        NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithDictionary:para];
+        NSString* url = @"account/resetpwd_by_email";
         
-        NSString* url = @"http://exchange-test.oneitfarm.com/server/account/resetpwd_by_email";
-        
-        [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"ResetPwdBack"];
+//        [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"ResetPwdBack"];
+        [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+            if(success){
+//                NSDictionary* info = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                [self resetBack:data];
+            }
+        }];
     }else{
-        NSArray *parameters = @[ @{ @"name": @"phone", @"value": self.userNameTextField.text },
-                                 @{ @"name": @"captcha", @"value": self.verifyInput.text },
-                                 @{ @"name": @"password", @"value": self.passwordInput.text },
-                                 
-                                 @{ @"name": @"appkey", @"value": @"5yupjrc7tbhwufl8oandzidjyrmg6blc" },
-                                 @{ @"name": @"channel", @"value": @"0" } ];
+        
+        NSDictionary *parameters = @{ @"phone": self.userNameTextField.text ,
+                                @"captcha": self.verifyInput.text ,
+                                @"password": self.passwordInput.text};
+        
+//        NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithDictionary:para];
         
         
-        NSString* url = @"http://exchange-test.oneitfarm.com/server/account/resetpwd_by_phone";
+        NSString* url = @"account/resetpwd_by_phone";
         
-        [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"ResetPwdBack"];
+//        [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"ResetPwdBack"];
+        
+        [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+            if(success){
+//                NSDictionary* info = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                [self resetBack:data];
+            }
+        }];
     }
     
     
     
 }
 
--(void)resetBack{
-    NSDictionary* data = [[HttpRequest getInstance] httpBack];
+-(void)resetBack:(NSDictionary* )data{
+//    NSDictionary* data = [[HttpRequest getInstance] httpBack];
     NSNumber* ret = [data objectForKey:@"ret"];
     if([ret intValue] == 1){
         //设置成功

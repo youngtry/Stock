@@ -27,18 +27,25 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getBindBack) name:@"GetUserBindInfo" object:nil];
     
-    NSArray *parameters = @[ @{ @"name": @"appkey", @"value": @"5yupjrc7tbhwufl8oandzidjyrmg6blc" },
-                             @{ @"name": @"channel", @"value": @"0" } ];
+    NSDictionary *parameters = @{} ;
+//    NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithDictionary:para];
     
-    NSString* url = @"http://exchange-test.oneitfarm.com/server/account/bindInfo";
     
-    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"GetUserBindInfo"];
+    NSString* url = @"account/bindInfo";
+    
+    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+        if(success){
+//            NSDictionary* info = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+            [self getBindBack:data];
+        }
+    }];
+    
+//    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"GetUserBindInfo"];
     
 }
 
--(void)getBindBack{
+-(void)getBindBack:(NSDictionary* )data{
     
-    NSDictionary* data = [[HttpRequest getInstance] httpBack];
     NSLog(@"data = %@",data);
     
     NSNumber* number = [data objectForKey:@"ret"];

@@ -26,20 +26,23 @@
     
     self.title = @"交易账户";
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getExchangeBack) name:@"GetExchangeBack" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getExchangeBack) name:@"GetExchangeBack" object:nil];
     
-    NSArray *parameters = @[ @{ @"name": @"type", @"value": @"exchange" },
-                             @{ @"name": @"appkey", @"value": @"5yupjrc7tbhwufl8oandzidjyrmg6blc" },
-                             @{ @"name": @"channel", @"value": @"0" } ];
+    NSDictionary *parameters = @{ @"type": @"exchange"};
     
-    NSString* url = @"http://exchange-test.oneitfarm.com/server/wallet/balance";
+    NSString* url = @"wallet/balance";
     
-    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"GetExchangeBack"];
+//    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"GetExchangeBack"];
+    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+        if(success){
+            [self getExchangeBack:data];
+        }
+    }];
     
 }
 
--(void)getExchangeBack{
-    NSDictionary* data = [[HttpRequest getInstance] httpBack];
+-(void)getExchangeBack:(NSDictionary*)data{
+//    NSDictionary* data = [[HttpRequest getInstance] httpBack];
     NSNumber* ret = [data objectForKey:@"ret"];
     if([ret intValue] == 1){
         //获取成功

@@ -23,7 +23,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mailRegisteBack) name:@"MailRegisteBack" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mailRegisteBack) name:@"MailRegisteBack" object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -50,20 +50,23 @@
         return;
     }
     
-    NSArray *parameters = @[ @{ @"name": @"email", @"value": self.mailInput.text },
-                             @{ @"name": @"captcha", @"value": self.verifyInput.text },
-                             @{ @"name": @"password", @"value": self.passwordInput.text },
-                             @{ @"name": @"appkey", @"value": @"5yupjrc7tbhwufl8oandzidjyrmg6blc" },
-                             @{ @"name": @"channel", @"value": @"0" } ];
+    NSDictionary *parameters = @{ @"email": self.mailInput.text,
+                                  @"captcha": self.verifyInput.text,
+                                  @"password": self.passwordInput.text};
     
     
-    NSString* url = @"http://exchange-test.oneitfarm.com/server/register/email";
+    NSString* url = @"register/email";
     
-    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"MailRegisteBack"];
+//    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"MailRegisteBack"];
+    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+        if(success){
+            [self mailRegisteBack:data];
+        }
+    }];
 }
 
--(void)mailRegisteBack{
-    NSDictionary* data = [[HttpRequest getInstance] httpBack];
+-(void)mailRegisteBack:(NSDictionary*)data{
+//    NSDictionary* data = [[HttpRequest getInstance] httpBack];
     NSLog(@"data = %@",data);
     NSNumber* number = [data objectForKey:@"ret"];
     if([number intValue] == -1){

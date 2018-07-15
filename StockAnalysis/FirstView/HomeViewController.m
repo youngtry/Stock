@@ -24,7 +24,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getTipsAndAdsBack) name:@"FirstTipAndAds" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getTipsAndAdsBack) name:@"FirstTipAndAds" object:nil];
     
     self.randList.delegate = self;
     self.randList.dataSource = self;
@@ -35,15 +35,24 @@
     [self.navigationController setNavigationBarHidden:YES];
     
     [self.navigationController setNavigationBarHidden:YES];
-    NSString* url = @"http://exchange-test.oneitfarm.com/server/news/home?appkey=5yupjrc7tbhwufl8oandzidjyrmg6blc&channel=0";
-    [[HttpRequest getInstance] getWithUrl:url notification:@"FirstTipAndAds"];
+    NSString* url = @"news/home";
+    
+    NSDictionary* parameters = @{};
+//    NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithDictionary:para];
+    
+//    [[HttpRequest getInstance] getWithUrl:url notification:@"FirstTipAndAds"];
+    [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
+        if(success){
+            [self getTipsAndAdsBack:data];
+        }
+    }];
     
 }
 
--(void)getTipsAndAdsBack{
+-(void)getTipsAndAdsBack:(NSDictionary*)data{
     [self createAutoRunLabel:@"" view:self.activityContainer fontsize:14];
     [self createAutoRunLabel:@"" view:self.adView fontsize:30];
-    NSDictionary* data = [[HttpRequest getInstance] httpBack];
+//    NSDictionary* data = [[HttpRequest getInstance] httpBack];
     NSNumber* ret = [data objectForKey:@"ret"];
     if([ret intValue] == 1)
     {

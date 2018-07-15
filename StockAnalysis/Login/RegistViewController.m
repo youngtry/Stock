@@ -56,17 +56,17 @@
    
     //测试用
  
-    NSArray *parameters = @[ @{ @"name": @"phone", @"value": @"17751766215" },
-                             @{ @"name": @"captcha", @"value": @"8888" },
-                             @{ @"name": @"password", @"value": @"123456" },
-                             @{ @"name": @"district", @"value": @"+86" },
-                             @{ @"name": @"appkey", @"value": @"5yupjrc7tbhwufl8oandzidjyrmg6blc" },
-                             @{ @"name": @"channel", @"value": @"0" } ];
-   
+    NSDictionary *parameters = @{  @"phone": @"17751766215",
+                                          @"captcha": @"8888",
+                                          @"password": @"123456" ,
+                                          @"district": @"+86"} ;
+//    NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithDictionary:para];
     
-    NSString* url = @"http://exchange-test.oneitfarm.com/server/register/phone";
+    NSString* url = @"register/phone";
 
-    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"RegisteBack"];
+    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+        
+    }];
 }
 - (IBAction)clickPhoneRegiste:(id)sender {
     
@@ -85,17 +85,28 @@
         return;
     }
     
-    NSArray *parameters = @[ @{ @"name": @"phone", @"value": self.phoneInput.text },
-                             @{ @"name": @"captcha", @"value": self.verifyInput.text },
-                             @{ @"name": @"password", @"value": self.passwordInput.text },
-                             @{ @"name": @"district", @"value": self.countryCodeButton.titleLabel.text },
-                             @{ @"name": @"appkey", @"value": @"5yupjrc7tbhwufl8oandzidjyrmg6blc" },
-                             @{ @"name": @"channel", @"value": @"0" } ];
+    NSDictionary *parameters = @{ @"phone": self.phoneInput.text ,
+                                         @"captcha": self.verifyInput.text ,
+                                         @"password": self.passwordInput.text ,
+                                         @"district": self.countryCodeButton.titleLabel.text};
+//    NSMutableDictionary* para =  [[NSMutableDictionary alloc] initWithDictionary:parameters];
     
+    NSString* url = @"register/phone";
     
-    NSString* url = @"http://exchange-test.oneitfarm.com/server/register/phone";
-    
-    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"RegisteBack"];
+//    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"RegisteBack"];
+    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+        if(success){
+//            NSDictionary* info = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+            NSNumber* number = [data objectForKey:@"ret"];
+            if([number intValue] == -1){
+                //注册失败
+                [HUDUtil showSystemTipView:self title:@"提示" withContent:[data objectForKey:@"msg"]];
+            }else if([number intValue] == 1){
+                //注册成功
+                [self.navigationController popViewControllerAnimated:YES];
+            }
+        }
+    }];
 }
 
 -(void)registeBack{

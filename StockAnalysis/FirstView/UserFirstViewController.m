@@ -32,8 +32,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setAccountInfo) name:@"GetMoneyBack" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(autoLoginBack) name:@"AutoLogin" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setAccountInfo) name:@"GetMoneyBack" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(autoLoginBack) name:@"AutoLogin" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getTipsAndAdsBack) name:@"FirstTipAndAds" object:nil];
     
     
@@ -42,24 +42,29 @@
     NSLog(@"username = %@,password = %@",username,password);
     if([username containsString:@"@"]){
         //邮箱登录
-        NSArray *parameters = @[ @{ @"name": @"email", @"value": [GameData getUserAccount] },
-                                 @{ @"name": @"password", @"value": [GameData getUserPassword] },
-                                 @{ @"name": @"appkey", @"value": @"5yupjrc7tbhwufl8oandzidjyrmg6blc" },
-                                 @{ @"name": @"channel", @"value": @"0" } ];
-        
-        
-        NSString* url = @"http://exchange-test.oneitfarm.com/server/account/login/email";
-        [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"AutoLogin"];
+        NSDictionary *parameters = @{@"email": [GameData getUserAccount],
+                               @"password": [GameData getUserPassword]};
+
+        NSString* url = @"account/login/email";
+//        [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"AutoLogin"];
+        [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+            if(success){
+                [self autoLoginBack];
+            }
+        }];
     }else{
         //手机号登录
-        NSArray *parameters = @[ @{ @"name": @"phone", @"value": [GameData getUserAccount] },
-                                 @{ @"name": @"password", @"value": [GameData getUserPassword] },
-                                 @{ @"name": @"appkey", @"value": @"5yupjrc7tbhwufl8oandzidjyrmg6blc" },
-                                 @{ @"name": @"channel", @"value": @"0" } ];
+        NSDictionary *parameters = @{@"phone": [GameData getUserAccount],
+                               @"password": [GameData getUserPassword]};
         
         
-        NSString* url = @"http://exchange-test.oneitfarm.com/server/account/login/phone";
-        [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"AutoLogin"];
+        NSString* url = @"account/login/phone";
+//        [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"AutoLogin"];
+        [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+            if(success){
+                [self autoLoginBack];
+            }
+        }];
     }
     
     //
@@ -91,17 +96,21 @@
 
 
 -(void)autoLoginBack{
-    NSArray *parameters = @[ @{ @"name": @"appkey", @"value": @"5yupjrc7tbhwufl8oandzidjyrmg6blc" },
-                             @{ @"name": @"channel", @"value": @"0" } ];
+    NSDictionary *parameters = @{};
     
-    NSString* url = @"http://exchange-test.oneitfarm.com/server/wallet/balance";
+    NSString* url = @"wallet/balance";
     
-    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"GetMoneyBack"];
+//    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"GetMoneyBack"];
+    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+        if(success){
+            [self setAccountInfo:data];
+        }
+    }];
 }
 
--(void)setAccountInfo{
+-(void)setAccountInfo:(NSDictionary*)data{
     
-    NSDictionary* data = [[HttpRequest getInstance] httpBack];
+//    NSDictionary* data = [[HttpRequest getInstance] httpBack];
 
     NSNumber* rest = [data objectForKey:@"ret"];
     if([rest intValue] == 1){
@@ -134,10 +143,14 @@
 - (void)viewWillAppear:(BOOL)animated{
     //    NSLog(@"viewWillAppear");
     [self.navigationController setNavigationBarHidden:YES];
-    NSString* url = @"http://exchange-test.oneitfarm.com/server/news/home?appkey=5yupjrc7tbhwufl8oandzidjyrmg6blc&channel=0";
-    [[HttpRequest getInstance] getWithUrl:url notification:@"FirstTipAndAds"];
-
-    
+    NSString* url = @"news/home";
+    NSDictionary* parameters = @{};
+//    [[HttpRequest getInstance] getWithUrl:url notification:@"FirstTipAndAds"];
+    [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
+        if(success){
+            [self getTipsAndAdsBack:data];
+        }
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -145,10 +158,10 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void)getTipsAndAdsBack{
+-(void)getTipsAndAdsBack:(NSDictionary* )data{
     [self createAutoRunLabel:@"" view:self.autoRunActivityView fontsize:14];
     [self createAutoRunLabel:@"" view:self.adView fontsize:30];
-    NSDictionary* data = [[HttpRequest getInstance] httpBack];
+//    NSDictionary* data = [[HttpRequest getInstance] httpBack];
     NSNumber* ret = [data objectForKey:@"ret"];
     if([ret intValue] == 1)
     {

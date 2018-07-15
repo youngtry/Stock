@@ -23,7 +23,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mailLoginBack) name:@"MailLoginBack" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mailLoginBack) name:@"MailLoginBack" object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -41,15 +41,19 @@
         return;
     }
     
-    NSArray *parameters = @[ @{ @"name": @"email", @"value": self.mailInput.text },
-                             @{ @"name": @"password", @"value": self.passwordInput.text },
-                             @{ @"name": @"appkey", @"value": @"5yupjrc7tbhwufl8oandzidjyrmg6blc" },
-                             @{ @"name": @"channel", @"value": @"0" } ];
+    NSDictionary *parameters = @{ @"email": self.mailInput.text ,
+                                  @"password": self.passwordInput.text};
     
+//    NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithDictionary:para];
+    NSString* url = @"account/login/email";
+                     
+    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+        if(success){
+            [self mailLoginBack:data];
+        }
+    }];
     
-    NSString* url = @"http://exchange-test.oneitfarm.com/server/account/login/email";
-    
-    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"MailLoginBack"];
+//    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"MailLoginBack"];
     
     [HUDUtil showHudViewInSuperView:self.view withMessage:@"登陆中……"];
 }
@@ -61,10 +65,10 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
--(void)mailLoginBack{
+-(void)mailLoginBack:(NSDictionary*)data{
     [HUDUtil hideHudView];
     
-    NSDictionary* data = [[HttpRequest getInstance] httpBack];
+//    NSDictionary* data = [[HttpRequest getInstance] httpBack];
     
     NSNumber* number = [data objectForKey:@"ret"];
     if([number intValue] == 1){

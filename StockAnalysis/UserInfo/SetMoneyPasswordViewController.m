@@ -22,7 +22,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setMoneyPasswordBack) name:@"SetMoneyPasswordBack" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setMoneyPasswordBack) name:@"SetMoneyPasswordBack" object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -55,20 +55,23 @@
         return;
     }
     
-    NSArray *parameters = @[ @{ @"name": @"asset_password", @"value": self.moneyPassword.text },
-                             @{ @"name": @"phone_captcha", @"value": self.moneyAgainPassword.text },
-                             @{ @"name": @"email_captcha", @"value": self.verifyInput.text },
-                             @{ @"name": @"appkey", @"value": @"5yupjrc7tbhwufl8oandzidjyrmg6blc" },
-                             @{ @"name": @"channel", @"value": @"0" } ];
+    NSDictionary *parameters = @{@"asset_password": self.moneyPassword.text,
+                                 @"phone_captcha": self.moneyAgainPassword.text,
+                                 @"email_captcha": self.verifyInput.text};
     
-    NSString* url = @"http://exchange-test.oneitfarm.com/server/account/set_assetpwd";
+    NSString* url = @"account/set_assetpwd";
     
-    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"SetMoneyPasswordBack"];
+//    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"SetMoneyPasswordBack"];
+    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+        if(success){
+            [self setMoneyPasswordBack:data];
+        }
+    }];
     
 }
 
--(void)setMoneyPasswordBack{
-    NSDictionary* data = [[HttpRequest getInstance] httpBack];
+-(void)setMoneyPasswordBack:(NSDictionary* )data{
+//    NSDictionary* data = [[HttpRequest getInstance] httpBack];
     NSNumber* ret = [data objectForKey:@"ret"];
     if([ret intValue] == 1){
         //设置成功

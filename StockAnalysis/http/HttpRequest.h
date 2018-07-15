@@ -18,8 +18,8 @@ typedef void(^httpResult)(BOOL success,id data);
 -(instancetype)init;
 
 
--(NSDictionary *)postWithUrl:(NSString *)url data:(NSArray *)requestData notification:(NSString*)notice;
--(NSDictionary *)getWithUrl:(NSString *)url notification:(NSString*)notice;
+//-(NSDictionary *)postWithUrl:(NSString *)url data:(NSArray *)requestData notification:(NSString*)notice;
+//-(NSDictionary *)getWithUrl:(NSString *)url notification:(NSString*)notice;
 
 -(NSDictionary* )httpBack;
 -(void)clearToken;

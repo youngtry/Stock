@@ -32,9 +32,9 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setGestureBack) name:@"SetGestureBack" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setGestureBack) name:@"SetGestureBack" object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(verifyGestureBack) name:@"VerifyGestureBack" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(verifyGestureBack) name:@"VerifyGestureBack" object:nil];
     
     
     if (!_buttonArr) {
@@ -177,16 +177,22 @@
     }
     NSLog(@"gesture =%@",gesture);
     
-    NSArray *parameters = @[ @{ @"name": @"gesture", @"value": gesture },
-                             @{ @"name": @"appkey", @"value": @"5yupjrc7tbhwufl8oandzidjyrmg6blc" },
-                             @{ @"name": @"channel", @"value": @"0" } ];
+    NSDictionary *parameters = @{  @"gesture": gesture };
     
     if([self.settitle.text isEqualToString:@"设置手势密码"]){
-        NSString* url = @"http://exchange-test.oneitfarm.com/server/account/set_gesture";
-        [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"SetGestureBack"];
+        NSString* url = @"account/set_gesture";
+        [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+            if(success){
+                [self setGestureBack:data];
+            }
+        }];
     }else if([self.settitle.text isEqualToString:@"验证手势密码"]){
-        NSString* url = @"http://exchange-test.oneitfarm.com/server/account/check_gesture";
-        [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"VerifyGestureBack"];
+        NSString* url = @"account/check_gesture";
+        [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+            if(success){
+                [self verifyGestureBack:data];
+            }
+        }];
     }
     
     
@@ -198,8 +204,8 @@
     }
 }
 
--(void)setGestureBack{
-    NSDictionary* data = [[HttpRequest getInstance] httpBack];
+-(void)setGestureBack:(NSDictionary*)data{
+//    NSDictionary* data = [[HttpRequest getInstance] httpBack];
     NSNumber* ret = [data objectForKey:@"ret"];
     if([ret intValue] == 1){
         //设置成功
@@ -211,8 +217,8 @@
     }
 }
 
--(void)verifyGestureBack{
-    NSDictionary* data = [[HttpRequest getInstance] httpBack];
+-(void)verifyGestureBack:(NSDictionary*)data{
+//    NSDictionary* data = [[HttpRequest getInstance] httpBack];
     NSNumber* ret = [data objectForKey:@"ret"];
     if([ret intValue] == 1){
         //验证成功

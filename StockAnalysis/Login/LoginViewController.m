@@ -93,13 +93,33 @@
     
     [HUDUtil showHudViewInSuperView:self.view withMessage:@"登陆中……"];
     
-    NSString* url = @"http://exchange-test.oneitfarm.com/server/account/login/phone";
-    NSDictionary *paramDic = @{ @"phone":self.usernameInput.text,@"password":self.passwordInput.text,@"appkey":@"5yupjrc7tbhwufl8oandzidjyrmg6blc",@"channel":@"0"};
+    NSString* url = @"account/login/phone";
+    NSDictionary *paramDic = @{ @"phone":self.usernameInput.text,@"password":self.passwordInput.text};
+    
+//    NSMutableDictionary* paramDic = [[NSMutableDictionary alloc] initWithDictionary:param];
     
     [[HttpRequest getInstance] postWithURL:url parma:paramDic block:^(BOOL success, id data) {
         if(success){
             //这里把判断ret才能知道是否正确登陆。
-            [self phoneLoginSuccess];
+//            [self phoneLoginSuccess];
+//            NSDictionary* info = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil ];
+            NSLog(@"登录消息：%@",data);
+            NSNumber* number = [data objectForKey:@"ret"];
+            if([number intValue] == 1){
+                [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"登陆成功"];
+                
+                [GameData setUserAccount:self.usernameInput.text];
+                [GameData setUserPassword:self.passwordInput.text];
+                
+                NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
+                [defaultdata setBool:YES forKey:@"IsLogin"];
+                
+                [self.navigationController popViewControllerAnimated:YES];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"ChangeAfterLogin" object:nil];
+            }else{
+                //登陆失败
+                [HUDUtil showSystemTipView:self title:@"提示" withContent:[data objectForKey:@"msg"]];
+            }
         }else{
             [HUDUtil hideHudViewWithFailureMessage:@"登陆失败"];
         }

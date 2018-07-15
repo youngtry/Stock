@@ -12,6 +12,8 @@
 #include <arpa/inet.h>
 #import <net/if.h>
 
+#define ServerURL @"http://exchange-test.oneitfarm.com/server/"
+
 @interface HttpRequest()
 @property(nonatomic,strong)NSDictionary* dataDictionary;
 @property(nonatomic,strong)NSString* token;
@@ -175,14 +177,34 @@
 
 -(void)postWithURL:(NSString*)url parma:(NSDictionary*)param block:(httpResult)block{
     // post请求
+    
+    NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithDictionary:param];
+    
+    [parameters setObject:@"5yupjrc7tbhwufl8oandzidjyrmg6blc" forKey:@"appkey"];
+    [parameters setObject:@"0" forKey:@"channel"];
+    url = [NSString stringWithFormat:@"%@%@",ServerURL,url];
+    
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     [self formatAFNetwork:manager];
-    [manager POST:url parameters:param constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask *task, id responseObject){
+    [manager POST:url parameters:parameters constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask *task, id responseObject){
         // 成功
         DLog(@"xxxxsuccess!");
         NSData *data = responseObject;
-        NSString *s = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        block(1,s);
+        NSDictionary* info = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+//        NSString *s = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        block(1,info);
+        
+        if([url isEqualToString:@"http://exchange-test.oneitfarm.com/server/account/login/phone"] || [url isEqualToString:@"http://exchange-test.oneitfarm.com/server/account/login/email"]){
+            //登陆请求应答，保存新的account_token
+            NSDictionary* datainfo = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil ];
+            NSNumber* number = [datainfo objectForKey:@"ret"];
+            if([number intValue] == 1){
+                _token = [[datainfo objectForKey:@"data"] objectForKey:@"account_token"];
+                NSLog(@"获取到的token = %@",_token);
+            }
+            
+        }
+        
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         // 失败
         DLog(@"xxxxxfailed!");
@@ -192,13 +214,19 @@
 
 -(void)getWithURL:(NSString*)url parma:(NSDictionary*)param block:(httpResult)block{
     // post请求
+    NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithDictionary:param];
+    [parameters setObject:@"5yupjrc7tbhwufl8oandzidjyrmg6blc" forKey:@"appkey"];
+    [parameters setObject:@"0" forKey:@"channel"];
+    url = [NSString stringWithFormat:@"%@%@",ServerURL,url];
+    
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     [self formatAFNetwork:manager];
-    [manager GET:url parameters:param progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager GET:url parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         DLog(@"xxxxsuccess!");
         NSData *data = responseObject;
-        NSString *s = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        block(1,s);
+//        NSString *s = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        NSDictionary* info = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil ];
+        block(1,info);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         DLog(@"xxxxxfailed!");
         block(0,nil);
@@ -218,7 +246,7 @@
 //    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json",@"text/json",@"text/xml",@"text/html",@"text/plain", nil ];
     // 设置请求头参数
     [manager.requestSerializer setValue:@"multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW" forHTTPHeaderField:@"content-type"];
-    [manager.requestSerializer setValue:@"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyOCwiYWNjb3VudF9pZCI6IjQwOTMzMjMxMzE0MTQ5ZWQ4OGFmOGEzYWRjNTM5YWQxIiwiY2lhY2NvdW50X3Rva2VuIjoiUVBkNmxoZmkwYUdCNDdURS5ydThPeHdLTWN2STRzbjBBLjVkNDFmYTE2N2RiNTQ4ZTNjN2U3MWJiZTdkMGQyZDRmIiwiZXhwIjoxNTMxMDM1MjY4fQ.8lLP9ztuKl4-la4Uxsh8nFzwBXG0RyVQvCkA7qXGWtw" forHTTPHeaderField:@"authorization"];
+    [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@",_token] forHTTPHeaderField:@"authorization"];
     [manager.requestSerializer setValue:@"no-cache" forHTTPHeaderField:@"Cache-Control"];
     [manager.requestSerializer setValue:@"57bb5e1b-7c27-4f1d-a5c2-fd56b5604d38" forHTTPHeaderField:@"Postman-Token"];
 }
