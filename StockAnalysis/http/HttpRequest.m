@@ -207,7 +207,7 @@
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         // 失败
-        DLog(@"xxxxxfailed!");
+        DLog(@"%@xxxxxfailed!",url);
         block(0,nil);
     }];
 }
@@ -228,7 +228,7 @@
         NSDictionary* info = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil ];
         block(1,info);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        DLog(@"xxxxxfailed!");
+        DLog(@"%@xxxxxfailed!",url);
         block(0,nil);
     }];
 }
