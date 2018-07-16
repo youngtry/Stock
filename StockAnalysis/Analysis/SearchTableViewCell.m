@@ -1,17 +1,14 @@
 //
-//  StockInfoCell.m
+//  SearchTableViewCell.m
 //  StockAnalysis
 //
-//  Created by ymx on 2018/6/21.
+//  Created by try on 2018/7/16.
 //  Copyright © 2018年 try. All rights reserved.
 //
 
-#import "StockInfoCell.h"
+#import "SearchTableViewCell.h"
 
-@interface StockInfoCell()
-@end
-
-@implementation StockInfoCell
+@implementation SearchTableViewCell
 
 - (void)awakeFromNib {
     [super awakeFromNib];

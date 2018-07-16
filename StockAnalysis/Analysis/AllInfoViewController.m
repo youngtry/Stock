@@ -11,6 +11,7 @@
 #import "AITabContentView.h"
 #import "Masonry.h"
 #import "StockInfoViewController.h"
+#import "AnaysisSearchViewController.h"
 @interface AllInfoViewController ()
 
 @property(nonatomic,strong)UISegmentedControl* segment;
@@ -28,6 +29,8 @@
     
 //    _titleLabs = [NSMutableArray new];
 //    _contentVCs = [NSMutableArray new];
+    
+    
 
     //国内外切换
     _segment = [[UISegmentedControl alloc] initWithItems:@[@"国内",@"全球"]];
@@ -47,6 +50,10 @@
         make.top.equalTo(self.view);
     }];
     
+    UIBarButtonItem* searchBtn = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Shape.png"] style:UIBarButtonItemStyleDone target:self action:@selector(searchStcoks)];
+    self.navigationItem.rightBarButtonItem = searchBtn;
+
+    
     //每页vc
     _scrollContent=[[AITabContentView alloc]initWithFrame:CGRectZero];
     [self.view addSubview:_scrollContent];
@@ -62,12 +69,30 @@
     [self changeToInternal];
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    
+    [self.navigationController setNavigationBarHidden:YES];
+//    [self.navigationController se]
+}
+
+-(void)searchStcoks{
+    AnaysisSearchViewController* vc = [[AnaysisSearchViewController alloc] initWithNibName:@"AnaysisSearchViewController" bundle:nil];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 -(void)changeToInternal{
     NSMutableArray* vcs = [NSMutableArray new];
     NSArray *titles = @[@"自选",@"指数",@"沪深",@"板块",@"港美"];
 
     for (int i=0; i<titles.count; i++) {
         StockInfoViewController *vc = [[StockInfoViewController alloc] init];
+        vc.index = i;
         [vcs addObject:vc];
     }
     [_scrollTitle configParameter:horizontal viewArr:titles tabWidth:kScreenWidth/titles.count tabHeight:42 index:0 block:^(NSInteger index) {

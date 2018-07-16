@@ -43,9 +43,6 @@
     
 }
 
-
-
-
 -(void)layoutSubviews{
     [super layoutSubviews];
     _pageController.view.frame=self.bounds;

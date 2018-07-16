@@ -192,7 +192,6 @@
         NSData *data = responseObject;
         NSDictionary* info = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
 //        NSString *s = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        block(1,info);
         
         if([url isEqualToString:@"http://exchange-test.oneitfarm.com/server/account/login/phone"] || [url isEqualToString:@"http://exchange-test.oneitfarm.com/server/account/login/email"]){
             //登陆请求应答，保存新的account_token
@@ -205,9 +204,13 @@
             
         }
         
+        block(1,info);
+        
+        
+        
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         // 失败
-        DLog(@"%@xxxxxfailed!",url);
+        DLog(@"%@xxxxxfailed! error = %@",url,error);
         block(0,nil);
     }];
 }
@@ -234,6 +237,7 @@
 }
 
 -(void)formatAFNetwork:(AFHTTPSessionManager*)manager{
+    NSLog(@"新的token = %@",_token);
 //    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];

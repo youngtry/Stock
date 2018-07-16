@@ -34,38 +34,10 @@
     
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setAccountInfo) name:@"GetMoneyBack" object:nil];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(autoLoginBack) name:@"AutoLogin" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getTipsAndAdsBack) name:@"FirstTipAndAds" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getTipsAndAdsBack) name:@"FirstTipAndAds" object:nil];
     
     
-    NSString* username = [GameData getUserAccount];
-    NSString* password = [GameData getUserPassword];
-    NSLog(@"username = %@,password = %@",username,password);
-    if([username containsString:@"@"]){
-        //邮箱登录
-        NSDictionary *parameters = @{@"email": [GameData getUserAccount],
-                               @"password": [GameData getUserPassword]};
-
-        NSString* url = @"account/login/email";
-//        [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"AutoLogin"];
-        [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
-            if(success){
-                [self autoLoginBack];
-            }
-        }];
-    }else{
-        //手机号登录
-        NSDictionary *parameters = @{@"phone": [GameData getUserAccount],
-                               @"password": [GameData getUserPassword]};
-        
-        
-        NSString* url = @"account/login/phone";
-//        [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"AutoLogin"];
-        [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
-            if(success){
-                [self autoLoginBack];
-            }
-        }];
-    }
+    
     
     //
     
@@ -128,12 +100,14 @@
         NSDictionary* shop = [[data objectForKey:@"data"] objectForKey:@"shop"];
         NSLog(@"shop = %@",shop);
         
+        NSString* shopRMB = [[shop objectForKey:@"RMB"] objectForKey:@"available"];
+        self.shopRMBLabel.text = shopRMB;
+        
     }
     
     
     
-//    NSString* shopRMB = [[exchange objectForKey:@"RMB"] objectForKey:@"available"];
-//    self.shopRMBLabel.text = shopRMB;
+    
 //
 //    NSString* shopUSD = [[exchange objectForKey:@"USD"] objectForKey:@"available"];
 //
@@ -143,14 +117,48 @@
 - (void)viewWillAppear:(BOOL)animated{
     //    NSLog(@"viewWillAppear");
     [self.navigationController setNavigationBarHidden:YES];
-    NSString* url = @"news/home";
-    NSDictionary* parameters = @{};
+    NSString* url1 = @"news/home";
+    NSDictionary* parameters1 = @{};
 //    [[HttpRequest getInstance] getWithUrl:url notification:@"FirstTipAndAds"];
-    [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
+    [[HttpRequest getInstance] getWithURL:url1 parma:parameters1 block:^(BOOL success, id data) {
         if(success){
             [self getTipsAndAdsBack:data];
         }
     }];
+    
+    
+    NSString* username = [GameData getUserAccount];
+    NSString* password = [GameData getUserPassword];
+    NSLog(@"username = %@,password = %@",username,password);
+    if([username containsString:@"@"]){
+        //邮箱登录
+        NSDictionary *parameters = @{@"email": [GameData getUserAccount],
+                                     @"password": [GameData getUserPassword]};
+        
+        NSString* url = @"account/login/email";
+     
+        [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+            if(success){
+                NSLog(@"登录消息 = %@",data);
+                [self autoLoginBack];
+            }
+        }];
+    }else{
+        //手机号登录
+        NSDictionary *parameters = @{@"phone": [GameData getUserAccount],
+                                     @"password": [GameData getUserPassword]};
+        
+        
+        NSString* url = @"account/login/phone";
+        
+        [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+            if(success){
+                NSLog(@"登录消息1 = %@",data);
+                [self autoLoginBack];
+ 
+            }
+        }];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -161,7 +169,7 @@
 -(void)getTipsAndAdsBack:(NSDictionary* )data{
     [self createAutoRunLabel:@"" view:self.autoRunActivityView fontsize:14];
     [self createAutoRunLabel:@"" view:self.adView fontsize:30];
-//    NSDictionary* data = [[HttpRequest getInstance] httpBack];
+
     NSNumber* ret = [data objectForKey:@"ret"];
     if([ret intValue] == 1)
     {

@@ -9,10 +9,13 @@
 #import "StockInfoViewController.h"
 #import "SortView.h"
 #import "StockInfoCell.h"
+#import "HttpRequest.h"
+
 @interface StockInfoViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic,strong)UITableView *tableView;
 @property(nonatomic,strong)NSMutableArray *data;
 @property(nonatomic,strong)UIView *rankContainer;
+@property(nonatomic,strong)NSArray* items;
 @end
 
 @implementation StockInfoViewController
@@ -26,6 +29,31 @@
     
     [self.view addSubview:self.tableView];
     self.tableView.tableHeaderView = self.rankContainer;
+    
+    self.items = @[];
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    NSLog(@"当前页面是第%d个页面",_index);
+    
+    NSDictionary* parameters = @{@"order_by":@"price",
+                                 @"order":@"desc",
+                                 @"asset":@"RMB"
+                                 };
+    NSString* url = @"market/item";
+    
+    [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
+        if(success){
+            NSLog(@"list = %@",data);
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                _items = [[data objectForKey:@"data"] objectForKey:@"items"];
+                if(_items){
+                    NSLog(@"items = %@,数量为：%lu",_items,(unsigned long)_items.count);
+                    [self.tableView reloadData];
+                }
+            }
+        }
+    }];
 }
 
 -(UITableView*)tableView{
@@ -74,7 +102,8 @@
 }
 #pragma mark - TableDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return self.data.count;
+//    return self.data.count;
+    return self.items.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -82,8 +111,26 @@
     if(!cell){
 //        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"id"];
         cell = [[[NSBundle mainBundle] loadNibNamed:@"StockInfoCell" owner:self options:nil] objectAtIndex:0];
+        
+        
     }
     //TODO 塞数据
+    
+    if(self.items.count>0){
+//        NSLog(@"keys = %ld",self.items.allValues.count);
+        NSDictionary* item = self.items[indexPath.row];
+        if(item){
+            cell.titleLabel.text = [item objectForKey:@"market"];
+            cell.volLabel.text = [item objectForKey:@"volume"];
+            cell.priceLabel.text = [item objectForKey:@"price"];
+            NSString* incre = [item objectForKey:@"increase"];
+            float ins = [incre floatValue];
+            incre = [NSString stringWithFormat:@"%.2f%%",ins*100];
+            cell.percentLabel.text = incre;
+        }
+        
+    }
+    
     return cell;
 }
 
