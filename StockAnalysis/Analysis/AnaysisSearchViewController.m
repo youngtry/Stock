@@ -32,9 +32,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+//    self.title = @"搜索";
     // Do any additional setup after loading the view from its nib.
     
+    [self.searchBar removeFromSuperview];
+    self.navigationItem.titleView = self.searchBar;
+    self.view.top = kNaviHeight;
+//    self.view.backgroundColor = [UIColor redColor];
     //标题滑动
     _scrollTitle=[[AITabScrollview alloc]initWithFrame:CGRectZero];
     [self.view addSubview:_scrollTitle];
@@ -42,7 +46,7 @@
         make.height.equalTo(@42);
         make.left.equalTo(self.view);
         make.right.equalTo(self.view);
-        make.top.equalTo(self.searchBar.mas_bottom);
+        make.top.mas_equalTo(@20);
     }];
     
     //每页vc
@@ -59,35 +63,7 @@
     [self changeToTrade];
     
     
-//    self.searchBar.delegate = self;
-    self.searchBar.hidden = YES;
-    searchController = [[UISearchController alloc]initWithSearchResultsController:nil];
-    //设置代理
-    searchController.delegate = self;
-    searchController.searchResultsUpdater= self;
-    
-    //搜索时，背景变暗色
-    searchController.dimsBackgroundDuringPresentation = YES;
-    //搜索时，背景变模糊
-    if (@available(iOS 9.1, *)) {
-        searchController.obscuresBackgroundDuringPresentation = YES;
-    } else {
-        // Fallback on earlier versions
-    }
-    //隐藏导航栏
-//    searchController.hidesNavigationBarDuringPresentation = YES;
-    searchController.definesPresentationContext = YES;
-
-    
-//    [self.navigationController.navigationBar setTranslucent:NO];
-    searchController.searchBar.frame = CGRectMake(searchController.searchBar.frame.origin.x, self.searchBar.frame.origin.y, searchController.searchBar.frame.size.width, self.searchBar.frame.size.height);
-
-    
-    [self.view addSubview:searchController.searchBar];
-//    searchController = [[UISearchController alloc] initWithSearchBar:_searchBar contentsController:self];
-//    [searchController setDelegate:self];
-//    searchController.searchResultsDataSource = self;
-//    searchController.searchResultsUpdater = self;
+    self.searchBar.delegate = self;
     
     sortedNameDict = @{@"a":@(1),
                        @"b":@(1),
@@ -127,6 +103,11 @@
     [_scrollContent configParam:vcs Index:0 block:^(NSInteger index) {
         [_scrollTitle updateTagLine:index];
     }];
+}
+
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
+    NSLog(@"searchText = %@",searchText);
 }
 
 #pragma mark - UISearchControllerDelegate代理

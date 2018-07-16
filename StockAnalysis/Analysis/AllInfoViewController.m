@@ -77,12 +77,14 @@
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     
-    [self.navigationController setNavigationBarHidden:YES];
+//    [self.navigationController setNavigationBarHidden:YES];
 //    [self.navigationController se]
 }
 
 -(void)searchStcoks{
     AnaysisSearchViewController* vc = [[AnaysisSearchViewController alloc] initWithNibName:@"AnaysisSearchViewController" bundle:nil];
+//    UIViewController *vc = [UIViewController new];
+//    vc.title = @"12311";
     [self.navigationController pushViewController:vc animated:YES];
 }
 
