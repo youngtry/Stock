@@ -44,7 +44,7 @@
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
     //顶部标题
-    [self.navigationItem setTitle:@"国家代码"];
+    [self.navigationItem setTitle:@"国家/地区"];
     
     //创建子视图
     [self creatSubviews];

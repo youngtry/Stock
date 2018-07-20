@@ -25,7 +25,7 @@
     // Do any additional setup after loading the view from its nib.
     self.title = @"安全中心";
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getBindBack) name:@"GetUserBindInfo" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getBindBack) name:@"GetUserBindInfo" object:nil];
     
     NSDictionary *parameters = @{} ;
 //    NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithDictionary:para];

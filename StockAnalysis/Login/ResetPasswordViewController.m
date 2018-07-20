@@ -21,6 +21,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *passwordAgainInput;
 @property (weak, nonatomic) IBOutlet UITextField *verifyInput;
 @property (nonatomic,strong) WSAuthCode *authCode;
+
+@property (nonatomic,strong) NSString *captcha_id;
 @end
 
 @implementation ResetPasswordViewController
@@ -29,14 +31,54 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetBack) name:@"ResetPwdBack" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetBack) name:@"ResetPwdBack" object:nil];
     
     self.secondContainer.hidden = YES;
     
-    [self.authCodeContainer addSubview:self.authCode];
+    self.captcha_id = @"";
+    
+//    [self.authCodeContainer addSubview:self.authCode];
 //    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reloadAuthCode:)];
 //    [self.authCodeContainer addGestureRecognizer:tap];
     self.authCodeContainer.userInteractionEnabled = YES;
+    
+    UITapGestureRecognizer *f = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(test)];
+    [self.view addGestureRecognizer:f];
+    self.view.userInteractionEnabled = YES;
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    
+    NSString* url = @"captcha/picture";
+    NSDictionary* parameters = @{};
+    
+    [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
+        if(success){
+            NSLog(@"data = %@",data);
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                NSDictionary* picdata = [data objectForKey:@"data"];
+                
+                self.captcha_id = [picdata objectForKey:@"captcha_id"];
+                
+                NSString* image = [picdata objectForKey:@"base64_png"];
+                
+                NSString* imagestr = [image substringFromIndex:22];
+//                NSLog(@"imagestr = %@",imagestr);
+                
+                NSData* decodeData = [[NSData alloc] initWithBase64EncodedString:imagestr options:NSDataBase64DecodingIgnoreUnknownCharacters];
+                
+                UIImage* decodeImage = [UIImage imageWithData:decodeData];
+                self.authCodeContainer.image = decodeImage;
+                
+                
+            }
+        }
+    }];
+}
+
+-(void)test{
+    [self.view endEditing:YES];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -55,20 +97,45 @@
 -(void)reloadAuthCode:(id)tap{
     [self.authCode reloadAuthCodeView];
 }
-
-- (IBAction)clickNext:(id)sender {
+-(void)verifyAuthImage{
     
-    if(![self.authCode startAuthWithString:self.authCodeTextFiled.text]){
-        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"验证码不正确"];
-        return;
-    }
     if(IsStrEmpty(self.userNameTextField.text)){
         [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"请输入用户名"];
         return;
     }
     
-    self.secondContainer.hidden = NO;
-    self.firstContainer.hidden = YES;
+    if(self.authCodeTextFiled.text.length == 0){
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"请输入验证码"];
+        return;
+    }
+    
+    NSDictionary* paremeters = @{@"captcha_id":self.captcha_id,
+                                 @"value":self.authCodeTextFiled.text};
+    
+    NSString* url = @"captcha/picture/verify";
+    
+    [[HttpRequest getInstance] postWithURL:url parma:paremeters block:^(BOOL success, id data) {
+        if(success){
+            NSLog(@"验证码信息:%@",data);
+            
+            if([[data objectForKey:@"ret"] intValue]== 1){
+                //验证成功
+                self.secondContainer.hidden = NO;
+                self.firstContainer.hidden = YES;
+            }else if ([[data objectForKey:@"ret"] intValue]== -1){
+                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+            }
+        }
+    }];
+}
+
+- (IBAction)clickNext:(id)sender {
+    
+    
+    [self verifyAuthImage];
+    return;
+
+    
 }
 - (IBAction)clickReset:(id)sender {
     if(self.passwordInput.text.length == 0){

@@ -147,7 +147,7 @@
         [self.countryCodeButton.titleLabel setText:countryCodeStr];
     }];
 
-    [self presentViewController:countrycodeVC animated:YES completion:nil];
+    [self.navigationController pushViewController:countrycodeVC animated:YES];
 }
 
 //1.代理传值

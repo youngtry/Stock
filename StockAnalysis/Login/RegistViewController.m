@@ -27,6 +27,21 @@
     
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registeBack) name:@"RegisteBack" object:nil];
     
+    UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:@"已有账户?" style:UIBarButtonItemStylePlain target:self action:@selector(clickLogin)];
+    self.navigationItem.rightBarButtonItem = right;
+    
+    UITapGestureRecognizer *f = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(test)];
+    [self.view addGestureRecognizer:f];
+    self.view.userInteractionEnabled = YES;
+    
+}
+
+-(void)clickLogin{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+-(void)test{
+    [self.view endEditing:YES];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -56,17 +71,17 @@
    
     //测试用
  
-    NSDictionary *parameters = @{  @"phone": @"17751766215",
-                                          @"captcha": @"8888",
-                                          @"password": @"123456" ,
-                                          @"district": @"+86"} ;
-//    NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithDictionary:para];
-    
-    NSString* url = @"register/phone";
-
-    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
-        
-    }];
+//    NSDictionary *parameters = @{  @"phone": @"17751766215",
+//                                          @"captcha": @"8888",
+//                                          @"password": @"123456" ,
+//                                          @"district": @"+86"} ;
+////    NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithDictionary:para];
+//
+//    NSString* url = @"register/phone";
+//
+//    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+//
+//    }];
 }
 - (IBAction)clickPhoneRegiste:(id)sender {
     

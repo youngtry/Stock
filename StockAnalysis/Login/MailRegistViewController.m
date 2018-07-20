@@ -24,6 +24,22 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mailRegisteBack) name:@"MailRegisteBack" object:nil];
+    
+    UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:@"已有账户?" style:UIBarButtonItemStylePlain target:self action:@selector(clickLogin)];
+    self.navigationItem.rightBarButtonItem = right;
+    
+    UITapGestureRecognizer *f = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(test)];
+    [self.view addGestureRecognizer:f];
+    self.view.userInteractionEnabled = YES;
+}
+
+-(void)clickLogin{
+    [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:NO];
+}
+
+-(void)test{
+    [self.view endEditing:YES];
 }
 
 - (void)didReceiveMemoryWarning {
