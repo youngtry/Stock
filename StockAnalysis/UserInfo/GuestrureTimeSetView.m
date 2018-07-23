@@ -26,7 +26,7 @@
 }
 */
 
--(void)init{
+-(void)initGuestrureTimeView{
     
 }
 
