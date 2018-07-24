@@ -10,4 +10,7 @@
 
 @interface GuestrureTimeSetView : UIView
 
+-(id)initWithFrame:(CGRect)frame;
+-(void)initGuestrureTimeView;
+
 @end

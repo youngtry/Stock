@@ -56,8 +56,8 @@
         for (int j=0; j<3; j++) {
             UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
             btn.frame = CGRectMake(ScreenWidth/12+ScreenWidth/3*j, ScreenHeight/3+ScreenWidth/3*i, ScreenWidth/7, ScreenWidth/7);
-            [btn setImage:[UIImage imageNamed:@"pbg"] forState:UIControlStateNormal];
-            [btn setImage:[UIImage imageNamed:@"pbg01"] forState:UIControlStateHighlighted];
+            [btn setImage:[UIImage imageNamed:@"unselect"] forState:UIControlStateNormal];
+            [btn setImage:[UIImage imageNamed:@"select"] forState:UIControlStateHighlighted];
             btn.userInteractionEnabled = NO;
             [btn setTag:i*3+j];
             [self.buttonArr addObject:btn];

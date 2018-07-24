@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SafeViewController">
             <connections>
+                <outlet property="guestureTime" destination="qKD-cO-Agi" id="7Sw-oh-pHi"/>
                 <outlet property="mailBindImage" destination="yWR-RI-Z3I" id="V2X-86-Ew7"/>
                 <outlet property="mailBindLabel" destination="4WU-JD-9Wd" id="daG-kv-I22"/>
                 <outlet property="phoneBindImage" destination="7e1-dE-mNk" id="ebQ-v9-ywW"/>
@@ -118,27 +119,29 @@
                         </imageView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ljy-dQ-X6g">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="45"/>
+                            <connections>
+                                <action selector="clickTimeSelect:" destination="-1" eventType="touchUpInside" id="v5N-PG-csn"/>
+                            </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FPK-jx-1ur">
-                            <rect key="frame" x="290" y="7" width="40" height="30"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="40" id="QU6-Nz-ytD"/>
-                            </constraints>
-                            <state key="normal" title="2分钟"/>
-                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2分钟" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qKD-cO-Agi">
+                            <rect key="frame" x="289" y="12" width="45" height="21"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
+                        <constraint firstItem="qKD-cO-Agi" firstAttribute="centerY" secondItem="RU0-EU-ty7" secondAttribute="centerY" id="2JR-Vt-MXr"/>
                         <constraint firstAttribute="trailing" secondItem="WUR-nn-dMb" secondAttribute="trailing" constant="19" id="5dS-Sd-5PO"/>
                         <constraint firstAttribute="trailing" secondItem="OfN-Fz-y0p" secondAttribute="trailing" id="8xe-Ot-xSd"/>
                         <constraint firstAttribute="height" constant="45" id="CmW-VM-h7D"/>
+                        <constraint firstAttribute="trailing" secondItem="qKD-cO-Agi" secondAttribute="trailing" constant="41" id="Nep-SY-HwV"/>
                         <constraint firstItem="ljy-dQ-X6g" firstAttribute="top" secondItem="RU0-EU-ty7" secondAttribute="top" id="TKe-Eg-e7H"/>
                         <constraint firstAttribute="trailing" secondItem="ljy-dQ-X6g" secondAttribute="trailing" id="Wer-Qu-c4r"/>
                         <constraint firstItem="WUR-nn-dMb" firstAttribute="centerY" secondItem="RU0-EU-ty7" secondAttribute="centerY" id="XsP-wQ-FQn"/>
                         <constraint firstItem="keW-6L-Fx5" firstAttribute="centerY" secondItem="RU0-EU-ty7" secondAttribute="centerY" id="c0f-fV-SMf"/>
-                        <constraint firstAttribute="trailing" secondItem="FPK-jx-1ur" secondAttribute="trailing" constant="45" id="lBM-Sc-MW9"/>
                         <constraint firstAttribute="bottom" secondItem="OfN-Fz-y0p" secondAttribute="bottom" id="oUe-Zo-tkc"/>
-                        <constraint firstItem="FPK-jx-1ur" firstAttribute="centerY" secondItem="RU0-EU-ty7" secondAttribute="centerY" id="oe1-tX-M3J"/>
                         <constraint firstItem="OfN-Fz-y0p" firstAttribute="leading" secondItem="RU0-EU-ty7" secondAttribute="leading" constant="25" id="rU2-41-noi"/>
                         <constraint firstItem="keW-6L-Fx5" firstAttribute="leading" secondItem="RU0-EU-ty7" secondAttribute="leading" constant="15" id="row-31-jdv"/>
                         <constraint firstAttribute="bottom" secondItem="ljy-dQ-X6g" secondAttribute="bottom" id="t7d-yX-nZj"/>

@@ -10,11 +10,18 @@
 #import "SetPasswordViewController.h"
 #import "SetMoneyPasswordViewController.h"
 #import "HttpRequest.h"
+#import "GuestrureTimeSetView.h"
+
+#define ScreenHeight [[UIScreen mainScreen] bounds].size.height
+#define ScreenWidth [[UIScreen mainScreen] bounds].size.width
+
 @interface SafeViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *phoneBindLabel;
 @property (weak, nonatomic) IBOutlet UILabel *mailBindLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *phoneBindImage;
 @property (weak, nonatomic) IBOutlet UIImageView *mailBindImage;
+@property (weak, nonatomic) IBOutlet UILabel *guestureTime;
+
 
 @end
 
@@ -25,7 +32,7 @@
     // Do any additional setup after loading the view from its nib.
     self.title = @"安全中心";
     
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getBindBack) name:@"GetUserBindInfo" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setGuestureTimeLabel:) name:@"GuestureTimeSetting" object:nil];
     
     NSDictionary *parameters = @{} ;
 //    NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithDictionary:para];
@@ -42,6 +49,12 @@
     
 //    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"GetUserBindInfo"];
     
+}
+
+-(void)setGuestureTimeLabel:(NSNotification *)notification{
+//     NSLog(@"收到消息啦!!!");
+    
+    self.guestureTime.text=[notification.userInfo objectForKey:@"text"];
 }
 
 -(void)getBindBack:(NSDictionary* )data{
@@ -80,6 +93,11 @@
     UISwitch* btn = (UISwitch*)sender;
     BOOL ison = [btn isOn];
     NSLog(@"clickTwiceVerify ison = %d",ison);
+}
+- (IBAction)clickTimeSelect:(id)sender {
+    GuestrureTimeSetView* timeset = [[GuestrureTimeSetView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
+    [self.view addSubview:timeset];
+//    [self.navigationController ]
 }
 
 

@@ -140,7 +140,12 @@
         [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
             if(success){
                 NSLog(@"登录消息 = %@",data);
-                [self autoLoginBack];
+                if([[data objectForKey:@"ret"] intValue] == 1){
+                    [self autoLoginBack];
+                }else{
+                    NSString* msg = [data objectForKey:@"msg"];
+                    [HUDUtil showSystemTipView:self title:@"登录失败" withContent:msg];
+                }
             }
         }];
     }else{
@@ -154,7 +159,13 @@
         [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
             if(success){
                 NSLog(@"登录消息1 = %@",data);
-                [self autoLoginBack];
+                if([[data objectForKey:@"ret"] intValue] == 1){
+                    [self autoLoginBack];
+                }else{
+                    NSString* msg = [data objectForKey:@"msg"];
+                    [HUDUtil showSystemTipView:self title:@"登录失败" withContent:msg];
+                }
+                
  
             }
         }];
