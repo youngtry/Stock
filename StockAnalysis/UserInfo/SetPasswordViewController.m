@@ -46,8 +46,13 @@
     self.imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
     [self.view addSubview:self.imageView];
     
-    self.settitle = [[UILabel alloc] initWithFrame:CGRectMake(0, ScreenHeight*0.1, ScreenWidth, 50)];
+    UIImageView* guestureIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"guestureicon.png"]];
+    [guestureIcon setFrame:CGRectMake(ScreenWidth/2-17, ScreenHeight*0.1, 34, 34)];
+    [self.imageView addSubview:guestureIcon];
+    
+    self.settitle = [[UILabel alloc] initWithFrame:CGRectMake(0, ScreenHeight*0.2, ScreenWidth, 50)];
     self.settitle.text = @"设置手势密码";
+    [self.settitle setTextColor:[UIColor lightGrayColor]];
     [self.settitle setTextAlignment:NSTextAlignmentCenter];
     
     [self.imageView addSubview:self.settitle];
@@ -55,7 +60,7 @@
     for (int i=0; i<3; i++) {
         for (int j=0; j<3; j++) {
             UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-            btn.frame = CGRectMake(ScreenWidth/12+ScreenWidth/3*j, ScreenHeight/3+ScreenWidth/3*i, ScreenWidth/7, ScreenWidth/7);
+            btn.frame = CGRectMake(ScreenWidth*0.18+ScreenWidth/4*j, ScreenHeight/3+ScreenWidth/4*i, ScreenWidth/7, ScreenWidth/7);
             [btn setImage:[UIImage imageNamed:@"unselect"] forState:UIControlStateNormal];
             [btn setImage:[UIImage imageNamed:@"select"] forState:UIControlStateHighlighted];
             btn.userInteractionEnabled = NO;

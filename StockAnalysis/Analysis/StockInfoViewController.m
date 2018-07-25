@@ -42,7 +42,7 @@
                                  };
     NSString* url = @"market/item";
     
-    [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
+    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
             NSLog(@"list = %@",data);
             if([[data objectForKey:@"ret"] intValue] == 1){
