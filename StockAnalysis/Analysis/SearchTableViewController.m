@@ -8,6 +8,7 @@
 
 #import "SearchTableViewController.h"
 #import "SearchTableViewCell.h"
+#import "SearchData.h"
 
 @interface SearchTableViewController ()
 
@@ -23,6 +24,12 @@
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showSearchList) name:@"ShowSearchList" object:nil];
+}
+
+-(void)showSearchList{
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -48,17 +55,25 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 #warning Incomplete implementation, return the number of rows
-    return 3;
+    
+    NSMutableArray* searchlist = [SearchData getInstance].searchList;
+    return searchlist.count;;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    
+    NSMutableArray* searchlist = [SearchData getInstance].searchList;
+    
+    
     
     SearchTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
     if(!cell){
         //        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"id"];
         cell = [[[NSBundle mainBundle] loadNibNamed:@"SearchTableViewCell" owner:self options:nil] objectAtIndex:0];
     }
+    
     
     return cell;
 }

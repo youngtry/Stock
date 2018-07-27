@@ -11,8 +11,11 @@
 #import "AITabContentView.h"
 #import "Masonry.h"
 #import "SearchTableViewController.h"
+#import "SearchTableViewCell.h"
+#import "SearchData.h"
+#import "HttpRequest.h"
 
-@interface AnaysisSearchViewController ()<UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate,UISearchControllerDelegate,UISearchResultsUpdating>{
+@interface AnaysisSearchViewController ()<UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate>{
     //搜索
     UISearchController *searchController;
     NSMutableArray *searchResultValuesArray;
@@ -22,6 +25,8 @@
     NSArray *indexArray;
 }
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
+@property (weak, nonatomic) IBOutlet UIView *historyView;
+@property (weak, nonatomic) IBOutlet UITableView *histroyList;
 
 @property(nonatomic,strong) AITabScrollview *scrollTitle;
 @property(nonatomic,strong) AITabContentView*scrollContent;
@@ -34,11 +39,44 @@
     [super viewDidLoad];
 //    self.title = @"搜索";
     // Do any additional setup after loading the view from its nib.
-    
+
     [self.searchBar removeFromSuperview];
     self.navigationItem.titleView = self.searchBar;
+//    self.searchBar.enablesReturnKeyAutomatically = YES;
     self.view.top = kNaviHeight;
 //    self.view.backgroundColor = [UIColor redColor];
+    
+    
+    [self changeToTrade];
+//    [self changeToSearchHistroy];
+    
+    self.searchBar.delegate = self;
+    
+    
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+-(BOOL)prefersStatusBarHidden{
+    return NO;
+}
+- (IBAction)clickClearHistroy:(id)sender {
+}
+
+-(void)changeToSearchHistroy{
+    _historyView.hidden = NO;
+    _histroyList.dataSource = self;
+    _histroyList.delegate = self;
+}
+
+
+-(void)changeToTrade{
+    
+    _historyView.hidden = YES;
+    
     //标题滑动
     _scrollTitle=[[AITabScrollview alloc]initWithFrame:CGRectZero];
     [self.view addSubview:_scrollTitle];
@@ -60,11 +98,6 @@
         make.bottom.equalTo(self.view);
     }];
     
-    [self changeToTrade];
-    
-    
-    self.searchBar.delegate = self;
-    
     sortedNameDict = @{@"a":@(1),
                        @"b":@(1),
                        @"c":@(1),
@@ -74,32 +107,19 @@
     indexArray = [[NSArray alloc] initWithArray:[[sortedNameDict allKeys] sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
         return [obj1 compare:obj2];
     }]];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
--(BOOL)prefersStatusBarHidden{
-    return NO;
-}
-
-
--(void)changeToTrade{
+    
     NSMutableArray* vcs = [NSMutableArray new];
     NSArray *titles = @[@"期货交易",@"商户交易"];
     
     for (int i=0; i<titles.count; i++) {
         SearchTableViewController *vc = [[SearchTableViewController alloc] init];
-//        vc.index = i;
         [vcs addObject:vc];
-//        vc.tableView.tableHeaderView = searchController.searchBar;
         
     }
     [_scrollTitle configParameter:horizontal viewArr:titles tabWidth:kScreenWidth/titles.count tabHeight:42 index:0 block:^(NSInteger index) {
         [_scrollContent updateTab:index];
     }];
+    
     [_scrollContent configParam:vcs Index:0 block:^(NSInteger index) {
         [_scrollTitle updateTagLine:index];
     }];
@@ -109,45 +129,66 @@
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
     NSLog(@"searchText = %@",searchText);
 }
-
-#pragma mark - UISearchControllerDelegate代理
-
-//测试UISearchController的执行过程
-
-- (void)willPresentSearchController:(UISearchController *)searchController
-{
-    NSLog(@"willPresentSearchController");
-}
-
-- (void)didPresentSearchController:(UISearchController *)searchController
-{
-    NSLog(@"didPresentSearchController");
-}
-
-- (void)willDismissSearchController:(UISearchController *)searchController
-{
-    NSLog(@"willDismissSearchController");
-}
-
-- (void)didDismissSearchController:(UISearchController *)searchController
-{
-    NSLog(@"didDismissSearchController");
-}
-
-- (void)presentSearchController:(UISearchController *)searchController
-{
-    NSLog(@"presentSearchController");
-}
-
-
--(void)updateSearchResultsForSearchController:(UISearchController *)searchController {
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar{
+    NSLog(@"endSearch");
     
-    NSLog(@"updateSearchResultsForSearchController");
-    NSString *searchString = [searchController.searchBar text];
-//    NSPredicate *preicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[c] %@", searchString];
-//    NSLog(@"searchString = %@",searchString);
+    NSDictionary* parameters = @{@"market":searchBar.text};
+    NSString* url = @"market/search";
+    
+    [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
+        if(success){
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                
+                NSDictionary* market = [data objectForKey:@"data"];
+                
+                if(market.count>0){
+                    NSArray* result = [market objectForKey:@"market"];
+//                    NSLog(@"搜索结果：%@,%@",result,data);
+                    if(result.count >0){
+                        [[SearchData getInstance].searchList removeAllObjects];
+                        for (int i=0; i<result.count; i++) {
+                            NSDictionary* info = result[i];
+                            NSLog(@"i= %d,info = %@",i,info);
+                            [[SearchData getInstance].searchList addObject:info];
+                            [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowSearchList" object:nil];
+                        }
+                    }
+                }
+            }
+        }
+    }];
 }
 
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
+    NSLog(@"searchBarSearchButtonClicked");
+//    self.searchBar.keyboardAppearance
+    [self.searchBar resignFirstResponder];
+}
+
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+#warning Incomplete implementation, return the number of sections
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+#warning Incomplete implementation, return the number of rows
+    return 3;
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    SearchTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+    if(!cell){
+        //        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"id"];
+        cell = [[[NSBundle mainBundle] loadNibNamed:@"SearchTableViewCell" owner:self options:nil] objectAtIndex:0];
+    }
+    
+    return cell;
+}
 
 /*
 #pragma mark - Navigation

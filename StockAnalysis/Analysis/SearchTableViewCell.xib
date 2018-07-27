@@ -22,14 +22,14 @@
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="天宝食品" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R3g-5G-c4T">
                         <rect key="frame" x="16" y="12" width="70" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <nil key="textColor"/>
+                        <color key="textColor" red="0.35294117647058826" green="0.69803921568627447" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6aM-QU-f3J">
-                        <rect key="frame" x="275" y="8" width="29" height="29"/>
+                        <rect key="frame" x="283" y="11" width="21" height="22.5"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="29" id="ZFw-OB-2Kb"/>
-                            <constraint firstAttribute="width" constant="29" id="ZXn-Ti-ZAU"/>
+                            <constraint firstAttribute="height" constant="22.5" id="ZFw-OB-2Kb"/>
+                            <constraint firstAttribute="width" constant="21" id="ZXn-Ti-ZAU"/>
                         </constraints>
                         <state key="normal" backgroundImage="addstar"/>
                     </button>
