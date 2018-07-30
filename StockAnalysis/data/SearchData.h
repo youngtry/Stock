@@ -15,6 +15,8 @@
 +(instancetype) getInstance;
 -(instancetype) init;
 
+-(void)addData;
+
 -(void)addhistory:(NSDictionary*)history;
 -(void)addSpecail:(NSDictionary*)specail;
 

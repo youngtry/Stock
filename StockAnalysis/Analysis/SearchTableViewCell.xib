@@ -26,12 +26,15 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6aM-QU-f3J">
-                        <rect key="frame" x="283" y="11" width="21" height="22.5"/>
+                        <rect key="frame" x="283" y="11.5" width="21" height="22.5"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="22.5" id="ZFw-OB-2Kb"/>
                             <constraint firstAttribute="width" constant="21" id="ZXn-Ti-ZAU"/>
                         </constraints>
-                        <state key="normal" backgroundImage="addstar"/>
+                        <state key="normal" image="addstar"/>
+                        <connections>
+                            <action selector="clickLike:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="f7N-1X-tdg"/>
+                        </connections>
                     </button>
                 </subviews>
                 <constraints>
@@ -42,6 +45,10 @@
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <connections>
+                <outlet property="likeButton" destination="6aM-QU-f3J" id="Dkd-FB-fgf"/>
+                <outlet property="nameLabel" destination="R3g-5G-c4T" id="JgF-d8-Kpn"/>
+            </connections>
         </tableViewCell>
     </objects>
     <resources>

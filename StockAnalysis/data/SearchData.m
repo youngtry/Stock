@@ -48,13 +48,13 @@
 }
 
 -(void)addData{
-    NSMutableArray* list = [defaluts objectForKey:@"HistoryList"];
+    NSMutableArray* list = [[NSUserDefaults standardUserDefaults] objectForKey:@"HistoryList"];
     NSLog(@"list.count = %ld",list.count);
     if(list.count>0){
         searchHistoryList = list;
     }
     
-    NSMutableArray* list1 = [defaluts objectForKey:@"SpecialList"];
+    NSMutableArray* list1 = [[NSUserDefaults standardUserDefaults] objectForKey:@"SpecialList"];
     NSLog(@"list1.count = %ld",list1.count);
     if(list.count>0){
         specialList = list1;
@@ -62,17 +62,19 @@
 }
 
 -(void)addhistory:(NSDictionary*)history{
-    NSMutableArray* list = [defaluts objectForKey:@"HistoryList"];
-    [list addObject:history];
-    [defaluts setObject:list forKey:@"HistoryList"];
-    [defaluts synchronize];
+    
+    [searchHistoryList addObject:history];
+
+    [[NSUserDefaults standardUserDefaults] setObject:searchHistoryList forKey:@"HistoryList"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 -(void)addSpecail:(NSDictionary*)specail{
-    NSMutableArray* list = [defaluts objectForKey:@"SpecialList"];
-    [list addObject:specail];
-    [defaluts setObject:list forKey:@"SpecialList"];
-    [defaluts synchronize];
+    
+    [specialList addObject:specail];
+    
+//    [[NSUserDefaults standardUserDefaults] setObject:specialList forKey:@"SpecialList"];
+//    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 -(NSMutableArray*)getHistory{

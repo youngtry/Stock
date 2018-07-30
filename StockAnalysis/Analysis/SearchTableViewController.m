@@ -10,7 +10,10 @@
 #import "SearchTableViewCell.h"
 #import "SearchData.h"
 
-@interface SearchTableViewController ()
+@interface SearchTableViewController (){
+    NSMutableArray* showList;
+    
+}
 
 @end
 
@@ -19,6 +22,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.view addSubview:self.tableView];
+    showList = [[NSMutableArray alloc] init];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -30,6 +34,42 @@
 
 -(void)showSearchList{
     
+    [showList removeAllObjects];
+    BOOL isshop = NO;
+    for(int i=0;i<[SearchData getInstance].searchList.count;i++){
+        NSDictionary* info = [SearchData getInstance].searchList[i];
+        if(![self isRepeatInShowList:info]){
+            [showList addObject:info];
+            if([info objectForKey:@"asset"]){
+                //是商户搜索
+                isshop = YES;
+            }
+        }
+    }
+    
+    if(!isshop){
+        for(int i=0;i<[[SearchData getInstance] getSpecail].count;i++){
+            NSDictionary* info = [[SearchData getInstance] getSpecail][i];
+            if(![self isRepeatInShowList:info]){
+                [showList addObject:info];
+            }
+        }
+    }
+    
+    
+    [_tableView reloadData];
+}
+
+-(BOOL)isRepeatInShowList:(NSDictionary*)info{
+    
+    for(int i=0;i<showList.count;i++){
+        NSDictionary* data = showList[i];
+        if([[data objectForKey:@"market"] isEqualToString:[info objectForKey:@"market"]]){
+            return YES;
+        }
+    }
+    
+    return NO;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -42,6 +82,7 @@
         _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
         _tableView.dataSource = self;
         _tableView.delegate = self;
+        _tableView.tableFooterView = [UIView new];
     }
     return _tableView;
 }
@@ -56,26 +97,55 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 #warning Incomplete implementation, return the number of rows
     
-    NSMutableArray* searchlist = [SearchData getInstance].searchList;
+    NSMutableArray* searchlist = showList;
     return searchlist.count;;
+//    return 0;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     
-    NSMutableArray* searchlist = [SearchData getInstance].searchList;
+    NSMutableArray* searchlist = showList;
     
     
     
-    SearchTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+    SearchTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     if(!cell){
         //        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"id"];
         cell = [[[NSBundle mainBundle] loadNibNamed:@"SearchTableViewCell" owner:self options:nil] objectAtIndex:0];
+//
+    }
+    
+    NSDictionary* data = searchlist[[indexPath row]];
+    if([data objectForKey:@"asset"]){
+        [cell setName:[data objectForKey:@"name"]];
+        [cell setIfShop:YES];
+    }else{
+        [cell setName:[data objectForKey:@"market"]];
+        [cell setIfShop:NO];
+        if([self isCellLike:data]){
+            //关注
+            [cell setIfLike:YES];
+        }else{
+            [cell setIfLike:NO];
+        }
     }
     
     
+    
     return cell;
+}
+
+-(BOOL)isCellLike:(NSDictionary*)info{
+    for(int i=0;i<[[SearchData getInstance] getSpecail].count;i++){
+        NSDictionary* data = [[SearchData getInstance] getSpecail][i];
+        if([[data objectForKey:@"market"] isEqualToString:[info objectForKey:@"market"]]){
+            return YES;
+        }
+    }
+    
+    return NO;
 }
 
 

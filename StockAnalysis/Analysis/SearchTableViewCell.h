@@ -10,4 +10,7 @@
 
 @interface SearchTableViewCell : UITableViewCell
 
+-(void)setName:(NSString*)name;
+-(void)setIfLike:(BOOL)like;
+-(void)setIfShop:(BOOL)shop;
 @end

@@ -47,6 +47,9 @@
 //    self.view.backgroundColor = [UIColor redColor];
     
     
+    
+    
+    
     [self changeToTrade];
 //    [self changeToSearchHistroy];
     
@@ -58,6 +61,39 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    
+    [[SearchData getInstance].searchList removeAllObjects];
+    [[[SearchData getInstance] getSpecail] removeAllObjects];
+    
+//    [self.navigationController.navigationItem setHidden:YES];
+    NSDictionary* parameters = @{@"page":@"1",
+                                 @"page_limit":@"10",
+                                 @"order_by":@"price"
+                                 };
+    NSString* url = @"market/follow/list";
+    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+        if(success){
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                NSDictionary* itemData = [data objectForKey:@"data"];
+                if(itemData.count>0){
+                    NSArray* item = [itemData objectForKey:@"items"];
+                    if(item.count>0){
+                        for (int i=0; i<item.count; i++) {
+                            NSDictionary* info = item[i];
+                            NSLog(@"i= %d,info = %@",i,info);
+                            [[SearchData getInstance] addSpecail:info];
+                        }
+                        //                        [[SearchData getInstance] addData];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowSearchList" object:nil];
+                    }
+                }
+            }
+        }
+    }];
 }
 
 -(BOOL)prefersStatusBarHidden{
@@ -132,31 +168,65 @@
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar{
     NSLog(@"endSearch");
     
-    NSDictionary* parameters = @{@"market":searchBar.text};
-    NSString* url = @"market/search";
+    NSLog(@"当前是；%ld",_scrollTitle.tagIndex );
     
-    [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
-        if(success){
-            if([[data objectForKey:@"ret"] intValue] == 1){
-                
-                NSDictionary* market = [data objectForKey:@"data"];
-                
-                if(market.count>0){
-                    NSArray* result = [market objectForKey:@"market"];
-//                    NSLog(@"搜索结果：%@,%@",result,data);
-                    if(result.count >0){
-                        [[SearchData getInstance].searchList removeAllObjects];
-                        for (int i=0; i<result.count; i++) {
-                            NSDictionary* info = result[i];
-                            NSLog(@"i= %d,info = %@",i,info);
-                            [[SearchData getInstance].searchList addObject:info];
+    if(_scrollTitle.tagIndex == 0){
+        NSDictionary* parameters = @{@"market":searchBar.text};
+        NSString* url = @"market/search";
+        
+        [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
+            if(success){
+                if([[data objectForKey:@"ret"] intValue] == 1){
+                    
+                    NSDictionary* market = [data objectForKey:@"data"];
+                    
+                    if(market.count>0){
+                        NSArray* result = [market objectForKey:@"market"];
+                        //                    NSLog(@"搜索结果：%@,%@",result,data);
+                        if(result.count >0){
+                            [[SearchData getInstance].searchList removeAllObjects];
+                            for (int i=0; i<result.count; i++) {
+                                NSDictionary* info = result[i];
+                                NSLog(@"i= %d,info = %@",i,info);
+                                [[SearchData getInstance].searchList addObject:info];
+                                
+                            }
+                            
                             [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowSearchList" object:nil];
                         }
                     }
                 }
             }
-        }
-    }];
+        }];
+    }else{
+        NSDictionary* parameters = @{@"asset":searchBar.text};
+        NSString* url = @"market/shop/search";
+        [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
+            if(success){
+                if([[data objectForKey:@"ret"] intValue] == 1){
+                    NSDictionary* market = [data objectForKey:@"data"];
+                    
+                    if(market.count>0){
+                        NSArray* result = [market objectForKey:@"assets"];
+                        //                    NSLog(@"搜索结果：%@,%@",result,data);
+                        if(result.count >0){
+                            [[SearchData getInstance].searchList removeAllObjects];
+                            for (int i=0; i<result.count; i++) {
+                                NSDictionary* info = result[i];
+                                NSLog(@"i= %d,info = %@",i,info);
+                                [[SearchData getInstance].searchList addObject:info];
+                                
+                            }
+                            
+                            [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowSearchList" object:nil];
+                        }
+                    }
+                }
+            }
+        }];
+    }
+    
+    
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
