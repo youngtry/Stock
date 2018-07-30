@@ -44,11 +44,11 @@
     
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
-            NSLog(@"list = %@",data);
+//            NSLog(@"list = %@",data);
             if([[data objectForKey:@"ret"] intValue] == 1){
                 _items = [[data objectForKey:@"data"] objectForKey:@"items"];
                 if(_items){
-                    NSLog(@"items = %@,数量为：%lu",_items,(unsigned long)_items.count);
+//                    NSLog(@"items = %@,数量为：%lu",_items,(unsigned long)_items.count);
                     [self.tableView reloadData];
                 }
             }

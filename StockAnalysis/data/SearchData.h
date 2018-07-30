@@ -11,6 +11,8 @@
 @interface SearchData : NSObject
 
 @property(nonatomic,strong)NSMutableArray* searchList;
+@property(nonatomic,strong)NSMutableArray* searchHistoryList;
+@property(nonatomic,strong)NSMutableArray* specialList;
 
 +(instancetype) getInstance;
 -(instancetype) init;

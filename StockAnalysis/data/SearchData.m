@@ -9,9 +9,6 @@
 #import "SearchData.h"
 
 @interface SearchData(){
-    NSMutableArray* searchHistoryList;
-    NSMutableArray* specialList;
-    NSUserDefaults* defaluts;
     
 }
 @end
@@ -36,11 +33,8 @@
 -(instancetype)init{
     self = [super init];
     if(self){
-        defaluts = [NSUserDefaults standardUserDefaults];
-        searchHistoryList = [[NSMutableArray alloc] init];
-        specialList = [[NSMutableArray alloc] init];
-//        [defaluts objectForKey:@"HistoryList"];
-//        [defaluts objectForKey:@"SpecialList"];
+        self.searchHistoryList = [[NSMutableArray alloc] init];
+        self.specialList = [[NSMutableArray alloc] init];
         self.searchList = [[NSMutableArray alloc] init];
         [self addData];
     }
@@ -51,38 +45,38 @@
     NSMutableArray* list = [[NSUserDefaults standardUserDefaults] objectForKey:@"HistoryList"];
     NSLog(@"list.count = %ld",list.count);
     if(list.count>0){
-        searchHistoryList = list;
+        self.searchHistoryList = list;
     }
     
     NSMutableArray* list1 = [[NSUserDefaults standardUserDefaults] objectForKey:@"SpecialList"];
     NSLog(@"list1.count = %ld",list1.count);
     if(list.count>0){
-        specialList = list1;
+        self.specialList = list1;
     }
 }
 
 -(void)addhistory:(NSDictionary*)history{
     
-    [searchHistoryList addObject:history];
+    [self.searchHistoryList addObject:history];
 
-    [[NSUserDefaults standardUserDefaults] setObject:searchHistoryList forKey:@"HistoryList"];
+    [[NSUserDefaults standardUserDefaults] setObject:self.searchHistoryList forKey:@"HistoryList"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 -(void)addSpecail:(NSDictionary*)specail{
     
-    [specialList addObject:specail];
+    [self.specialList addObject:specail];
     
 //    [[NSUserDefaults standardUserDefaults] setObject:specialList forKey:@"SpecialList"];
 //    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 -(NSMutableArray*)getHistory{
-    return searchHistoryList;
+    return self.searchHistoryList;
 }
 
 -(NSMutableArray*)getSpecail{
-    return specialList;
+    return self.specialList;
 }
 
 

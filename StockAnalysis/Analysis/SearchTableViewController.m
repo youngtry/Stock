@@ -31,7 +31,47 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showSearchList) name:@"ShowSearchList" object:nil];
 }
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    NSLog(@"showTableview  %@",[self title]);
+ 
+    [showList removeAllObjects];
+    if([[self title] isEqualToString:@"0"]){
+        for(int i=0;i<[SearchData getInstance].searchList.count;i++){
+            NSDictionary* info = [SearchData getInstance].searchList[i];
+            if(![self isRepeatInShowList:info]){
 
+                if(![info objectForKey:@"asset"]){
+                    //不能是商户搜索
+                    [showList addObject:info];
+                }
+            }
+        }
+
+        for(int i=0;i<[[SearchData getInstance] getSpecail].count;i++){
+            NSDictionary* info = [[SearchData getInstance] getSpecail][i];
+            if(![self isRepeatInShowList:info]){
+                [showList addObject:info];
+            }
+        }
+    }else if ([[self title] isEqualToString:@"1"]){
+
+        for(int i=0;i<[SearchData getInstance].searchList.count;i++){
+            NSDictionary* info = [SearchData getInstance].searchList[i];
+            if(![self isRepeatInShowList:info]){
+
+                if([info objectForKey:@"asset"]){
+                    //是商户搜索
+
+                    [showList addObject:info];
+                }
+            }
+        }
+    }
+
+    [_tableView reloadData];
+   
+}
 -(void)showSearchList{
     
     [showList removeAllObjects];
@@ -135,6 +175,28 @@
     
     
     return cell;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    SearchTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if(cell){
+        NSString* name = [cell getName];
+        NSDictionary* data = [self getShowDataWithName:name];
+        if(data){
+            [[SearchData getInstance] addhistory:data];
+            [[SearchData getInstance] addData];
+        }
+    }
+}
+
+-(NSDictionary*)getShowDataWithName:(NSString*)name{
+    for(int i=0;i<showList.count;i++){
+        NSDictionary* data = showList[i];
+        if([[data objectForKey:@"market"] isEqualToString:name]){
+            return data;
+        }
+    }
+    return nil;
 }
 
 -(BOOL)isCellLike:(NSDictionary*)info{

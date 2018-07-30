@@ -11,6 +11,7 @@
 @interface SearchTableViewCell : UITableViewCell
 
 -(void)setName:(NSString*)name;
+-(NSString*)getName;
 -(void)setIfLike:(BOOL)like;
 -(void)setIfShop:(BOOL)shop;
 @end

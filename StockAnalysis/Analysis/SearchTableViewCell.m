@@ -8,6 +8,7 @@
 
 #import "SearchTableViewCell.h"
 #import "HttpRequest.h"
+#import "SearchData.h"
 
 @interface SearchTableViewCell()
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
@@ -28,7 +29,7 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
+//    [[SearchData getInstance] addhistory:]
     // Configure the view for the selected state
 }
 - (IBAction)clickLike:(id)sender {
@@ -40,6 +41,11 @@
             if(success){
                 if([[data objectForKey:@"ret"] intValue] == 1){
                     [self setIfLike:NO];
+                    for (NSDictionary* info in [SearchData getInstance].specialList) {
+                        if([[info objectForKey:@"market"] isEqualToString:_nameLabel.text]){
+                            [[SearchData getInstance].specialList removeObject:info];
+                        }
+                    }
                 }
             }
         }];
@@ -50,6 +56,12 @@
             if(success){
                 if([[data objectForKey:@"ret"] intValue] == 1){
                     [self setIfLike:YES];
+                    for (NSDictionary* info in [SearchData getInstance].searchList) {
+                        if([[info objectForKey:@"market"] isEqualToString:_nameLabel.text]){
+                            [[SearchData getInstance].specialList addObject:info];
+                        }
+                    }
+                    
                 }
             }
         }];
@@ -59,6 +71,9 @@
 
 -(void)setName:(NSString*)name{
     _nameLabel.text = name;
+}
+-(NSString*)getName{
+    return _nameLabel.text;
 }
 
 -(void)setIfLike:(BOOL)like{

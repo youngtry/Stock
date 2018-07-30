@@ -46,10 +46,6 @@
     self.view.top = kNaviHeight;
 //    self.view.backgroundColor = [UIColor redColor];
     
-    
-    
-    
-    
     [self changeToTrade];
 //    [self changeToSearchHistroy];
     
@@ -67,9 +63,8 @@
     [super viewDidAppear:animated];
     
     [[SearchData getInstance].searchList removeAllObjects];
-    [[[SearchData getInstance] getSpecail] removeAllObjects];
+    [[SearchData getInstance].specialList removeAllObjects];
     
-//    [self.navigationController.navigationItem setHidden:YES];
     NSDictionary* parameters = @{@"page":@"1",
                                  @"page_limit":@"10",
                                  @"order_by":@"price"
@@ -149,6 +144,7 @@
     
     for (int i=0; i<titles.count; i++) {
         SearchTableViewController *vc = [[SearchTableViewController alloc] init];
+        [vc setTitle:[NSString stringWithFormat:@"%d",i]];
         [vcs addObject:vc];
         
     }
