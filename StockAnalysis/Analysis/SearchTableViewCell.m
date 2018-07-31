@@ -44,6 +44,7 @@
                     for (NSDictionary* info in [SearchData getInstance].specialList) {
                         if([[info objectForKey:@"market"] isEqualToString:_nameLabel.text]){
                             [[SearchData getInstance].specialList removeObject:info];
+                            break;
                         }
                     }
                 }
@@ -59,6 +60,7 @@
                     for (NSDictionary* info in [SearchData getInstance].searchList) {
                         if([[info objectForKey:@"market"] isEqualToString:_nameLabel.text]){
                             [[SearchData getInstance].specialList addObject:info];
+                            break;
                         }
                     }
                     

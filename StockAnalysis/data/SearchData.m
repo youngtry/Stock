@@ -42,20 +42,32 @@
 }
 
 -(void)addData{
-    NSMutableArray* list = [[NSUserDefaults standardUserDefaults] objectForKey:@"HistoryList"];
+    NSMutableArray* list = [[[NSUserDefaults standardUserDefaults] objectForKey:@"HistoryList"] mutableCopy];
     NSLog(@"list.count = %ld",list.count);
     if(list.count>0){
         self.searchHistoryList = list;
     }
-    
-    NSMutableArray* list1 = [[NSUserDefaults standardUserDefaults] objectForKey:@"SpecialList"];
-    NSLog(@"list1.count = %ld",list1.count);
-    if(list.count>0){
-        self.specialList = list1;
-    }
 }
 
 -(void)addhistory:(NSDictionary*)history{
+    
+    for (NSDictionary* info in self.searchHistoryList) {
+        if([history objectForKey:@"asset"]){
+            //商户搜索
+            if([info objectForKey:@"asset"]){
+                if([[info objectForKey:@"asset"] isEqualToString:[history objectForKey:@"asset"]]){
+                    return;
+                }
+            }
+        }else if([history objectForKey:@"market"]){
+            if([info objectForKey:@"market"]){
+                if([[info objectForKey:@"market"] isEqualToString:[history objectForKey:@"market"]]){
+                    return;
+                }
+            }
+        }
+    }
+    
     
     [self.searchHistoryList addObject:history];
 
@@ -69,6 +81,13 @@
     
 //    [[NSUserDefaults standardUserDefaults] setObject:specialList forKey:@"SpecialList"];
 //    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+-(void)clearHistory{
+    [self.searchHistoryList removeAllObjects];
+    
+    [[NSUserDefaults standardUserDefaults] setObject:self.searchHistoryList forKey:@"HistoryList"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 -(NSMutableArray*)getHistory{

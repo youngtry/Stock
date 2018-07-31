@@ -23,6 +23,8 @@
     NSDictionary *sortedNameDict; //全部字典
     
     NSArray *indexArray;
+    
+    NSMutableArray* showList;
 }
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet UIView *historyView;
@@ -46,7 +48,15 @@
     self.view.top = kNaviHeight;
 //    self.view.backgroundColor = [UIColor redColor];
     
-    [self changeToTrade];
+    showList = [[NSMutableArray alloc] init];
+    
+    if([SearchData getInstance].searchHistoryList.count>0){
+        [self changeToSearchHistroy];
+    }else{
+        [self changeToTrade];
+    }
+    
+//    [self changeToTrade];
 //    [self changeToSearchHistroy];
     
     self.searchBar.delegate = self;
@@ -82,8 +92,13 @@
                             NSLog(@"i= %d,info = %@",i,info);
                             [[SearchData getInstance] addSpecail:info];
                         }
+                        if([_historyView isHidden]){
+                            [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowSearchList" object:nil];
+                        }else{
+                            [self addDataToShowList];
+                        }
                         //                        [[SearchData getInstance] addData];
-                        [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowSearchList" object:nil];
+                        
                     }
                 }
             }
@@ -95,12 +110,73 @@
     return NO;
 }
 - (IBAction)clickClearHistroy:(id)sender {
+    [[SearchData getInstance] clearHistory];
+    [self changeToTrade];
+}
+
+-(void)addDataToShowList{
+    
+    [showList removeAllObjects];
+    BOOL isshop = NO;
+    for(int i=0;i<[SearchData getInstance].searchList.count;i++){
+        NSDictionary* info = [SearchData getInstance].searchList[i];
+        if(![self isRepeatInShowList:info]){
+            [showList addObject:info];
+            if([info objectForKey:@"asset"]){
+                //是商户搜索
+                isshop = YES;
+            }
+        }
+    }
+    
+    if(!isshop){
+        NSLog(@"关注列表有：%@",[SearchData getInstance].specialList);
+        for(int i=0;i<[SearchData getInstance].specialList.count;i++){
+            NSDictionary* info = [SearchData getInstance].specialList[i];
+            if(![self isRepeatInShowList:info]){
+                [showList addObject:info];
+            }
+        }
+    }
+    
+    for(int i=0;i<[SearchData getInstance].searchHistoryList.count;i++){
+        NSDictionary* info = [SearchData getInstance].searchHistoryList[i];
+        if(![self isRepeatInShowList:info]){
+            [showList addObject:info];
+        }
+    }
+    
+    [_histroyList reloadData];
+}
+
+-(BOOL)isRepeatInShowList:(NSDictionary*)info{
+    
+    for(int i=0;i<showList.count;i++){
+        NSDictionary* data = showList[i];
+        if([data objectForKey:@"asset"]){
+            if([[data objectForKey:@"asset"] isEqualToString:[info objectForKey:@"asset"]]){
+                return YES;
+            }
+        }else{
+            if([[data objectForKey:@"market"] isEqualToString:[info objectForKey:@"market"]]){
+                return YES;
+            }
+        }
+        
+    }
+    
+    return NO;
 }
 
 -(void)changeToSearchHistroy{
     _historyView.hidden = NO;
+    
+    [self addDataToShowList];
+    
     _histroyList.dataSource = self;
     _histroyList.delegate = self;
+    
+    
 }
 
 
@@ -166,7 +242,7 @@
     
     NSLog(@"当前是；%ld",_scrollTitle.tagIndex );
     
-    if(_scrollTitle.tagIndex == 0){
+    if(_scrollTitle.tagIndex == 0 || ![_historyView isHidden]){
         NSDictionary* parameters = @{@"market":searchBar.text};
         NSString* url = @"market/search";
         
@@ -188,7 +264,13 @@
                                 
                             }
                             
-                            [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowSearchList" object:nil];
+                            if([_historyView isHidden]){
+                                [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowSearchList" object:nil];
+                            }else{
+                                [self addDataToShowList];
+                            }
+                            
+                            
                         }
                     }
                 }
@@ -213,8 +295,12 @@
                                 [[SearchData getInstance].searchList addObject:info];
                                 
                             }
+                            if([_historyView isHidden]){
+                                [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowSearchList" object:nil];
+                            }else{
+                                
+                            }
                             
-                            [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowSearchList" object:nil];
                         }
                     }
                 }
@@ -241,19 +327,46 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 #warning Incomplete implementation, return the number of rows
-    return 3;
+    return showList.count;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    SearchTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+    SearchTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     if(!cell){
         //        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"id"];
         cell = [[[NSBundle mainBundle] loadNibNamed:@"SearchTableViewCell" owner:self options:nil] objectAtIndex:0];
     }
+//    NSLog(@"获取历史记录");
+    NSDictionary* data = showList[indexPath.row];
+
+    if([data objectForKey:@"asset"]){
+        [cell setName:[data objectForKey:@"name"]];
+        [cell setIfShop:YES];
+    }else{
+        [cell setName:[data objectForKey:@"market"]];
+        [cell setIfShop:NO];
+        if([self isCellLike:data]){
+            //关注
+            [cell setIfLike:YES];
+        }else{
+            [cell setIfLike:NO];
+        }
+    }
     
     return cell;
+}
+
+-(BOOL)isCellLike:(NSDictionary*)info{
+    for(int i=0;i<[[SearchData getInstance] getSpecail].count;i++){
+        NSDictionary* data = [[SearchData getInstance] getSpecail][i];
+        if([[data objectForKey:@"market"] isEqualToString:[info objectForKey:@"market"]]){
+            return YES;
+        }
+    }
+    
+    return NO;
 }
 
 /*

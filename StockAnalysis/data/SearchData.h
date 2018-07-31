@@ -22,6 +22,8 @@
 -(void)addhistory:(NSDictionary*)history;
 -(void)addSpecail:(NSDictionary*)specail;
 
+-(void)clearHistory;
+
 
 -(NSMutableArray*)getHistory;
 

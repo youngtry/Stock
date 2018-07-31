@@ -42,7 +42,7 @@
             if(![self isRepeatInShowList:info]){
 
                 if(![info objectForKey:@"asset"]){
-                    //不能是商户搜索
+                    //不能是商户搜索,显示关注列表
                     [showList addObject:info];
                 }
             }
@@ -61,7 +61,7 @@
             if(![self isRepeatInShowList:info]){
 
                 if([info objectForKey:@"asset"]){
-                    //是商户搜索
+                    //是商户搜索，不显示关注列表
 
                     [showList addObject:info];
                 }
@@ -88,8 +88,9 @@
     }
     
     if(!isshop){
-        for(int i=0;i<[[SearchData getInstance] getSpecail].count;i++){
-            NSDictionary* info = [[SearchData getInstance] getSpecail][i];
+        NSLog(@"关注列表有：%@",[SearchData getInstance].specialList);
+        for(int i=0;i<[SearchData getInstance].specialList.count;i++){
+            NSDictionary* info = [SearchData getInstance].specialList[i];
             if(![self isRepeatInShowList:info]){
                 [showList addObject:info];
             }
@@ -104,9 +105,16 @@
     
     for(int i=0;i<showList.count;i++){
         NSDictionary* data = showList[i];
-        if([[data objectForKey:@"market"] isEqualToString:[info objectForKey:@"market"]]){
-            return YES;
+        if([data objectForKey:@"asset"]){
+            if([[data objectForKey:@"asset"] isEqualToString:[info objectForKey:@"asset"]]){
+                return YES;
+            }
+        }else{
+            if([[data objectForKey:@"market"] isEqualToString:[info objectForKey:@"market"]]){
+                return YES;
+            }
         }
+        
     }
     
     return NO;
@@ -192,8 +200,14 @@
 -(NSDictionary*)getShowDataWithName:(NSString*)name{
     for(int i=0;i<showList.count;i++){
         NSDictionary* data = showList[i];
-        if([[data objectForKey:@"market"] isEqualToString:name]){
-            return data;
+        if([data objectForKey:@"asset"]){
+            if([[data objectForKey:@"name"] isEqualToString:name]){
+                return data;
+            }
+        }else if([data objectForKey:@"market"]){
+            if([[data objectForKey:@"market"] isEqualToString:name]){
+                return data;
+            }
         }
     }
     return nil;
