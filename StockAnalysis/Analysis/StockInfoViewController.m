@@ -34,26 +34,52 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    NSLog(@"当前页面是第%d个页面",_index);
     
-    NSDictionary* parameters = @{@"order_by":@"price",
-                                 @"order":@"desc",
-                                 @"asset":@"RMB"
-                                 };
-    NSString* url = @"market/item";
-    
-    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
-        if(success){
-//            NSLog(@"list = %@",data);
-            if([[data objectForKey:@"ret"] intValue] == 1){
-                _items = [[data objectForKey:@"data"] objectForKey:@"items"];
-                if(_items){
-//                    NSLog(@"items = %@,数量为：%lu",_items,(unsigned long)_items.count);
-                    [self.tableView reloadData];
+    if([self.title containsString:@"china_"]){
+        NSString* asset = [self.title substringFromIndex:6];
+        NSLog(@"asset = %@",asset);
+        NSDictionary* parameters = @{@"order_by":@"price",
+                                     @"order":@"desc",
+                                     @"asset":asset
+                                     };
+        NSString* url = @"market/item";
+        
+        [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+            if(success){
+                //            NSLog(@"list = %@",data);
+                if([[data objectForKey:@"ret"] intValue] == 1){
+                    _items = [[data objectForKey:@"data"] objectForKey:@"items"];
+                    if(_items){
+                        //                    NSLog(@"items = %@,数量为：%lu",_items,(unsigned long)_items.count);
+                        [self.tableView reloadData];
+                    }
                 }
             }
-        }
-    }];
+        }];
+    }else if([self.title containsString:@"global_"]){
+        NSString* asset = [self.title substringFromIndex:7];
+        NSLog(@"asset = %@",asset);
+        NSDictionary* parameters = @{@"page":@"1",
+                                     @"page_limit":@"10",
+                                     @"asset":asset
+                                     };
+        NSString* url = @"market/global/pricelist";
+        
+        [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
+            if(success){
+//                NSLog(@"list = %@",data);
+                if([[data objectForKey:@"ret"] intValue] == 1){
+                    _items = [[data objectForKey:@"data"] objectForKey:@"assets"];
+                    if(_items){
+                        //                    NSLog(@"items = %@,数量为：%lu",_items,(unsigned long)_items.count);
+                        [self.tableView reloadData];
+                    }
+                }
+            }
+        }];
+    }
+    
+    
 }
 
 -(UITableView*)tableView{
@@ -120,7 +146,12 @@
 //        NSLog(@"keys = %ld",self.items.allValues.count);
         NSDictionary* item = self.items[indexPath.row];
         if(item){
-            cell.titleLabel.text = [item objectForKey:@"market"];
+            if([self.title containsString:@"china_"]){
+                cell.titleLabel.text = [item objectForKey:@"market"];
+            }else if ([self.title containsString:@"global_"]){
+                cell.titleLabel.text = [item objectForKey:@"store"];
+            }
+            
             cell.volLabel.text = [item objectForKey:@"volume"];
             cell.priceLabel.text = [item objectForKey:@"price"];
             NSString* incre = [item objectForKey:@"increase"];

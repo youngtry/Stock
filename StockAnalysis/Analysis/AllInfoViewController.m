@@ -12,11 +12,16 @@
 #import "Masonry.h"
 #import "StockInfoViewController.h"
 #import "AnaysisSearchViewController.h"
-@interface AllInfoViewController ()
+#import "HttpRequest.h"
+@interface AllInfoViewController (){
+    NSMutableArray* chinaTitles;
+    NSMutableArray* globalTitles;
+}
 
 @property(nonatomic,strong)UISegmentedControl* segment;
 @property(nonatomic,strong) AITabScrollview *scrollTitle;
 @property(nonatomic,strong) AITabContentView*scrollContent;
+
 
 //@property(nonatomic,strong) NSMutableArray*titleLabs;
 //@property(nonatomic,strong) NSMutableArray*contentVCs;
@@ -29,6 +34,9 @@
     
 //    _titleLabs = [NSMutableArray new];
 //    _contentVCs = [NSMutableArray new];
+    chinaTitles = [[NSMutableArray alloc] init];
+    globalTitles = [[NSMutableArray alloc] init];
+    
     
     
 
@@ -65,8 +73,36 @@
         make.bottom.equalTo(self.view);
     }];
     
-    //默认国内
-    [self changeToInternal];
+    NSDictionary* parameters = @{};
+    NSString* url = @"market/assortment";
+    
+    [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
+        if(success){
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                if([[data objectForKey:@"data"] objectForKey:@"tabs"]){
+                    NSArray* tabs = [[data objectForKey:@"data"] objectForKey:@"tabs"];
+                    for (NSDictionary* tab in tabs) {
+                        NSString* tabtitle = [tab objectForKey:@"asset"];
+                        [chinaTitles addObject:tabtitle];
+                    }
+                    
+                    //默认国内
+                    [self changeToInternal];
+                }
+            }
+        }
+    }];
+    
+    NSString* url1 = @"market/global/assortment";
+    [[HttpRequest getInstance] getWithURL:url1 parma:parameters block:^(BOOL success, id data) {
+        if(success){
+            if([[data objectForKey:@"data"] objectForKey:@"tabs"]){
+                globalTitles = [[data objectForKey:@"data"] objectForKey:@"tabs"];
+            }
+        }
+    }];
+    
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -90,14 +126,15 @@
 
 -(void)changeToInternal{
     NSMutableArray* vcs = [NSMutableArray new];
-    NSArray *titles = @[@"自选",@"指数",@"沪深",@"板块",@"港美"];
+//    NSArray *titles = @[@"自选",@"指数",@"沪深",@"板块",@"港美"];
 
-    for (int i=0; i<titles.count; i++) {
+    for (int i=0; i<chinaTitles.count; i++) {
         StockInfoViewController *vc = [[StockInfoViewController alloc] init];
         vc.index = i;
+        [vc setTitle:[NSString stringWithFormat:@"china_%@",chinaTitles[i]]];
         [vcs addObject:vc];
     }
-    [_scrollTitle configParameter:horizontal viewArr:titles tabWidth:kScreenWidth/titles.count tabHeight:42 index:0 block:^(NSInteger index) {
+    [_scrollTitle configParameter:horizontal viewArr:chinaTitles tabWidth:kScreenWidth/chinaTitles.count tabHeight:42 index:0 block:^(NSInteger index) {
         [_scrollContent updateTab:index];
     }];
     [_scrollContent configParam:vcs Index:0 block:^(NSInteger index) {
@@ -108,12 +145,13 @@
 -(void)changeToGlobal{
     NSMutableArray* vcs = [NSMutableArray new];
     
-    NSArray *titles = @[@"期货一",@"期货二"];
-    for (int i=0; i<titles.count; i++) {
+//    NSArray *titles = @[@"期货一",@"期货二"];
+    for (int i=0; i<globalTitles.count; i++) {
         StockInfoViewController *vc = [[StockInfoViewController alloc] init];
+        [vc setTitle:[NSString stringWithFormat:@"global_%@",globalTitles[i]]];
         [vcs addObject:vc];
     }
-    [_scrollTitle configParameter:horizontal viewArr:titles tabWidth:kScreenWidth/titles.count tabHeight:42 index:0 block:^(NSInteger index) {
+    [_scrollTitle configParameter:horizontal viewArr:globalTitles tabWidth:kScreenWidth/globalTitles.count tabHeight:42 index:0 block:^(NSInteger index) {
         [_scrollContent updateTab:index];
     }];
     [_scrollContent configParam:vcs Index:0 block:^(NSInteger index) {
