@@ -139,7 +139,7 @@
      
         [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
             if(success){
-                NSLog(@"登录消息 = %@",data);
+//                NSLog(@"登录消息 = %@",data);
                 if([[data objectForKey:@"ret"] intValue] == 1){
                     [self autoLoginBack];
                 }else{

@@ -9,7 +9,7 @@
 #import "SearchTableViewController.h"
 #import "SearchTableViewCell.h"
 #import "SearchData.h"
-
+#import "StockLittleViewController.h"
 @interface SearchTableViewController (){
     NSMutableArray* showList;
     
@@ -192,7 +192,9 @@
         NSDictionary* data = [self getShowDataWithName:name];
         if(data){
             [[SearchData getInstance] addhistory:data];
-            [[SearchData getInstance] addData];
+            
+            StockLittleViewController* vc = [[StockLittleViewController alloc] initWithNibName:@"StockLittleViewController" bundle:nil];
+            [self.navigationController pushViewController:vc animated:YES];
         }
     }
 }

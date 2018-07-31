@@ -14,6 +14,7 @@
 #import "SearchTableViewCell.h"
 #import "SearchData.h"
 #import "HttpRequest.h"
+#import "StockLittleViewController.h"
 
 @interface AnaysisSearchViewController ()<UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate>{
     //搜索
@@ -89,7 +90,7 @@
                     if(item.count>0){
                         for (int i=0; i<item.count; i++) {
                             NSDictionary* info = item[i];
-                            NSLog(@"i= %d,info = %@",i,info);
+//                            NSLog(@"i= %d,info = %@",i,info);
                             [[SearchData getInstance] addSpecail:info];
                         }
                         if([_historyView isHidden]){
@@ -259,7 +260,7 @@
                             [[SearchData getInstance].searchList removeAllObjects];
                             for (int i=0; i<result.count; i++) {
                                 NSDictionary* info = result[i];
-                                NSLog(@"i= %d,info = %@",i,info);
+//                                NSLog(@"i= %d,info = %@",i,info);
                                 [[SearchData getInstance].searchList addObject:info];
                                 
                             }
@@ -291,14 +292,12 @@
                             [[SearchData getInstance].searchList removeAllObjects];
                             for (int i=0; i<result.count; i++) {
                                 NSDictionary* info = result[i];
-                                NSLog(@"i= %d,info = %@",i,info);
+//                                NSLog(@"i= %d,info = %@",i,info);
                                 [[SearchData getInstance].searchList addObject:info];
                                 
                             }
                             if([_historyView isHidden]){
                                 [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowSearchList" object:nil];
-                            }else{
-                                
                             }
                             
                         }
@@ -358,6 +357,39 @@
     return cell;
 }
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    SearchTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if(cell){
+        NSString* name = [cell getName];
+        NSDictionary* data = [self getShowDataWithName:name];
+        if(data){
+            [[SearchData getInstance] addhistory:data];
+//            [self.navigationController setBackgroundColor:[UIColor blackColor]];
+            self.tabBarController.tabBar.hidden = YES;
+            [self.navigationController.view setBackgroundColor:[UIColor blackColor]];
+            StockLittleViewController* vc = [[StockLittleViewController alloc] initWithNibName:@"StockLittleViewController" bundle:nil];
+            [self.navigationController pushViewController:vc animated:YES];
+//            [self presentViewController:vc animated:YES completion:nil];
+        }
+    }
+}
+
+-(NSDictionary*)getShowDataWithName:(NSString*)name{
+    for(int i=0;i<showList.count;i++){
+        NSDictionary* data = showList[i];
+        if([data objectForKey:@"asset"]){
+            if([[data objectForKey:@"name"] isEqualToString:name]){
+                return data;
+            }
+        }else if([data objectForKey:@"market"]){
+            if([[data objectForKey:@"market"] isEqualToString:name]){
+                return data;
+            }
+        }
+    }
+    return nil;
+}
+
 -(BOOL)isCellLike:(NSDictionary*)info{
     for(int i=0;i<[[SearchData getInstance] getSpecail].count;i++){
         NSDictionary* data = [[SearchData getInstance] getSpecail][i];
@@ -368,6 +400,8 @@
     
     return NO;
 }
+
+
 
 /*
 #pragma mark - Navigation

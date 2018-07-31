@@ -107,7 +107,7 @@
                                                             NSNumber* number = [_dataDictionary objectForKey:@"ret"];
                                                             if([number intValue] == 1){
                                                                 _token = [[_dataDictionary objectForKey:@"data"] objectForKey:@"account_token"];
-                                                                NSLog(@"获取到的token = %@",_token);
+//                                                                NSLog(@"获取到的token = %@",_token);
                                                             }
                                                             
                                                         }
@@ -199,7 +199,7 @@
             NSNumber* number = [datainfo objectForKey:@"ret"];
             if([number intValue] == 1){
                 _token = [[datainfo objectForKey:@"data"] objectForKey:@"account_token"];
-                NSLog(@"获取到的token = %@",_token);
+//                NSLog(@"获取到的token = %@",_token);
             }
             
         }
@@ -237,7 +237,7 @@
 }
 
 -(void)formatAFNetwork:(AFHTTPSessionManager*)manager{
-    NSLog(@"新的token = %@",_token);
+//    NSLog(@"新的token = %@",_token);
 //    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
