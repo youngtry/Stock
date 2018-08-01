@@ -365,8 +365,7 @@
         if(data){
             [[SearchData getInstance] addhistory:data];
 //            [self.navigationController setBackgroundColor:[UIColor blackColor]];
-            self.tabBarController.tabBar.hidden = YES;
-            [self.navigationController.view setBackgroundColor:[UIColor blackColor]];
+            
             StockLittleViewController* vc = [[StockLittleViewController alloc] initWithNibName:@"StockLittleViewController" bundle:nil];
             [self.navigationController pushViewController:vc animated:YES];
 //            [self presentViewController:vc animated:YES completion:nil];
