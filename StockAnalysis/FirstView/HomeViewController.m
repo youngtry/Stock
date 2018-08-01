@@ -11,11 +11,13 @@
 #import "TTAutoRunLabel.h"
 #import "FirstListTableViewCell.h"
 #import "HttpRequest.h"
+#import "TCRotatorImageView.h"
 @interface HomeViewController ()<TTAutoRunLabelDelegate,UITableViewDataSource,UITableViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *activityContainer;
 @property (weak, nonatomic) IBOutlet UIView *adView;
 @property (weak, nonatomic) IBOutlet UITableView *randList;
+@property (nonatomic,strong) TCRotatorImageView *adScrollView;
 @end
 
 @implementation HomeViewController
@@ -51,7 +53,7 @@
 
 -(void)getTipsAndAdsBack:(NSDictionary*)data{
     [self createAutoRunLabel:@"" view:self.activityContainer fontsize:14];
-    [self createAutoRunLabel:@"" view:self.adView fontsize:30];
+//    [self createAutoRunLabel:@"" view:self.adView fontsize:30];
 //    NSDictionary* data = [[HttpRequest getInstance] httpBack];
     NSNumber* ret = [data objectForKey:@"ret"];
     if([ret intValue] == 1)
@@ -59,6 +61,9 @@
         NSDictionary* info = [data objectForKey:@"data"];
         NSLog(@"首页广告:%@",info);
     }
+    
+    NSArray *ads = data[@"data"][@"ads"];
+    [self refreshAdView:ads];
 }
 
 
@@ -104,6 +109,32 @@
     return UIStatusBarStyleLightContent;
     //返回黑色
     //return UIStatusBarStyleDefault;
+}
+
+-(void)refreshAdView:(NSArray*)ads{
+    //
+    NSMutableArray *images = [NSMutableArray new];
+    //parse
+//    NSArray *ads = data[@"data"][@"ads"];
+    for (NSDictionary *dic in ads) {
+        NSString*img = dic[@"img"];
+        [images addObject:img];
+    }
+    //view
+    if(nil==_adScrollView){
+        _adScrollView = [TCRotatorImageView rotatorImageViewWithFrame:self.adView.bounds imageURLStrigArray:images placeholerImage:nil];
+        _adScrollView.pageControll.hidden = YES;
+        _adScrollView.rotateTimeInterval = 10.0f;
+        [self.adView addSubview:_adScrollView];
+        WeakSelf(weakSelf)
+        _adScrollView.clickBlock = ^(NSInteger index){
+            //循环引用
+            //            [weakSelf xxxx];
+        };
+    }else{
+        _adScrollView.imageURLStrigArray = images;
+        [_adScrollView reloadData];
+    }
 }
 
 #pragma mark -UITableVIewDataSource

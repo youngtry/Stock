@@ -14,6 +14,7 @@
 #import "GameData.h"
 #import "TTAutoRunLabel.h"
 #import "FirstListTableViewCell.h"
+#import "TCRotatorImageView.h"
 @interface UserFirstViewController ()<TTAutoRunLabelDelegate,UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *exchangeRMBLabel;
@@ -23,7 +24,7 @@
 @property (weak, nonatomic) IBOutlet UIView *autoRunActivityView;
 @property (weak, nonatomic) IBOutlet UIView *adView;
 @property (weak, nonatomic) IBOutlet UITableView *randList;
-
+@property (nonatomic,strong) TCRotatorImageView *adScrollView;
 @end
 
 @implementation UserFirstViewController
@@ -179,7 +180,7 @@
 
 -(void)getTipsAndAdsBack:(NSDictionary* )data{
     [self createAutoRunLabel:@"" view:self.autoRunActivityView fontsize:14];
-    [self createAutoRunLabel:@"" view:self.adView fontsize:30];
+//    [self createAutoRunLabel:@"" view:self.adView fontsize:30];
 
     NSNumber* ret = [data objectForKey:@"ret"];
     if([ret intValue] == 1)
@@ -187,6 +188,8 @@
         NSDictionary* info = [data objectForKey:@"data"];
         NSLog(@"首页广告:%@",info);
     }
+    NSArray *ads = data[@"data"][@"ads"];
+    [self refreshAdView:ads];
 }
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
@@ -214,6 +217,31 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+-(void)refreshAdView:(NSArray*)ads{
+    //
+    NSMutableArray *images = [NSMutableArray new];
+    //parse
+    //    NSArray *ads = data[@"data"][@"ads"];
+    for (NSDictionary *dic in ads) {
+        NSString*img = dic[@"img"];
+        [images addObject:img];
+    }
+    //view
+    if(nil==_adScrollView){
+        _adScrollView = [TCRotatorImageView rotatorImageViewWithFrame:self.adView.bounds imageURLStrigArray:images placeholerImage:nil];
+        _adScrollView.pageControll.hidden = YES;
+        //        _adScrollView.rotateTimeInterval = 3.0f;
+        [self.adView addSubview:_adScrollView];
+        WeakSelf(weakSelf)
+        _adScrollView.clickBlock = ^(NSInteger index){
+            //循环引用
+            //            [weakSelf xxxx];
+        };
+    }else{
+        _adScrollView.imageURLStrigArray = images;
+        [_adScrollView reloadData];
+    }
+}
 #pragma mark -UITableVIewDataSource
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
