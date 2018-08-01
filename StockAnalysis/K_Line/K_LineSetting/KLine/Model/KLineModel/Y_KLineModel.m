@@ -462,7 +462,7 @@
                     }
                     em--;
                 }
-                NSLog(@"%f",emMaxValue.floatValue);
+//                NSLog(@"%f",emMaxValue.floatValue);
                 models[j].NineClocksMaxPrice = emMaxValue;
             }
             //第一个循环结束后，ClockFirstValue为最小值
@@ -480,7 +480,7 @@
                     }
                     em--;
                 }
-                NSLog(@"%f",emMaxValue.floatValue);
+//                NSLog(@"%f",emMaxValue.floatValue);
 
                 models[j].NineClocksMaxPrice = emMaxValue;
             }
@@ -537,6 +537,7 @@
     if (self)
     {
         _Date = arr[0];
+//        NSLog(@"***********时间：%@",_Date);
         _Open = @([arr[1] floatValue]);
         _High = @([arr[2] floatValue]);
         _Low = @([arr[3] floatValue]);  

@@ -18,5 +18,7 @@
 @property(retain,nonatomic)id delegate;
 @property(strong,nonatomic)NSString* requestMethod;
 +(instancetype)sharedManager;
+-(void)closeWebSocket;
+-(void)openWebSocket;
 -(void)sendRequest:(NSString*)request withName:(NSString*)name;
 @end

@@ -51,6 +51,21 @@ static SocketInterface* _instance = nil;
     
 }
 
+-(void)closeWebSocket{
+    [_webSocket close];
+    _webSocket = nil;
+}
+
+-(void)openWebSocket{
+    _webSocket.delegate = nil;
+    [_webSocket close];
+    
+    _webSocket = [[SRWebSocket alloc] initWithURL:[NSURL URLWithString:@"ws://exchange-test.oneitfarm.com/ws"]];
+    _webSocket.delegate = self;
+    
+    //    self.title = @"Opening Connection...";
+    [_webSocket open];
+}
 
 -(void)sendRequest:(NSString *)request withName:(NSString*)name{
     self.requestMethod = name;
@@ -93,7 +108,14 @@ static SocketInterface* _instance = nil;
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message{
-    NSLog(@"didReceiveMessage = %@",message);
+//    NSLog(@"didReceiveMessage = %@", self.requestMethod);
+    NSString* str = message;
+    NSData* strdata = [str dataUsingEncoding:NSUTF8StringEncoding];
+    
+    NSDictionary* data = [NSJSONSerialization JSONObjectWithData:strdata options:NSJSONReadingMutableContainers error:nil];
+    if([data objectForKey:@"method"]){
+        self.requestMethod = [data objectForKey:@"method"];
+    }
     
     [_delegate getWebData:message withName:self.requestMethod];
 }

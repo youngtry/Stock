@@ -10,6 +10,7 @@
 #import "SortView.h"
 #import "StockInfoCell.h"
 #import "HttpRequest.h"
+#import "StockLittleViewController.h"
 
 @interface StockInfoViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic,strong)UITableView *tableView;
@@ -163,6 +164,24 @@
     }
     
     return cell;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    StockInfoCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if(cell){
+        NSString* name = cell.titleLabel.text;
+//        NSDictionary* data = [self getShowDataWithName:name];
+//        if(data){
+//            [[SearchData getInstance] addhistory:data];
+//
+//
+//        }
+        
+        StockLittleViewController* vc = [[StockLittleViewController alloc] initWithNibName:@"StockLittleViewController" bundle:nil];
+        [vc setTitle:name];
+        id temp = self.parentViewController.view.selfViewController.navigationController;
+        [temp pushViewController:vc animated:YES];
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{

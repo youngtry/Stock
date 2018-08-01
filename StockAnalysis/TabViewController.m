@@ -16,6 +16,7 @@
 #import "UserFirstViewController.h"
 #import "StoreViewController.h"
 #import "TradeViewController.h"
+#import "SocketInterface.h"
 @interface TabViewController ()
 
 @property(nonatomic,strong)UINavigationController* nav1;
@@ -79,6 +80,11 @@
     // Do any additional setup after loading the view.
     
 //    self.tabBar.backgroundColor = kThemeColor;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
 }
 
 - (void)didReceiveMemoryWarning {
