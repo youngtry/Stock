@@ -230,7 +230,7 @@
     if(nil==_adScrollView){
         _adScrollView = [TCRotatorImageView rotatorImageViewWithFrame:self.adView.bounds imageURLStrigArray:images placeholerImage:nil];
         _adScrollView.pageControll.hidden = YES;
-        //        _adScrollView.rotateTimeInterval = 3.0f;
+//        _adScrollView.rotateTimeInterval = 3.0f;
         [self.adView addSubview:_adScrollView];
         WeakSelf(weakSelf)
         _adScrollView.clickBlock = ^(NSInteger index){

@@ -15,6 +15,8 @@
 #import "AppDelegate.h"
 #import "SocketInterface.h"
 #import "JSONKit.h"
+#import "UpdateDataTableViewCell.h"
+#import "Y_StockChartViewController.h"
 #define IS_IPHONE (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
 #define SCREEN_MAX_LENGTH MAX(kScreenWidth,kScreenHeight)
 #define IS_IPHONE_X (IS_IPHONE && SCREEN_MAX_LENGTH == 812.0)
@@ -31,6 +33,32 @@
 @property (weak, nonatomic) IBOutlet UILabel *upOrDownRateLabel;
 
 @property (weak, nonatomic) IBOutlet UITableView *updateDataView;
+
+
+@property (weak, nonatomic) IBOutlet UIView *settingView;
+@property (weak, nonatomic) IBOutlet UIView *MAView;
+@property (weak, nonatomic) IBOutlet UIView *timeSelectView;
+@property (weak, nonatomic) IBOutlet UIButton *timeSelectBtn;
+@property (weak, nonatomic) IBOutlet UIButton *MAbtn;
+@property (weak, nonatomic) IBOutlet UIButton *MACDBtn;
+@property (weak, nonatomic) IBOutlet UIButton *settingBtn;
+@property (weak, nonatomic) IBOutlet UIButton *switchBtn;
+
+
+
+//@property (weak, nonatomic) IBOutlet UIButton *timeEverytimeBtn;
+//@property (weak, nonatomic) IBOutlet UIButton *time1MinBtn;
+//@property (weak, nonatomic) IBOutlet UIButton *time3MinBtn;
+//@property (weak, nonatomic) IBOutlet UIButton *time5MinBtn;
+//@property (weak, nonatomic) IBOutlet UIButton *time15MinBtn;
+//@property (weak, nonatomic) IBOutlet UIButton *time30MinBtn;
+//@property (weak, nonatomic) IBOutlet UIButton *time1HBtn;
+//@property (weak, nonatomic) IBOutlet UIButton *time2HBtn;
+//@property (weak, nonatomic) IBOutlet UIButton *time4HBtn;
+//@property (weak, nonatomic) IBOutlet UIButton *time6HBtn;
+
+
+
 @property (nonatomic, strong) Y_StockChartView *stockChartView;
 
 @property (nonatomic, strong) Y_KLineGroupModel *groupModel;
@@ -43,6 +71,8 @@
 @property (nonatomic, copy) NSString *type;
 
 @property (nonatomic,strong)NSMutableArray* klineArray;
+
+@property (nonatomic,strong)NSMutableArray* updateData;
 
 @end
 
@@ -59,6 +89,10 @@
     self.updateDataView.delegate = self;
     self.updateDataView.dataSource = self;
     self.updateDataView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.updateDataView.allowsSelection = NO;
+    self.updateData = [NSMutableArray new];
+    
+    [self closeAllBtnView];
     
 }
 
@@ -94,7 +128,141 @@
     NSString *strAll2 = [dicAll2 JSONString];
     [[SocketInterface sharedManager] sendRequest:strAll2 withName:@"deals.unsubscribe"];
 }
+-(void)closeAllBtnView{
+    [self.timeSelectView setHidden:YES];
+    [self.settingView setHidden:YES];
+    [self.MAView setHidden:YES];
+    
+    [self.timeSelectBtn setTitleColor:[UIColor lightTextColor] forState:UIControlStateNormal];
+    [self.MAbtn setTitleColor:[UIColor lightTextColor] forState:UIControlStateNormal];
+    [self.settingBtn setTitleColor:[UIColor lightTextColor] forState:UIControlStateNormal];
+    [self.MACDBtn setTitleColor:[UIColor lightTextColor] forState:UIControlStateNormal];
+    
+}
+- (IBAction)openTImeSelectView:(id)sender {
+    UIButton* btn = sender;
 
+    if(!self.timeSelectView.hidden){
+        [self closeAllBtnView];
+    }else{
+        [self closeAllBtnView];
+        [self.timeSelectView setHidden:NO];
+        [btn setTitleColor:[UIColor colorWithRed:243.0/255.0 green:186.0/255.0 blue:46.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+    }
+    
+}
+- (IBAction)openMAView:(id)sender {
+    UIButton* btn = sender;
+    
+    if(!self.MAView.hidden){
+        [self closeAllBtnView];
+    }else{
+        [self closeAllBtnView];
+        [self.MAView setHidden:NO];
+        
+        
+        [btn setTitleColor:[UIColor colorWithRed:243.0/255.0 green:186.0/255.0 blue:46.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+        
+    }
+}
+- (IBAction)openMACDView:(id)sender {
+    [self closeAllBtnView];
+    UIButton* btn = sender;
+    [btn setTitleColor:[UIColor colorWithRed:243.0/255.0 green:186.0/255.0 blue:46.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+}
+- (IBAction)openSettingView:(id)sender {
+    UIButton* btn = sender;
+
+    if(!self.settingView.hidden){
+        [self closeAllBtnView];
+    }else{
+        [self closeAllBtnView];
+        [self.settingView setHidden:NO];
+        [btn setTitleColor:[UIColor colorWithRed:243.0/255.0 green:186.0/255.0 blue:46.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+    }
+}
+- (IBAction)switchPhone:(id)sender {
+    [self closeAllBtnView];
+    
+    NSDictionary *dicAll = @{@"method":@"state.unsubscribe",@"params":@[],@"id":@(1)};
+    
+    NSString *strAll = [dicAll JSONString];
+    [[SocketInterface sharedManager] sendRequest:strAll withName:@"state.unsubscribe"];
+    
+    NSDictionary *dicAll1 = @{@"method":@"kline.unsubscribe",@"params":@[],@"id":@(1)};
+    
+    NSString *strAll1 = [dicAll1 JSONString];
+    [[SocketInterface sharedManager] sendRequest:strAll1 withName:@"kline.unsubscribe"];
+    
+    NSDictionary *dicAll2 = @{@"method":@"deals.unsubscribe",@"params":@[],@"id":@(1)};
+    
+    NSString *strAll2 = [dicAll2 JSONString];
+    [[SocketInterface sharedManager] sendRequest:strAll2 withName:@"deals.unsubscribe"];
+    
+    AppDelegate *appdelegate = [UIApplication sharedApplication].delegate;
+    appdelegate.isEable = YES;
+    Y_StockChartViewController *stockChartVC = [Y_StockChartViewController new];
+    stockChartVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self.navigationController presentViewController:stockChartVC animated:YES completion:nil];
+}
+
+
+- (IBAction)clickTimeSelectBtn:(id)sender {
+    UIButton* btn = sender;
+    NSString* btntext = btn.titleLabel.text;
+    NSLog(@"btntext = %@",btntext);
+    [btn setTitleColor:[UIColor colorWithRed:243.0/255.0 green:186.0/255.0 blue:46.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+    
+    for (UIView* child in [self.timeSelectView subviews]) {
+        if([child isKindOfClass:[UIButton class]]){
+            UIButton* nextbtn = (UIButton*)child;
+//            NSLog(@"nextbtn = %@",nextbtn.titleLabel.text);
+            if(![nextbtn.titleLabel.text isEqualToString:btntext]){
+                [nextbtn setTitleColor:[UIColor lightTextColor] forState:UIControlStateNormal];
+            }
+        }
+    }
+}
+
+- (IBAction)clickSettingBtn:(id)sender {
+    
+    UIButton* btn = sender;
+    NSString* btntext = btn.titleLabel.text;
+    NSLog(@"btntext = %@",btntext);
+    if(![btn.titleLabel.text isEqualToString:@"默认"] && ![btn.titleLabel.text isEqualToString:@"+"] && ![btn.titleLabel.text isEqualToString:@"-"] && ![btn.titleLabel.text isEqualToString:@"保存"]){
+        [btn setBackgroundImage:[UIImage imageNamed:@"btnselectbg.png"] forState:UIControlStateNormal];
+    }
+    
+    
+    for (UIView* child in [self.settingView subviews]) {
+        if([child isKindOfClass:[UIButton class]]){
+            UIButton* nextbtn = (UIButton*)child;
+            //            NSLog(@"nextbtn = %@",nextbtn.titleLabel.text);
+            if(![nextbtn.titleLabel.text isEqualToString:btntext] && ![nextbtn.titleLabel.text isEqualToString:@"默认"] && ![nextbtn.titleLabel.text isEqualToString:@"+"] && ![nextbtn.titleLabel.text isEqualToString:@"-"] && ![nextbtn.titleLabel.text isEqualToString:@"保存"]){
+                [nextbtn setBackgroundImage:[UIImage imageNamed:@"btnbg.png"] forState:UIControlStateNormal];
+            }
+        }
+    }
+}
+- (IBAction)clickMABtn:(id)sender {
+    UIButton* btn = sender;
+    NSString* btntext = btn.titleLabel.text;
+    NSLog(@"btntext = %@",btntext);
+    if(![btntext isEqualToString:@"关闭"]){
+       [btn setTitleColor:[UIColor colorWithRed:243.0/255.0 green:186.0/255.0 blue:46.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+    }
+    
+    
+    for (UIView* child in [self.MAView subviews]) {
+        if([child isKindOfClass:[UIButton class]]){
+            UIButton* nextbtn = (UIButton*)child;
+            //            NSLog(@"nextbtn = %@",nextbtn.titleLabel.text);
+            if(![nextbtn.titleLabel.text isEqualToString:btntext]){
+                [nextbtn setTitleColor:[UIColor lightTextColor] forState:UIControlStateNormal];
+            }
+        }
+    }
+}
 
 -(void)requestSubscribe{
     NSArray *dicParma = @[self.title
@@ -181,8 +349,8 @@
     self.type = type;
     if(![self.modelsDict objectForKey:type])
     {
-//        [self reloadData];
-        [self sendKlineRequest];
+        [self reloadData];
+//        [self sendKlineRequest];
     } else {
         return [self.modelsDict objectForKey:type].models;
     }
@@ -315,11 +483,10 @@
         NSArray* params = [data objectForKey:@"params"];
 
         if(params.count>=2){
-            NSArray* info = params[1];
-            NSLog(@"info = %@",info);
-            for (NSDictionary* infodata in info) {
-                NSLog(@"infotype = %@",[infodata objectForKey:@"type"]);
-            }
+            [self.updateData removeAllObjects];
+            self.updateData = params[1];
+//            NSLog(@"info = %@",self.updateData);
+            [self.updateDataView reloadData];
         }
     }
 }
@@ -340,6 +507,9 @@
         
     }];
 }
+- (IBAction)timeSelectbtn:(id)sender {
+}
+
 - (Y_StockChartView *)stockChartView
 {
     if(!_stockChartView) {
@@ -381,7 +551,25 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 #warning Incomplete implementation, return the number of rows
-    return 5;
+    
+    int buycount = 0;
+    int sellcount = 0;
+    for (NSDictionary* info in self.updateData) {
+        NSString* type = [info objectForKey:@"type"];
+        if([type isEqualToString:@"buy"]){
+            buycount++;
+        }else if ([type isEqualToString:@"sell"]){
+            sellcount++;
+        }
+    }
+    
+    if(sellcount>=buycount){
+        return sellcount;
+    }else{
+        return buycount;
+    }
+    
+    return 0;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -391,15 +579,40 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    UpdateDataTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     if(!cell){
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"id"];
+        cell = [[[NSBundle mainBundle] loadNibNamed:@"UpdateDataTableViewCell" owner:self options:nil] objectAtIndex:0];
         
         [cell setBackgroundColor:[UIColor blackColor]];
 //        cell = [[[NSBundle mainBundle] loadNibNamed:@"SearchTableViewCell" owner:self options:nil] objectAtIndex:0];
+        
     }
     //    NSLog(@"获取历史记录");
-    
+    int buycount = 0;
+    int sellcount = 0;
+    for (NSDictionary* info in self.updateData) {
+        NSString* type = [info objectForKey:@"type"];
+        if([type isEqualToString:@"buy"]){
+            if(buycount != indexPath.row){
+                buycount++;
+            }else{
+                NSString* amount = [info objectForKey:@"amount"];
+                NSString* price = [info objectForKey:@"price"];
+                cell.buyprice.text = [NSString stringWithFormat:@"%.4f",[price floatValue]];
+                cell.buyamount.text = [NSString stringWithFormat:@"%.4f",[amount floatValue]];
+            }
+            
+        }else if ([type isEqualToString:@"sell"]){
+            if(sellcount != indexPath.row){
+                sellcount++;
+            }else{
+                NSString* amount = [info objectForKey:@"amount"];
+                NSString* price = [info objectForKey:@"price"];
+                cell.sellprice.text = [NSString stringWithFormat:@"%.4f",[price floatValue]];
+                cell.sellamount.text = [NSString stringWithFormat:@"%.4f",[amount floatValue]];
+            }
+        }
+    }
     
     return cell;
 }

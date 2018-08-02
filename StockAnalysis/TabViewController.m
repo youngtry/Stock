@@ -82,6 +82,11 @@
 //    self.tabBar.backgroundColor = kThemeColor;
 }
 
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];

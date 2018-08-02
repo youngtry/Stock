@@ -9,6 +9,7 @@
 #import "Y_StockChartSegmentView.h"
 #import "Masonry.h"
 #import "UIColor+Y_StockChart.h"
+#import "AppDelegate.h"
 
 static NSInteger const Y_StockChartSegmentStartTag = 2000;
 
@@ -21,6 +22,14 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
 @property (nonatomic, strong) UIButton *selectedBtn;
 
 @property (nonatomic, strong) UIView *indicatorView;
+
+@property (nonatomic, strong) UIView *timeView;
+
+@property (nonatomic, strong) UIView *MAView;
+
+@property (nonatomic, strong) UIView *MACDView;
+
+@property (nonatomic, strong) UIView *settingView;
 
 @property (nonatomic, strong) UIButton *secondLevelSelectedBtn1;
 
@@ -47,11 +56,19 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
     {
         self.clipsToBounds = YES;
         self.backgroundColor = [UIColor assistBackgroundColor];
-        [self setHidden:YES];
+        AppDelegate *appdelegate = [UIApplication sharedApplication].delegate;
+        if(!appdelegate.isEable){
+            [self setHidden:YES];
+        }else{
+            [self setHidden:NO];
+            
+        }
+//        [self setHidden:YES];
 //        [self setFrame:CGRectMake(frame.origin.x, frame.origin.y, 1, frame.size.height)];
     }
     return self;
 }
+
 
 - (UIView *)indicatorView
 {
@@ -112,6 +129,34 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
     return _indicatorView;
 }
 
+-(UIView*)timeView{
+    if(!_timeView)
+    {
+        _timeView = [UIView new];
+        _timeView.backgroundColor = [UIColor assistBackgroundColor];
+        NSArray *titleArr = @[@"分时",@"1分",@"3分",@"5分",@"15分",@"30分",@"1小时",@"2小时",@"4小时",@"6小时",@"12小时",@"1天",@"1周"];
+//        __block UIButton *preBtn;
+        [titleArr enumerateObjectsUsingBlock:^(NSString*  _Nonnull title, NSUInteger idx, BOOL * _Nonnull stop) {
+            UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+            [btn setTitleColor:[UIColor mainTextColor] forState:UIControlStateNormal];
+            [btn setTitleColor:[UIColor ma30Color] forState:UIControlStateSelected];
+            btn.titleLabel.font = [UIFont systemFontOfSize:13];
+            btn.tag = Y_StockChartSegmentStartTag + 100 + idx;
+            [btn addTarget:self action:@selector(event_segmentButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [btn setTitle:title forState:UIControlStateNormal];
+            [_timeView addSubview:btn];
+        }];
+        [self addSubview:_indicatorView];
+        [_timeView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.height.equalTo(self).multipliedBy(3.0/5.0);
+            make.top.equalTo(self);
+            make.width.equalTo(self).multipliedBy(5.0);
+            make.right.equalTo(self.mas_left);
+        }];
+    }
+    return _timeView;
+}
+
 - (void)setItems:(NSArray *)items
 {
     _items = items;
@@ -127,9 +172,12 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
     {
         UIButton *btn = [self private_createButtonWithTitle:title tag:Y_StockChartSegmentStartTag+index];
         UIView *view = [UIView new];
-        view.backgroundColor = [UIColor colorWithRed:52.f/255.f green:56.f/255.f blue:67/255.f alpha:1];
+        view.backgroundColor = [UIColor colorWithRed:0.f/255.f green:0.f/255.f blue:0/255.f alpha:1];
         [self addSubview:btn];
         [self addSubview:view];
+        if([title isEqualToString:@""]){
+            [view setHidden:YES];
+        }
         [btn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.mas_left);
             make.height.equalTo(self).multipliedBy(1.0f/count);
@@ -234,7 +282,7 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
 - (void)event_segmentButtonClicked:(UIButton *)btn
 {
     self.selectedBtn = btn;
-    
+
     if(btn.tag == Y_StockChartSegmentStartTag)
     {
         return;

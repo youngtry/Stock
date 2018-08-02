@@ -167,7 +167,8 @@
 typedef NS_ENUM(NSInteger, Y_StockChartCenterViewType) {
     Y_StockChartcenterViewTypeKline= 1, //K线
     Y_StockChartcenterViewTypeTimeLine,  //分时图
-    Y_StockChartcenterViewTypeOther
+    Y_StockChartcenterViewTypeOther,
+    Y_StockChartcenterViewTypeMenu  //打开二级菜单
 };
 
 

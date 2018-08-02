@@ -11,6 +11,7 @@
 #import "Masonry.h"
 #import "Y_StockChartSegmentView.h"
 #import "Y_StockChartGlobalVariable.h"
+#import "AppDelegate.h"
 @interface Y_StockChartView() <Y_StockChartSegmentViewDelegate>
 
 /**
@@ -60,7 +61,14 @@
         [self addSubview:_segmentView];
         [_segmentView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.bottom.left.top.equalTo(self);
-            make.width.equalTo(@5);
+            AppDelegate *appdelegate = [UIApplication sharedApplication].delegate;
+            if(appdelegate.isEable){
+                make.width.equalTo(@50);
+            }else{
+                make.width.equalTo(@5);
+                
+            }
+//            make.width.equalTo(@5);
         }];
     }
     return _segmentView;
@@ -82,7 +90,7 @@
     }
     if(self.dataSource)
     {
-        self.segmentView.selectedIndex = 4;
+        self.segmentView.selectedIndex = 2;
     }
 }
 
@@ -91,7 +99,7 @@
     _dataSource = dataSource;
     if(self.itemModels)
     {
-        self.segmentView.selectedIndex = 4;
+        self.segmentView.selectedIndex = 2;
     }
 }
 - (void)reloadData

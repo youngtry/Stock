@@ -108,7 +108,7 @@ static SocketInterface* _instance = nil;
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message{
-//    NSLog(@"didReceiveMessage = %@", self.requestMethod);
+//    NSLog(@"didReceiveMessage = %@", message);
     NSString* str = message;
     NSData* strdata = [str dataUsingEncoding:NSUTF8StringEncoding];
     
