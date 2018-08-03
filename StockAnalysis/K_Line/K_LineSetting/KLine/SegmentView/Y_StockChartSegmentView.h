@@ -14,6 +14,8 @@
 
 - (void)y_StockChartSegmentView:(Y_StockChartSegmentView *)segmentView clickSegmentButtonIndex:(NSInteger)index;
 
+- (void)clickMenu:(NSInteger)index;
+
 @end
 
 

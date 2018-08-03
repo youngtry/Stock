@@ -12,7 +12,8 @@
 #import "Y_StockChartSegmentView.h"
 #import "Y_StockChartGlobalVariable.h"
 #import "AppDelegate.h"
-@interface Y_StockChartView() <Y_StockChartSegmentViewDelegate>
+#import "Y_StockChartSegmentTimeView.h"
+@interface Y_StockChartView() <Y_StockChartSegmentViewDelegate,Y_StockChartSegmentTimeViewDelegate>
 
 /**
  *  K线图View
@@ -23,6 +24,11 @@
  *  底部选择View
  */
 @property (nonatomic, strong) Y_StockChartSegmentView *segmentView;
+
+/**
+ *  底部选择详细View
+ */
+@property (nonatomic, strong) Y_StockChartSegmentTimeView *segmentTimeView;
 
 /**
  *  图表类型
@@ -74,6 +80,23 @@
     return _segmentView;
 }
 
+- (Y_StockChartSegmentTimeView *)segmentTimeView
+{
+    if(!_segmentTimeView)
+    {
+        _segmentTimeView = [Y_StockChartSegmentTimeView new];
+//        _segmentView.delegate = self;
+        [self addSubview:_segmentTimeView];
+        [_segmentTimeView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self);
+            make.left.mas_equalTo(@50);
+            make.height.equalTo(self).multipliedBy(2.0/5.0);
+            make.width.equalTo(@250);
+        }];
+    }
+    return _segmentTimeView;
+}
+
 - (void)setItemModels:(NSArray *)itemModels
 {
     _itemModels = itemModels;
@@ -90,7 +113,16 @@
     }
     if(self.dataSource)
     {
+//        AppDelegate *appdelegate = [UIApplication sharedApplication].delegate;
+//        if(appdelegate.isEable){
+//            //横屏
+//            self.segmentView.selectedIndex = 2;
+//        }else{
+//
+//        }
+        
         self.segmentView.selectedIndex = 2;
+        
     }
 }
 
@@ -151,6 +183,9 @@
             Y_StockChartCenterViewType type = itemModel.centerViewType;
             
 
+            if(type == Y_StockChartcenterViewTypeMenu){
+                //进入菜单
+            }
             
             if(type != self.currentCenterViewType)
             {
@@ -183,6 +218,75 @@
         }
     }
 
+}
+
+-(void)clickMenu:(NSInteger)index{
+    if(index == 0){
+        [self.segmentTimeView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self);
+            make.left.mas_equalTo(@50);
+            make.height.equalTo(self).multipliedBy(2.0/5.0);
+            make.width.equalTo(@250);
+        }];
+        [self.segmentTimeView.timeView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.height.equalTo(self.segmentTimeView);
+            make.left.equalTo(self.segmentTimeView);
+            make.top.equalTo(self.segmentTimeView);
+            make.width.equalTo(self.segmentTimeView);
+        }];
+        
+        [self.segmentTimeView setHidden:NO];
+    }else if (index == 1){
+        [self.segmentTimeView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self).offset(self.frame.size.height/8.0);
+            make.left.mas_equalTo(@50);
+            make.height.equalTo(self).multipliedBy(1.0/8.0);
+            make.width.equalTo(@250);
+        }];
+        [self.segmentTimeView.MAView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.height.equalTo(self.segmentTimeView);
+            make.left.equalTo(self.segmentTimeView);
+            make.top.equalTo(self.segmentTimeView);
+            make.width.equalTo(self.segmentTimeView);
+        }];
+        
+        [self.segmentTimeView setHidden:NO];
+    }else if (index == 2){
+        [self.segmentTimeView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self).offset(self.frame.size.height/4.0);
+            make.left.mas_equalTo(@50);
+            make.height.equalTo(self).multipliedBy(3.0/5.0);
+            make.width.equalTo(@250);
+        }];
+        [self.segmentTimeView.MACDView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.height.equalTo(self.segmentTimeView);
+            make.left.equalTo(self.segmentTimeView);
+            make.top.equalTo(self.segmentTimeView);
+            make.width.equalTo(self.segmentTimeView);
+        }];
+        
+        [self.segmentTimeView setHidden:NO];
+    }else if (index == 3){
+        [self.segmentTimeView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self).offset(self.frame.size.height*3.0/8.0);
+            make.left.mas_equalTo(@50);
+            make.height.equalTo(self).multipliedBy(2.0/5.0);
+            make.width.equalTo(@300);
+        }];
+        [self.segmentTimeView.settingView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.height.equalTo(self.segmentTimeView);
+            make.left.equalTo(self.segmentTimeView);
+            make.top.equalTo(self.segmentTimeView);
+            make.width.equalTo(self.segmentTimeView);
+        }];
+        
+        [self.segmentTimeView setHidden:NO];
+    }
+    
+}
+
+-(void)y_StockChartSegmentTimeView:(NSInteger)index{
+    
 }
 
 @end
