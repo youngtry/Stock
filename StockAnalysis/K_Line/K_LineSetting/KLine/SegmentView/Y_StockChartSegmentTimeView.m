@@ -234,7 +234,7 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
                 [btn setEnabled:NO];
             }
             
-            if((idx>0 && idx < 5) ||(idx>6 && idx < 10)){
+            if((idx>0 && idx < 5) || (idx>6 && idx < 10)){
                 [btn setBackgroundImage:[UIImage imageNamed:@"btnbg.png"] forState:UIControlStateNormal];
                 [btn setBackgroundImage:[UIImage imageNamed:@"btnselectbg.png"] forState:UIControlStateSelected];
             }
@@ -242,46 +242,57 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
             if(idx == 11 || idx == 12 || idx == 13){
                 [btn setBackgroundColor:[UIColor colorWithRed:53.0/255.0 green:57.0/255.0 blue:60.0/255.0 alpha:1.0]];
             }
-            
+            float widthrate = kScreenWidth/667.0;
             btn.titleLabel.font = [UIFont systemFontOfSize:13];
             btn.tag = Y_StockChartSegmentStartTag + 100 + idx;
             [btn addTarget:self action:@selector(settingButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
             [btn setTitle:title forState:UIControlStateNormal];
             [_settingView addSubview:btn];
-            
+//            NSLog(@"idx = %lu ,title = %@",idx,title);
             [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-                float left = 50*(idx%6);
-                make.height.mas_equalTo(@25);
-                make.width.equalTo(_settingView).multipliedBy(1.0/6.0);
+                
+//                NSLog(@"屏幕宽度：%f",kScreenWidth/667.0);
+                float left = (idx%6)+1;
+                NSLog(@"left = %f",left);
+                make.height.mas_equalTo(@(25*widthrate));
+                make.width.mas_equalTo(@(50));
                 if(idx<11){
-                    make.left.mas_equalTo(left);
+                    make.left.mas_equalTo(@(60*(left-1)));
                 }else{
-                    make.left.equalTo(_settingView).offset((idx-11)*10+50);
+                    float left1 = ((idx-10)*20+50*(idx-11));
+                    if(idx == 11){
+                        make.left.equalTo(_settingView).offset(left1);
+                    }else{
+                        make.left.equalTo(_settingView).offset(left1);
+                    }
+                    
                 }
                 
                 
                 if(preBtn)
                 {
                     if(idx<6){
-                        make.top.equalTo(_settingView).offset(12.5);
+                        make.top.equalTo(_settingView).offset(12.5*widthrate);
                     }else{
-                        make.top.equalTo(preBtn.mas_bottom).offset(25);
+                        make.top.equalTo(preBtn.mas_bottom).offset(25*widthrate);
                     }
                     
                 } else {
-                    make.top.equalTo(_settingView).offset(12.5);
+                    make.top.equalTo(_settingView).offset(12.5*widthrate);
                 }
                 
             }];
+            if(idx>5){
+                UIView *view = [UIView new];
+                view.backgroundColor = [UIColor colorWithRed:52.f/255.f green:56.f/255.f blue:67/255.f alpha:1];
+                [_settingView addSubview:view];
+                [view mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.left.right.equalTo(btn);
+                    make.top.equalTo(btn.mas_bottom).offset(12.5*widthrate);
+                    make.height.equalTo(@0.5);
+                }];
+            }
             
-            UIView *view = [UIView new];
-            view.backgroundColor = [UIColor colorWithRed:52.f/255.f green:56.f/255.f blue:67/255.f alpha:1];
-            [_settingView addSubview:view];
-            [view mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.right.equalTo(btn);
-                make.top.equalTo(btn.mas_bottom);
-                make.height.equalTo(@0.5);
-            }];
             if(idx == 5 || idx == 10){
                 preBtn = btn;
             }
@@ -333,9 +344,10 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
 
 -(void)settingButtonClicked:(id)sender{
     NSLog(@"按钮点击");
-    [self setHidden:YES];
+//    [self setHidden:YES];
     
     UIButton* btn = sender;
+    btn.selected = YES;
     if(self.delegate && [self.delegate respondsToSelector:@selector(y_StockChartSegmentTimeView:)])
     {
         [self.delegate y_StockChartSegmentTimeView:btn.tag-Y_StockChartSegmentStartTag];

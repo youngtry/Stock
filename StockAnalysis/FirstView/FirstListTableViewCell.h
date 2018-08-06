@@ -9,5 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface FirstListTableViewCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UILabel *nameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *priceLabel;
+
+@property (weak, nonatomic) IBOutlet UILabel *upOrDownRateLabel;
 
 @end

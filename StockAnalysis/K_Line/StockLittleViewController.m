@@ -83,6 +83,8 @@
 //    self.title = @"StockLittleViewController";
     // Do any additional setup after loading the view from its nib.
     [SocketInterface sharedManager].delegate = self;
+//    [[SocketInterface sharedManager] closeWebSocket];
+//    [[SocketInterface sharedManager] openWebSocket];
     self.klineArray = [NSMutableArray new];
     self.currentIndex = -1;
     self.stockChartView.backgroundColor = [UIColor backgroundColor];
@@ -349,8 +351,8 @@
     self.type = type;
     if(![self.modelsDict objectForKey:type])
     {
-        [self reloadData];
-//        [self sendKlineRequest];
+//        [self reloadData];
+        [self sendKlineRequest];
     } else {
         return [self.modelsDict objectForKey:type].models;
     }

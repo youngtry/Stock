@@ -15,7 +15,8 @@
 #import "TTAutoRunLabel.h"
 #import "FirstListTableViewCell.h"
 #import "TCRotatorImageView.h"
-@interface UserFirstViewController ()<TTAutoRunLabelDelegate,UITableViewDelegate,UITableViewDataSource>
+#import "SocketInterface.h"
+@interface UserFirstViewController ()<TTAutoRunLabelDelegate,UITableViewDelegate,UITableViewDataSource,SocketDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *exchangeRMBLabel;
 @property (weak, nonatomic) IBOutlet UILabel *exchangeUSDLabel;
@@ -39,7 +40,7 @@
     
     
     
-    
+    [SocketInterface sharedManager].delegate = self;
     //
     
     self.randList.delegate = self;
@@ -242,6 +243,15 @@
         [_adScrollView reloadData];
     }
 }
+
+#pragma mark -SocketDelegates
+-(void)getWebData:(id)message withName:(NSString *)name{
+    if ([name isEqualToString:@"state.update"]){
+        NSLog(@"messgae = %@",message);
+        
+    }
+}
+
 #pragma mark -UITableVIewDataSource
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{

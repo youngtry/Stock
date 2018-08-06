@@ -45,7 +45,7 @@ static SocketInterface* _instance = nil;
     _webSocket = [[SRWebSocket alloc] initWithURL:[NSURL URLWithString:@"ws://exchange-test.oneitfarm.com/ws"]];
     _webSocket.delegate = self;
     
-    //    self.title = @"Opening Connection...";
+//        self.title = @"Opening Connection...";
     [_webSocket open];
     
     
@@ -65,6 +65,7 @@ static SocketInterface* _instance = nil;
     
     //    self.title = @"Opening Connection...";
     [_webSocket open];
+    NSLog(@"websocket connecting……");
 }
 
 -(void)sendRequest:(NSString *)request withName:(NSString*)name{

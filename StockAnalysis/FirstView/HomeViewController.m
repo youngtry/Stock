@@ -12,12 +12,18 @@
 #import "FirstListTableViewCell.h"
 #import "HttpRequest.h"
 #import "TCRotatorImageView.h"
-@interface HomeViewController ()<TTAutoRunLabelDelegate,UITableViewDataSource,UITableViewDelegate>
+#import "SocketInterface.h"
+#import "StockLittleViewController.h"
+@interface HomeViewController ()<TTAutoRunLabelDelegate,UITableViewDataSource,UITableViewDelegate,SocketDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *activityContainer;
 @property (weak, nonatomic) IBOutlet UIView *adView;
 @property (weak, nonatomic) IBOutlet UITableView *randList;
 @property (nonatomic,strong) TCRotatorImageView *adScrollView;
+
+@property (nonatomic,strong) NSMutableArray* stockName;
+
+
 @end
 
 @implementation HomeViewController
@@ -27,7 +33,9 @@
     // Do any additional setup after loading the view from its nib.
     
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getTipsAndAdsBack) name:@"FirstTipAndAds" object:nil];
-    
+//    [[SocketInterface sharedManager] openWebSocket];
+    [SocketInterface sharedManager].delegate = self;
+    self.stockName =  [NSMutableArray new];
     self.randList.delegate = self;
     self.randList.dataSource = self;
 }
@@ -46,6 +54,46 @@
     [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
             [self getTipsAndAdsBack:data];
+        }
+    }];
+    
+    NSDictionary* parameters1 = @{@"market":@""};
+    NSString* url1 = @"market/search";
+//
+    [[HttpRequest getInstance] getWithURL:url1 parma:parameters1 block:^(BOOL success, id data) {
+        if(success){
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                NSLog(@"股市数据:%@",data);
+                NSDictionary* market = [data objectForKey:@"data"];
+            
+                if(market.count>0){
+                    NSArray* result = [market objectForKey:@"market"];
+                    if(result.count >0){
+                        [self.stockName removeAllObjects];
+                        for (int i=0; i<result.count; i++) {
+                            
+                            NSDictionary* info = result[i];
+                            [self.stockName addObject:info];
+                            
+                            NSString* name = [info objectForKey:@"market"];
+                            NSArray *dicParma = @[name
+                                                  ];
+                            NSDictionary *dicAll = @{@"method":@"state.subscribe",@"params":dicParma,@"id":@(1)};
+                            
+                            NSString *strAll = [dicAll JSONString];
+                            
+                            [[SocketInterface sharedManager] sendRequest:strAll withName:@"state.subscribe"];
+                            
+                        }
+                        
+                        
+                        
+                        
+
+                        [_randList reloadData];
+                    }
+                }
+            }
         }
     }];
     
@@ -136,7 +184,72 @@
         [_adScrollView reloadData];
     }
 }
+#pragma mark -SocketDelegates
+-(void)getWebData:(id)message withName:(NSString *)name{
+    NSString* str = message;
+    NSData* strdata = [str dataUsingEncoding:NSUTF8StringEncoding];
+    
+    NSDictionary* data = [NSJSONSerialization JSONObjectWithData:strdata options:NSJSONReadingMutableContainers error:nil];
+    if ([name isEqualToString:@"state.update"]){
+        
+//        NSDictionary*
+//        NSLog(@"data = %@",data);
+        NSArray* params = [data objectForKey:@"params"];
+        if(params.count == 2){
+            NSDictionary* info = params[1];
+            //            NSLog(@"info = %@",info);
+            NSString* open = [NSString stringWithFormat:@"%.4f",[[info objectForKey:@"open"] floatValue]];
+            NSString* price =[NSString stringWithFormat:@"%.4f",[[info objectForKey:@"last"] floatValue]];
+            float rate = ([price floatValue])/([open floatValue])-1;
+            
+            NSString* name = params[0];
+            NSLog(@"name = %@ 涨幅 = %f",name,rate);
+            [self addRateToArray:name withRate:[NSString stringWithFormat:@"%f",rate] withPrice:price];
+            
+        }
+        
+    }
+}
 
+-(void)addRateToArray:(NSString*) name withRate:(NSString* )rate withPrice:(NSString*)price{
+    
+    for (NSMutableDictionary* info in self.stockName) {
+        if([[info objectForKey:@"market"] isEqualToString:name]){
+            [info setObject:rate forKey:@"rate"];
+            [info setObject:price forKey:@"last"];
+            break;
+        }
+    }
+    
+    NSMutableArray* temp = [NSMutableArray new];
+    for (NSMutableDictionary* info in self.stockName) {
+        float ratedata = [[info objectForKey:@"rate"] floatValue];
+        if(temp.count == 0){
+            [temp setObject:info atIndexedSubscript:0];
+        }else{
+            for (int i=0;i<temp.count;i++){
+                NSMutableDictionary* lastinfo =temp[i];
+                float lastrate = [[lastinfo objectForKey:@"rate"] floatValue];
+                if(ratedata<lastrate){
+                    [temp setObject:info atIndexedSubscript:i+1];
+                    break;
+                }
+            }
+        }
+    }
+    
+    if(temp.count == self.stockName.count){
+        [self.stockName removeAllObjects];
+        self.stockName = temp;
+        
+        NSDictionary *dicAll = @{@"method":@"state.unsubscribe",@"params":@[],@"id":@(1)};
+        
+        NSString *strAll = [dicAll JSONString];
+        [[SocketInterface sharedManager] sendRequest:strAll withName:@"state.unsubscribe"];
+        [_randList reloadData];
+    }
+    
+}
 #pragma mark -UITableVIewDataSource
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -144,7 +257,7 @@
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 8;
+    return self.stockName.count;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     //    indexPath.section
@@ -156,11 +269,20 @@
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    FirstListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+    FirstListTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     if(!cell){
         //        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"id"];
         cell = [[[NSBundle mainBundle] loadNibNamed:@"FirstListTableViewCell" owner:self options:nil] objectAtIndex:0];
     }
+    
+                                    
+    NSMutableDictionary* info = self.stockName[indexPath.row];
+    
+    cell.nameLabel.text = [info objectForKey:@"market"];
+    float rate = [[info objectForKey:@"rate"] floatValue]*100;
+    NSString* ratetext = [NSString stringWithFormat:@"%.2f%%",rate];
+    cell.upOrDownRateLabel.text = ratetext;
+    cell.priceLabel.text = [NSString stringWithFormat:@"%.4f",[[info objectForKey:@"last"] floatValue]];
     
     return cell;
 }
@@ -168,6 +290,15 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     //    FirstListTableViewCell *vc = [[ChargeDetailViewController alloc] initWithNibName:@"FirstListTableViewCell" bundle:nil];
     //    [self.navigationController pushViewController:vc animated:YES];
+    
+    FirstListTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if(cell){
+        NSString* name = cell.nameLabel.text;
+        StockLittleViewController* vc = [[StockLittleViewController alloc] initWithNibName:@"StockLittleViewController" bundle:nil];
+        vc.title = name;
+//        id temp = self.parentViewController.view.selfViewController.navigationController;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 /*
 #pragma mark - Navigation

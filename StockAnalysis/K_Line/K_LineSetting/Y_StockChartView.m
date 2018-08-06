@@ -271,7 +271,7 @@
             make.top.equalTo(self).offset(self.frame.size.height*3.0/8.0);
             make.left.mas_equalTo(@50);
             make.height.equalTo(self).multipliedBy(2.0/5.0);
-            make.width.equalTo(@300);
+            make.width.equalTo(@360);
         }];
         [self.segmentTimeView.settingView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.height.equalTo(self.segmentTimeView);
