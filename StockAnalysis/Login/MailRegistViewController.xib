@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MailRegistViewController">
             <connections>
+                <outlet property="lookPwBtn" destination="uOw-FR-Gc4" id="Vt2-wd-NjS"/>
                 <outlet property="mailInput" destination="KEf-XZ-kbp" id="82E-Zg-SyP"/>
                 <outlet property="passwordInput" destination="vMm-57-yjB" id="RFA-b9-O18"/>
                 <outlet property="verifyInput" destination="PIQ-I0-FQS" id="3w1-Cs-CZu"/>
@@ -23,21 +24,11 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ZEDA" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l7V-40-UPE">
-                    <rect key="frame" x="150" y="135" width="79" height="32"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo-big" translatesAutoresizingMaskIntoConstraints="NO" id="n0e-FT-PVP">
+                    <rect key="frame" x="148.5" y="75" width="78" height="90"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="32" id="dW7-z4-KCK"/>
-                        <constraint firstAttribute="width" constant="79" id="rUN-n2-DdP"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="25"/>
-                    <color key="textColor" red="0.7843137255" green="0.63921568630000003" blue="0.20784313730000001" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="n0e-FT-PVP">
-                    <rect key="frame" x="158" y="75" width="59" height="59"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="59" id="QR3-Ka-Cc7"/>
-                        <constraint firstAttribute="width" constant="59" id="zNX-en-1kf"/>
+                        <constraint firstAttribute="height" constant="90" id="QR3-Ka-Cc7"/>
+                        <constraint firstAttribute="width" constant="78" id="zNX-en-1kf"/>
                     </constraints>
                 </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AsB-Dw-CQi">
@@ -48,7 +39,7 @@
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="10"/>
                     <state key="normal" title="ZEDA网络服务条款">
-                        <color key="titleColor" red="0.2156862745" green="0.2156862745" blue="0.2156862745" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleColor" red="0.61568627450980395" green="0.61568627450980395" blue="0.61568627450980395" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rzC-s0-t4n">
@@ -59,7 +50,7 @@
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="10"/>
                     <state key="normal" title="点击“注册”按钮，即表示您同意">
-                        <color key="titleColor" red="0.2156862745" green="0.2156862745" blue="0.2156862745" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleColor" red="0.7803921568627451" green="0.7803921568627451" blue="0.7803921568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LF2-Vo-9q5">
@@ -68,9 +59,9 @@
                         <constraint firstAttribute="height" constant="20" id="aCI-cg-oIQ"/>
                         <constraint firstAttribute="width" constant="82" id="fas-Wt-LJl"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <state key="normal" title="手机号注册">
-                        <color key="titleColor" red="0.2156862745" green="0.2156862745" blue="0.2156862745" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleColor" red="0.5607843137254902" green="0.5607843137254902" blue="0.5607843137254902" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <connections>
                         <action selector="clickPhoneRegist:" destination="-1" eventType="touchDown" id="9kn-JA-EAJ"/>
@@ -95,7 +86,7 @@
                                 <color key="titleColor" white="0.75" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </state>
                         </button>
-                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="KEf-XZ-kbp">
+                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="点击输入" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="KEf-XZ-kbp">
                             <rect key="frame" x="75" y="8" width="263" height="30"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="9TE-Ov-I4e"/>
@@ -111,13 +102,6 @@
                                 <constraint firstAttribute="height" constant="1" id="g4P-cQ-Pmk"/>
                             </constraints>
                         </view>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sf2-YG-R0i">
-                            <rect key="frame" x="261" y="76" width="77" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <state key="normal" title="发送邀请码">
-                                <color key="titleColor" white="0.75" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </state>
-                        </button>
                         <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="邮箱邀请码" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="PIQ-I0-FQS">
                             <rect key="frame" x="37" y="77" width="216" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -146,6 +130,22 @@
                                 <color key="titleColor" white="0.75" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </state>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uOw-FR-Gc4">
+                            <rect key="frame" x="317" y="156" width="21" height="12"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" title="Button" image="eye-c"/>
+                            <connections>
+                                <action selector="clickLookPw:" destination="-1" eventType="touchUpInside" id="ywJ-Au-19j"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sf2-YG-R0i">
+                            <rect key="frame" x="251" y="76" width="87" height="33"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <state key="normal" title="发送邀请码">
+                                <color key="titleColor" red="0.1960784314" green="0.20000000000000001" blue="0.20784313730000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
@@ -168,7 +168,7 @@
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lQZ-m7-sZA">
                     <rect key="frame" x="37" y="493" width="301" height="35"/>
-                    <color key="backgroundColor" red="0.1450980392" green="0.17254901959999999" blue="0.1960784314" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.44705882352941179" green="0.46274509803921571" blue="0.47843137254901963" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="35" id="X4z-Js-xIw"/>
                     </constraints>
@@ -186,13 +186,11 @@
                 <constraint firstItem="J4e-0y-stj" firstAttribute="top" secondItem="dF1-lW-zH1" secondAttribute="top" constant="235" id="0TC-R8-IY7"/>
                 <constraint firstItem="rzC-s0-t4n" firstAttribute="top" secondItem="lQZ-m7-sZA" secondAttribute="top" constant="40" id="3Yb-zT-kTt"/>
                 <constraint firstItem="AsB-Dw-CQi" firstAttribute="leading" secondItem="lQZ-m7-sZA" secondAttribute="leading" constant="20" id="64a-By-Rxv"/>
-                <constraint firstItem="l7V-40-UPE" firstAttribute="centerX" secondItem="n0e-FT-PVP" secondAttribute="centerX" constant="2" id="8xy-7T-Q6C"/>
                 <constraint firstItem="lQZ-m7-sZA" firstAttribute="top" secondItem="J4e-0y-stj" secondAttribute="bottom" constant="62" id="DkU-TY-aDL"/>
                 <constraint firstItem="n0e-FT-PVP" firstAttribute="centerX" secondItem="dF1-lW-zH1" secondAttribute="centerX" id="LMx-w5-rjF"/>
                 <constraint firstItem="J4e-0y-stj" firstAttribute="leading" secondItem="dF1-lW-zH1" secondAttribute="leading" id="Mnn-AO-6M5"/>
                 <constraint firstItem="lQZ-m7-sZA" firstAttribute="leading" secondItem="J4e-0y-stj" secondAttribute="leading" constant="37" id="RWB-ey-G2h"/>
                 <constraint firstItem="J4e-0y-stj" firstAttribute="trailing" secondItem="dF1-lW-zH1" secondAttribute="trailing" id="VUR-N7-8IB"/>
-                <constraint firstItem="l7V-40-UPE" firstAttribute="top" secondItem="n0e-FT-PVP" secondAttribute="top" constant="60" id="bkt-jn-FiF"/>
                 <constraint firstItem="rzC-s0-t4n" firstAttribute="leading" secondItem="lQZ-m7-sZA" secondAttribute="leading" constant="20" id="cFL-Lq-O2i"/>
                 <constraint firstItem="LF2-Vo-9q5" firstAttribute="top" secondItem="lQZ-m7-sZA" secondAttribute="top" constant="40" id="cR5-Sj-3Wv"/>
                 <constraint firstItem="AsB-Dw-CQi" firstAttribute="top" secondItem="lQZ-m7-sZA" secondAttribute="top" constant="60" id="l4j-MJ-ADd"/>
@@ -205,6 +203,7 @@
         </view>
     </objects>
     <resources>
-        <image name="logo" width="76" height="76"/>
+        <image name="eye-c" width="43" height="24"/>
+        <image name="logo-big" width="157" height="181"/>
     </resources>
 </document>

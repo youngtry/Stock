@@ -16,6 +16,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *phoneInput;
 @property (weak, nonatomic) IBOutlet UITextField *verifyInput;
 @property (weak, nonatomic) IBOutlet UITextField *passwordInput;
+@property (weak, nonatomic) IBOutlet UIButton *lookPwBtn;
 
 @end
 
@@ -34,6 +35,11 @@
     [self.view addGestureRecognizer:f];
     self.view.userInteractionEnabled = YES;
     
+    self.passwordInput.secureTextEntry = YES;
+    
+    [_lookPwBtn setImage:[UIImage imageNamed:@"eye-c.png"] forState:UIControlStateNormal];
+    [_lookPwBtn setImage:[UIImage imageNamed:@"eye-o.png"] forState:UIControlStateSelected];
+    
 }
 
 -(void)clickLogin{
@@ -47,6 +53,24 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+- (IBAction)clickLookPw:(id)sender {
+    if (!_lookPwBtn.selected) { // 按下去了就是明文
+        
+        NSString *tempPwdStr = self.passwordInput.text;
+        self.passwordInput.text = @""; // 这句代码可以防止切换的时候光标偏移
+        self.passwordInput.secureTextEntry = NO;
+        self.passwordInput.text = tempPwdStr;
+        [_lookPwBtn setSelected:YES];
+        
+    } else { // 暗文
+        
+        NSString *tempPwdStr = self.passwordInput.text;
+        self.passwordInput.text = @"";
+        self.passwordInput.secureTextEntry = YES;
+        self.passwordInput.text = tempPwdStr;
+        [_lookPwBtn setSelected:NO];
+    }
 }
 - (IBAction)clickMainRegist:(id)sender {
     MailRegistViewController *vc = [[MailRegistViewController alloc] initWithNibName:@"MailRegistViewController" bundle:nil];

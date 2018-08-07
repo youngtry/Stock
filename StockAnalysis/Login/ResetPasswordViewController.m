@@ -33,6 +33,8 @@
     
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetBack) name:@"ResetPwdBack" object:nil];
     
+    self.title = @"找回登录密码";
+    
     self.secondContainer.hidden = YES;
     
     self.captcha_id = @"";

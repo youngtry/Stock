@@ -62,13 +62,22 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="eye-o" translatesAutoresizingMaskIntoConstraints="NO" id="6m0-70-Zc7">
+                            <rect key="frame" x="211" y="18" width="21" height="12"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="12" id="drJ-cr-cBv"/>
+                                <constraint firstAttribute="width" constant="21" id="lqN-66-eXn"/>
+                            </constraints>
+                        </imageView>
                     </subviews>
                     <color key="backgroundColor" red="0.34781211614608765" green="0.5611039400100708" blue="0.76063698530197144" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstItem="Nq9-uS-XAb" firstAttribute="centerX" secondItem="Nl4-JD-v9o" secondAttribute="centerX" id="5IS-a7-O3g"/>
                         <constraint firstItem="joF-NK-Au7" firstAttribute="centerX" secondItem="Nl4-JD-v9o" secondAttribute="centerX" id="H3t-5z-o9b"/>
+                        <constraint firstItem="tgs-qR-mVe" firstAttribute="top" secondItem="6m0-70-Zc7" secondAttribute="bottom" constant="-16" id="O0l-As-HgI"/>
                         <constraint firstItem="joF-NK-Au7" firstAttribute="top" secondItem="tgs-qR-mVe" secondAttribute="bottom" constant="8" id="OZU-ym-NzQ"/>
                         <constraint firstItem="tgs-qR-mVe" firstAttribute="top" secondItem="Nl4-JD-v9o" secondAttribute="topMargin" constant="6" id="SsQ-qo-QQG"/>
+                        <constraint firstItem="6m0-70-Zc7" firstAttribute="leading" secondItem="tgs-qR-mVe" secondAttribute="trailing" constant="-21" id="iNO-tE-2YF"/>
                         <constraint firstItem="tgs-qR-mVe" firstAttribute="centerX" secondItem="Nq9-uS-XAb" secondAttribute="centerX" id="lUg-Bk-PoJ"/>
                         <constraint firstItem="Nq9-uS-XAb" firstAttribute="top" secondItem="Nl4-JD-v9o" secondAttribute="top" constant="86" id="tDY-DT-Nht"/>
                         <constraint firstAttribute="height" constant="117" id="ygL-pe-6rj"/>
@@ -90,7 +99,7 @@
                             </connections>
                         </button>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="chongzhi" translatesAutoresizingMaskIntoConstraints="NO" id="3lP-sl-3DZ">
-                            <rect key="frame" x="24" y="14" width="40" height="37"/>
+                            <rect key="frame" x="34" y="22" width="27" height="24"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="充值" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vpb-dI-uOi">
@@ -117,17 +126,17 @@
                                 <action selector="clickTixianButton:" destination="-1" eventType="touchUpInside" id="JAE-wn-lYu"/>
                             </connections>
                         </button>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="tixian" translatesAutoresizingMaskIntoConstraints="NO" id="n4s-uP-ZFx">
-                            <rect key="frame" x="27" y="12" width="40" height="37"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
-                        </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="提现" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rzZ-XL-XCP">
-                            <rect key="frame" x="27" y="57" width="42" height="21"/>
+                            <rect key="frame" x="27" y="54" width="42" height="21"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="tixian" translatesAutoresizingMaskIntoConstraints="NO" id="n4s-uP-ZFx">
+                            <rect key="frame" x="35" y="22" width="26" height="24"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                        </imageView>
                     </subviews>
                     <constraints>
                         <constraint firstItem="yvI-ga-ngY" firstAttribute="leading" secondItem="cYH-nJ-CJY" secondAttribute="leading" id="2wZ-Ze-OuJ"/>
@@ -146,17 +155,17 @@
                                 <action selector="clickMoneyInOutButton:" destination="-1" eventType="touchUpInside" id="1Av-lK-4lq"/>
                             </connections>
                         </button>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="huazhuan" translatesAutoresizingMaskIntoConstraints="NO" id="rsM-cb-tE1">
-                            <rect key="frame" x="27" y="14" width="40" height="37"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
-                        </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="资金划转" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wzt-Eq-8H5">
-                            <rect key="frame" x="13" y="57" width="68" height="21"/>
+                            <rect key="frame" x="13" y="54" width="68" height="21"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="huazhuan" translatesAutoresizingMaskIntoConstraints="NO" id="rsM-cb-tE1">
+                            <rect key="frame" x="38" y="21" width="19" height="17"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                        </imageView>
                     </subviews>
                     <constraints>
                         <constraint firstItem="QXh-Nc-5eD" firstAttribute="leading" secondItem="2y8-a0-FV1" secondAttribute="leading" id="5kl-l6-JPM"/>
@@ -176,14 +185,14 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="交易账单" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qRY-8W-cSx">
-                            <rect key="frame" x="17" y="57" width="61" height="21"/>
+                            <rect key="frame" x="17" y="54" width="61" height="21"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="zhangdan" translatesAutoresizingMaskIntoConstraints="NO" id="kk9-UF-FXo">
-                            <rect key="frame" x="27" y="12" width="40" height="37"/>
+                            <rect key="frame" x="35" y="22" width="21" height="21"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                         </imageView>
                     </subviews>
@@ -207,7 +216,7 @@
                             <rect key="frame" x="8" y="16" width="58" height="17"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <nil key="textColor"/>
+                            <color key="textColor" red="0.56862745098039214" green="0.56862745098039214" blue="0.56862745098039214" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="guM-hf-6hE">
@@ -221,7 +230,7 @@
                             <rect key="frame" x="288" y="18" width="57" height="15"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                            <nil key="textColor"/>
+                            <color key="textColor" red="0.56862745098039214" green="0.56862745098039214" blue="0.56862745098039214" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
@@ -261,6 +270,7 @@
     </objects>
     <resources>
         <image name="chongzhi" width="53" height="48"/>
+        <image name="eye-o" width="32" height="24"/>
         <image name="huazhuan" width="38" height="35"/>
         <image name="tixian" width="52" height="48"/>
         <image name="zhangdan" width="42" height="41"/>

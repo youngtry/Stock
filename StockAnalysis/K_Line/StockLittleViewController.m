@@ -82,19 +82,11 @@
     [super viewDidLoad];
 //    self.title = @"StockLittleViewController";
     // Do any additional setup after loading the view from its nib.
+//    [[SocketInterface sharedManager] openWebSocket];
     [SocketInterface sharedManager].delegate = self;
 //    [[SocketInterface sharedManager] closeWebSocket];
-//    [[SocketInterface sharedManager] openWebSocket];
-    self.klineArray = [NSMutableArray new];
-    self.currentIndex = -1;
-    self.stockChartView.backgroundColor = [UIColor backgroundColor];
-    self.updateDataView.delegate = self;
-    self.updateDataView.dataSource = self;
-    self.updateDataView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.updateDataView.allowsSelection = NO;
-    self.updateData = [NSMutableArray new];
     
-    [self closeAllBtnView];
+    
     
 }
 
@@ -107,6 +99,17 @@
     [super viewWillAppear:animated];
     self.tabBarController.tabBar.hidden = YES;
     [self.navigationController.view setBackgroundColor:[UIColor blackColor]];
+    [self.navigationController setNavigationBarHidden:NO];
+    self.klineArray = [NSMutableArray new];
+    self.currentIndex = -1;
+    self.stockChartView.backgroundColor = [UIColor backgroundColor];
+    self.updateDataView.delegate = self;
+    self.updateDataView.dataSource = self;
+    self.updateDataView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.updateDataView.allowsSelection = NO;
+    self.updateData = [NSMutableArray new];
+    
+    [self closeAllBtnView];
     
 }
 
@@ -367,9 +370,9 @@
 }
 
 -(void)sendKlineRequest{
-    NSString* starttime = [self getTimeStrWithString:@"2018-07-30 00:00:00"];
+    NSString* starttime = [self getTimeStrWithString:@"2018-08-06 00:00:00"];
     NSLog(@"starttime = %@",starttime);
-    NSString* endtime = [self getTimeStrWithString:@"2018-07-30 01:00:00"];
+    NSString* endtime = [self getTimeStrWithString:@"2018-08-06 01:00:00"];
     
     
     NSArray *dicParma = @[self.title,
@@ -415,20 +418,23 @@
             NSString* high = [NSString stringWithFormat:@"%.5f",[result[i][3] floatValue]];
             NSString* low = [NSString stringWithFormat:@"%.5f",[result[i][4] floatValue]];
             NSString* vol = result[i][5];
-            //        NSLog(@"open = %@",open);
+            NSLog(@"open = %@",open);
             NSArray* info = [[NSArray alloc] initWithObjects:date,open,close,high,low,vol, nil];
             [self.klineArray  setObject:info atIndexedSubscript:i];
         }
         
 //        NSLog(@"need = %@",need);
-        
-        Y_KLineGroupModel *groupModel = [Y_KLineGroupModel objectWithArray:self.klineArray];
-        self.groupModel = groupModel;
-        [self.modelsDict setObject:groupModel forKey:self.type];
-//        NSLog(@"groupModel = %@",groupModel);
-        [self.stockChartView reloadData];
-        
+        if(result.count>0){
+            Y_KLineGroupModel *groupModel = [Y_KLineGroupModel objectWithArray:self.klineArray];
+            self.groupModel = groupModel;
+            [self.modelsDict setObject:groupModel forKey:self.type];
+            //        NSLog(@"groupModel = %@",groupModel);
+            [self.stockChartView reloadData];
+            
+            
+        }
         [self requestSubscribe];
+        
     }else if ([name isEqualToString:@"state.update"]){
         NSArray* params = [data objectForKey:@"params"];
         if(params.count == 2){

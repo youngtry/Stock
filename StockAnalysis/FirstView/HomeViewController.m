@@ -86,10 +86,6 @@
                             
                         }
                         
-                        
-                        
-                        
-
                         [_randList reloadData];
                     }
                 }

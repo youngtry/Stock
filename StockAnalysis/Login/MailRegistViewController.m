@@ -15,6 +15,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *mailInput;
 @property (weak, nonatomic) IBOutlet UITextField *verifyInput;
 @property (weak, nonatomic) IBOutlet UITextField *passwordInput;
+@property (weak, nonatomic) IBOutlet UIButton *lookPwBtn;
 
 @end
 
@@ -31,6 +32,11 @@
     UITapGestureRecognizer *f = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(test)];
     [self.view addGestureRecognizer:f];
     self.view.userInteractionEnabled = YES;
+    
+    _passwordInput.secureTextEntry = YES;
+    [_lookPwBtn setImage:[UIImage imageNamed:@"eye-c.png"] forState:UIControlStateNormal];
+    [_lookPwBtn setImage:[UIImage imageNamed:@"eye-o.png"] forState:UIControlStateSelected];
+    
 }
 
 -(void)clickLogin{
@@ -91,6 +97,24 @@
     }else if([number intValue] == 1){
         //注册成功
         [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+- (IBAction)clickLookPw:(id)sender {
+    if (!_lookPwBtn.selected) { // 按下去了就是明文
+        
+        NSString *tempPwdStr = self.passwordInput.text;
+        self.passwordInput.text = @""; // 这句代码可以防止切换的时候光标偏移
+        self.passwordInput.secureTextEntry = NO;
+        self.passwordInput.text = tempPwdStr;
+        [_lookPwBtn setSelected:YES];
+        
+    } else { // 暗文
+        
+        NSString *tempPwdStr = self.passwordInput.text;
+        self.passwordInput.text = @"";
+        self.passwordInput.secureTextEntry = YES;
+        self.passwordInput.text = tempPwdStr;
+        [_lookPwBtn setSelected:NO];
     }
 }
 /*

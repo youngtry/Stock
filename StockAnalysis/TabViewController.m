@@ -33,6 +33,10 @@
     if(self){
         self.viewControllers = [self getControllers];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeAfterLogin) name:@"ChangeAfterLogin" object:nil];
+//        self.tabBarController;
+        self.tabBar.barStyle = UIBarStyleBlack;
+        self.tabBar.barTintColor = [UIColor colorWithRed:38.0/225.0 green:45.0/255.0 blue:53.0/255.0 alpha:1.0];
+        
     }
     return self;
 }
@@ -66,6 +70,20 @@
     StoreViewController *c4 = [StoreViewController new];
     self.nav4 = [[UINavigationController alloc] initWithRootViewController:c4];
     self.nav4.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"商城" image:[UIImage imageNamed:@"tabbar_4_n"] selectedImage:[UIImage imageNamed:@"tabbar_4_s"]];
+    
+//    self.nav1.navigationBar.backgroundColor = [UIColor colorWithRed:37.0/225.0 green:44.0/255.0 blue:50.0/255.0 alpha:1.0];
+    
+    self.nav1.navigationBar.barStyle = UIBarStyleBlack;
+    self.nav1.navigationBar.barTintColor =[UIColor colorWithRed:37.0/225.0 green:44.0/255.0 blue:50.0/255.0 alpha:1.0];
+    
+    self.nav2.navigationBar.barStyle = UIBarStyleBlack;
+    self.nav2.navigationBar.barTintColor =[UIColor colorWithRed:37.0/225.0 green:44.0/255.0 blue:50.0/255.0 alpha:1.0];
+    
+    self.nav3.navigationBar.barStyle = UIBarStyleBlack;
+    self.nav3.navigationBar.barTintColor =[UIColor colorWithRed:37.0/225.0 green:44.0/255.0 blue:50.0/255.0 alpha:1.0];
+    
+    self.nav4.navigationBar.barStyle = UIBarStyleBlack;
+    self.nav4.navigationBar.barTintColor =[UIColor colorWithRed:37.0/225.0 green:44.0/255.0 blue:50.0/255.0 alpha:1.0];
     
     return @[self.nav1,self.nav2,self.nav3,self.nav4];
 }

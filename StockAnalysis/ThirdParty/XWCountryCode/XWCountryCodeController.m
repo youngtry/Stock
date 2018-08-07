@@ -72,6 +72,9 @@
     [searchController setDelegate:self];
     searchController.searchResultsDataSource = self;
     searchController.searchResultsDelegate = self;
+    searchBar.barStyle = UIBarStyleDefault;
+    searchBar.barTintColor = [UIColor colorWithRed:221.0/255.0 green:221.0/255.0 blue:221.0/255.0 alpha:1.0];
+
     
     NSString *plistPathCH = [[NSBundle mainBundle] pathForResource:@"sortedChnames" ofType:@"plist"];
     NSString *plistPathEN = [[NSBundle mainBundle] pathForResource:@"sortedEnames" ofType:@"plist"];
