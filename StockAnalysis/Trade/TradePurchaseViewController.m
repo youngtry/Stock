@@ -188,11 +188,10 @@
     
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
-            //            NSLog(@"list = %@",data);
             if([[data objectForKey:@"ret"] intValue] == 1){
                 self.infoArray = [[data objectForKey:@"data"] objectForKey:@"items"];
                 if(self.infoArray){
-                    NSLog(@"items = %@",self.infoArray);
+//                    NSLog(@"items = %@",self.infoArray);
                     [self.stcokInfoView reloadData];
                     
                     NSInteger selectedIndex1 = 0;
@@ -332,7 +331,7 @@
                     [self.infoArray removeAllObjects];
                     self.infoArray = [[data objectForKey:@"data"] objectForKey:@"items"];
                     if(self.infoArray){
-                        NSLog(@"items = %@",self.infoArray);
+//                        NSLog(@"items = %@",self.infoArray);
                         [self.stcokInfoView reloadData];
                     }
                 }
