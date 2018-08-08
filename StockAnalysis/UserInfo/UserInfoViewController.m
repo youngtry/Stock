@@ -11,7 +11,9 @@
 #import "AuthViewController.h"
 #import "FeedbackVC.h"
 #import "HttpRequest.h"
+#import "GameData.h"
 @interface UserInfoViewController ()
+@property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 
 @end
 
@@ -21,6 +23,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.title = @"我的";
+    
+    NSString* username = [GameData getUserAccount];
+    _usernameLabel.text = username;
 }
 
 - (void)didReceiveMemoryWarning {

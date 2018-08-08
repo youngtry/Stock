@@ -89,6 +89,18 @@
     
 //    NSDictionary* data = [[HttpRequest getInstance] httpBack];
 
+    NSString* username = [GameData getUserAccount];
+    NSString* showname = @"";
+    if([username containsString:@"@"]){
+        showname = username;
+    }else{
+        showname = [showname stringByAppendingString:[username substringWithRange:NSMakeRange(0, 3)]];
+        showname = [showname stringByAppendingString:@"****"];
+        showname = [showname stringByAppendingString:[username substringFromIndex:7]];
+    }
+
+    _usernameLabel.text = showname;
+    
     NSNumber* rest = [data objectForKey:@"ret"];
     if([rest intValue] == 1){
         
@@ -109,10 +121,6 @@
         self.shopRMBLabel.text = shopRMB;
         
     }
-    
-    
-    
-    
 //
 //    NSString* shopUSD = [[exchange objectForKey:@"USD"] objectForKey:@"available"];
 //
