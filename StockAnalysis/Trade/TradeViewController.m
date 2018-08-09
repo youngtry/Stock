@@ -43,12 +43,15 @@
     
     {
         TradePurchaseViewController *vc1 = [[TradePurchaseViewController alloc] initWithNibName:@"TradePurchaseViewController" bundle:nil];
+        [vc1 setTitle:@"买入"];
         [vcs addObject:vc1];
         
         TradePurchaseViewController *vc2 = [[TradePurchaseViewController alloc] initWithNibName:@"TradePurchaseViewController" bundle:nil];
+        [vc2 setTitle:@"卖出"];
         [vcs addObject:vc2];
         
         PendingOrderViewController*vc3 = [PendingOrderViewController new];
+        [vc3 setTitle:@"挂单"];
         [vcs addObject:vc3];
         
         //vc4 历史不能滑动 需求！

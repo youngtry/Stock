@@ -12,6 +12,7 @@
 #import "SocketInterface.h"
 #import "TradeStockSelectTableViewCell.h"
 #import "TradeStockInfoTableViewCell.h"
+#import "askAndBidsTableViewCell.h"
 @interface TradePurchaseViewController ()<SocketDelegate,UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UIView *editNumContainer;
 @property (weak, nonatomic) IBOutlet UIView *editPriceContainer;
@@ -23,7 +24,14 @@
 @property (weak, nonatomic) IBOutlet UITableView *stcokInfoView;
 @property (weak, nonatomic) IBOutlet UITableView *stcokSelectView;
 @property (weak, nonatomic) IBOutlet UIButton *marketNamelabel;
+@property (weak, nonatomic) IBOutlet UIView *buyTypeView;
+@property (weak, nonatomic) IBOutlet UIButton *selectBuyTypeBtn;
+@property (weak, nonatomic) IBOutlet UIView *marketPriceView;
 
+@property (weak, nonatomic) IBOutlet UILabel *marketPriceLabel;
+@property (weak, nonatomic) IBOutlet UIView *depthView;
+@property (weak, nonatomic) IBOutlet UITableView *askList;
+@property (weak, nonatomic) IBOutlet UITableView *bidsList;
 @property (nonatomic,strong)RadioButton *radioBtn;
 
 @property (nonatomic,strong)NSMutableArray* titleArray;
@@ -48,9 +56,26 @@
     self.stcokSelectView.delegate = self;
     self.stcokSelectView.dataSource = self;
     
+    self.askList.delegate = self;
+    self.askList.dataSource = self;
+    
+    self.bidsList.delegate = self;
+    self.bidsList.dataSource = self;
+    
     [self.sortGuideView setHidden:YES];
+    [self.buyTypeView setHidden:YES];
+    [self.marketPriceView setHidden:YES];
+    [self.depthView setHidden:YES];
+    
+    [self .selectBuyTypeBtn setTitle:@"限价买入" forState:UIControlStateNormal];
     
     [self customeView];
+    
+    if([self.title isEqualToString:@"卖出"]){
+        [self.purchaseBtn setBackgroundColor:[UIColor redColor]];
+    }else if([self.title isEqualToString:@"买入"]){
+        [self.purchaseBtn setBackgroundColor:[UIColor greenColor]];
+    }
     
     //单选按钮
     NSArray *tiles = @[@"25%",@"50%",@"75%",@"100%"];
@@ -72,26 +97,43 @@
     self.editPriceContainer.layer.cornerRadius = 3;
     
     self.editPercentContainer.layer.cornerRadius = 12;//self.editNumContainer.height/2.0f;
-    self.purchaseBtn.layer.cornerRadius = 15;
+    self.purchaseBtn.layer.cornerRadius = 20;
+    
+    self.buyTypeView.layer.borderWidth = 1;
+    self.buyTypeView.layer.borderColor = [kColorRGBA(128, 128, 128,0.6) CGColor];
+    
+    self.depthView.layer.borderWidth = 1;
+    self.depthView.layer.borderColor = [kColorRGBA(128, 128, 128,0.6) CGColor];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
      self.firstOpen = YES;
+    NSLog(@"title = %@",self.title);
+    if([self.title isEqualToString:@"卖出"]){
+        [self.purchaseBtn setBackgroundColor:[UIColor redColor]];
+    }else if([self.title isEqualToString:@"买入"]){
+        [self.purchaseBtn setBackgroundColor:[UIColor colorWithRed:75.0/255.0 green:185.0/255.0 blue:112.0/255.0 alpha:1.0]];
+    }
 //    [[SocketInterface sharedManager] openWebSocket];
+    
+    
+    self.askList.tableFooterView = [UIView new];
+    self.bidsList.tableFooterView = [UIView new];
+    
+    self.askList.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.bidsList.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
     [SocketInterface sharedManager].delegate = self;
     [self requestAnalysis];
     
-    
-    NSString* starttime = [self getTimeStrWithString:@"2018-08-07 00:00:00"];
-    NSString* endtime = [self getTimeStrWithString:@"2018-08-08 01:00:00"];
+//    NSString* starttime = [self getTimeStrWithString:@"2018-08-07 00:00:00"];
+//    NSString* endtime = [self getTimeStrWithString:@"2018-08-08 01:00:00"];
     
     NSDictionary* parameters = @{@"market":@"",
                                  @"state":@"",
                                  @"page":@"1",
-                                 @"page_limit":@"10",
-                                 @"start":starttime,
-                                 @"end":endtime
+                                 @"page_limit":@"10"
                                  };
     
     NSString* url = @"exchange/trades";
@@ -230,6 +272,50 @@
     [self requestAnalysis];
     
 }
+- (IBAction)clickLimitBuy:(id)sender {
+    UIButton* btn = sender;
+    [self.buyTypeView setHidden:YES];
+    [self.selectBuyTypeBtn setTitle:btn.titleLabel.text forState:UIControlStateNormal];
+    
+    [self.marketPriceView setHidden:YES];
+    
+    [self.editPriceContainer setHidden:NO];
+}
+
+- (IBAction)clickQuickBuy:(id)sender {
+    UIButton* btn = sender;
+    [self.buyTypeView setHidden:YES];
+    [self.selectBuyTypeBtn setTitle:btn.titleLabel.text forState:UIControlStateNormal];
+    
+    [self.marketPriceView setHidden:NO];
+    
+    [self.editPriceContainer setHidden:YES];
+}
+
+- (IBAction)clickSelectBuyType:(id)sender {
+    if(!self.buyTypeView.isHidden){
+        [self.buyTypeView setHidden:YES];
+    }else{
+        [self.buyTypeView setHidden:NO];
+    }
+}
+- (IBAction)clickFour:(id)sender {
+    [self.depthView setHidden:YES];
+}
+- (IBAction)clickOne:(id)sender {
+    [self.depthView setHidden:YES];
+}
+- (IBAction)clickZero:(id)sender {
+    [self.depthView setHidden:YES];
+}
+- (IBAction)clickDepth:(id)sender {
+    if(self.depthView.isHidden){
+        [self.depthView setHidden:NO];
+    }else{
+        [self.depthView setHidden:YES];
+    }
+    
+}
 
 #pragma mark ---------SocketDalegate------------
 -(void)getWebData:(id)message withName:(NSString *)name{
@@ -267,7 +353,21 @@
         return self.infoArray.count;
     }
 
-        return 0;
+        return 5;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    //    indexPath.section
+    //    indexPath.row
+    //    if (indexPath.section == 0) {
+    //        return 50;
+    //    }
+    
+    if(tableView == self.askList || tableView == self.bidsList){
+        return 20;
+    }
+    
+    return 40;
 }
 
 
@@ -300,6 +400,26 @@
         cell.name.text = name;
         cell.upRate.text = rate;
         cell.volume.text = volume;
+        
+        return cell;
+    }
+    
+    if(tableView == self.askList){
+        askAndBidsTableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
+        if(!cell){
+            cell = [[[NSBundle mainBundle] loadNibNamed:@"askAndBidsTableViewCell" owner:self options:nil] objectAtIndex:0];
+        }
+        
+        
+        
+        return cell;
+    }
+    
+    if(tableView == self.bidsList){
+        askAndBidsTableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
+        if(!cell){
+            cell = [[[NSBundle mainBundle] loadNibNamed:@"askAndBidsTableViewCell" owner:self options:nil] objectAtIndex:0];
+        }
         
         return cell;
     }
