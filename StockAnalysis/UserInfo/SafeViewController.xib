@@ -119,6 +119,7 @@
                         </imageView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ljy-dQ-X6g">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="45"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <connections>
                                 <action selector="clickTimeSelect:" destination="-1" eventType="touchUpInside" id="v5N-PG-csn"/>
                             </connections>

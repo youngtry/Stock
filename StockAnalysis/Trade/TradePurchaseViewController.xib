@@ -22,7 +22,10 @@
                 <outlet property="marketNamelabel" destination="3fE-YV-80o" id="C7f-hS-2vQ"/>
                 <outlet property="marketPriceLabel" destination="Arp-M6-wjK" id="Ek2-Dd-S4n"/>
                 <outlet property="marketPriceView" destination="FaO-Ml-PHi" id="ltU-TW-Etv"/>
+                <outlet property="periodPrice" destination="fwQ-YU-aSk" id="NAV-dC-nvT"/>
+                <outlet property="priceRMBLabel" destination="Api-32-3IS" id="epx-eB-13K"/>
                 <outlet property="purchaseBtn" destination="Oby-3v-lPa" id="oIo-Mo-iKa"/>
+                <outlet property="rateLabel" destination="f4y-KC-MYS" id="LwX-24-Rmu"/>
                 <outlet property="selectBuyTypeBtn" destination="NYL-da-xeJ" id="jfO-OG-M0O"/>
                 <outlet property="sortContantView" destination="FrB-KB-aNs" id="c9i-oS-cR8"/>
                 <outlet property="sortGuideView" destination="PpF-el-Izf" id="1WJ-Kp-ceU"/>

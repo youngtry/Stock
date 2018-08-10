@@ -41,6 +41,7 @@
         [btn setBackgroundImage:[Util imageWithColor:kColor(200,200,200)] forState:UIControlStateNormal];
         [btn setBackgroundImage:[Util imageWithColor:kThemeYellow] forState:UIControlStateSelected];
         btn.frame = CGRectMake(x, 0, _width, self.height);
+        [btn.titleLabel setFont:[UIFont systemFontOfSize:12]];
         btn.centerY = self.centerY;
         btn.tag = i;
         [self addSubview:btn];

@@ -32,6 +32,9 @@
 @property (weak, nonatomic) IBOutlet UIView *depthView;
 @property (weak, nonatomic) IBOutlet UITableView *askList;
 @property (weak, nonatomic) IBOutlet UITableView *bidsList;
+@property (weak, nonatomic) IBOutlet UILabel *periodPrice;
+@property (weak, nonatomic) IBOutlet UILabel *rateLabel;
+@property (weak, nonatomic) IBOutlet UILabel *priceRMBLabel;
 @property (nonatomic,strong)RadioButton *radioBtn;
 
 @property (nonatomic,strong)NSMutableArray* titleArray;
@@ -247,6 +250,10 @@
             }
         }
     }];
+}
+
+-(void)setStcokInfo:(NSDictionary*)info{
+    
 }
 
 -(void)viewDidLayoutSubviews{
