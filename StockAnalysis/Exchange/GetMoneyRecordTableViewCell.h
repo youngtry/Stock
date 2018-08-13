@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface GetMoneyRecordTableViewCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UILabel *addressName;
 
 @end

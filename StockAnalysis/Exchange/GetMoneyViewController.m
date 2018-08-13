@@ -8,7 +8,9 @@
 
 #import "GetMoneyViewController.h"
 #import "GetMoneyRecordViewController.h"
+#import "AppData.h"
 @interface GetMoneyViewController ()
+@property (weak, nonatomic) IBOutlet UILabel *assetName;
 
 @end
 
@@ -23,11 +25,17 @@
     
     UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:@"提现记录" style:UIBarButtonItemStylePlain target:self action:@selector(clickRecord:)];
     self.navigationItem.rightBarButtonItem = right;
+    
+    
+    self.assetName.text = [[AppData getInstance] getAssetName];
 }
 
 -(void)clickRecord:(id)sender{
     GetMoneyRecordViewController *vc = [[GetMoneyRecordViewController alloc] initWithNibName:@"GetMoneyRecordViewController" bundle:nil];
     [self.navigationController pushViewController:vc animated:YES];
+}
+- (IBAction)clickAssetSelect:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

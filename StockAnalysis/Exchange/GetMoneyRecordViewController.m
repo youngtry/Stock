@@ -8,11 +8,14 @@
 
 #import "GetMoneyRecordViewController.h"
 #import "GetMoneyRecordTableViewCell.h"
+#import "AppData.h"
 
 @interface GetMoneyRecordViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UILabel *assetName;
-- (IBAction)assetAddress:(id)sender;
+
+@property (weak, nonatomic) IBOutlet UITextField *assetAddress;
 @property (weak, nonatomic) IBOutlet UITableView *recordList;
+@property(nonatomic,strong) NSMutableArray* addressInfo;
 
 @end
 
@@ -24,13 +27,33 @@
     self.recordList.delegate = self;
     self.recordList.dataSource = self;
     
+    self.addressInfo = [NSMutableArray new];
     
+    self.assetName.text = [[AppData getInstance] getAssetName];
     
-//    self.recordList.tableHeaderView = headerView;
-//    self.recordList.tableHeaderView
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
     
-//    [self.recordList set]
-    // Do any additional setup after loading the view from its nib.
+    [self getAddress];
+}
+
+-(void)getAddress{
+    NSString* url  = @"wallet/externalAddress";
+    NSDictionary* parameters = @{};
+    
+    [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
+        if(success){
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                NSMutableArray* info = [[data objectForKey:@"data"] objectForKey:@"address"];
+                if(info && info.count>0){
+                    self.addressInfo = info;
+                    [self.recordList reloadData];
+                }
+            }
+        }
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -38,8 +61,15 @@
     // Dispose of any resources that can be recreated.
 }
 - (IBAction)clickSelectAsset:(id)sender {
+    
 }
 - (IBAction)clickGetMoney:(id)sender {
+    if([self.assetAddress.text length]>0){
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }else{
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"提现失败，请填写正确的提现账号"];
+    }
+    
 }
 
 /*
@@ -83,7 +113,7 @@
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 3;
+    return self.addressInfo.count;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     //    indexPath.section
@@ -101,15 +131,9 @@
         cell = [[[NSBundle mainBundle] loadNibNamed:@"GetMoneyRecordTableViewCell" owner:self options:nil] objectAtIndex:0];
     }
     
-//    NSArray* keys = [self.exchangeInfo allKeys];
-//    NSString* key = [keys objectAtIndex:[indexPath row]];
-//
-//    NSDictionary* info = [self.exchangeInfo objectForKey:key];
-//
-//    cell.name.text = key;
-//    cell.money.text = [NSString stringWithFormat:@"%.8f",[[info objectForKey:@"available"] floatValue]] ;
-//
-//    cell.frizeeMoney.text = [NSString stringWithFormat:@"冻结%.8f",[[info objectForKey:@"freeze"] floatValue]] ;
+    NSDictionary* info = [self.addressInfo objectAtIndex:[indexPath row]];
+    
+    cell.addressName.text = [info objectForKey:@"address"];
     
     
     return cell;
@@ -119,7 +143,8 @@
     //    FirstListTableViewCell *vc = [[ChargeDetailViewController alloc] initWithNibName:@"FirstListTableViewCell" bundle:nil];
     //    [self.navigationController pushViewController:vc animated:YES];
     
-    //    ExchangeTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    GetMoneyRecordTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    self.assetAddress.text = cell.addressName.text;
     
 }
 @end

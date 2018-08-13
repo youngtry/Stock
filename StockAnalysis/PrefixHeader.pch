@@ -55,4 +55,5 @@
 #import "Util.h"
 #import "UIView+Additions.h"
 #import "JSONKit.h"
+#import "HttpRequest.h"
 #endif /* PrefixHeader_pch */

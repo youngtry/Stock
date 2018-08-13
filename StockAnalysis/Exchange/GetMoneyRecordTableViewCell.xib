@@ -35,6 +35,9 @@
                         <state key="normal" title="删除">
                             <color key="titleColor" red="0.95294117647058818" green="0.72941176470588232" blue="0.1803921568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </state>
+                        <connections>
+                            <action selector="clickDelete:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="dS6-TV-j1i"/>
+                        </connections>
                     </button>
                 </subviews>
                 <constraints>
@@ -45,6 +48,9 @@
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <connections>
+                <outlet property="addressName" destination="h8h-Dj-Bqr" id="lZe-BO-XJZ"/>
+            </connections>
         </tableViewCell>
     </objects>
 </document>

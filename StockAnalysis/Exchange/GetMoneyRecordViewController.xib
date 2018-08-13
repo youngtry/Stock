@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GetMoneyRecordViewController">
             <connections>
+                <outlet property="assetAddress" destination="gcs-oW-fZg" id="86k-uO-Ev5"/>
                 <outlet property="assetName" destination="Tfj-eY-oug" id="n5U-95-aI1"/>
                 <outlet property="recordList" destination="PYK-b7-tBQ" id="H0a-XE-srZ"/>
                 <outlet property="view" destination="KI5-ct-j9M" id="rSK-rP-j7u"/>
@@ -109,9 +110,6 @@
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
-                            <connections>
-                                <action selector="assetAddress:" destination="-1" eventType="touchUpInside" id="kDb-j2-CpV"/>
-                            </connections>
                         </textField>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

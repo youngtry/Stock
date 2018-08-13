@@ -1,14 +1,14 @@
 //
-//  GetMoneyRecordTableViewCell.m
+//  UserManagerTableViewCell.m
 //  StockAnalysis
 //
-//  Created by try on 2018/8/13.
+//  Created by Macbook on 2018/8/13.
 //  Copyright © 2018年 try. All rights reserved.
 //
 
-#import "GetMoneyRecordTableViewCell.h"
+#import "UserManagerTableViewCell.h"
 
-@implementation GetMoneyRecordTableViewCell
+@implementation UserManagerTableViewCell
 
 - (void)awakeFromNib {
     [super awakeFromNib];
@@ -19,9 +19,6 @@
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
-}
-- (IBAction)clickDelete:(id)sender {
-    
 }
 
 @end
