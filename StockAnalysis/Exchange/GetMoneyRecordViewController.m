@@ -7,6 +7,7 @@
 //
 
 #import "GetMoneyRecordViewController.h"
+#import "GetMoneyRecordTableViewCell.h"
 
 @interface GetMoneyRecordViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UILabel *assetName;
@@ -72,7 +73,7 @@
     
     [headerView addSubview:label];
     
-    label.text = @"历史记录";
+    label.text = @"历史提现账号";
     
     return headerView;
 }
@@ -94,10 +95,10 @@
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    GetMoneyRecordTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     if(!cell){
         //        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"id"];
-        cell = [[[NSBundle mainBundle] loadNibNamed:@"ExchangeTableViewCell" owner:self options:nil] objectAtIndex:0];
+        cell = [[[NSBundle mainBundle] loadNibNamed:@"GetMoneyRecordTableViewCell" owner:self options:nil] objectAtIndex:0];
     }
     
 //    NSArray* keys = [self.exchangeInfo allKeys];
