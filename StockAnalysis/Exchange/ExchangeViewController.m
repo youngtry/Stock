@@ -10,11 +10,15 @@
 #import "ChargeViewController.h"
 #import "AppData.h"
 #import "HttpRequest.h"
+#import "ExchangeTableViewCell.h"
 
-@interface ExchangeViewController ()
+
+@interface ExchangeViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UILabel *RMBLabel;
 @property (weak, nonatomic) IBOutlet UILabel *USDLabel;
 @property (weak, nonatomic) IBOutlet UITableView *moneyList;
+
+@property (nonatomic,strong) NSMutableDictionary* exchangeInfo;
 
 @end
 
@@ -25,6 +29,10 @@
     // Do any additional setup after loading the view from its nib.
     
     self.title = @"交易账户";
+    self.exchangeInfo = [NSMutableDictionary new];
+    
+    self.moneyList.delegate = self;
+    self.moneyList.dataSource = self;
     
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getExchangeBack) name:@"GetExchangeBack" object:nil];
     
@@ -49,15 +57,26 @@
         NSDictionary* info = [data objectForKey:@"data"];
         NSLog(@"info = %@",info);
         
+        NSString* cny = [info objectForKey:@"total_cny"];
+        
+        self.RMBLabel.text = [NSString stringWithFormat:@"¥%@",cny];;
+        
+        NSString* usd = [info objectForKey:@"total_usd"];
+        
+        self.USDLabel.text = [NSString stringWithFormat:@"$≈%@",usd];
+        
+        
         NSDictionary* exchange = [info objectForKey:@"exchange"];
-        NSLog(@"exchange = %@",exchange);
         
-        NSString* exchangeRMB = [[exchange objectForKey:@"RMB"] objectForKey:@"available"];
-        self.RMBLabel.text = exchangeRMB;
+        if(exchange.count>0){
+            [self.exchangeInfo removeAllObjects];
+            
+            self.exchangeInfo = [[NSMutableDictionary alloc] initWithDictionary:exchange];
+            
+            [self.moneyList reloadData];
+            
+        }
         
-        NSString* exchangeUSD = [[exchange objectForKey:@"USD"] objectForKey:@"available"];
-        
-        self.USDLabel.text = [NSString stringWithFormat:@"$%@",exchangeUSD];
         
     }else{
         NSString* msg = [data objectForKey:@"msg"];
@@ -94,6 +113,52 @@
 - (IBAction)clickBillButton:(id)sender {
 }
 - (IBAction)hideZero:(id)sender {
+}
+#pragma mark -UITableVIewDataSource
+
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 1;
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return self.exchangeInfo.count;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    //    indexPath.section
+    //    indexPath.row
+    //    if (indexPath.section == 0) {
+    //        return 50;
+    //    }
+    return 45;
+}
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    ExchangeTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if(!cell){
+        //        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"id"];
+        cell = [[[NSBundle mainBundle] loadNibNamed:@"ExchangeTableViewCell" owner:self options:nil] objectAtIndex:0];
+    }
+    
+    NSArray* keys = [self.exchangeInfo allKeys];
+    NSString* key = [keys objectAtIndex:[indexPath row]];
+    
+    NSDictionary* info = [self.exchangeInfo objectForKey:key];
+    
+    cell.name.text = key;
+    cell.money.text = [NSString stringWithFormat:@"%.8f",[[info objectForKey:@"available"] floatValue]] ;
+    
+    cell.frizeeMoney.text = [NSString stringWithFormat:@"冻结%.8f",[[info objectForKey:@"freeze"] floatValue]] ;
+    
+    
+    return cell;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    //    FirstListTableViewCell *vc = [[ChargeDetailViewController alloc] initWithNibName:@"FirstListTableViewCell" bundle:nil];
+    //    [self.navigationController pushViewController:vc animated:YES];
+    
+//    ExchangeTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+
 }
 
 /*

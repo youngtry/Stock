@@ -8,8 +8,9 @@
 
 #import "ChargeAddressViewController.h"
 #import "ChargeRecordViewController.h"
-
+#import "AppData.h"
 @interface ChargeAddressViewController ()
+@property (weak, nonatomic) IBOutlet UILabel *assetName;
 
 @end
 
@@ -23,6 +24,8 @@
     self.navigationItem.rightBarButtonItem = right;
     
     self.title = @"交易账户充值";
+    
+    self.assetName.text = [[AppData getInstance] getAssetName];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -33,6 +36,9 @@
 -(void)clickRecord:(id)sender{
     ChargeRecordViewController *vc = [[ChargeRecordViewController alloc] initWithNibName:@"ChargeRecordViewController" bundle:nil];
     [self.navigationController pushViewController:vc animated:YES];
+}
+- (IBAction)clickSelectAsset:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 /*
 #pragma mark - Navigation

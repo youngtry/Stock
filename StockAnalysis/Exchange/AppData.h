@@ -15,4 +15,7 @@
 -(instancetype)init;
 -(void)setExchangeButtonIndex:(int)index;
 -(int)getExchangeButtonIndex;
+
+-(void)setAssetName:(NSString*)name;
+-(NSString*)getAssetName;
 @end

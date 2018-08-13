@@ -7,7 +7,7 @@
 //
 
 #import "GetMoneyViewController.h"
-
+#import "GetMoneyRecordViewController.h"
 @interface GetMoneyViewController ()
 
 @end
@@ -17,6 +17,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    self.title = @"提现";
+    
+    
+    
+    UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:@"提现记录" style:UIBarButtonItemStylePlain target:self action:@selector(clickRecord:)];
+    self.navigationItem.rightBarButtonItem = right;
+}
+
+-(void)clickRecord:(id)sender{
+    GetMoneyRecordViewController *vc = [[GetMoneyRecordViewController alloc] initWithNibName:@"GetMoneyRecordViewController" bundle:nil];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

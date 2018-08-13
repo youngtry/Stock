@@ -13,6 +13,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="Business_ViewController">
             <connections>
+                <outlet property="cnyMoney" destination="X1u-H4-tTo" id="gjG-6T-S5d"/>
+                <outlet property="moneyList" destination="1ZQ-M7-i09" id="i6L-L5-UtC"/>
+                <outlet property="usdMoney" destination="y6l-Z4-Dnu" id="sSA-fh-4Z7"/>
                 <outlet property="view" destination="PQO-hT-sBZ" id="Q3g-tp-oOy"/>
             </connections>
         </placeholder>
@@ -87,7 +90,7 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="1ZQ-M7-i09">
-                    <rect key="frame" x="0.0" y="325" width="375" height="342"/>
+                    <rect key="frame" x="16" y="325" width="343" height="342"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </tableView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fJq-G0-JYq" userLabel="tabletitleView">
@@ -108,6 +111,9 @@
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dhR-tW-aGb">
                             <rect key="frame" x="0.0" y="0.0" width="187.5" height="90"/>
+                            <connections>
+                                <action selector="clickPayStyle:" destination="-1" eventType="touchUpInside" id="xBK-3D-oIY"/>
+                            </connections>
                         </button>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="getmoney" translatesAutoresizingMaskIntoConstraints="NO" id="dv6-fQ-kui">
                             <rect key="frame" x="82" y="24" width="24" height="20"/>
@@ -143,6 +149,9 @@
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hMa-sz-fAy">
                             <rect key="frame" x="0.0" y="0.0" width="187.5" height="90"/>
+                            <connections>
+                                <action selector="clickMoney:" destination="-1" eventType="touchUpInside" id="5An-Lu-5MJ"/>
+                            </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="资金划转" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1QJ-iv-ZkX">
                             <rect key="frame" x="67" y="48" width="53.5" height="16"/>
@@ -191,10 +200,10 @@
                 <constraint firstItem="ae7-b8-ZXP" firstAttribute="leading" secondItem="pNz-9p-3tD" secondAttribute="leading" id="nGM-le-ggX"/>
                 <constraint firstItem="Wy9-bX-akz" firstAttribute="leading" secondItem="pNz-9p-3tD" secondAttribute="leading" id="pPN-gy-Rrr"/>
                 <constraint firstItem="xf9-XD-efb" firstAttribute="width" secondItem="Wy9-bX-akz" secondAttribute="width" id="qfT-EA-uxO"/>
-                <constraint firstItem="1ZQ-M7-i09" firstAttribute="leading" secondItem="pNz-9p-3tD" secondAttribute="leading" id="sep-vY-KiQ"/>
+                <constraint firstItem="1ZQ-M7-i09" firstAttribute="leading" secondItem="pNz-9p-3tD" secondAttribute="leading" constant="16" id="sep-vY-KiQ"/>
                 <constraint firstItem="fJq-G0-JYq" firstAttribute="trailing" secondItem="ae7-b8-ZXP" secondAttribute="trailing" id="sga-0r-2jd"/>
                 <constraint firstItem="xf9-XD-efb" firstAttribute="leading" secondItem="Wy9-bX-akz" secondAttribute="trailing" id="vVh-xX-5sR"/>
-                <constraint firstItem="pNz-9p-3tD" firstAttribute="trailing" secondItem="1ZQ-M7-i09" secondAttribute="trailing" id="wvj-dz-QTm"/>
+                <constraint firstItem="pNz-9p-3tD" firstAttribute="trailing" secondItem="1ZQ-M7-i09" secondAttribute="trailing" constant="16" id="wvj-dz-QTm"/>
                 <constraint firstItem="e5m-4d-bQd" firstAttribute="leading" secondItem="pNz-9p-3tD" secondAttribute="leading" constant="16" id="yEd-zB-eKo"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="pNz-9p-3tD"/>

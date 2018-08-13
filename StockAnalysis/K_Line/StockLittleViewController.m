@@ -452,7 +452,7 @@
         if(params.count > 0){
             
 //            [self.klineArray removeAllObjects];
-            NSLog(@"self.klineArray.count = %ld ",self.klineArray.count);
+//            NSLog(@"self.klineArray.count = %ld ",self.klineArray.count);
             NSArray* info = params[0];
 //            NSLog(@"info = %@",info);
             NSString* timeStampString = info[0];

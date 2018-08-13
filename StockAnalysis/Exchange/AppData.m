@@ -10,7 +10,7 @@
 
 @interface AppData()
 @property(nonatomic)int buttnIndex;
-
+@property(nonatomic,strong)NSString* asset;
 @end
 
 @implementation AppData
@@ -32,6 +32,7 @@
     self = [super init];
     if(self){
         self.buttnIndex = 0;
+        self.asset = @"";
     }
     return self;
 }
@@ -42,6 +43,14 @@
 
 -(int)getExchangeButtonIndex{
     return self.buttnIndex;
+}
+
+-(void)setAssetName:(NSString *)name{
+    self.asset = name;
+}
+
+-(NSString*)getAssetName{
+    return self.asset;
 }
 
 

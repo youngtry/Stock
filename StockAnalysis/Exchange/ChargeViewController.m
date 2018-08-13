@@ -10,10 +10,13 @@
 #import "ChargeAddressViewController.h"
 #import "AppData.h"
 #import "GetMoneyViewController.h"
+#import "HttpRequest.h"
 
 @interface ChargeViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *selectTable;
 @property (nonatomic)int index;
+
+@property (nonatomic,strong) NSMutableDictionary* exchangeInfo;
 
 @end
 
@@ -23,12 +26,50 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.title = @"选择";
-    
+    self.exchangeInfo = [NSMutableDictionary new];
     _selectTable.delegate = self;
     _selectTable.dataSource = self;
     
     
     self.index = 0;//默认是点击的充值界面,1代表提现，2代表资金划转
+    
+    NSDictionary *parameters = @{ @"type": @"exchange"};
+    
+    NSString* url = @"wallet/balance";
+    
+    //    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"GetExchangeBack"];
+    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+        if(success){
+            [self getExchangeBack:data];
+        }
+    }];
+}
+
+-(void)getExchangeBack:(NSDictionary*)data{
+    //    NSDictionary* data = [[HttpRequest getInstance] httpBack];
+    NSNumber* ret = [data objectForKey:@"ret"];
+    if([ret intValue] == 1){
+        //获取成功
+        NSDictionary* info = [data objectForKey:@"data"];
+        NSLog(@"info = %@",info);
+        
+        NSDictionary* exchange = [info objectForKey:@"exchange"];
+        
+        if(exchange.count>0){
+            [self.exchangeInfo removeAllObjects];
+            
+            self.exchangeInfo = [[NSMutableDictionary alloc] initWithDictionary:exchange];
+            
+            [self.selectTable reloadData];
+            
+        }
+        
+        
+    }else{
+        NSString* msg = [data objectForKey:@"msg"];
+        
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:msg];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -44,29 +85,21 @@
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 6;
+    return self.exchangeInfo.count;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell* cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    if(0 == indexPath.row){
-        cell.textLabel.text = @"期货1";
-    }else if(1 == indexPath.row){
-        cell.textLabel.text = @"期货2";
-    }
-    else if(2 == indexPath.row){
-        cell.textLabel.text = @"期货3";
-    }
-    else if(3 == indexPath.row){
-        cell.textLabel.text = @"期货4";
-    }
-    else if(4 == indexPath.row){
-        cell.textLabel.text = @"期货5";
-    }
-    else if(5 == indexPath.row){
-        cell.textLabel.text = @"期货6";
+    
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if(!cell){
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"id"];
     }
     
+    NSArray* keys = [self.exchangeInfo allKeys];
+    NSString* key = [keys objectAtIndex:[indexPath row]];
+    
+    cell.textLabel.text = key;
+
     return cell;
 }
 
@@ -78,6 +111,8 @@
 //    if([lastvc isKindOfClass:[ChargeAddressViewController class]]){
 //
 //    }
+    UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
+    [[AppData getInstance] setAssetName:cell.textLabel.text];
     self.index = [[AppData getInstance] getExchangeButtonIndex];
     if(self.index == 0){
         ChargeAddressViewController *vc = [[ChargeAddressViewController alloc] initWithNibName:@"ChargeAddressViewController" bundle:nil];

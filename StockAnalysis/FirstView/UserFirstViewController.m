@@ -104,21 +104,19 @@
     NSNumber* rest = [data objectForKey:@"ret"];
     if([rest intValue] == 1){
         
-        NSDictionary* exchange = [[data objectForKey:@"data"] objectForKey:@"exchange"];
-        NSLog(@"exchange = %@",exchange);
+        NSDictionary* datainfo = [data objectForKey:@"data"];
+        NSLog(@"exchange = %@",data);
         
-        NSString* exchangeRMB = [[exchange objectForKey:@"RMB"] objectForKey:@"available"];
-        self.exchangeRMBLabel.text = exchangeRMB;
+        NSString* cny = [datainfo objectForKey:@"total_cny"];
+        self.exchangeRMBLabel.text = cny;
         
-        NSString* exchangeUSD = [[exchange objectForKey:@"USD"] objectForKey:@"available"];
+        NSString* usd = [datainfo objectForKey:@"total_usd"];
         
-        self.exchangeUSDLabel.text = [NSString stringWithFormat:@"$%@",exchangeUSD];
+        self.exchangeUSDLabel.text = [NSString stringWithFormat:@"$%@",usd];
+
+        self.shopRMBLabel.text = cny;
         
-        NSDictionary* shop = [[data objectForKey:@"data"] objectForKey:@"shop"];
-        NSLog(@"shop = %@",shop);
-        
-        NSString* shopRMB = [[shop objectForKey:@"RMB"] objectForKey:@"available"];
-        self.shopRMBLabel.text = shopRMB;
+        self.shopUSDLabel.text = [NSString stringWithFormat:@"$%@",usd];
         
     }
 //

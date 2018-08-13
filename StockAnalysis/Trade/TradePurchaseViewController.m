@@ -35,10 +35,16 @@
 @property (weak, nonatomic) IBOutlet UILabel *periodPrice;
 @property (weak, nonatomic) IBOutlet UILabel *rateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *priceRMBLabel;
+@property (weak, nonatomic) IBOutlet UILabel *purchasePriceLabel;
+@property (weak, nonatomic) IBOutlet UILabel *purchaseAmountLabel;
 @property (nonatomic,strong)RadioButton *radioBtn;
+@property (weak, nonatomic) IBOutlet UIView *ShowBuyTypeView;
 
 @property (nonatomic,strong)NSMutableArray* titleArray;
 @property (nonatomic,strong)NSMutableArray* infoArray;
+
+@property (nonatomic,strong)NSMutableArray* asksArray;
+@property (nonatomic,strong)NSMutableArray* bidsArray;
 
 @property (nonatomic)BOOL firstOpen;
 @end
@@ -51,7 +57,8 @@
     self.titleArray = [NSMutableArray new];
     self.infoArray = [NSMutableArray new];
    
-    
+    self.asksArray = [NSMutableArray new];
+    self.bidsArray = [NSMutableArray new];
     
     self.stcokInfoView.delegate = self;
     self.stcokInfoView.dataSource = self;
@@ -92,21 +99,24 @@
 
 -(void)customeView{
     self.editNumContainer.layer.borderWidth = 1;
-    self.editNumContainer.layer.borderColor = [kColorRGBA(128, 128, 128,0.9) CGColor];
+    self.editNumContainer.layer.borderColor = [kColorRGBA(221, 221, 221, 1) CGColor];
     self.editNumContainer.layer.cornerRadius = 3;
     
     self.editPriceContainer.layer.borderWidth = 1;
-    self.editPriceContainer.layer.borderColor = [kColor(128, 128, 128) CGColor];
+    self.editPriceContainer.layer.borderColor = [kColorRGBA(221, 221, 221, 1) CGColor];
     self.editPriceContainer.layer.cornerRadius = 3;
     
     self.editPercentContainer.layer.cornerRadius = 12;//self.editNumContainer.height/2.0f;
     self.purchaseBtn.layer.cornerRadius = 20;
     
+    self.ShowBuyTypeView.layer.borderWidth = 1;
+    self.ShowBuyTypeView.layer.borderColor = [kColorRGBA(221, 221, 221, 1) CGColor];
+    
     self.buyTypeView.layer.borderWidth = 1;
-    self.buyTypeView.layer.borderColor = [kColorRGBA(128, 128, 128,0.6) CGColor];
+    self.buyTypeView.layer.borderColor = [kColorRGBA(221, 221, 221, 1) CGColor];
     
     self.depthView.layer.borderWidth = 1;
-    self.depthView.layer.borderColor = [kColorRGBA(128, 128, 128,0.6) CGColor];
+    self.depthView.layer.borderColor = [kColorRGBA(221, 221, 221, 1) CGColor];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -144,26 +154,35 @@
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
             NSLog(@"挂单列表:%@",data);
+            if([[data objectForKey:@"ret"] intValue] == 1){
+//                NSArray* trade = [[data objectForKey:@"data"] objectForKey:@"trades"];
+//                NSLog(@"trade = %ld",trade.count);
+//                if(trade.count>0){
+//                   [self setStcokInfo:trade[0]];
+//                }
+                
+                
+            }
         }
     }];
     
     
     
     
-//    NSArray *dicParma = @[@"LDGFRMB",
-//                          @(10),
-//                          @"0.1"
-//                          ];
-//    NSDictionary *dicAll = @{@"method":@"depth.subscribe",@"params":dicParma,@"id":@(1)};
-//
-//    NSString *strAll = [dicAll JSONString];
     
-    
-//    [[SocketInterface sharedManager] sendRequest:strAll withName:@"depth.subscribe"];
 }
 
--(void)getTradeInfo{
+-(void)getTradeInfo:(NSString*)name{
+    NSArray *dicParma = @[name,
+                          @(10),
+                          @"0.1"
+                          ];
+    NSDictionary *dicAll = @{@"method":@"depth.subscribe",@"params":dicParma,@"id":@(1)};
     
+    NSString *strAll = [dicAll JSONString];
+    
+    
+    [[SocketInterface sharedManager] sendRequest:strAll withName:@"depth.subscribe"];
 }
 
 -(void)requestAnalysis{
@@ -236,7 +255,12 @@
             if([[data objectForKey:@"ret"] intValue] == 1){
                 self.infoArray = [[data objectForKey:@"data"] objectForKey:@"items"];
                 if(self.infoArray){
-//                    NSLog(@"items = %@",self.infoArray);
+                    NSLog(@"items = %@",self.infoArray);
+                    
+                    if(self.infoArray.count>0){
+                        NSDictionary* stockinfo = self.infoArray[0];
+                        [self setStcokInfo:stockinfo];
+                    }
                     [self.stcokInfoView reloadData];
                     
                     NSInteger selectedIndex1 = 0;
@@ -253,6 +277,13 @@
 }
 
 -(void)setStcokInfo:(NSDictionary*)info{
+    
+    self.marketNamelabel.titleLabel.text = [info objectForKey:@"market"];
+    self.priceRMBLabel.text = [NSString stringWithFormat:@"¥%@",[info objectForKey:@"price"]];
+    self.periodPrice.text = [NSString stringWithFormat:@"%d",[[info objectForKey:@"volume"] intValue]] ;
+    self.rateLabel.text = [NSString stringWithFormat:@"%.2f%%",[[info objectForKey:@"increase"] floatValue]*100];
+    
+    [self getTradeInfo:[info objectForKey:@"market"]];
     
 }
 
@@ -323,6 +354,41 @@
     }
     
 }
+- (IBAction)clickPurchase:(id)sender {
+    NSString* url = @"exchange/trade/add";
+    NSDictionary* parameters = @{@"market":self.marketNamelabel.titleLabel.text,
+                                 @"num":@"",
+                                 @"price":@"",
+                                 @"mode":@"buy",
+                                 @"is_limit":@""};
+    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+        if(success){
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                [HUDUtil showHudViewInSuperView:self.view withMessage:@"挂单成功"];
+            }
+        }
+    }];
+}
+- (IBAction)clickAddPruchaseAmount:(id)sender {
+    float amount = [self.purchaseAmountLabel.text floatValue];
+    amount++;
+    self.purchaseAmountLabel.text = [NSString stringWithFormat:@"%.4f",amount];
+}
+- (IBAction)clickAReducePruchaseAmount:(id)sender {
+    float amount = [self.purchaseAmountLabel.text floatValue];
+    amount--;
+    self.purchaseAmountLabel.text = [NSString stringWithFormat:@"%.4f",amount];
+}
+- (IBAction)clickReducePruchasePrice:(id)sender {
+    float price = [self.purchasePriceLabel.text floatValue];
+    price--;
+    self.purchasePriceLabel.text = [NSString stringWithFormat:@"%.3f",price];
+}
+- (IBAction)clickAddPruchasePrice:(id)sender {
+    float price = [self.purchasePriceLabel.text floatValue];
+    price++;
+    self.purchasePriceLabel.text = [NSString stringWithFormat:@"%.3f",price];
+}
 
 #pragma mark ---------SocketDalegate------------
 -(void)getWebData:(id)message withName:(NSString *)name{
@@ -338,7 +404,29 @@
     }
     
     if([name isEqualToString:@"depth.update"]){
-        NSLog(@"数据详情:%@",data);
+        
+        NSArray* params = [data objectForKey:@"params"];
+        
+        if(params.count == 3){
+            NSDictionary* result =params[1];
+//            NSLog(@"数据详情:%@",result);
+            NSArray* ask = [result objectForKey:@"asks"];
+            NSArray* bid = [result objectForKey:@"bids"];
+            
+            if(ask.count>0){
+                [self.asksArray removeAllObjects];
+                self.asksArray = [[NSMutableArray alloc] initWithArray:ask];
+                [self.askList reloadData];
+            }
+            
+            if(bid.count>0){
+                [self.bidsArray removeAllObjects];
+                self.bidsArray = [[NSMutableArray alloc] initWithArray:bid];
+                [self.bidsList reloadData];
+            }
+        }
+        
+        
     }
 }
 
@@ -358,6 +446,13 @@
     
     if(tableView == self.stcokInfoView){
         return self.infoArray.count;
+    }
+    
+    if(tableView == self.askList){
+        return self.asksArray.count;
+    }
+    if(tableView == self.bidsList){
+        return self.bidsArray.count;
     }
 
         return 5;
@@ -418,7 +513,12 @@
         }
         
         
-        
+        NSMutableArray* info = self.asksArray[indexPath.row];
+        if(info.count==2){
+            cell.price.text = [NSString stringWithFormat:@"%.4f",[info[1] floatValue]] ;
+            cell.amount.text = [NSString stringWithFormat:@"%.3f",[info[0] floatValue]];
+        }
+        cell.price.textColor = [UIColor colorWithRed:236/255.0 green:102/255.0 blue:95/255.0 alpha:1];
         return cell;
     }
     
@@ -427,6 +527,14 @@
         if(!cell){
             cell = [[[NSBundle mainBundle] loadNibNamed:@"askAndBidsTableViewCell" owner:self options:nil] objectAtIndex:0];
         }
+        
+        NSMutableArray* info = self.bidsArray[indexPath.row];
+        if(info.count==2){
+            cell.price.text = [NSString stringWithFormat:@"%.4f",[info[1] floatValue]] ;
+            cell.amount.text = [NSString stringWithFormat:@"%.3f",[info[0] floatValue]];
+        }
+        
+        cell.price.textColor = [UIColor colorWithRed:51/255.0 green:143/255.0 blue:71/255.0 alpha:1];
         
         return cell;
     }
@@ -441,6 +549,7 @@
 
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
     if(tableView == self.stcokSelectView){
         TradeStockSelectTableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
         NSString* name = cell.name.text;
@@ -472,6 +581,16 @@
         [self.marketNamelabel setTitle:cell.name.text forState:UIControlStateNormal];
 //        self.marketNamelabel.titleLabel.text = cell.name.text;
         [self.sortGuideView setHidden:YES];
+        
+        [self setStcokInfo:self.infoArray[indexPath.row]];
+    }
+    
+    if(tableView == self.askList || tableView == self.bidsList){
+        askAndBidsTableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
+        
+        self.purchasePriceLabel.text = cell.price.text;
+        self.purchaseAmountLabel.text = cell.amount.text;
+        
     }
     
 }
