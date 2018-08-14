@@ -13,6 +13,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *moneyPassword;
 @property (weak, nonatomic) IBOutlet UITextField *moneyAgainPassword;
 @property (weak, nonatomic) IBOutlet UITextField *verifyInput;
+@property (weak, nonatomic) IBOutlet UIButton *lookPwdBtn;
+@property (weak, nonatomic) IBOutlet UIButton *lookPwdAgainBtn;
 
 @end
 
@@ -23,16 +25,48 @@
     // Do any additional setup after loading the view from its nib.
     
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setMoneyPasswordBack) name:@"SetMoneyPasswordBack" object:nil];
+    self.title = @"设置资金密码";
+    [_lookPwdBtn setImage:[UIImage imageNamed:@"eye-c.png"] forState:UIControlStateNormal];
+    [_lookPwdBtn setImage:[UIImage imageNamed:@"eye-o.png"] forState:UIControlStateSelected];
+    
+    self.moneyPassword.secureTextEntry = YES;
+
+    
+    UITapGestureRecognizer *f = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(test)];
+    [self.view addGestureRecognizer:f];
+    self.view.userInteractionEnabled = YES;
+    
 }
+
+-(void)test{
+    [self.view endEditing:YES];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 - (IBAction)clickLookPassword:(id)sender {
+    
+    if (!_lookPwdBtn.selected) { // 按下去了就是明文
+        
+        NSString *tempPwdStr = self.moneyPassword.text;
+        self.moneyPassword.text = @""; // 这句代码可以防止切换的时候光标偏移
+        self.moneyPassword.secureTextEntry = NO;
+        self.moneyPassword.text = tempPwdStr;
+        [_lookPwdBtn setSelected:YES];
+        
+    } else { // 暗文
+        
+        NSString *tempPwdStr = self.moneyPassword.text;
+        self.moneyPassword.text = @"";
+        self.moneyPassword.secureTextEntry = YES;
+        self.moneyPassword.text = tempPwdStr;
+        [_lookPwdBtn setSelected:NO];
+    }
 }
-- (IBAction)clickAgainPassword:(id)sender {
-}
+
 - (IBAction)clickVerify:(id)sender {
 }
 - (IBAction)clickResetPassword:(id)sender {
@@ -77,6 +111,9 @@
         //设置成功
         [self.navigationController popViewControllerAnimated:YES];
         
+        NSString* msg = @"设置成功";
+        
+        [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:msg];
     }else{
         NSString* msg = [data objectForKey:@"msg"];
         

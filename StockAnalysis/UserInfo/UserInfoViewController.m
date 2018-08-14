@@ -12,6 +12,7 @@
 #import "FeedbackVC.h"
 #import "HttpRequest.h"
 #import "GameData.h"
+#import "UserManagerViewController.h"
 @interface UserInfoViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 
@@ -68,6 +69,10 @@
     [self presentViewController:alert animated:true completion:nil];
     
     
+}
+- (IBAction)clickSwitchAccount:(id)sender {
+    UserManagerViewController* vc = [[UserManagerViewController alloc] initWithNibName:@"UserManagerViewController" bundle:nil];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 /*

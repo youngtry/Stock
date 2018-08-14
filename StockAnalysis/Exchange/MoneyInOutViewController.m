@@ -7,8 +7,10 @@
 //
 
 #import "MoneyInOutViewController.h"
-
+#import "AppData.h"
 @interface MoneyInOutViewController ()
+@property (weak, nonatomic) IBOutlet UIButton *turnBtn;
+@property (weak, nonatomic) IBOutlet UILabel *marketName;
 
 @end
 
@@ -17,11 +19,49 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    self.marketName.text = [[AppData getInstance] getAssetName];
+    
+    
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    NSDictionary *parameters = @{ @"type": @""};
+    
+    NSString* url = @"wallet/balance";
+    
+    //    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"GetExchangeBack"];
+    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+        if(success){
+            [self showLeftMoney:data];
+        }
+    }];
+}
+
+-(void)showLeftMoney:(NSDictionary*)data{
+    if([[data objectForKey:@"ret"] intValue] == 1){
+        NSString* title = self.title;
+        NSLog(@"当前页面title = %@",title);
+        if([title isEqualToString:@"0"]){
+            self.turnOutName.text = @"交易账户";
+            self.turnInName.text = @"商户账户";
+        }else{
+            self.turnOutName.text = @"商户账户";
+            self.turnInName.text = @"交易账户";
+        }
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+- (IBAction)clickTurnBtn:(id)sender {
+}
+- (IBAction)clickSelectBtn:(id)sender {
+    id temp = self.parentViewController.view.selfViewController.navigationController;
+    [temp popViewControllerAnimated:YES];
 }
 
 /*

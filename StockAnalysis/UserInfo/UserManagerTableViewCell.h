@@ -9,5 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface UserManagerTableViewCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UILabel *account;
+@property (weak, nonatomic) IBOutlet UIImageView *currentIcon;
 
+@property (weak, nonatomic) IBOutlet UIButton *switchBtn;
 @end

@@ -12,6 +12,12 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddAccountViewController">
             <connections>
+                <outlet property="addbtn" destination="pSW-LH-241" id="Ocq-Lm-TQl"/>
+                <outlet property="cardnumberInput" destination="JMI-fK-AVx" id="Ooe-dn-0RQ"/>
+                <outlet property="contactInput" destination="Bms-O0-gYX" id="ZsD-1C-Dzq"/>
+                <outlet property="extraInput" destination="Ahd-jN-2A0" id="0MI-VY-fWk"/>
+                <outlet property="selectBankBtn" destination="FHx-vE-f42" id="Ser-7D-8PG"/>
+                <outlet property="verifyInput" destination="ajE-Bs-sLm" id="uVd-L4-zae"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -21,7 +27,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c2r-tr-r4g" userLabel="bankView">
-                    <rect key="frame" x="0.0" y="14" width="375" height="45"/>
+                    <rect key="frame" x="0.0" y="40" width="375" height="45"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="银行" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yr4-lM-GaB">
                             <rect key="frame" x="20" y="14" width="29" height="17"/>
@@ -37,6 +43,9 @@
                             <state key="normal" title="点击选择银行">
                                 <color key="titleColor" red="0.7623461787564767" green="0.7623461787564767" blue="0.7623461787564767" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
+                            <connections>
+                                <action selector="clickSelectBank:" destination="-1" eventType="touchUpInside" id="dgd-30-mee"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -45,7 +54,7 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TLL-yF-VKW" userLabel="accountView">
-                    <rect key="frame" x="0.0" y="76" width="375" height="45"/>
+                    <rect key="frame" x="0.0" y="100" width="375" height="45"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="添加卡号" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fe8-Qp-wyC">
                             <rect key="frame" x="20" y="14" width="58" height="17"/>
@@ -60,6 +69,9 @@
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <action selector="editEnd:" destination="-1" eventType="editingDidEnd" id="A9x-la-EHe"/>
+                            </connections>
                         </textField>
                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8su-y3-gfP">
                             <rect key="frame" x="0.0" y="45" width="375" height="1"/>
@@ -73,7 +85,7 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vJ1-Wg-SVJ" userLabel="beizhuView">
-                    <rect key="frame" x="0.0" y="122" width="375" height="45"/>
+                    <rect key="frame" x="0.0" y="146" width="375" height="45"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="备注" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bfe-oa-wg9">
                             <rect key="frame" x="20" y="14" width="29" height="17"/>
@@ -88,6 +100,9 @@
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <action selector="editEnd:" destination="-1" eventType="editingDidEnd" id="6Jy-Sz-0gK"/>
+                            </connections>
                         </textField>
                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yit-22-rlW">
                             <rect key="frame" x="0.0" y="45" width="375" height="1"/>
@@ -101,7 +116,7 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CVp-gB-xKq" userLabel="mailView">
-                    <rect key="frame" x="0.0" y="168" width="375" height="45"/>
+                    <rect key="frame" x="0.0" y="192" width="375" height="45"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="邮箱或手机号" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8QR-fs-dmi">
                             <rect key="frame" x="20" y="14" width="86" height="17"/>
@@ -116,6 +131,9 @@
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <action selector="editEnd:" destination="-1" eventType="editingDidEnd" id="nvM-sO-AuL"/>
+                            </connections>
                         </textField>
                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7rv-v8-mKH">
                             <rect key="frame" x="0.0" y="45" width="375" height="1"/>
@@ -129,7 +147,7 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DOv-4o-65A" userLabel="verifyView">
-                    <rect key="frame" x="0.0" y="239" width="375" height="45"/>
+                    <rect key="frame" x="0.0" y="263" width="375" height="45"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="短信验证码" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hef-qa-woQ">
                             <rect key="frame" x="20" y="14" width="72" height="17"/>
@@ -144,6 +162,9 @@
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <action selector="editEnd:" destination="-1" eventType="editingDidEnd" id="knN-2Z-JKT"/>
+                            </connections>
                         </textField>
                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iwT-h4-5hR">
                             <rect key="frame" x="0.0" y="45" width="375" height="1"/>
@@ -170,7 +191,7 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b9A-vk-I9j" userLabel="defaultView">
-                    <rect key="frame" x="0.0" y="311" width="375" height="45"/>
+                    <rect key="frame" x="0.0" y="335" width="375" height="45"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="将该账户设置为认证账户" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="txs-Rs-E0B">
                             <rect key="frame" x="20" y="14" width="158" height="17"/>
@@ -187,6 +208,9 @@
                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="HaH-pX-eaX">
                             <rect key="frame" x="295" y="7" width="49" height="31"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                            <connections>
+                                <action selector="clickSetDefaultAccount:" destination="-1" eventType="valueChanged" id="Ln2-Pg-gev"/>
+                            </connections>
                         </switch>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -194,26 +218,58 @@
                         <constraint firstAttribute="height" constant="45" id="NHi-fR-OMW"/>
                     </constraints>
                 </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="向认证账户提现将不再输入资金密码、短信验" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tdy-ZH-46Z">
+                    <rect key="frame" x="16" y="388" width="246" height="15"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" red="0.7623461788" green="0.7623461788" blue="0.7623461788" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pSW-LH-241">
+                    <rect key="frame" x="15" y="420" width="345" height="47"/>
+                    <color key="backgroundColor" red="0.76078431372549016" green="0.76078431372549016" blue="0.76078431372549016" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="47" id="RuX-hf-Nlk"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <state key="normal" title="确定">
+                        <color key="titleColor" red="0.99019607840000001" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="25"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="clickAddBtn:" destination="-1" eventType="touchUpInside" id="arB-sU-NTI"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="CVp-gB-xKq" secondAttribute="trailing" id="5vv-qh-soK"/>
                 <constraint firstItem="b9A-vk-I9j" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="Dsl-ap-whP"/>
+                <constraint firstItem="pSW-LH-241" firstAttribute="top" secondItem="b9A-vk-I9j" secondAttribute="bottom" constant="40" id="Fip-m7-3VB"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="b9A-vk-I9j" secondAttribute="trailing" id="IKC-r2-Ggg"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="pSW-LH-241" secondAttribute="trailing" constant="15" id="NIa-eI-IkT"/>
                 <constraint firstItem="TLL-yF-VKW" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="RQl-F3-ghH"/>
                 <constraint firstItem="vJ1-Wg-SVJ" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="XOn-t5-zLe"/>
                 <constraint firstItem="CVp-gB-xKq" firstAttribute="top" secondItem="vJ1-Wg-SVJ" secondAttribute="bottom" constant="1" id="YBn-pl-h04"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="DOv-4o-65A" secondAttribute="trailing" id="YXF-Sa-2uh"/>
+                <constraint firstItem="pSW-LH-241" firstAttribute="centerX" secondItem="Q5M-cg-NOt" secondAttribute="centerX" id="agV-1x-MRa"/>
                 <constraint firstItem="vJ1-Wg-SVJ" firstAttribute="top" secondItem="TLL-yF-VKW" secondAttribute="bottom" constant="1" id="daR-B0-HKg"/>
-                <constraint firstItem="DOv-4o-65A" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="219" id="jjb-3M-S84"/>
+                <constraint firstItem="Tdy-ZH-46Z" firstAttribute="top" secondItem="b9A-vk-I9j" secondAttribute="bottom" constant="8" id="eTD-Xq-XWi"/>
+                <constraint firstItem="DOv-4o-65A" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="243" id="jjb-3M-S84"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="vJ1-Wg-SVJ" secondAttribute="trailing" id="lYr-65-ofx"/>
-                <constraint firstItem="TLL-yF-VKW" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="56" id="q2b-O7-oE6"/>
+                <constraint firstItem="TLL-yF-VKW" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="80" id="q2b-O7-oE6"/>
                 <constraint firstItem="CVp-gB-xKq" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="qa3-FA-YuO"/>
                 <constraint firstItem="DOv-4o-65A" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="rTd-ay-Z8g"/>
-                <constraint firstItem="Q5M-cg-NOt" firstAttribute="top" secondItem="c2r-tr-r4g" secondAttribute="top" constant="6" id="rx2-T5-m6C"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="top" secondItem="c2r-tr-r4g" secondAttribute="top" constant="-20" id="rx2-T5-m6C"/>
+                <constraint firstItem="Tdy-ZH-46Z" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="16" id="sLc-S7-qXl"/>
                 <constraint firstItem="c2r-tr-r4g" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="tRZ-ph-hdE"/>
+                <constraint firstItem="pSW-LH-241" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="15" id="tbI-KJ-RBV"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="c2r-tr-r4g" secondAttribute="trailing" id="w7L-w9-cY6"/>
-                <constraint firstItem="b9A-vk-I9j" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="291" id="xG0-hS-YMK"/>
+                <constraint firstItem="b9A-vk-I9j" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="315" id="xG0-hS-YMK"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="TLL-yF-VKW" secondAttribute="trailing" id="ywJ-Kr-YVw"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>

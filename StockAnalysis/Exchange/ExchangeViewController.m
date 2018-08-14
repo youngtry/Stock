@@ -11,7 +11,7 @@
 #import "AppData.h"
 #import "HttpRequest.h"
 #import "ExchangeTableViewCell.h"
-
+#import "TurnMoneyViewController.h"
 
 @interface ExchangeViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UILabel *RMBLabel;
@@ -109,6 +109,12 @@
     [[AppData getInstance] setExchangeButtonIndex:1];
 }
 - (IBAction)clickMoneyInOutButton:(id)sender {
+    
+    ChargeViewController *vc = [[ChargeViewController alloc] initWithNibName:@"ChargeViewController" bundle:nil];
+    [self.navigationController pushViewController:vc animated:YES];
+    [[AppData getInstance] setExchangeButtonIndex:2];
+    
+    
 }
 - (IBAction)clickBillButton:(id)sender {
 }

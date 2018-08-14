@@ -60,6 +60,8 @@
         [GameData setUserAccount:self.usernameInput.text];
         [GameData setUserPassword:self.passwordInput.text];
         
+        [GameData setAccountList:self.usernameInput.text withPassword:self.passwordInput.text];
+        
         NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
         [defaultdata setBool:YES forKey:@"IsLogin"];
         
@@ -90,26 +92,16 @@
         [HUDUtil showSystemTipView:self title:@"提示" withContent:@"请输入密码"];
         return;
     }
-    /*
-    NSArray *parameters = @[ @{ @"name": @"phone", @"value": self.usernameInput.text },
-                             @{ @"name": @"password", @"value": self.passwordInput.text },
-                             @{ @"name": @"appkey", @"value": @"5yupjrc7tbhwufl8oandzidjyrmg6blc" },
-                             @{ @"name": @"channel", @"value": @"0" } ];
-    NSString* url = @"http://exchange-test.oneitfarm.com/server/account/login/phone";
-    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"LoginSuccess"];*/
     
     [HUDUtil showHudViewInSuperView:self.view withMessage:@"登陆中……"];
     
     NSString* url = @"account/login/phone";
     NSDictionary *paramDic = @{ @"phone":self.usernameInput.text,@"password":self.passwordInput.text};
-    
-//    NSMutableDictionary* paramDic = [[NSMutableDictionary alloc] initWithDictionary:param];
+
     
     [[HttpRequest getInstance] postWithURL:url parma:paramDic block:^(BOOL success, id data) {
         if(success){
             //这里把判断ret才能知道是否正确登陆。
-//            [self phoneLoginSuccess];
-//            NSDictionary* info = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil ];
             NSLog(@"登录消息：%@",data);
             NSNumber* number = [data objectForKey:@"ret"];
             if([number intValue] == 1){
@@ -117,6 +109,7 @@
                 
                 [GameData setUserAccount:self.usernameInput.text];
                 [GameData setUserPassword:self.passwordInput.text];
+                [GameData setAccountList:self.usernameInput.text withPassword:self.passwordInput.text];
                 
                 NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
                 [defaultdata setBool:YES forKey:@"IsLogin"];

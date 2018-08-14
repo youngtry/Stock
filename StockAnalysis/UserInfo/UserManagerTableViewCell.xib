@@ -20,23 +20,38 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="177xxxxxxxx" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dzA-30-UQc">
-                        <rect key="frame" x="16" y="13" width="80" height="17"/>
+                        <rect key="frame" x="16" y="13" width="139" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="normal" translatesAutoresizingMaskIntoConstraints="NO" id="MKe-im-Nf9">
+                        <rect key="frame" x="282" y="10" width="22" height="22"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                    </imageView>
                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iKh-Kd-GqS">
-                        <rect key="frame" x="10" y="7" width="58" height="29"/>
+                        <rect key="frame" x="16" y="7" width="58" height="29"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <state key="normal" title="添加账户">
                             <color key="titleColor" red="0.95294117647058818" green="0.74509803921568629" blue="0.29411764705882354" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </state>
+                        <connections>
+                            <action selector="clickSwitchButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="ez0-ZB-702"/>
+                        </connections>
                     </button>
                 </subviews>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <connections>
+                <outlet property="account" destination="dzA-30-UQc" id="KNA-kH-mko"/>
+                <outlet property="currentIcon" destination="MKe-im-Nf9" id="8wY-2j-yFL"/>
+                <outlet property="switchBtn" destination="iKh-Kd-GqS" id="xHR-It-sxk"/>
+            </connections>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="normal" width="22" height="22"/>
+    </resources>
 </document>

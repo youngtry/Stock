@@ -111,6 +111,7 @@
         [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"登陆成功"];
         [GameData setUserAccount:self.mailInput.text];
         [GameData setUserPassword:self.passwordInput.text];
+        [GameData setAccountList:self.mailInput.text withPassword:self.passwordInput.text];
         NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
         [defaultdata setBool:YES forKey:@"IsLogin"];
         

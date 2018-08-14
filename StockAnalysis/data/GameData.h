@@ -16,4 +16,7 @@
 +(void)setUserPassword:(NSString* )password;
 +(NSString* )getUserPassword;
 
++(void)setAccountList:(NSString*)account withPassword:(NSString*)pwd;
++(NSArray*)getAccountList;
+
 @end

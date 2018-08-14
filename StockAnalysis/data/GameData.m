@@ -39,4 +39,43 @@
     return username;
 }
 
++(void)setAccountList:(NSString *)account withPassword:(NSString *)pwd{
+    
+    NSMutableDictionary* acc = [NSMutableDictionary new];
+    [acc setObject:pwd forKey:@"password"];
+    [acc setObject:account forKey:@"account"];
+    
+    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    
+    NSArray* acclist = [defaults objectForKey:@"AccountList"] ;
+    
+    if(!acclist){
+        acclist = [NSArray new];
+    }
+    
+    for (NSDictionary* info in acclist) {
+        NSLog(@"所存储的账号:%@",info);
+        if([[info objectForKey:@"account"] isEqualToString:account]){
+            NSLog(@"所存账号已存在");
+            return;
+        }
+    }
+    
+    NSMutableArray* temp = [[NSMutableArray alloc] initWithArray:acclist];
+    
+    [temp addObject:acc];
+    
+    [defaults setObject:temp forKey:@"AccountList"];
+    
+    [defaults synchronize];
+}
+
++(NSArray*)getAccountList{
+    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    
+    NSArray* acclist = [defaults objectForKey:@"AccountList"];
+    
+    return acclist;
+}
+
 @end

@@ -11,6 +11,7 @@
 #import "AppData.h"
 #import "GetMoneyViewController.h"
 #import "HttpRequest.h"
+#import "TurnMoneyViewController.h"
 
 @interface ChargeViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *selectTable;
@@ -31,9 +32,9 @@
     _selectTable.dataSource = self;
     
     
-    self.index = 0;//默认是点击的充值界面,1代表提现，2代表资金划转
-    
-    NSDictionary *parameters = @{ @"type": @"exchange"};
+    self.index = 0;//默认是点击的充值界面,1代表提现，2代表资金划转,3代表资金划转
+    NSString* type = @"exchange";
+    NSDictionary *parameters = @{ @"type": type};
     
     NSString* url = @"wallet/balance";
     
@@ -120,7 +121,8 @@
     }else if(self.index == 1){
         GetMoneyViewController *vc = [[GetMoneyViewController alloc] initWithNibName:@"GetMoneyViewController" bundle:nil];
         [self.navigationController pushViewController:vc animated:YES];
-    }
+    }else if (self.index == 2){TurnMoneyViewController* vc = [[TurnMoneyViewController alloc] initWithNibName:@"TurnMoneyViewController" bundle:nil];
+        [self.navigationController pushViewController:vc animated:YES];}
     
 }
 
