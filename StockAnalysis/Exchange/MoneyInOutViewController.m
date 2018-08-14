@@ -41,13 +41,35 @@
 -(void)showLeftMoney:(NSDictionary*)data{
     if([[data objectForKey:@"ret"] intValue] == 1){
         NSString* title = self.title;
-        NSLog(@"当前页面title = %@",title);
+        
+        NSDictionary* info = [data objectForKey:@"data"];
+        NSLog(@"当前页面title = %@",info);
         if([title isEqualToString:@"0"]){
             self.turnOutName.text = @"交易账户";
             self.turnInName.text = @"商户账户";
+            NSDictionary* exchange =[info objectForKey:@"exchange"];
+            if(exchange){
+                NSDictionary* left = [exchange objectForKey:self.marketName.text];
+                if(left){
+                    NSString* available = [left objectForKey:@"available"];
+                    self.leftMonetCount.text = [NSString stringWithFormat:@"可转%@",available];
+                }
+            }
+            
+            
         }else{
             self.turnOutName.text = @"商户账户";
             self.turnInName.text = @"交易账户";
+            
+            NSDictionary* shop =[info objectForKey:@"shop"];
+            if(shop){
+                NSDictionary* left = [info objectForKey:self.marketName.text];
+                if(left){
+                    NSString* available = [left objectForKey:@"available"];
+                    self.leftMonetCount.text = [NSString stringWithFormat:@"可转%@",available];
+                }
+            }
+            
         }
     }
     
