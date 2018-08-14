@@ -16,6 +16,7 @@
                 <outlet property="marketName" destination="zwZ-X3-vvK" id="WYC-xU-Ftb"/>
                 <outlet property="turnBtn" destination="Vjk-eU-cXK" id="Q4x-uG-qsp"/>
                 <outlet property="turnInName" destination="wLu-3u-k3K" id="2af-U3-oq8"/>
+                <outlet property="turnInput" destination="UwK-p7-7Df" id="YZn-gg-VAl"/>
                 <outlet property="turnOutName" destination="4fy-lY-5ea" id="C9V-rb-ZdJ"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -130,6 +131,9 @@
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                             <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <action selector="editEnd:" destination="-1" eventType="editingDidEnd" id="yve-k3-Q4d"/>
+                            </connections>
                         </textField>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

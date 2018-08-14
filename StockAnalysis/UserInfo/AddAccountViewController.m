@@ -66,7 +66,7 @@
         [self.addbtn setEnabled:YES];
     }else{
         [self.addbtn setBackgroundColor:[UIColor colorWithRed:224.0/255.0 green:224.0/255.0 blue:224.0/255.0 alpha:1.0]];
-        [self.addbtn setEnabled:YES];
+        [self.addbtn setEnabled:NO];
     }
 }
 - (IBAction)clickAddBtn:(id)sender {
