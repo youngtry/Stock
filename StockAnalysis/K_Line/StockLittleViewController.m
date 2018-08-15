@@ -82,12 +82,9 @@
     [super viewDidLoad];
 //    self.title = @"StockLittleViewController";
     // Do any additional setup after loading the view from its nib.
-//    [[SocketInterface sharedManager] openWebSocket];
+    [[SocketInterface sharedManager] openWebSocket];
     [SocketInterface sharedManager].delegate = self;
 //    [[SocketInterface sharedManager] closeWebSocket];
-    
-    
-    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -370,9 +367,24 @@
 }
 
 -(void)sendKlineRequest{
-    NSString* starttime = [self getTimeStrWithString:@"2018-08-06 00:00:00"];
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    
+    [formatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
+    
+    NSDate *datenow = [NSDate date];
+    NSDate *lastdate = [NSDate dateWithTimeInterval:-60*60 sinceDate:datenow];
+    
+    NSString *currentTimeString = [formatter stringFromDate:datenow];
+    NSString *lastTimeString = [formatter stringFromDate:lastdate];
+    
+    NSLog(@"currentTimeString =  %@,%@",currentTimeString,lastTimeString);
+    
+    
+ 
+    NSString* starttime = [self getTimeStrWithString:lastTimeString];
     NSLog(@"starttime = %@",starttime);
-    NSString* endtime = [self getTimeStrWithString:@"2018-08-06 01:00:00"];
+    NSString* endtime = [self getTimeStrWithString:currentTimeString];
     
     
     NSArray *dicParma = @[self.title,
@@ -380,7 +392,7 @@
                           @([endtime longLongValue]),
                           @(6)];
     
-    NSLog(@"Websocket Connected");
+//    NSLog(@"Websocket Connected");
     
     NSDictionary *dicAll = @{@"method":@"kline.query",@"params":dicParma,@"id":@(1)};
     
@@ -418,7 +430,7 @@
             NSString* high = [NSString stringWithFormat:@"%.5f",[result[i][3] floatValue]];
             NSString* low = [NSString stringWithFormat:@"%.5f",[result[i][4] floatValue]];
             NSString* vol = result[i][5];
-            NSLog(@"open = %@",open);
+//            NSLog(@"open = %@",open);
             NSArray* info = [[NSArray alloc] initWithObjects:date,open,close,high,low,vol, nil];
             [self.klineArray  setObject:info atIndexedSubscript:i];
         }

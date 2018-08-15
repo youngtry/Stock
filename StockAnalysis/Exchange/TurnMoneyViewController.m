@@ -22,7 +22,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    
+    self.title = @"资金划转";
     //标题滑动
     _scrollTitle=[[AITabScrollview alloc]initWithFrame:CGRectZero];
     [self.view addSubview:_scrollTitle];

@@ -12,6 +12,7 @@
 #import "HttpRequest.h"
 #import "ExchangeTableViewCell.h"
 #import "TurnMoneyViewController.h"
+#import "ExchangeBillViewController.h"
 
 @interface ExchangeViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UILabel *RMBLabel;
@@ -117,6 +118,8 @@
     
 }
 - (IBAction)clickBillButton:(id)sender {
+    ExchangeBillViewController *vc = [[ExchangeBillViewController alloc] initWithNibName:@"ExchangeBillViewController" bundle:nil];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 - (IBAction)hideZero:(id)sender {
 }

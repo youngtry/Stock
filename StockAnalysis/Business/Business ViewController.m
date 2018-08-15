@@ -9,6 +9,10 @@
 #import "Business ViewController.h"
 #import "HttpRequest.h"
 #import "ExchangeTableViewCell.h"
+#import "PayTYpeViewController.h"
+#import "ChargeViewController.h"
+#import "AppData.h"
+
 
 @interface Business_ViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UILabel *cnyMoney;
@@ -84,8 +88,13 @@
     // Dispose of any resources that can be recreated.
 }
 - (IBAction)clickPayStyle:(id)sender {
+    PayTYpeViewController* vc = [[PayTYpeViewController alloc] initWithNibName:@"PayTYpeViewController" bundle:nil];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 - (IBAction)clickMoney:(id)sender {
+    ChargeViewController *vc = [[ChargeViewController alloc] initWithNibName:@"ChargeViewController" bundle:nil];
+    [self.navigationController pushViewController:vc animated:YES];
+    [[AppData getInstance] setExchangeButtonIndex:2];
 }
 
 #pragma mark -UITableVIewDataSource
