@@ -57,15 +57,18 @@ static SocketInterface* _instance = nil;
 }
 
 -(void)openWebSocket{
-    _webSocket.delegate = nil;
-    [_webSocket close];
+    if(!_webSocket){
+        _webSocket.delegate = nil;
+        [_webSocket close];
+        
+        _webSocket = [[SRWebSocket alloc] initWithURL:[NSURL URLWithString:@"ws://exchange-test.oneitfarm.com/ws"]];
+        _webSocket.delegate = self;
+        
+        //    self.title = @"Opening Connection...";
+        [_webSocket open];
+        NSLog(@"websocket connecting……");
+    }
     
-    _webSocket = [[SRWebSocket alloc] initWithURL:[NSURL URLWithString:@"ws://exchange-test.oneitfarm.com/ws"]];
-    _webSocket.delegate = self;
-    
-    //    self.title = @"Opening Connection...";
-    [_webSocket open];
-    NSLog(@"websocket connecting……");
 }
 
 -(void)sendRequest:(NSString *)request withName:(NSString*)name{
