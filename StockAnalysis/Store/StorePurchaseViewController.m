@@ -8,6 +8,7 @@
 
 #import "StorePurchaseViewController.h"
 #import "StoreCell.h"
+#import "SADropMenu.h"
 @interface StorePurchaseViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic,strong)UITableView *tableView;
 @property(nonatomic,strong)NSMutableArray *data;
@@ -40,8 +41,8 @@
         [btn1 setTitle:@"优选商家" forState:UIControlStateNormal];
         [btn1 setTitleColor:kColor(64,64,64) forState:UIControlStateNormal];
         [btn1 setImage:[UIImage imageNamed:@"arrow_down"] forState:UIControlStateNormal];
-        [btn1 setTitleEdgeInsets:UIEdgeInsetsMake(0, -btn1.imageView.size.width, 0, btn1.imageView.size.width)];
-        [btn1 setImageEdgeInsets:UIEdgeInsetsMake(0, btn1.titleLabel.bounds.size.width, 0, -btn1.titleLabel.bounds.size.width)];
+//        [btn1 setTitleEdgeInsets:UIEdgeInsetsMake(0, -btn1.imageView.size.width, 0, btn1.imageView.size.width)];
+//        [btn1 setImageEdgeInsets:UIEdgeInsetsMake(0, btn1.titleLabel.bounds.size.width, 0, -btn1.titleLabel.bounds.size.width)];
         
         [header addSubview:btn1];
         btn1.centerY = header.centerY;
@@ -59,7 +60,7 @@
         [header addSubview:btn1];
         btn1.centerY = header.centerY;
         
-        [btn1 addTarget:self action:@selector(clickExcellent:) forControlEvents:UIControlEventTouchUpInside];
+        [btn1 addTarget:self action:@selector(clickMoney:) forControlEvents:UIControlEventTouchUpInside];
     }
     {
         UIButton *btn1 = [[UIButton alloc] initWithFrame:CGRectMake(16+wid*2, 0, 90, 20)];
@@ -72,7 +73,7 @@
         [header addSubview:btn1];
         btn1.centerY = header.centerY;
         
-        [btn1 addTarget:self action:@selector(clickExcellent:) forControlEvents:UIControlEventTouchUpInside];
+        [btn1 addTarget:self action:@selector(clickWay:) forControlEvents:UIControlEventTouchUpInside];
     }
     
     UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0,header.height-0.5f, header.width, 0.5)];
@@ -115,6 +116,18 @@
 }
 
 -(void)clickExcellent:(id)sender{
+    
+}
+
+-(void)clickMoney:(id)sender{
+    NSMutableArray *data = @[@"aa",@"bb",@"cc"];
+    SADropMenu *menu = [[SADropMenu alloc] initWithFrame:CGRectMake(0, 0, 0, 0) titles:data rowHeight:50];
+    menu.block = ^(int index){
+        
+    };
+}
+
+-(void)clickWay:(id)sender{
     
 }
 @end
