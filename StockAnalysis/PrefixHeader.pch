@@ -23,7 +23,8 @@
 #define kTextFont(a) [UIFont systemFontOfSize:a]
 #define kTextBoldFont(a) [UIFont boldSystemFontOfSize:a]
 
-
+#define kBuyInGreen kColor(0x4b,0xb9,0x70)
+#define kSoldOutRed kColor(0xec,0x66,0x5f)
 
 //常用尺寸定义>>>>>>>>>>>>>>>>
 //屏幕宽度

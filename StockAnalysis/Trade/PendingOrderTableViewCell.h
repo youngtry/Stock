@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface PendingOrderTableViewCell : UITableViewCell
-
+@property (weak, nonatomic) IBOutlet UILabel *typeLabel;
+@property(nonatomic,assign)BOOL isBuyIn;//买入/卖出
 @end

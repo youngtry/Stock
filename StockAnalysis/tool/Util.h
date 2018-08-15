@@ -13,5 +13,5 @@
 
 //获取当前view最先触及到的vc
 +(UIViewController *)getParentVC:(UIView*)v;
-//+(UIViewController *)getParentVC:(Class)c fromView:(UIView*)v;
++(UIViewController *)getParentVC:(Class)c fromView:(UIView*)v;
 @end

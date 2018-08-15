@@ -37,4 +37,18 @@
     return nil;
     
 }
+
++(UIViewController *)getParentVC:(Class)c fromView:(UIView*)v{
+    UIResponder *nextResponder = [v nextResponder];
+    do {
+        if ([nextResponder isKindOfClass:c]) {
+            
+            return (UIViewController *)nextResponder;
+            
+        }
+        nextResponder = [nextResponder nextResponder];
+        
+    } while (nextResponder != nil);
+    return nil;
+}
 @end

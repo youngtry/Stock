@@ -1,76 +1,65 @@
 //
-//  TradeViewController.m
+//  AllEntryOrdersVC.m
 //  StockAnalysis
 //
-//  Created by Macbook on 2018/6/24.
+//  Created by ymx on 2018/8/15.
 //  Copyright © 2018年 try. All rights reserved.
 //
 
-#import "TradeViewController.h"
+#import "AllEntryOrdersVC.h"
 #import "AITabScrollview.h"
 #import "AITabContentView.h"
 #import "Masonry.h"
-#import "TradePurchaseViewController.h"
-#import "PendingOrderViewController.h"
-#import "PendingOrderHistoryViewController.h"
-#import "AllEntryOrdersVC.h"
-@interface TradeViewController ()
+#import "EntryOrdersVC.h"
+
+@interface AllEntryOrdersVC ()
 @property(nonatomic,strong) AITabScrollview *scrollTitle;
 @property(nonatomic,strong) AITabContentView*scrollContent;
 @end
 
-@implementation TradeViewController
+@implementation AllEntryOrdersVC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
     //导航栏
-    self.title = @"交易";
+    self.title = @"全部挂单";
     
-    UIBarButtonItem *search = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"search"] style:UIBarButtonItemStylePlain target:self action:@selector(clickSearch:)];
-    self.navigationItem.leftBarButtonItem = search;
-    
-    UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:@"全部挂单" style:UIBarButtonItemStylePlain target:self action:@selector(clickAllTrade:)];
+    UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:@"历史记录" style:UIBarButtonItemStylePlain target:self action:@selector(clickRight:)];
     self.navigationItem.rightBarButtonItem = right;
     //标题滑动
     [self scrollTitle];
     
     //每页vc
     [self scrollContent];
-    
+    NSArray *titles = @[@"全部",@"买入",@"卖出"];
     NSMutableArray* vcs = [NSMutableArray new];
-    NSArray *titles = @[@"买入",@"卖出",@"挂单",@"历史"];
-    
     {
-        TradePurchaseViewController *vc1 = [[TradePurchaseViewController alloc] initWithNibName:@"TradePurchaseViewController" bundle:nil];
-        [vc1 setTitle:@"买入"];
+        EntryOrdersVC *vc1 = [[EntryOrdersVC alloc] init];
+        [vc1 setTitle:titles[0]];
+        vc1.state = Trade_All;
         [vcs addObject:vc1];
         
-        TradePurchaseViewController *vc2 = [[TradePurchaseViewController alloc] initWithNibName:@"TradePurchaseViewController" bundle:nil];
-        [vc2 setTitle:@"卖出"];
+        EntryOrdersVC *vc2 = [[EntryOrdersVC alloc] init];
+        [vc2 setTitle:titles[1]];
+        vc2.state = Trade_BuyIn;
         [vcs addObject:vc2];
         
-        PendingOrderViewController*vc3 = [PendingOrderViewController new];
-        [vc3 setTitle:@"挂单"];
+        EntryOrdersVC*vc3 = [[EntryOrdersVC alloc] init];
+        [vc3 setTitle:titles[2]];
+        vc3.state = Trade_SoldOut;
         [vcs addObject:vc3];
-        
-        //vc4 历史不能滑动 需求！
     }
-    
-    WeakSelf(weakSelf)
     [_scrollTitle configParameter:horizontal viewArr:titles tabWidth:kScreenWidth/titles.count tabHeight:42 index:0 block:^(NSInteger index) {
-        if(index==3){
-            //历史记录
-            PendingOrderHistoryViewController *vc = [PendingOrderHistoryViewController new];
-            [weakSelf.navigationController pushViewController:vc animated:YES];
-            return ;
-        }
         [_scrollContent updateTab:index];
     }];
     [_scrollContent configParam:vcs Index:0 block:^(NSInteger index) {
         [_scrollTitle updateTagLine:index];
     }];
+}
+
+-(void)clickRight:(id)sender{
+    
 }
 
 -(AITabScrollview*)scrollTitle{
@@ -106,15 +95,14 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void)clickSearch:(id)sender{
-    DLog(@"clickSearch");
-}
+/*
+#pragma mark - Navigation
 
--(void)clickAllTrade:(id)sender{
-    DLog(@"clickAllTrade");
-    
-    AllEntryOrdersVC *vc = [AllEntryOrdersVC new];
-    [self.navigationController pushViewController:vc animated:YES];
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
 }
+*/
 
 @end
