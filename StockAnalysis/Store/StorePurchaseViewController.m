@@ -120,11 +120,11 @@
 }
 
 -(void)clickMoney:(id)sender{
-    NSMutableArray *data = @[@"aa",@"bb",@"cc"];
-    SADropMenu *menu = [[SADropMenu alloc] initWithFrame:CGRectMake(0, 0, 0, 0) titles:data rowHeight:50];
-    menu.block = ^(int index){
-        
-    };
+//    NSMutableArray *data = @[@"aa",@"bb",@"cc"];
+//    SADropMenu *menu = [[SADropMenu alloc] initWithFrame:CGRectMake(0, 0, 0, 0) titles:data rowHeight:50];
+//    menu.block = ^(int index){
+//
+//    };
 }
 
 -(void)clickWay:(id)sender{

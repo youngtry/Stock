@@ -12,7 +12,15 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WechatViewController">
             <connections>
+                <outlet property="erweimaIcon" destination="MHh-DE-EwN" id="ahN-Gc-6W5"/>
+                <outlet property="erweimaImage" destination="V5w-ln-Odf" id="SQR-3K-aHE"/>
+                <outlet property="saveBtn" destination="GWc-MX-A7m" id="wBc-ar-M9V"/>
+                <outlet property="sendVerfiyBtn" destination="ACO-bD-NnU" id="JJU-fq-j7T"/>
+                <outlet property="upBtn" destination="oXn-OZ-Bhi" id="SZP-cM-3wq"/>
+                <outlet property="verifyInput" destination="Qhq-Iw-mPE" id="wum-Ct-Waa"/>
                 <outlet property="view" destination="Xhq-Ai-0gv" id="PG6-ke-XNM"/>
+                <outlet property="wechatID" destination="vWr-ht-kgR" id="0Rq-hx-rbC"/>
+                <outlet property="wechatNickname" destination="tFY-TB-WOl" id="uZF-xY-73M"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -36,6 +44,9 @@
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <action selector="editEnd:" destination="-1" eventType="editingDidEnd" id="yk4-4f-utI"/>
+                            </connections>
                         </textField>
                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="M8c-Aa-tf7">
                             <rect key="frame" x="0.0" y="45" width="375" height="1"/>
@@ -64,6 +75,9 @@
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <action selector="editEnd:" destination="-1" eventType="editingDidEnd" id="QV7-Xk-CnR"/>
+                            </connections>
                         </textField>
                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qb3-hh-WmH">
                             <rect key="frame" x="0.0" y="45" width="375" height="1"/>
@@ -92,6 +106,9 @@
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <action selector="editEnd:" destination="-1" eventType="editingDidEnd" id="NHV-op-O4z"/>
+                            </connections>
                         </textField>
                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aT9-bH-txF">
                             <rect key="frame" x="0.0" y="45" width="375" height="1"/>
@@ -112,6 +129,9 @@
                                 </userDefinedRuntimeAttribute>
                                 <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                             </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="clickSendVerifyBtn:" destination="-1" eventType="touchUpInside" id="yVP-C7-1aP"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -147,6 +167,9 @@
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <state key="normal" title="上传收款码"/>
+                                    <connections>
+                                        <action selector="clickUpBtn:" destination="-1" eventType="touchUpInside" id="TxG-K1-5Km"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" red="0.37254901960784315" green="0.4823529411764706" blue="0.6470588235294118" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -159,7 +182,7 @@
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GWc-MX-A7m">
                     <rect key="frame" x="16" y="440" width="345" height="47"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                     <state key="normal" title="保存">
@@ -171,6 +194,9 @@
                         </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                     </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="clickSaveBtn:" destination="-1" eventType="touchUpInside" id="iT3-wO-jPR"/>
+                    </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

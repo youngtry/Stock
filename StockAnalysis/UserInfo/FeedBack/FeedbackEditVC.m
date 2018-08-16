@@ -63,6 +63,49 @@
     _secondCloseBtn.enabled  = NO;
     _secondCloseBtn.hidden = YES;
 }
+- (IBAction)clickCommit:(id)sender {
+    
+    
+    NSString *fullPath1 = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"] stringByAppendingPathComponent:@"up_1.jpg"];
+    NSString *fullPath2 = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"] stringByAppendingPathComponent:@"up_2.jpg"];
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    BOOL result1 = [fileManager fileExistsAtPath:fullPath1];
+    BOOL result2 = [fileManager fileExistsAtPath:fullPath2];
+    NSLog(@"这个文件已经存在：%@",result1?@"是的":@"不存在");
+    NSLog(@"这个文件已经存在：%@",result2?@"是的":@"不存在");
+    NSLog(@"path1 = %@,path2 = %@",fullPath1,fullPath2);
+    if(!result1){
+        fullPath1 = @"";
+    }
+    
+    if(!result2){
+        fullPath2 = @"";
+    }
+    
+    NSString* url = @"feedback/add";
+    NSDictionary* params = @{@"question_id":@(1),
+                         @"sub_question_id":@(2),
+                         @"content":self.questionTextView.text,
+                         @"imgs":fullPath1,
+                         @"imgs":fullPath2,
+                         @"phone":self.phoneField.text,
+                         @"extra":@""
+                         };
+    
+    [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
+        if(success){
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"反馈成功"];
+                [self.navigationController popViewControllerAnimated:YES];
+            }else{
+                [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:[data objectForKey:@"msg"]];
+            }
+        }
+    }];
+    
+ 
+}
 
 - (void)setImgUI {
     //UIimageView的基本设置
@@ -145,6 +188,11 @@
  
     //上传图片到服务器--在这里进行图片上传的网络请求，这里不再介绍
 //    ......
+    //压缩图片
+    NSData *imageData = UIImageJPEGRepresentation(image, 0.5);
+    NSString *fullPath = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"] stringByAppendingPathComponent:[NSString stringWithFormat:@"up_%d.jpg",_clickIndex]];
+    //将图片写入文件中
+    [imageData writeToFile:fullPath atomically:NO];
 }
 
 //当用户取消选择的时候，调用该方法
