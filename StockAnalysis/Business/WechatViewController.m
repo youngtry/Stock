@@ -67,22 +67,24 @@
     NSString* url = @"wallet/set_wechat_pay";
     NSDictionary* params = @{@"name":self.wechatNickname.text,
                              @"wechat_id":self.wechatID.text,
-                             @"paycode":fullPath,
                              @"phone_captcha":self.verifyInput.text
                              };
     
-    [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
+    NSDictionary* file = @{@"paycode":fullPath};
+    
+    [[HttpRequest getInstance] postWithURLWithFile:url parma:params file:file block:^(BOOL success, id data) {
         if(success){
-           
+            
             if([[data objectForKey:@"ret"] intValue] == 1){
                 [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"设置成功"];
-                 [fileManager removeItemAtPath:fullPath error:nil];
+                [fileManager removeItemAtPath:fullPath error:nil];
                 [self.navigationController popViewControllerAnimated:YES];
             }else{
                 [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:[data objectForKey:@"msg"]];
             }
         }
     }];
+    
 }
 - (IBAction)editEnd:(id)sender {
     

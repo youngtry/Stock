@@ -62,7 +62,9 @@
         if (param[@"fileName"]) {
             [body appendFormat:@"Content-Disposition:form-data; name=\"%@\"; filename=\"%@\"\r\n", param[@"name"], param[@"fileName"]];
             [body appendFormat:@"Content-Type: %@\r\n\r\n", param[@"contentType"]];
+//            NSLog(@"contentType = %@",param[@"contentType"]);
             [body appendFormat:@"%@", [NSString stringWithContentsOfFile:param[@"fileName"] encoding:NSUTF8StringEncoding error:&error]];
+            NSLog(@"body = %@",body);
             if (error) {
                 NSLog(@"%@", error);
             }
@@ -179,6 +181,13 @@
     // post请求
     
     NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithDictionary:param];
+    BOOL isHaveFile = NO;
+    NSMutableDictionary* file = [NSMutableDictionary new];
+    if([url isEqualToString:@"wallet/set_wechat_pay"]){
+        isHaveFile = YES;
+        [file setObject:[parameters objectForKey:@"paycode"] forKey:@"paycode"];
+        [parameters removeObjectForKey:@"paycode"];
+    }
     
     [parameters setObject:@"5yupjrc7tbhwufl8oandzidjyrmg6blc" forKey:@"appkey"];
     [parameters setObject:@"0" forKey:@"channel"];
@@ -186,7 +195,18 @@
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     [self formatAFNetwork:manager];
-    [manager POST:url parameters:parameters constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask *task, id responseObject){
+    [manager POST:url parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData){
+        if(isHaveFile){
+            NSURL *url=[NSURL fileURLWithPath:[file objectForKey:@"paycode"]];
+            
+            [formData appendPartWithFileURL:url name:@"paycode" fileName:@"wechat_pay.jpg" mimeType:@"image/jpg" error:nil];
+
+        }
+        
+    } progress:^(NSProgress * _Nonnull uploadProgress){
+        NSLog(@"%f",uploadProgress.fractionCompleted);
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject){
         // 成功
         DLog(@"xxxxsuccess!");
         NSData *data = responseObject;
@@ -235,6 +255,63 @@
         block(0,nil);
     }];
 }
+
+-(void)postWithURLWithFile:(NSString *)url parma:(NSDictionary *)param file:(NSDictionary *)fileName block:(httpResult)block{
+    // post请求
+    
+    NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithDictionary:param];
+    NSMutableDictionary* file = [[NSMutableDictionary alloc] initWithDictionary:fileName];
+
+    
+    [parameters setObject:@"5yupjrc7tbhwufl8oandzidjyrmg6blc" forKey:@"appkey"];
+    [parameters setObject:@"0" forKey:@"channel"];
+    url = [NSString stringWithFormat:@"%@%@",ServerURL,url];
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [self formatAFNetwork:manager];
+    [manager POST:url parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData){
+        for(NSString* key in file){
+            NSURL *url=[NSURL fileURLWithPath:[file objectForKey:key]];
+            NSString* allName = [file objectForKey:key];
+            NSString* homeDic = NSHomeDirectory();
+            homeDic = [homeDic stringByAppendingString:@"/Documents/"];
+            NSString* pic = [allName substringFromIndex:[allName rangeOfString:homeDic].location+homeDic.length];
+            NSLog(@"pic = %@",pic);
+            [formData appendPartWithFileURL:url name:key fileName:pic mimeType:@"image/jpg" error:nil];
+        }
+        
+    } progress:^(NSProgress * _Nonnull uploadProgress){
+        NSLog(@"%f",uploadProgress.fractionCompleted);
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject){
+        // 成功
+        DLog(@"xxxxsuccess!");
+        NSData *data = responseObject;
+        NSDictionary* info = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        //        NSString *s = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        
+        if([url isEqualToString:@"http://exchange-test.oneitfarm.com/server/account/login/phone"] || [url isEqualToString:@"http://exchange-test.oneitfarm.com/server/account/login/email"]){
+            //登陆请求应答，保存新的account_token
+            NSDictionary* datainfo = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil ];
+            NSNumber* number = [datainfo objectForKey:@"ret"];
+            if([number intValue] == 1){
+                _token = [[datainfo objectForKey:@"data"] objectForKey:@"account_token"];
+                //                NSLog(@"获取到的token = %@",_token);
+            }
+            
+        }
+        
+        block(1,info);
+        
+        
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        // 失败
+        DLog(@"%@xxxxxfailed! error = %@",url,error);
+        block(0,nil);
+    }];
+}
+
 
 -(void)formatAFNetwork:(AFHTTPSessionManager*)manager{
 //    NSLog(@"新的token = %@",_token);

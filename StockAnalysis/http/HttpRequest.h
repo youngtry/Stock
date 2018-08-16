@@ -30,4 +30,5 @@ typedef void(^httpResult)(BOOL success,id data);
 
 -(void)postWithURL:(NSString*)url parma:(NSDictionary*)param block:(httpResult)block;
 -(void)getWithURL:(NSString*)url parma:(NSDictionary*)param block:(httpResult)block;
+-(void)postWithURLWithFile:(NSString*)url parma:(NSDictionary*)param file:(NSDictionary* )fileName block:(httpResult)block;
 @end

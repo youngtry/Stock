@@ -47,6 +47,14 @@
     _clickIndex = 1;
     
     [self setImgUI];
+    
+    UITapGestureRecognizer *f = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(test)];
+    [self.view addGestureRecognizer:f];
+    self.view.userInteractionEnabled = YES;
+}
+
+-(void)test{
+    [self.view endEditing:YES];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -85,15 +93,15 @@
     
     NSString* url = @"feedback/add";
     NSDictionary* params = @{@"question_id":@(1),
-                         @"sub_question_id":@(2),
-                         @"content":self.questionTextView.text,
-                         @"imgs":fullPath1,
-                         @"imgs":fullPath2,
-                         @"phone":self.phoneField.text,
-                         @"extra":@""
-                         };
+                             @"sub_question_id":@(2),
+                             @"content":self.questionTextView.text,
+                             @"phone":self.phoneField.text,
+                             @"extra":@""
+                             };
     
-    [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
+    NSDictionary* file = @{@"imgs":fullPath1,
+                           @"imgs":fullPath2};
+    [[HttpRequest getInstance] postWithURLWithFile:url parma:params file:file block:^(BOOL success, id data) {
         if(success){
             if([[data objectForKey:@"ret"] intValue] == 1){
                 [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"反馈成功"];
@@ -103,8 +111,7 @@
             }
         }
     }];
-    
- 
+
 }
 
 - (void)setImgUI {
