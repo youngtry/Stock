@@ -12,12 +12,18 @@ static MBProgressHUD *hud;
 
 +(void) showHudViewInSuperView:(UIView *)view withMessage:(NSString *)message
 {
+    if(hud){
+        [self hideHudView];
+    }
     hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
     hud.labelText = message;
 }
 
 +(void) showHudViewTipInSuperView:(UIView *)view withMessage:(NSString *)message
 {
+    if(hud){
+        [self hideHudView];
+    }
     hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
     hud.mode = MBProgressHUDModeText;
     hud.animationType = MBProgressHUDAnimationZoomOut;

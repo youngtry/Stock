@@ -12,6 +12,14 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ZhifubaoViewController">
             <connections>
+                <outlet property="alipayAccount" destination="4ut-1v-elU" id="P4A-yf-aIK"/>
+                <outlet property="erweimaIcon" destination="JqG-oT-CHJ" id="9Pa-Bi-2k2"/>
+                <outlet property="erweimaImage" destination="lfh-jQ-YmN" id="gNs-wP-7h5"/>
+                <outlet property="nameLabel" destination="zoM-Mg-xle" id="6F7-DA-CGi"/>
+                <outlet property="saveBtn" destination="Vty-Dk-4Kb" id="ryf-8s-EL7"/>
+                <outlet property="sendVerifyBtn" destination="qZ0-A2-3aw" id="ApM-xx-cbW"/>
+                <outlet property="upBtn" destination="kLe-Mh-Utp" id="RQb-au-6oF"/>
+                <outlet property="verifyInput" destination="vP0-Ys-b9G" id="afb-fY-vm3"/>
                 <outlet property="view" destination="fuX-ol-EPd" id="PYw-NZ-rhG"/>
             </connections>
         </placeholder>
@@ -36,6 +44,9 @@
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <action selector="editEnd:" destination="-1" eventType="editingDidEnd" id="WSf-vV-iOS"/>
+                            </connections>
                         </textField>
                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sPG-iH-L5K">
                             <rect key="frame" x="0.0" y="45" width="375" height="1"/>
@@ -64,6 +75,9 @@
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <action selector="editEnd:" destination="-1" eventType="editingDidEnd" id="frZ-0f-Sed"/>
+                            </connections>
                         </textField>
                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="paF-8K-fBp">
                             <rect key="frame" x="0.0" y="45" width="375" height="1"/>
@@ -92,6 +106,9 @@
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <action selector="editEnd:" destination="-1" eventType="editingDidEnd" id="d7a-OV-PZf"/>
+                            </connections>
                         </textField>
                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gsC-ez-7Cv">
                             <rect key="frame" x="0.0" y="45" width="375" height="1"/>
@@ -112,6 +129,9 @@
                                 </userDefinedRuntimeAttribute>
                                 <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                             </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="clickSendVerifyBtn:" destination="-1" eventType="touchUpInside" id="Gko-ZX-oqj"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -147,6 +167,9 @@
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <state key="normal" title="上传收款码"/>
+                                    <connections>
+                                        <action selector="clickUpbtn:" destination="-1" eventType="touchUpInside" id="VlG-M8-J5l"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" red="0.37254901959999998" green="0.4823529412" blue="0.64705882349999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -171,6 +194,9 @@
                         </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                     </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="clickSaveBtn:" destination="-1" eventType="touchUpInside" id="Rj3-GB-HOd"/>
+                    </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
