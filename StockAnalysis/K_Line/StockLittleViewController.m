@@ -85,6 +85,17 @@
     [[SocketInterface sharedManager] openWebSocket];
     [SocketInterface sharedManager].delegate = self;
 //    [[SocketInterface sharedManager] closeWebSocket];
+    UIBarButtonItem* priceTipBtn = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"addTips.png"] style:UIBarButtonItemStyleDone target:self action:@selector(priceTips)];
+    UIBarButtonItem* followBtn = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"addstar.png"] style:UIBarButtonItemStyleDone target:self action:@selector(followBtn)];
+    [self.navigationItem setRightBarButtonItems:@[priceTipBtn,followBtn] animated:YES];
+}
+
+-(void)priceTips{
+    
+}
+
+-(void)followBtn{
+    
 }
 
 - (void)didReceiveMemoryWarning {

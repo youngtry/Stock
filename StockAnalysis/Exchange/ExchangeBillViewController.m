@@ -14,6 +14,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *allTypeBtn;
 @property (weak, nonatomic) IBOutlet UITableView *nameList;
 @property (weak, nonatomic) IBOutlet UITableView *typeList;
+@property (weak, nonatomic) IBOutlet UIImageView *nameArrrow;
+@property (weak, nonatomic) IBOutlet UIImageView *typeArrow;
 
 @property (nonatomic,strong)NSMutableArray* nameArray;
 @property (nonatomic,strong)NSMutableArray* typeArray;
@@ -32,6 +34,10 @@
     self.typeList.delegate = self;
     self.typeList.dataSource = self;
     
+    self.nameList.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.typeList.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    
     self.nameArray = [NSMutableArray new];
     self.typeArray = [NSMutableArray new];
     
@@ -40,6 +46,9 @@
     
     [self.nameList setHidden:YES];
     [self.typeList setHidden:YES];
+    
+    [self.nameArrrow setHidden:YES];
+    [self.typeArrow setHidden:YES];
     
     [self.nameArray addObject:@"全部"];
     for (int i=0;i<8; i++) {
@@ -63,18 +72,46 @@
 - (IBAction)clickAllNameBtn:(id)sender {
     if(self.nameList.isHidden){
         [self.nameList setHidden:NO];
+        [self.nameArrrow setHidden:NO];
+        
         [self.nameList reloadData];
+        
+        UIImage *contentBgImagebubble = [UIImage imageNamed:@"xialakuang.png"];
+        
+        UIImage * newBgImage =[contentBgImagebubble stretchableImageWithLeftCapWidth:40 topCapHeight:40];
+//        NSLog(@"self.typeList.frame = %f,%f",self.nameList.frame.size.width,self.nameList.frame.size.height);
+        
+        UIImageView* bg = [[UIImageView alloc] initWithFrame:self.nameList.frame];
+        [bg setImage:newBgImage];
+        
+        [self.nameList setBackgroundView:bg];
+        
     }else{
         [self.nameList setHidden:YES];
+        [self.nameArrrow setHidden:YES];
+    
     }
     
 }
 - (IBAction)clickAllTypeBtn:(id)sender {
     if(self.typeList.isHidden){
         [self.typeList setHidden:NO];
+        [self.typeArrow setHidden:NO];
         [self.typeList reloadData];
+        
+        UIImage *contentBgImagebubble1 = [UIImage imageNamed:@"xialakuang.png"];
+        
+        UIImage * newBgImage1 =[contentBgImagebubble1 stretchableImageWithLeftCapWidth:40 topCapHeight:40];
+//        NSLog(@"self.typeList.frame = %f,%f",self.typeList.frame.size.width,self.typeList.frame.size.height);
+        
+        UIImageView* bg1 = [[UIImageView alloc] initWithFrame:self.typeList.frame];
+        [bg1 setImage:newBgImage1];
+        
+        [self.typeList setBackgroundView:bg1];
+        
     }else{
         [self.typeList setHidden:YES];
+        [self.typeArrow setHidden:YES];
     }
     
 }
@@ -88,6 +125,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if(tableView == self.nameList){
+//        NSLog(@"self.nameArray.count = %ld",self.nameArray.count);
         return self.nameArray.count;
     }
     
@@ -124,8 +162,8 @@
         }
     }
     
-    
-    
+    [tableView setBackgroundColor:[UIColor clearColor]];
+    cell.backgroundColor=[UIColor clearColor];
     return cell;
 }
 

@@ -39,7 +39,11 @@
 @property (weak, nonatomic) IBOutlet UILabel *purchaseAmountLabel;
 @property (nonatomic,strong)RadioButton *radioBtn;
 @property (weak, nonatomic) IBOutlet UIView *ShowBuyTypeView;
+@property (weak, nonatomic) IBOutlet UIButton *buyTypeLimitBtn;
 
+@property (weak, nonatomic) IBOutlet UIButton *buyTypeMarketBtn;
+@property (weak, nonatomic) IBOutlet UIImageView *buyTypeViewImage;
+@property (weak, nonatomic) IBOutlet UIImageView *buyTypeViewArrow;
 @property (nonatomic,strong)NSMutableArray* titleArray;
 @property (nonatomic,strong)NSMutableArray* infoArray;
 
@@ -77,7 +81,20 @@
     [self.marketPriceView setHidden:YES];
     [self.depthView setHidden:YES];
     
-    [self .selectBuyTypeBtn setTitle:@"限价买入" forState:UIControlStateNormal];
+    UIImage *contentBgImagebubble = [UIImage imageNamed:@"xialakuang.png"];
+    
+    UIImage * newBgImage =[contentBgImagebubble stretchableImageWithLeftCapWidth:40 topCapHeight:40];
+    NSLog(@"self.buyTypeView.frame.size = %f,%f",self.buyTypeView.frame.size.width,self.buyTypeView.frame.size.height);
+
+    [self.buyTypeViewImage setImage:newBgImage];
+
+    [self.buyTypeView setBackgroundColor:[UIColor clearColor]];
+    [self.buyTypeView bringSubviewToFront:self.buyTypeMarketBtn];
+    [self.buyTypeView bringSubviewToFront:self.buyTypeLimitBtn];
+    
+    
+    
+    [self.selectBuyTypeBtn setTitle:@"限价买入" forState:UIControlStateNormal];
     
     [self customeView];
     
@@ -112,11 +129,11 @@
     self.ShowBuyTypeView.layer.borderWidth = 1;
     self.ShowBuyTypeView.layer.borderColor = [kColorRGBA(221, 221, 221, 1) CGColor];
     
-    self.buyTypeView.layer.borderWidth = 1;
-    self.buyTypeView.layer.borderColor = [kColorRGBA(221, 221, 221, 1) CGColor];
+//    self.buyTypeView.layer.borderWidth = 1;
+//    self.buyTypeView.layer.borderColor = [kColorRGBA(221, 221, 221, 1) CGColor];
     
-    self.depthView.layer.borderWidth = 1;
-    self.depthView.layer.borderColor = [kColorRGBA(221, 221, 221, 1) CGColor];
+//    self.depthView.layer.borderWidth = 1;
+//    self.depthView.layer.borderColor = [kColorRGBA(221, 221, 221, 1) CGColor];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
