@@ -16,6 +16,7 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
+    self.isFollow = NO;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

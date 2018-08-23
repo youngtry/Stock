@@ -15,4 +15,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *priceLabel;
 @property (weak, nonatomic) IBOutlet UILabel *price2Label;
 
+@property (nonatomic)BOOL isFollow;
+
 @end

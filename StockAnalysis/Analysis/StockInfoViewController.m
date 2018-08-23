@@ -159,6 +159,8 @@
             float ins = [incre floatValue];
             incre = [NSString stringWithFormat:@"%.2f%%",ins*100];
             cell.percentLabel.text = incre;
+            
+            cell.isFollow = [item objectForKey:@"follow"];
         }
         
     }
@@ -176,9 +178,10 @@
 //
 //
 //        }
-        
+        name = [NSString stringWithFormat:@"%@_%d",name,cell.isFollow];
         StockLittleViewController* vc = [[StockLittleViewController alloc] initWithNibName:@"StockLittleViewController" bundle:nil];
         [vc setTitle:name];
+        
         id temp = self.parentViewController.view.selfViewController.navigationController;
         [temp pushViewController:vc animated:YES];
     }
