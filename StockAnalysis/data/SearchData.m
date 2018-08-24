@@ -79,7 +79,7 @@
     
     [self.specialList addObject:specail];
     
-//    [[NSUserDefaults standardUserDefaults] setObject:specialList forKey:@"SpecialList"];
+//    [[NSUserDefaults standardUserDefaults] setObject:self.specialList forKey:@"SpecialList"];
 //    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 

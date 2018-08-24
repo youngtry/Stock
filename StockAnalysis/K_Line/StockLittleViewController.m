@@ -18,6 +18,7 @@
 #import "UpdateDataTableViewCell.h"
 #import "Y_StockChartViewController.h"
 #import "PriceTipViewController.h"
+#import "SearchData.h"
 #define IS_IPHONE (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
 #define SCREEN_MAX_LENGTH MAX(kScreenWidth,kScreenHeight)
 #define IS_IPHONE_X (IS_IPHONE && SCREEN_MAX_LENGTH == 812.0)
@@ -76,6 +77,7 @@
 @property (nonatomic,strong)NSMutableArray* updateData;
 
 @property (nonatomic) BOOL isFollow;
+@property (nonatomic) BOOL isTip;
 
 @end
 
@@ -89,68 +91,12 @@
     [SocketInterface sharedManager].delegate = self;
 //    [[SocketInterface sharedManager] closeWebSocket];
     self.isFollow = NO;
-    NSString* title = self.title;
-    
-    if([title rangeOfString:@"_"].location != NSNotFound){
-        NSString* showTitle = [title substringToIndex:[title rangeOfString:@"_"].location];
-        self.title = showTitle;
-        self.isFollow = [[title substringFromIndex:[title rangeOfString:@"_"].location+1] boolValue];
-    }
-    
-    NSString* followpic =  @"addstar.png";
-    if(self.isFollow){
-        followpic = @"star.png";
-    }
-    
-    
-    __block NSString* tipspic = @"addTips.png";
-    
-    NSString* url = @"market/notice";
-    NSDictionary* params = @{@"page":@(1),
-                             @"page_limit":@(10),
-                             @"state":@""
-                             };
-    
-    [[HttpRequest getInstance] getWithURL:url parma:params block:^(BOOL success, id data) {
-        if(success){
-            if([[data objectForKey:@"ret"] intValue] == 1){
-                NSArray* items = [[data objectForKey:@"data"] objectForKey:@"items"];
-                for (NSDictionary* item in items) {
-                    if([[item objectForKey:@"market"] isEqual:self.title]){
-                        tipspic = @"tips.png";
-                    }
-                }
-            }
-        }
-        
-        [self addRightBtns:tipspic withFollow:followpic];
-    }];
+    self.isTip = NO;
     
     
     
-}
 
--(void)addRightBtns:(NSString*)tippic withFollow:(NSString*)followpic{
-    
-    UIBarButtonItem* priceTipBtn = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:tippic] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStyleDone target:self action:@selector(priceTips)];
-    UIBarButtonItem* followBtn = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:followpic] imageWithRenderingMode:(UIImageRenderingModeAlwaysOriginal)] style:UIBarButtonItemStyleDone target:self action:@selector(followBtn)];
-    [self.navigationItem setRightBarButtonItems:@[priceTipBtn,followBtn] animated:YES];
 }
-
--(void)priceTips{
-    PriceTipViewController* vc = [[PriceTipViewController alloc] initWithNibName:@"PriceTipViewController" bundle:nil];
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
--(void)followBtn{
-    
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.tabBarController.tabBar.hidden = YES;
@@ -164,6 +110,41 @@
     self.updateDataView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.updateDataView.allowsSelection = NO;
     self.updateData = [NSMutableArray new];
+    
+    
+    [[SearchData getInstance].specialList removeAllObjects];
+    
+    NSDictionary* parameters = @{@"page":@"1",
+                                 @"page_limit":@"10",
+                                 @"order_by":@"price"
+                                 };
+    NSString* url = @"market/follow/list";
+    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+        if(success){
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                NSDictionary* itemData = [data objectForKey:@"data"];
+                if(itemData.count>0){
+                    NSArray* item = [itemData objectForKey:@"items"];
+                    if(item.count>0){
+                        for (int i=0; i<item.count; i++) {
+                            NSDictionary* info = item[i];
+                            [[SearchData getInstance] addSpecail:info];
+                        }
+                        
+                        for (NSDictionary* info in [SearchData getInstance].specialList) {
+                            if([[info objectForKey:@"market"] isEqualToString:self.title]){
+                                self.isFollow = YES;
+                                break;
+                            }
+                        }
+                        
+                    }
+                }
+            }
+        }
+        
+        [self requestTips];
+    }];
     
     [self closeAllBtnView];
     
@@ -189,6 +170,102 @@
     NSString *strAll2 = [dicAll2 JSONString];
     [[SocketInterface sharedManager] sendRequest:strAll2 withName:@"deals.unsubscribe"];
 }
+-(void)requestTips{
+    
+    NSString* followpic =  @"addstar.png";
+    if(self.isFollow){
+        followpic = @"star.png";
+    }
+    
+    __block NSString* tipspic = @"addTips.png";
+    
+    NSString* url1 = @"market/notice";
+    NSDictionary* params = @{@"page":@(1),
+                             @"page_limit":@(10),
+                             @"state":@""
+                             };
+    
+    [[HttpRequest getInstance] getWithURL:url1 parma:params block:^(BOOL success, id data) {
+        if(success){
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                NSArray* items = [[data objectForKey:@"data"] objectForKey:@"items"];
+                for (NSDictionary* item in items) {
+                    if([[item objectForKey:@"market"] isEqual:self.title]){
+                        
+                        if([[item objectForKey:@"state"] isEqualToString:@"enable"]){
+                            tipspic = @"tips.png";
+                            self.isTip = YES;
+                        }else if([[item objectForKey:@"state"] isEqualToString:@"disable"]){
+                            self.isTip = NO;
+                        }
+                    }
+                }
+            }
+        }
+        
+        [self addRightBtns:tipspic withFollow:followpic];
+    }];
+}
+
+-(void)addRightBtns:(NSString*)tippic withFollow:(NSString*)followpic{
+    
+    UIBarButtonItem* priceTipBtn = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:tippic] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStyleDone target:self action:@selector(priceTips)];
+    UIBarButtonItem* followBtn = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:followpic] imageWithRenderingMode:(UIImageRenderingModeAlwaysOriginal)] style:UIBarButtonItemStyleDone target:self action:@selector(followBtn)];
+    [self.navigationItem setRightBarButtonItems:@[priceTipBtn,followBtn] animated:YES];
+}
+
+-(void)priceTips{
+    
+    PriceTipViewController* vc = [[PriceTipViewController alloc] initWithNibName:@"PriceTipViewController" bundle:nil];
+    [vc setTitle:[NSString stringWithFormat:@"%@_%d",self.title,self.isTip]];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+-(void)followBtn{
+    if(self.isFollow){
+        NSDictionary* parameters = @{@"market":self.title};
+        NSString* url = @"/market/unfollow";
+        [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+            if(success){
+                if([[data objectForKey:@"ret"] intValue] == 1){
+                    self.isFollow = NO;
+                    [self.navigationItem.rightBarButtonItems[1] setImage:[[UIImage imageNamed:@"addstar.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+                    for (NSDictionary* info in [SearchData getInstance].specialList) {
+                        if([[info objectForKey:@"market"] isEqualToString:self.title]){
+                            [[SearchData getInstance].specialList removeObject:info];
+                            break;
+                        }
+                    }
+                }
+            }
+        }];
+    }else{
+        NSDictionary* parameters = @{@"market":self.title};
+        NSString* url = @"/market/follow";
+        [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+            if(success){
+                if([[data objectForKey:@"ret"] intValue] == 1){
+                    self.isFollow = YES;
+                    [self.navigationItem.rightBarButtonItems[1] setImage:[[UIImage imageNamed:@"star.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+                    for (NSDictionary* info in [SearchData getInstance].searchList) {
+                        if([[info objectForKey:@"market"] isEqualToString:self.title]){
+                            [[SearchData getInstance].specialList addObject:info];
+                            break;
+                        }
+                    }
+                    
+                }
+            }
+        }];
+    }
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+
 -(void)closeAllBtnView{
     [self.timeSelectView setHidden:YES];
     [self.settingView setHidden:YES];

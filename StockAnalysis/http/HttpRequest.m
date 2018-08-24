@@ -179,7 +179,7 @@
 
 -(void)postWithURL:(NSString*)url parma:(NSDictionary*)param block:(httpResult)block{
     // post请求
-    [HUDUtil showHudViewInSuperView:[UIApplication sharedApplication].keyWindow.rootViewController.view withMessage:@"数据请求中,请稍侯"];
+//    [HUDUtil showHudViewInSuperView:[UIApplication sharedApplication].keyWindow.rootViewController.view withMessage:@"数据请求中,请稍侯"];
     NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithDictionary:param];
     BOOL isHaveFile = NO;
     NSMutableDictionary* file = [NSMutableDictionary new];
@@ -210,7 +210,7 @@
         // 成功
         DLog(@"xxxxsuccess!");
         dispatch_async(dispatch_get_main_queue(), ^{
-            [HUDUtil hideHudView];
+//            [HUDUtil hideHudView];
         });
         NSData *data = responseObject;
         NSDictionary* info = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
@@ -235,7 +235,7 @@
         // 失败
         DLog(@"%@xxxxxfailed! error = %@",url,error);
         dispatch_async(dispatch_get_main_queue(), ^{
-            [HUDUtil hideHudView];
+//            [HUDUtil hideHudView];
         });
         block(0,nil);
     }];
@@ -243,7 +243,7 @@
 
 -(void)getWithURL:(NSString*)url parma:(NSDictionary*)param block:(httpResult)block{
     // post请求
-    [HUDUtil showHudViewInSuperView:[UIApplication sharedApplication].keyWindow.rootViewController.view withMessage:@"请求中,请稍侯"];
+//    [HUDUtil showHudViewInSuperView:[UIApplication sharedApplication].keyWindow.rootViewController.view withMessage:@"请求中,请稍侯"];
     NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithDictionary:param];
     [parameters setObject:@"5yupjrc7tbhwufl8oandzidjyrmg6blc" forKey:@"appkey"];
     [parameters setObject:@"0" forKey:@"channel"];
@@ -253,7 +253,7 @@
     [self formatAFNetwork:manager];
     [manager GET:url parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [HUDUtil hideHudView];
+//            [HUDUtil hideHudView];
         });
         
         DLog(@"xxxxsuccess!");
@@ -264,7 +264,7 @@
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         DLog(@"%@xxxxxfailed!",url);
         dispatch_async(dispatch_get_main_queue(), ^{
-            [HUDUtil hideHudView];
+//            [HUDUtil hideHudView];
         });
         block(0,nil);
     }];

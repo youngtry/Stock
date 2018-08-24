@@ -178,7 +178,7 @@
 //
 //
 //        }
-        name = [NSString stringWithFormat:@"%@_%d",name,cell.isFollow];
+        name = [NSString stringWithFormat:@"%@",name];
         StockLittleViewController* vc = [[StockLittleViewController alloc] initWithNibName:@"StockLittleViewController" bundle:nil];
         [vc setTitle:name];
         

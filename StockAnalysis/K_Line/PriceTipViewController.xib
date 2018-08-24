@@ -14,6 +14,7 @@
             <connections>
                 <outlet property="lowLimitInput" destination="x8S-Yj-Wh0" id="34c-A9-gtV"/>
                 <outlet property="lowLimitUnit" destination="wwc-i3-xq3" id="gbM-zi-qKI"/>
+                <outlet property="priceSwitchBtn" destination="NzL-iy-AD5" id="PLf-RH-rj4"/>
                 <outlet property="priceTipSettingView" destination="2vW-rf-v4Y" id="9gd-Ae-f9s"/>
                 <outlet property="stockName" destination="Mvo-Ox-Kj5" id="dl6-uE-vIl"/>
                 <outlet property="topLimitInput" destination="ABm-gu-OaI" id="iyj-eD-PQF"/>
@@ -68,7 +69,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="8369.1000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mvo-Ox-Kj5">
-                                    <rect key="frame" x="136" y="17" width="142" height="20"/>
+                                    <rect key="frame" x="132" y="17" width="142" height="20"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                     <nil key="textColor"/>
@@ -94,7 +95,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="输入价格上限" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ABm-gu-OaI">
-                                    <rect key="frame" x="133" y="12" width="152" height="30"/>
+                                    <rect key="frame" x="132" y="12" width="152" height="30"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <nil key="textColor"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
