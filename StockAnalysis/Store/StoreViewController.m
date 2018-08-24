@@ -11,9 +11,12 @@
 #import "AITabContentView.h"
 #import "Masonry.h"
 #import "StorePurchaseViewController.h"
+#import "StoreUnitViewController.h"
 @interface StoreViewController ()
 @property(nonatomic,strong) AITabScrollview *scrollTitle;
 @property(nonatomic,strong) AITabContentView*scrollContent;
+
+@property(nonatomic,strong) UIButton* addBtn;
 @end
 
 @implementation StoreViewController
@@ -31,19 +34,25 @@
     //每页vc
     [self scrollContent];
     
+    [self.view addSubview:self.addBtn];
+    
     NSMutableArray* vcs = [NSMutableArray new];
     NSArray *titles = @[@"买入",@"卖出",@"交易单",@"订单"];
     {
         StorePurchaseViewController *vc1 = [StorePurchaseViewController new];
+        vc1.title = @"买入";
         [vcs addObject:vc1];
         
         StorePurchaseViewController *vc2 = [StorePurchaseViewController new];
+        vc2.title = @"卖出";
         [vcs addObject:vc2];
         
         StorePurchaseViewController*vc3 = [StorePurchaseViewController new];
+        vc3.title = @"交易单";
         [vcs addObject:vc3];
         
         StorePurchaseViewController*vc4 = [StorePurchaseViewController new];
+        vc4.title = @"订单";
         [vcs addObject:vc4];
         
     }
@@ -55,6 +64,32 @@
     [_scrollContent configParam:vcs Index:0 block:^(NSInteger index) {
         [_scrollTitle updateTagLine:index];
     }];
+    
+    UIBarButtonItem* leftbtn = [[UIBarButtonItem alloc] initWithTitle:@"CNY" style:UIBarButtonItemStyleDone target:self action:@selector(switchUnit)];
+    self.navigationItem.leftBarButtonItem = leftbtn;
+    [leftbtn setTintColor:kColorRGBA(255, 255, 255, 0.65)];
+}
+
+-(UIButton*)addBtn{
+    if(nil == _addBtn){
+        _addBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_addBtn setImage:[UIImage imageNamed:@"addBtn.png"] forState:UIControlStateNormal];
+        [_addBtn setFrame:CGRectMake(self.view.width-60, self.view.height-200, 50, 50)];
+        
+        NSLog(@"width = %f,height = %f,%f,%f",self.view.width,self.view.height,kScreenWidth,kScreenHeight);
+    }
+    
+    return _addBtn;
+}
+
+-(void)switchUnit{
+    StoreUnitViewController* vc = [[StoreUnitViewController alloc] initWithNibName:@"StoreUnitViewController" bundle:nil];
+    [vc setTitle:self.navigationItem.leftBarButtonItem.title];
+    [vc toReturnUnit:^(NSString *unit) {
+        [self.navigationItem.leftBarButtonItem setTitle:unit];
+    }];
+    
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -64,7 +99,7 @@
 
 -(void)addTopView{
     UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 58)];
-    header.backgroundColor = kColor(128, 128, 128);
+    header.backgroundColor = kColor(245, 245, 245);
     UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 50)];
     [header addSubview:v];
     v.backgroundColor = [UIColor whiteColor];
@@ -78,15 +113,15 @@
 //    btn.centerY = v.centerY;
     [v addSubview:btn];
     
-    UILabel *lab1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 16, 50, 15)];
-    lab1.font = kTextBoldFont(15);
-    lab1.textColor = kColor(50,50,50);
+    UILabel *lab1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 16, 70, 15)];
+    lab1.font = kTextFont(18);
+    lab1.textColor = kColor(0,0,0);
     lab1.text = @"￥6.34";
     [v addSubview:lab1];
     
     UILabel *lab2 = [[UILabel alloc] initWithFrame:CGRectMake(0, 18, 30, 12)];
-    lab2.font = kTextBoldFont(12);
-    lab2.textColor = kColor(128,128,128);
+    lab2.font = kTextFont(15);
+    lab2.textColor = kColorRGBA(0,0,0,0.64);
     lab2.text = @"0%";
     [v addSubview:lab2];
     

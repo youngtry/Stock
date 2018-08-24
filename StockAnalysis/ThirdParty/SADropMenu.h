@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 typedef void(^DropMenuBlock)(int);
 @interface SADropMenu : UIView
--(instancetype)initWithFrame:(CGRect)frame titles:(NSMutableArray*)titles rowHeight:(CGFloat)rowHeight;
+-(instancetype)initWithFrame:(CGRect)frame target:(id)target titles:(NSMutableArray*)titles rowHeight:(CGFloat)rowHeight index:(int)index;
+@property(nonatomic,strong)NSMutableArray* images;
 @property(nonatomic,copy)DropMenuBlock block;
+
 @end

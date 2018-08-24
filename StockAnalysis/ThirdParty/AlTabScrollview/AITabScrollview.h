@@ -13,7 +13,7 @@
 #define openAutoCorrection false  //默认开启选中标题自动居中功能
 
 //add
-#define textColorNormal kColor(0,0,0)//默认文字颜色
+#define textColorNormal kColor(48,48,48)//默认文字颜色
 #define textColorSelect kThemeYellow//选中文字颜色
 
 typedef void(^TabClickBlock)(NSInteger index);

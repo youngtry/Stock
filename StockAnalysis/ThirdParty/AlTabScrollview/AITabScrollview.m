@@ -384,6 +384,7 @@
         tab.textAlignment=NSTextAlignmentCenter;
         tab.text=titleStr;
         tab.textColor=[UIColor blackColor];
+        [tab setFont:[UIFont systemFontOfSize:15]];
         [views addObject:tab];
     }
     return views;
