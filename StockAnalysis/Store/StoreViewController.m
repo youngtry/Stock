@@ -74,7 +74,7 @@
     if(nil == _addBtn){
         _addBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_addBtn setImage:[UIImage imageNamed:@"addBtn.png"] forState:UIControlStateNormal];
-        [_addBtn setFrame:CGRectMake(self.view.width-60, self.view.height-200, 50, 50)];
+        [_addBtn setFrame:CGRectMake(self.view.width-60, self.view.height-180, 50, 50)];
         
         NSLog(@"width = %f,height = %f,%f,%f",self.view.width,self.view.height,kScreenWidth,kScreenHeight);
     }
