@@ -12,6 +12,8 @@
 #import "Masonry.h"
 #import "StorePurchaseViewController.h"
 #import "StoreUnitViewController.h"
+#import "AddTadeViewController.h"
+#import "OrderViewController.h"
 @interface StoreViewController ()
 @property(nonatomic,strong) AITabScrollview *scrollTitle;
 @property(nonatomic,strong) AITabContentView*scrollContent;
@@ -51,14 +53,20 @@
         vc3.title = @"交易单";
         [vcs addObject:vc3];
         
-        StorePurchaseViewController*vc4 = [StorePurchaseViewController new];
-        vc4.title = @"订单";
-        [vcs addObject:vc4];
+//        StorePurchaseViewController*vc4 = [StorePurchaseViewController new];
+//        vc4.title = @"订单";
+//        [vcs addObject:vc4];
         
     }
     
-//    WeakSelf(weakSelf)
+    WeakSelf(weakSelf)
     [_scrollTitle configParameter:horizontal viewArr:titles tabWidth:kScreenWidth/titles.count tabHeight:42 index:0 block:^(NSInteger index) {
+        if(index==3){
+            //订单
+            OrderViewController *vc = [OrderViewController new];
+            [weakSelf.navigationController pushViewController:vc animated:YES];
+            return ;
+        }
         [_scrollContent updateTab:index];
     }];
     [_scrollContent configParam:vcs Index:0 block:^(NSInteger index) {
@@ -75,11 +83,18 @@
         _addBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_addBtn setImage:[UIImage imageNamed:@"addBtn.png"] forState:UIControlStateNormal];
         [_addBtn setFrame:CGRectMake(self.view.width-60, self.view.height-180, 50, 50)];
+        [_addBtn addTarget:self action:@selector(addTrade) forControlEvents:UIControlEventTouchUpInside];
         
-        NSLog(@"width = %f,height = %f,%f,%f",self.view.width,self.view.height,kScreenWidth,kScreenHeight);
+//        NSLog(@"width = %f,height = %f,%f,%f",self.view.width,self.view.height,kScreenWidth,kScreenHeight);
     }
     
     return _addBtn;
+}
+
+
+-(void)addTrade{
+    AddTadeViewController* vc = [[AddTadeViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 -(void)switchUnit{
