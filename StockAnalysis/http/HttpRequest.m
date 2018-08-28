@@ -272,7 +272,7 @@
 
 -(void)postWithURLWithFile:(NSString *)url parma:(NSDictionary *)param file:(NSDictionary *)fileName block:(httpResult)block{
     // post请求
-    [HUDUtil showHudViewInSuperView:[UIApplication sharedApplication].keyWindow.rootViewController.view withMessage:@"请求中,请稍侯"];
+//    [HUDUtil showHudViewInSuperView:[UIApplication sharedApplication].keyWindow.rootViewController.view withMessage:@"请求中,请稍侯"];
     NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithDictionary:param];
     NSMutableDictionary* file = [[NSMutableDictionary alloc] initWithDictionary:fileName];
 
@@ -300,7 +300,7 @@
     } success:^(NSURLSessionDataTask *task, id responseObject){
         // 成功
         DLog(@"xxxxsuccess!");
-        [HUDUtil hideHudView];
+//        [HUDUtil hideHudView];
         NSData *data = responseObject;
         NSDictionary* info = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         //        NSString *s = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
@@ -323,7 +323,7 @@
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         // 失败
         DLog(@"%@xxxxxfailed! error = %@",url,error);
-        [HUDUtil hideHudView];
+//        [HUDUtil hideHudView];
         block(0,nil);
     }];
 }

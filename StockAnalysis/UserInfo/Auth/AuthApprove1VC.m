@@ -24,11 +24,26 @@
     // Do any additional setup after loading the view.
     
     self.title = @"级别1";
+    [self.view setBackgroundColor:kColor(245, 245, 245)];
+    
+    UIView* topView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 55)];
+    [topView setBackgroundColor:kColor(253, 250, 243)];
+    UITextView* tips = [[UITextView alloc] initWithFrame:CGRectMake(kScreenWidth*.025, 0, kScreenWidth*0.95, 55)];
+    tips.text = @"为了您的资金安全，需验证您的身份才可进行其他操作；认证信 息一经验证不能修改，请务必如实填写。";
+    [topView addSubview:tips];
+    [tips setBackgroundColor:[UIColor clearColor]];
+    [tips setFont:[UIFont systemFontOfSize:12]];
+    [tips setTextColor:kColor(235, 181, 50)];
+    
+    [self.view addSubview:topView];
     
     [self.view addSubview:self.table];
+    [self.table setBackgroundColor:[UIColor clearColor]];
     
     UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:@"权益" style:UIBarButtonItemStylePlain target:self action:@selector(onRightNavClick)];
     self.navigationItem.rightBarButtonItem = right;
+    
+    
 }
 
 -(void)onRightNavClick{
@@ -37,7 +52,7 @@
 
 -(UITableView*)table{
     if(!_table){
-        _table = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+        _table = [[UITableView alloc] initWithFrame:CGRectMake(0, 55, kScreenWidth, self.view.bounds.size.height-55) style:UITableViewStylePlain];
         _table.delegate = self;
         _table.dataSource = self;
         UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 70)];
@@ -109,7 +124,10 @@
     NSInteger row = indexPath.row;
     if(row == 0){
         cell.textLabel.text = @"国籍";
-        cell.detailTextLabel.text = @"中国";
+        UILabel* text = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, cell.width, cell.height)];
+        text.text = @"中国大陆";
+        [text setTextAlignment:NSTextAlignmentCenter];
+        [cell.contentView addSubview:text];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }else if (row == 1){
         cell.textLabel.text = @"姓名";
@@ -128,6 +146,20 @@
 }
 
 -(void)clickCommit:(id)sender{
-    [self.navigationController popViewControllerAnimated:YES];
+    NSString* url = @"account/verity1";
+    NSDictionary* params = @{@"username":self.fieldName.text,
+                             @"id_card":self.fieldNum.text
+                             };
+    [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
+        if(success){
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"认证成功"];
+                [self.navigationController popViewControllerAnimated:YES];
+            }else{
+                [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:[data objectForKey:@"msg"]];
+            }
+        }
+    }];
+//
 }
 @end

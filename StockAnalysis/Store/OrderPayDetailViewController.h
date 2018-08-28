@@ -16,4 +16,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *actionBtn;
 @property (weak, nonatomic) IBOutlet UIView *cardInfoView;
 
+@property (nonatomic,assign)int selectIndex;
+
 @end

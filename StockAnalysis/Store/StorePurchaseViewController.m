@@ -229,6 +229,7 @@
     
     SADropMenu *menu = [[SADropMenu alloc] initWithFrame:CGRectMake(0, 42, kScreenWidth, 42*data.count) target:self.view  titles:data rowHeight:42 index:currindex];
     menu.images = @[@"menu",@"card",@"weixin",@"zhifubao"].mutableCopy;
+
     menu.block = ^(int index){
         [btn setTitle:data[index] forState:UIControlStateNormal];
         NSLog(@"title = %@",btn.titleLabel.text);

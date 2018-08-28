@@ -20,8 +20,32 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.title = @"身份认证";
-    self.authLevel = 2;
     [self.view addSubview:self.table];
+    
+    
+    
+//    self.authLevel = 2;
+    if ([self.table respondsToSelector:@selector(setSeparatorInset:)]) {
+        [self.table setSeparatorInset:UIEdgeInsetsZero];
+    }
+    if ([self.table respondsToSelector:@selector(setLayoutMargins:)]) {
+        [self.table setLayoutMargins:UIEdgeInsetsZero];
+    }
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    NSString* url = @"account/userinfo";
+    NSDictionary *parameters = @{} ;
+    [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
+        if(success){
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                self.authLevel = [[[[data objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"level"] intValue];
+                [self.table reloadData];
+            }
+        }
+    }];
 }
 
 -(UITableView*)table{
@@ -46,7 +70,7 @@
     NSInteger row = indexPath.row;
     if(row == 0)
     {
-        cell.imageView.image = [Util imageWithColor:[UIColor blueColor]];
+        cell.imageView.image = [UIImage imageNamed:@"level1.png"];
         cell.textLabel.text = @"级别1";
         if(row>=_authLevel){
             cell.detailTextLabel.text = @"去认证";
@@ -58,7 +82,7 @@
         }
 
     }else if(row == 1){
-        cell.imageView.image = [Util imageWithColor:[UIColor blueColor]];
+        cell.imageView.image = [UIImage imageNamed:@"level2.png"];;
         cell.textLabel.text = @"级别2";
         if(row>=_authLevel){
             
@@ -76,7 +100,7 @@
             cell.accessoryType = UITableViewCellAccessoryNone;
         }
     }else if (row == 2){
-        cell.imageView.image = [Util imageWithColor:[UIColor blueColor]];
+        cell.imageView.image = [UIImage imageNamed:@"level3.png"];;
         cell.textLabel.text = @"级别3";
         if(row>=_authLevel){
             
@@ -98,6 +122,9 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if(indexPath.row>_authLevel){
+        return;
+    }
     if(indexPath.row==0){
         AuthApprove1VC*vc = [AuthApprove1VC new];
         [self.navigationController pushViewController:vc animated:YES];
@@ -106,4 +133,15 @@
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
+
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+    if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
+        [cell setSeparatorInset:UIEdgeInsetsZero];
+    }
+    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+        [cell setLayoutMargins:UIEdgeInsetsZero];
+    }
+    
+}
+
 @end

@@ -11,6 +11,10 @@
 
 @interface OrderPayDetailViewController ()
 @property (weak, nonatomic) IBOutlet UIView *payStyleSwitch;
+@property (weak, nonatomic) IBOutlet UIImageView *payIcon;
+@property (weak, nonatomic) IBOutlet UILabel *payName;
+@property (weak, nonatomic) IBOutlet UIView *confirmView;
+@property (weak, nonatomic) IBOutlet UIView *showConfirmVIew;
 
 @end
 
@@ -38,14 +42,33 @@
     
 }
 
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    self.tabBarController.tabBar.hidden = YES;
+}
+
+-(void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    self.tabBarController.tabBar.hidden = NO;
+}
+
 -(void)tapAction:(id)sender{
-    PayStyleView* pay = [[PayStyleView alloc] init];
-    [pay showInView:self.view];
+    PayStyleView* pay = [[PayStyleView alloc] initWithFrame:CGRectZero withView:self.view];
+    pay.block = ^(int index) {
+        NSArray* titles = @[@"银行卡支付",@"微信支付",@"支付宝支付"];
+        NSArray* pics = @[@"card.png",@"weixin.png",@"zhifubao.png"];
+        self.payIcon.image = [UIImage imageNamed:pics[index-1]];
+        self.payName.text = titles[index-1];
+    };
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+- (IBAction)clickCancel:(id)sender {
+}
+- (IBAction)clickPay:(id)sender {
 }
 
 /*

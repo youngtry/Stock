@@ -13,6 +13,8 @@
 #import "HttpRequest.h"
 #import "GameData.h"
 #import "UserManagerViewController.h"
+#import "SCAlertController.h"
+#import "SystemSettingViewController.h"
 @interface UserInfoViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 
@@ -46,9 +48,16 @@
 }
 - (IBAction)clickExitAccount:(id)sender {
     
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否退出账户" preferredStyle:  UIAlertControllerStyleAlert];
+    SCAlertController *alert = [SCAlertController alertControllerWithTitle:@"提示" message:@"是否退出账户" preferredStyle:  UIAlertControllerStyleAlert];
+    alert.messageColor = kColor(136, 136, 136);
+    //取消
+    SCAlertAction *cancelAction = [SCAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
     
-    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+    
+    [alert addAction:cancelAction];
+    
+    //退出
+    SCAlertAction *exitAction = [SCAlertAction actionWithTitle:@"退出" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [[HttpRequest getInstance] clearToken];
         [self.navigationController popToRootViewControllerAnimated:YES];
         NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
@@ -56,22 +65,20 @@
         
         [self.navigationController popViewControllerAnimated:YES];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"ChangeAfterLogin" object:nil];
-    }]];
-
+    }];
+    //单独修改一个按钮的颜色
+    exitAction.textColor = kColor(243, 186, 46);
+    [alert addAction:exitAction];
     
-    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        
-        
-        
-    }]];
-    
-    //弹出提示框；
-    [self presentViewController:alert animated:true completion:nil];
-    
-    
+    [self presentViewController:alert animated:YES completion:nil];
+ 
 }
 - (IBAction)clickSwitchAccount:(id)sender {
     UserManagerViewController* vc = [[UserManagerViewController alloc] initWithNibName:@"UserManagerViewController" bundle:nil];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+- (IBAction)clickSystemBtn:(id)sender {
+    SystemSettingViewController* vc = [[SystemSettingViewController alloc] initWithNibName:@"SystemSettingViewController" bundle:nil];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

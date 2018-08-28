@@ -7,9 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+typedef void(^DropMenuBlock)(int);
+
 
 @interface PayStyleView : UIView
--(instancetype)init;
+@property(nonatomic,copy)DropMenuBlock block;
+
+
+-(instancetype)initWithFrame:(CGRect)frame withView:(UIView*) view;
 - (void)showInView:(UIView *)view;
 
 
