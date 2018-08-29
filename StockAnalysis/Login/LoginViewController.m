@@ -42,8 +42,21 @@
     
     [_lookPwBtn setImage:[UIImage imageNamed:@"eye-c.png"] forState:UIControlStateNormal];
     [_lookPwBtn setImage:[UIImage imageNamed:@"eye-o.png"] forState:UIControlStateSelected];
-
     
+    [self.countryCodeButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -self.countryCodeButton.imageView.size.width-5, 0, self.countryCodeButton.imageView.size.width+5)];
+    [self.countryCodeButton setImageEdgeInsets:UIEdgeInsetsMake(0, self.countryCodeButton.titleLabel.bounds.size.width+5, 0, -self.countryCodeButton.titleLabel.bounds.size.width-5)];
+
+//    [self.countryCodeButton setTitle:@"+86" forState:UIControlStateNormal];
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.tabBarController.tabBar.hidden = YES;
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    self.tabBarController.tabBar.hidden = NO;
 }
 
 -(void)test{
@@ -176,6 +189,7 @@
     countryCode = [countryCode substringFromIndex:[countryCode rangeOfString:@"+"].location];
     NSLog(@"countryCode = %@",countryCode);
     [self.countryCodeButton.titleLabel setText:countryCode];
+//    [self.countryCodeButton setTitle:countryCode forState:UIControlStateNormal];
 }
 /*
 #pragma mark - Navigation

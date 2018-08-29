@@ -10,6 +10,7 @@
 #import "RegistViewController.h"
 #import "HttpRequest.h"
 #import "HUDUtil.h"
+#import "LoginViewController.h"
 
 @interface MailRegistViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *mailInput;
@@ -38,10 +39,23 @@
     [_lookPwBtn setImage:[UIImage imageNamed:@"eye-o.png"] forState:UIControlStateSelected];
     
 }
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.tabBarController.tabBar.hidden = YES;
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    self.tabBarController.tabBar.hidden = NO;
+}
 
 -(void)clickLogin{
-    [self.navigationController popViewControllerAnimated:YES];
-    [self.navigationController popViewControllerAnimated:NO];
+    for (UIViewController*vc in self.navigationController.childViewControllers) {
+        if([vc isKindOfClass:[LoginViewController class]]){
+            [self.navigationController popToViewController:vc animated:YES];
+            break;
+        }
+    }
 }
 
 -(void)test{
@@ -96,7 +110,12 @@
         [HUDUtil showSystemTipView:self title:@"提示" withContent:[data objectForKey:@"msg"]];
     }else if([number intValue] == 1){
         //注册成功
-        [self.navigationController popViewControllerAnimated:YES];
+        for (UIViewController*vc in self.navigationController.childViewControllers) {
+            if([vc isKindOfClass:[LoginViewController class]]){
+                [self.navigationController popToViewController:vc animated:YES];
+                break;
+            }
+        }
     }
 }
 - (IBAction)clickLookPw:(id)sender {

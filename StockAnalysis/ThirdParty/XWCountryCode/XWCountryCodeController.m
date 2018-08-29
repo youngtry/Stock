@@ -49,11 +49,21 @@
     //创建子视图
     [self creatSubviews];
 }
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.tabBarController.tabBar.hidden = YES;
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    self.tabBarController.tabBar.hidden = NO;
+}
  //创建子视图
 -(void)creatSubviews{
     searchResultValuesArray = [[NSMutableArray alloc] init];
     
-    countryCodeTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 20, self.view.bounds.size.width, self.view.bounds.size.height-20) style:UITableViewStylePlain];
+    countryCodeTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height-20) style:UITableViewStylePlain];
     [self.view addSubview:countryCodeTableView];
     //自动调整自己的宽度，保证与superView左边和右边的距离不变。
     [countryCodeTableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
@@ -209,7 +219,7 @@
     if (self.returnCountryCodeBlock != nil) {
         self.returnCountryCodeBlock(cell.textLabel.text);
     }
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 

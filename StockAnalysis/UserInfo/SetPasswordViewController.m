@@ -182,7 +182,9 @@
     }
     NSLog(@"gesture =%@",gesture);
     
-    NSDictionary *parameters = @{  @"gesture": gesture };
+    NSDictionary *parameters = @{  @"gesture": gesture ,
+                                   @"verity_token":@""
+                                   };
     
     if([self.settitle.text isEqualToString:@"设置手势密码"]){
         NSString* url = @"account/set_gesture";

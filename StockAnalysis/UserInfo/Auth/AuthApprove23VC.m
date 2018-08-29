@@ -86,6 +86,7 @@
                            @"card_back":fullPath2,
                            @"card_hand_held":fullPath2
                            };
+    [HUDUtil showHudViewInSuperView:self.navigationController.view withMessage:@"认证中,请稍后"];
     [[HttpRequest getInstance] postWithURLWithFile:url parma:params file:file block:^(BOOL success, id data) {
         if(success){
             if([[data objectForKey:@"ret"] intValue] == 1){
