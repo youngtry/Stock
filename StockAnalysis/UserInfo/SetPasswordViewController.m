@@ -9,6 +9,7 @@
 #import "SetPasswordViewController.h"
 #import "HttpRequest.h"
 #import "HUDUtil.h"
+#import "AppData.h"
 
 #define ScreenHeight [[UIScreen mainScreen] bounds].size.height
 #define ScreenWidth [[UIScreen mainScreen] bounds].size.width
@@ -28,7 +29,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.title = @"设置手势密码";
+//    self.title = @"设置手势密码";
     
     self.view.backgroundColor = [UIColor whiteColor];
     
@@ -51,7 +52,7 @@
     [self.imageView addSubview:guestureIcon];
     
     self.settitle = [[UILabel alloc] initWithFrame:CGRectMake(0, ScreenHeight*0.2, ScreenWidth, 50)];
-    self.settitle.text = @"设置手势密码";
+    self.settitle.text = self.title;
     [self.settitle setTextColor:[UIColor lightGrayColor]];
     [self.settitle setTextAlignment:NSTextAlignmentCenter];
     
@@ -183,7 +184,7 @@
     NSLog(@"gesture =%@",gesture);
     
     NSDictionary *parameters = @{  @"gesture": gesture ,
-                                   @"verity_token":@""
+                                   @"verity_token":[[AppData getInstance] getTempVerify]
                                    };
     
     if([self.settitle.text isEqualToString:@"设置手势密码"]){
@@ -200,6 +201,8 @@
                 [self verifyGestureBack:data];
             }
         }];
+    }else if ([self.settitle.text isEqualToString:@"输入手势密码"]){
+        [self.navigationController popViewControllerAnimated:YES];
     }
     
     
@@ -216,6 +219,7 @@
     NSNumber* ret = [data objectForKey:@"ret"];
     if([ret intValue] == 1){
         //设置成功
+        self.title = @"验证手势密码";
         self.settitle.text = @"验证手势密码";
         
     }else{
@@ -242,7 +246,7 @@
 /*
 #pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
+// In a storyboard-base d application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.

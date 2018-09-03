@@ -18,4 +18,7 @@
 
 -(void)setAssetName:(NSString*)name;
 -(NSString*)getAssetName;
+
+-(void)setTempVerify:(NSString* )verify;
+-(NSString* )getTempVerify;
 @end

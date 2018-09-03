@@ -53,9 +53,7 @@
         HomeViewController *c1 = [[HomeViewController alloc] initWithNibName:@"HomeViewController" bundle:nil];
         self.nav1 = [[UINavigationController alloc] initWithRootViewController:c1];
     }
-    
-//    HomeViewController *c1 = [[HomeViewController alloc] initWithNibName:@"HomeViewController" bundle:nil];
-//    self.nav1 = [[UINavigationController alloc] initWithRootViewController:c1];
+
     [self.nav1 setNavigationBarHidden:YES];
     self.nav1.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"ZEDA" image:[UIImage imageNamed:@"tabbar_1_n"] selectedImage:[UIImage imageNamed:@"tabbar_1_s"]];
     

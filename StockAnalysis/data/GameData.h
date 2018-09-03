@@ -19,4 +19,6 @@
 +(void)setAccountList:(NSString*)account withPassword:(NSString*)pwd;
 +(NSArray*)getAccountList;
 
+
+
 @end

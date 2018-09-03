@@ -13,6 +13,8 @@
 #import "ExchangeTableViewCell.h"
 #import "TurnMoneyViewController.h"
 #import "ExchangeBillViewController.h"
+#import "SetMoneyPasswordViewController.h"
+
 
 @interface ExchangeViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UILabel *RMBLabel;
@@ -35,7 +37,6 @@
     self.moneyList.delegate = self;
     self.moneyList.dataSource = self;
     
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getExchangeBack) name:@"GetExchangeBack" object:nil];
     
     NSDictionary *parameters = @{ @"type": @"exchange"};
     
@@ -48,6 +49,41 @@
         }
     }];
     
+    
+    
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    NSString* url1 = @"account/has_assetpwd";
+    NSDictionary* params = @{};
+    
+    [[HttpRequest getInstance] getWithURL:url1 parma:params block:^(BOOL success, id data) {
+        if(success){
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                if(![[[data objectForKey:@"data"] objectForKey:@"has_assetpwd"] boolValue]){
+                    //未设置资金密码,强制引导
+                    
+                    SCAlertController *alert = [SCAlertController alertControllerWithTitle:@"提示" message:@"您还为设置资金密码,请先设置资金密码" preferredStyle:  UIAlertControllerStyleAlert];
+                    alert.messageColor = kColor(136, 136, 136);
+                    
+                    
+                    //退出
+                    SCAlertAction *exitAction = [SCAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                        SetMoneyPasswordViewController* vc = [[SetMoneyPasswordViewController alloc] initWithNibName:@"SetMoneyPasswordViewController" bundle:nil];
+                        [self.navigationController pushViewController:vc animated:YES];
+                    }];
+                    //单独修改一个按钮的颜色
+                    exitAction.textColor = kColor(243, 186, 46);
+                    [alert addAction:exitAction];
+                    
+                    [self presentViewController:alert animated:YES completion:nil];
+                    
+                    
+                }
+            }
+        }
+    }];
 }
 
 -(void)getExchangeBack:(NSDictionary*)data{
@@ -56,7 +92,7 @@
     if([ret intValue] == 1){
         //获取成功
         NSDictionary* info = [data objectForKey:@"data"];
-        NSLog(@"info = %@",info);
+//        NSLog(@"info = %@",info);
         
         NSString* cny = [info objectForKey:@"total_cny"];
         

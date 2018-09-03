@@ -10,4 +10,6 @@
 
 @interface SafeViewController : UIViewController
 
+-(void)showVerifyView;
+
 @end

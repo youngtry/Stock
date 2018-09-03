@@ -57,4 +57,5 @@
 #import "UIView+Additions.h"
 #import "JSONKit.h"
 #import "HttpRequest.h"
+#import "SCAlertController.h"
 #endif /* PrefixHeader_pch */

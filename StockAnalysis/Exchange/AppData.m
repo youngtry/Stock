@@ -11,6 +11,7 @@
 @interface AppData()
 @property(nonatomic)int buttnIndex;
 @property(nonatomic,strong)NSString* asset;
+@property(nonatomic,strong)NSString* tempVerifyToken;
 @end
 
 @implementation AppData
@@ -33,6 +34,7 @@
     if(self){
         self.buttnIndex = 0;
         self.asset = @"";
+        self.tempVerify = @"";
     }
     return self;
 }
@@ -53,5 +55,12 @@
     return self.asset;
 }
 
+-(void)setTempVerify:(NSString *)verify{
+    self.tempVerifyToken = verify;
+}
+
+-(NSString*)getTempVerify{
+    return self.tempVerifyToken;
+}
 
 @end

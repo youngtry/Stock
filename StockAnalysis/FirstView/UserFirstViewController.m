@@ -17,6 +17,7 @@
 #import "TCRotatorImageView.h"
 #import "SocketInterface.h"
 #import "StockLittleViewController.h"
+#import "SetPasswordViewController.h"
 @interface UserFirstViewController ()<TTAutoRunLabelDelegate,UITableViewDelegate,UITableViewDataSource,SocketDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *exchangeRMBLabel;
@@ -48,6 +49,50 @@
     self.stockName = [NSMutableArray new];
     self.randList.delegate = self;
     self.randList.dataSource = self;
+    
+    NSString* username = [GameData getUserAccount];
+    NSString* password = [GameData getUserPassword];
+    NSLog(@"username = %@,password = %@",username,password);
+    if([username containsString:@"@"]){
+        //邮箱登录
+        NSDictionary *parameters = @{@"email": [GameData getUserAccount],
+                                     @"password": [GameData getUserPassword]};
+        
+        NSString* url = @"account/login/email";
+        
+        [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+            if(success){
+                //                NSLog(@"登录消息 = %@",data);
+                if([[data objectForKey:@"ret"] intValue] == 1){
+                    [self autoLoginBack];
+                }else{
+                    NSString* msg = [data objectForKey:@"msg"];
+                    [HUDUtil showSystemTipView:self title:@"登录失败" withContent:msg];
+                }
+            }
+        }];
+    }else{
+        //手机号登录
+        NSDictionary *parameters = @{@"phone": [GameData getUserAccount],
+                                     @"password": [GameData getUserPassword]};
+        
+        
+        NSString* url = @"account/login/phone";
+        
+        [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+            if(success){
+                //                NSLog(@"登录消息1 = %@",data);
+                if([[data objectForKey:@"ret"] intValue] == 1){
+                    [self autoLoginBack];
+                }else{
+                    NSString* msg = [data objectForKey:@"msg"];
+                    [HUDUtil showSystemTipView:self title:@"登录失败" withContent:msg];
+                }
+                
+                
+            }
+        }];
+    }
 }
 
 -(void)createAutoRunLabel:(NSString *)content view:(UIView* )contentview fontsize:(int)size{
@@ -80,9 +125,40 @@
 //    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"GetMoneyBack"];
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
-            [self setAccountInfo:data];
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                [self setAccountInfo:data];
+                [self showGuestureSettingView];
+            }else{
+                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+            }
+            
         }
     }];
+}
+
+-(void)showGuestureSettingView{
+    NSString* url = @"account/has_gesture";
+    NSDictionary* params = @{};
+    [[HttpRequest getInstance] getWithURL:url parma:params block:^(BOOL success, id data) {
+        if(success){
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                if([[[data objectForKey:@"data"] objectForKey:@"has_gesture"] boolValue]){
+                    //已经设置过手势密码
+                    SetPasswordViewController* vc = [[SetPasswordViewController alloc] initWithNibName:@"SetPasswordViewController" bundle:nil];
+                    [vc setTitle:@"输入手势密码"];
+                    [self.navigationController pushViewController:vc animated:YES];
+                }else{
+                    [self getTempVerify];
+                }
+            }
+        }
+    }];
+}
+
+
+
+-(void)getTempVerify{
+    
 }
 
 -(void)setAccountInfo:(NSDictionary*)data{
@@ -138,49 +214,7 @@
     }];
     
     
-    NSString* username = [GameData getUserAccount];
-    NSString* password = [GameData getUserPassword];
-    NSLog(@"username = %@,password = %@",username,password);
-    if([username containsString:@"@"]){
-        //邮箱登录
-        NSDictionary *parameters = @{@"email": [GameData getUserAccount],
-                                     @"password": [GameData getUserPassword]};
-        
-        NSString* url = @"account/login/email";
-     
-        [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
-            if(success){
-//                NSLog(@"登录消息 = %@",data);
-                if([[data objectForKey:@"ret"] intValue] == 1){
-                    [self autoLoginBack];
-                }else{
-                    NSString* msg = [data objectForKey:@"msg"];
-                    [HUDUtil showSystemTipView:self title:@"登录失败" withContent:msg];
-                }
-            }
-        }];
-    }else{
-        //手机号登录
-        NSDictionary *parameters = @{@"phone": [GameData getUserAccount],
-                                     @"password": [GameData getUserPassword]};
-        
-        
-        NSString* url = @"account/login/phone";
-        
-        [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
-            if(success){
-//                NSLog(@"登录消息1 = %@",data);
-                if([[data objectForKey:@"ret"] intValue] == 1){
-                    [self autoLoginBack];
-                }else{
-                    NSString* msg = [data objectForKey:@"msg"];
-                    [HUDUtil showSystemTipView:self title:@"登录失败" withContent:msg];
-                }
-                
- 
-            }
-        }];
-    }
+    
     
     NSDictionary* parameters2 = @{@"market":@""};
     NSString* url2 = @"market/search";

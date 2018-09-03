@@ -11,6 +11,7 @@
 #import "SetMoneyPasswordViewController.h"
 #import "HttpRequest.h"
 #import "GuestrureTimeSetView.h"
+#import "AppData.h"
 
 #define ScreenHeight [[UIScreen mainScreen] bounds].size.height
 #define ScreenWidth [[UIScreen mainScreen] bounds].size.width
@@ -22,6 +23,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *mailBindImage;
 @property (weak, nonatomic) IBOutlet UILabel *guestureTime;
 
+@property (weak, nonatomic) IBOutlet UIView *verifyView;
+@property (weak, nonatomic) IBOutlet UITextField *passwordInput;
 
 @end
 
@@ -49,6 +52,18 @@
     
 //    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"GetUserBindInfo"];
     
+    [self.verifyView setHidden:YES];
+    
+    UITapGestureRecognizer *f = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(test)];
+    [self.verifyView addGestureRecognizer:f];
+    self.verifyView.userInteractionEnabled = YES;
+    
+}
+
+-(void)test{
+    self.passwordInput.text = @"";
+    [self.verifyView setHidden:YES];
+    [self.view endEditing:YES];
 }
 
 -(void)setGuestureTimeLabel:(NSNotification *)notification{
@@ -100,7 +115,6 @@
 //    [self.navigationController ]
 }
 
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -111,14 +125,46 @@
 }
 - (IBAction)clickPassword:(id)sender {
     
-    SetPasswordViewController *vc = [[SetPasswordViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+    [self.verifyView setHidden:NO];
+    
+    
 }
 - (IBAction)clickBindMail:(id)sender {
     
 }
 - (IBAction)clickBindPhone:(id)sender {
     
+}
+- (IBAction)clickCancelVerifyBtn:(id)sender {
+    self.passwordInput.text = @"";
+    [self.verifyView setHidden:YES];
+}
+- (IBAction)clickSureVerifybtn:(id)sender {
+    NSString* url = @"account/veritypwd";
+    NSDictionary* params = @{@"password":self.passwordInput.text};
+    [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
+        if(success){
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                NSString* temp = [[data objectForKey:@"data"] objectForKey:@"verity_token"];
+                
+                [[AppData getInstance] setTempVerify:temp];
+                
+                [self clickCancelVerifyBtn:nil];
+                
+                SetPasswordViewController *vc = [[SetPasswordViewController alloc] init];
+                [vc setTitle:@"设置手势密码"];
+                [self.navigationController pushViewController:vc animated:YES];
+                
+            }else{
+                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+            }
+        }
+    }];
+    
+}
+
+-(void)showVerifyView{
+    [self.verifyView setHidden:NO];
 }
 
 /*

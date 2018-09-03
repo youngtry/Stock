@@ -51,7 +51,7 @@
         NSString* title = self.title;
         
         NSDictionary* info = [data objectForKey:@"data"];
-        NSLog(@"当前页面title = %@",info);
+//        NSLog(@"当前页面title = %@",info);
         if([title isEqualToString:@"0"]){
             self.turnOutName.text = @"交易账户";
             self.turnInName.text = @"商户账户";
@@ -110,6 +110,9 @@
 
 }
 - (IBAction)clickTurnBtn:(id)sender {
+    
+    
+    
     UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
     NSString* mode = @"toexchange";
     NSString* url = @"wallet/transfer";
