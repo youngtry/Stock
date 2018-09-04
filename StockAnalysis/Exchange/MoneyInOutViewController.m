@@ -8,6 +8,8 @@
 
 #import "MoneyInOutViewController.h"
 #import "AppData.h"
+#import "MoneyVerifyViewController.h"
+
 @interface MoneyInOutViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *turnBtn;
 @property (weak, nonatomic) IBOutlet UILabel *marketName;
@@ -110,32 +112,42 @@
 
 }
 - (IBAction)clickTurnBtn:(id)sender {
-    
-    
-    
     UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
-    NSString* mode = @"toexchange";
-    NSString* url = @"wallet/transfer";
-    if([self.title isEqualToString:@"0"]){
-        mode = @"toshop";
-    }else{
-        mode = @"toexchange";
-    }
-    NSDictionary* parameters = @{@"asset":self.marketName.text,
-                                 @"num":@([self.turnInput.text floatValue]),
-                                 @"mode":mode
-                                 };
+    MoneyVerifyViewController* vc = [[MoneyVerifyViewController alloc] initWithNibName:@"MoneyVerifyViewController" bundle:nil];
+    [temp presentViewController:vc animated:YES completion:nil];
+//    [temp.view addSubview:vc.view];
     
-    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
-        if(success){
-            if([[data objectForKey:@"ret"] intValue] == 1){
-                [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"转入成功"];
-                [temp popViewControllerAnimated:YES];
+    vc.block = ^(NSString* token) {
+        if(token.length>0){
+            
+            NSString* mode = @"toexchange";
+            NSString* url = @"wallet/transfer";
+            if([self.title isEqualToString:@"0"]){
+                mode = @"toshop";
             }else{
-                [HUDUtil showHudViewTipInSuperView:temp.view withMessage:[data objectForKey:@"msg"]];
+                mode = @"toexchange";
             }
+            NSDictionary* parameters = @{@"asset":self.marketName.text,
+                                         @"num":@([self.turnInput.text floatValue]),
+                                         @"mode":mode,
+                                         @"asset_token":token
+                                         };
+            
+            [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+                if(success){
+                    if([[data objectForKey:@"ret"] intValue] == 1){
+                        [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"转入成功"];
+                        [temp popViewControllerAnimated:YES];
+                    }else{
+                        [HUDUtil showHudViewTipInSuperView:temp.view withMessage:[data objectForKey:@"msg"]];
+                    }
+                }
+            }];
         }
-    }];
+    };
+    
+    
+    
     
 //    id temp = self.parentViewController.view.selfViewController.navigationController;
 //    [temp popViewControllerAnimated:YES];

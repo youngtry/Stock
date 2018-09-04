@@ -29,7 +29,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self.title = @"交易账户";
+    self.title = @"商户账户";
     self.businessInfo = [NSMutableDictionary new];
     
     self.moneyList.delegate = self;
@@ -46,7 +46,15 @@
     }];
     
 }
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.tabBarController.tabBar.hidden = YES;
+}
 
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    self.tabBarController.tabBar.hidden = NO;
+}
 -(void)getBusinessBack:(NSDictionary*)data{
     //    NSDictionary* data = [[HttpRequest getInstance] httpBack];
     NSNumber* ret = [data objectForKey:@"ret"];

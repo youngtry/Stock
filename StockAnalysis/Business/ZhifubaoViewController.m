@@ -7,6 +7,7 @@
 //
 
 #import "ZhifubaoViewController.h"
+#import "MoneyVerifyViewController.h"
 
 @interface ZhifubaoViewController ()<UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *nameLabel;
@@ -35,7 +36,15 @@
 -(void)test{
     [self.view endEditing:YES];
 }
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.tabBarController.tabBar.hidden = YES;
+}
 
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    self.tabBarController.tabBar.hidden = NO;
+}
 -(void)viewDidDisappear:(BOOL)animated{
     [super viewDidDisappear:animated];
     
@@ -87,37 +96,47 @@
     [sheet showInView:self.view];
 }
 - (IBAction)clickSaveBtn:(id)sender {
-    NSString *fullPath = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"] stringByAppendingPathComponent:@"alipay_pay.jpg"];
     
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    BOOL result = [fileManager fileExistsAtPath:fullPath];
+    MoneyVerifyViewController* vc = [[MoneyVerifyViewController alloc] initWithNibName:@"MoneyVerifyViewController" bundle:nil];
+    [self.navigationController presentViewController:vc animated:YES completion:nil];
     
-    if(!result){
-        fullPath = @"";
-        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"收款码未上传,请重新上传"];
-        return;
-    }
-    
-    NSString* url = @"wallet/set_alipay";
-    NSDictionary* params = @{@"name":self.nameLabel.text,
-                             @"alipay_id":self.alipayAccount.text,
-                             @"phone_captcha":self.verifyInput.text
-                             };
-    
-    NSDictionary* file = @{@"paycode":fullPath};
-    
-    [[HttpRequest getInstance] postWithURLWithFile:url parma:params file:file block:^(BOOL success, id data) {
-        if(success){
+    vc.block = ^(NSString* token) {
+        if(token.length>0){
+            NSString *fullPath = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"] stringByAppendingPathComponent:@"alipay_pay.jpg"];
             
-            if([[data objectForKey:@"ret"] intValue] == 1){
-                [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"设置成功"];
-                [fileManager removeItemAtPath:fullPath error:nil];
-                [self.navigationController popViewControllerAnimated:YES];
-            }else{
-                [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:[data objectForKey:@"msg"]];
+            NSFileManager *fileManager = [NSFileManager defaultManager];
+            BOOL result = [fileManager fileExistsAtPath:fullPath];
+            
+            if(!result){
+                fullPath = @"";
+                [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"收款码未上传,请重新上传"];
+                return;
             }
+            
+            NSString* url = @"wallet/set_alipay";
+            NSDictionary* params = @{@"name":self.nameLabel.text,
+                                     @"alipay_id":self.alipayAccount.text,
+                                     @"phone_captcha":self.verifyInput.text
+                                     };
+            
+            NSDictionary* file = @{@"paycode":fullPath};
+            
+            [[HttpRequest getInstance] postWithURLWithFile:url parma:params file:file block:^(BOOL success, id data) {
+                if(success){
+                    
+                    if([[data objectForKey:@"ret"] intValue] == 1){
+                        [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"设置成功"];
+                        [fileManager removeItemAtPath:fullPath error:nil];
+                        [self.navigationController popViewControllerAnimated:YES];
+                    }else{
+                        [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:[data objectForKey:@"msg"]];
+                    }
+                }
+            }];
         }
-    }];
+    };
+    
+    
 }
 
 #pragma mark -消息框代理实现-

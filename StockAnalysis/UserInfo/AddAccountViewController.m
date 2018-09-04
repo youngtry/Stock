@@ -8,7 +8,7 @@
 
 #import "AddAccountViewController.h"
 #import "BankCodeViewController.h"
-
+#import "MoneyVerifyViewController.h"
 @interface AddAccountViewController ()<BankCodeViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *selectBankBtn;
 @property (weak, nonatomic) IBOutlet UITextField *cardnumberInput;
@@ -70,7 +70,10 @@
     }
 }
 - (IBAction)clickAddBtn:(id)sender {
+ 
     [self.navigationController popViewControllerAnimated:YES];
+    
+    
 }
 
 -(BOOL)checkAllInput{

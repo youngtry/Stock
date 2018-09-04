@@ -57,7 +57,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow_right" translatesAutoresizingMaskIntoConstraints="NO" id="bok-nH-pEl">
-                            <rect key="frame" x="321" y="8" width="26" height="26"/>
+                            <rect key="frame" x="338" y="8" width="9" height="26"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="26" id="w2b-Dd-pQE"/>
                             </constraints>
@@ -157,10 +157,9 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bbv-jm-qAa">
-                    <rect key="frame" x="15" y="204" width="345" height="47"/>
+                    <rect key="frame" x="14" y="204" width="347" height="47"/>
                     <color key="backgroundColor" red="0.95294117647058818" green="0.72941176470588232" blue="0.1803921568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="345" id="LUL-Zu-YYa"/>
                         <constraint firstAttribute="height" constant="47" id="fbL-6v-kGg"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -169,7 +168,7 @@
                     </state>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                            <integer key="value" value="20"/>
+                            <integer key="value" value="25"/>
                         </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                     </userDefinedRuntimeAttributes>
@@ -177,6 +176,7 @@
             </subviews>
             <color key="backgroundColor" red="0.96430837563451777" green="0.96430837563451777" blue="0.96430837563451777" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="Bbv-jm-qAa" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="14" id="39J-YJ-fyh"/>
                 <constraint firstItem="Bbv-jm-qAa" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="184" id="5S3-gq-wjn"/>
                 <constraint firstItem="Bbv-jm-qAa" firstAttribute="centerX" secondItem="Q5M-cg-NOt" secondAttribute="centerX" id="ACj-dl-4t1"/>
                 <constraint firstItem="GYv-MB-kJl" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="315" id="Ann-8f-LLK"/>
@@ -190,6 +190,7 @@
                 <constraint firstItem="peI-VZ-cP3" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="Wmk-Eu-3Et"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="KKk-TL-g59" secondAttribute="trailing" id="eUh-jW-iFW"/>
                 <constraint firstItem="NQv-dG-bR9" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="291" id="jQW-eb-JHq"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="Bbv-jm-qAa" secondAttribute="trailing" constant="14" id="jzb-uq-WAj"/>
                 <constraint firstItem="h8k-Xa-beT" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="267" id="m6W-ZP-BAP"/>
                 <constraint firstItem="KKk-TL-g59" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="41" id="q0l-7b-VsB"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="ezk-TJ-euG" secondAttribute="trailing" id="qN0-OM-1JY"/>
@@ -202,6 +203,6 @@
         </view>
     </objects>
     <resources>
-        <image name="arrow_right" width="26" height="26"/>
+        <image name="arrow_right" width="9" height="15"/>
     </resources>
 </document>

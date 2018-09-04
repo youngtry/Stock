@@ -39,7 +39,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入微信昵称" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tFY-TB-WOl">
-                            <rect key="frame" x="119" y="8" width="227" height="30"/>
+                            <rect key="frame" x="99" y="8" width="247" height="30"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -69,8 +69,13 @@
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qb3-hh-WmH">
+                            <rect key="frame" x="0.0" y="45" width="375" height="1"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" red="0.86666666670000003" green="0.86666666670000003" blue="0.86666666670000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </view>
                         <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入微信ID" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vWr-ht-kgR">
-                            <rect key="frame" x="119" y="8" width="227" height="30"/>
+                            <rect key="frame" x="99" y="8" width="242" height="30"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -79,11 +84,6 @@
                                 <action selector="editEnd:" destination="-1" eventType="editingDidEnd" id="QV7-Xk-CnR"/>
                             </connections>
                         </textField>
-                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qb3-hh-WmH">
-                            <rect key="frame" x="0.0" y="45" width="375" height="1"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" red="0.86666666670000003" green="0.86666666670000003" blue="0.86666666670000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        </view>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
@@ -101,7 +101,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入短信验证码" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Qhq-Iw-mPE">
-                            <rect key="frame" x="119" y="8" width="137" height="30"/>
+                            <rect key="frame" x="101" y="8" width="183" height="30"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -163,7 +163,7 @@
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 </imageView>
                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oXn-OZ-Bhi">
-                                    <rect key="frame" x="31" y="68" width="62" height="27"/>
+                                    <rect key="frame" x="1" y="68" width="123" height="27"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <state key="normal" title="上传收款码"/>
@@ -215,7 +215,7 @@
                 <constraint firstItem="5ee-rf-RMv" firstAttribute="trailing" secondItem="oaG-Fe-Ddf" secondAttribute="trailing" id="woM-ZF-0Iv"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="5ee-rf-RMv"/>
-            <point key="canvasLocation" x="33.5" y="53.5"/>
+            <point key="canvasLocation" x="31.5" y="51.5"/>
         </view>
     </objects>
     <resources>

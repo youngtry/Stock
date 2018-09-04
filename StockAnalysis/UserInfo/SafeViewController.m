@@ -25,6 +25,7 @@
 
 @property (weak, nonatomic) IBOutlet UIView *verifyView;
 @property (weak, nonatomic) IBOutlet UITextField *passwordInput;
+@property (weak, nonatomic) IBOutlet UISwitch *switchBtn;
 
 @end
 
@@ -58,6 +59,24 @@
     [self.verifyView addGestureRecognizer:f];
     self.verifyView.userInteractionEnabled = YES;
     
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    NSString* url1 = @"account/getConfirmState";
+    NSDictionary* params = @{};
+    [[HttpRequest getInstance] getWithURL:url1 parma:params block:^(BOOL success, id data) {
+        if(success){
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                NSString* state = [[data objectForKey:@"data"] objectForKey:@"state"];
+                if([state isEqualToString:@"on"]){
+                    [self.switchBtn setOn:YES];
+                }else{
+                    [self.switchBtn setOn:NO];
+                }
+            }
+        }
+    }];
 }
 
 -(void)test{
@@ -108,6 +127,35 @@
     UISwitch* btn = (UISwitch*)sender;
     BOOL ison = [btn isOn];
     NSLog(@"clickTwiceVerify ison = %d",ison);
+    NSString* state = @"off";
+    if(ison){
+        state = @"on";
+    }else{
+        state = @"off";
+    }
+    
+    NSString* url = @"account/setConfirmCheck";
+    NSDictionary* params = @{@"state":state};
+    
+    [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
+        if(success){
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                
+                [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"设置成功"];
+               
+            }else{
+                
+                if([state isEqualToString:@"on"]){
+                    [btn setOn:NO];
+                }else{
+                    [btn setOn:YES];
+                }
+                
+                [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:[data objectForKey:@"msg"]];
+            }
+        }
+    }];
+    
 }
 - (IBAction)clickTimeSelect:(id)sender {
     GuestrureTimeSetView* timeset = [[GuestrureTimeSetView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];

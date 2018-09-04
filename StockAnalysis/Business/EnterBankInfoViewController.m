@@ -8,6 +8,7 @@
 
 #import "EnterBankInfoViewController.h"
 #import "BankCodeViewController.h"
+#import "MoneyVerifyViewController.h"
 
 @interface EnterBankInfoViewController ()<BankCodeViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *nameInput;
@@ -35,7 +36,15 @@
 -(void)test{
     [self.view endEditing:YES];
 }
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.tabBarController.tabBar.hidden = YES;
+}
 
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    self.tabBarController.tabBar.hidden = NO;
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -53,24 +62,33 @@
     self.sendVerifyBtn.titleLabel.text = @"已发送";
 }
 - (IBAction)clickBindBtn:(id)sender {
-    NSString* url = @"wallet/set_bank_card";
-    NSDictionary* params = @{@"name":self.nameInput.text,
-                             @"bank":self.bankName.text,
-                             @"subbank":self.bankDetailNname.text,
-                             @"card":self.cardNum.text,
-                             @"phone_captcha":self.verifyInput.text
-                             };
     
-    [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
-        if(success){
-            if([[data objectForKey:@"ret"] intValue] == 1){
-                [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"设置成功"];
-                [self.navigationController popViewControllerAnimated:YES];
-            }else{
-                [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:[data objectForKey:@"msg"]];
-            }
+    MoneyVerifyViewController* vc = [[MoneyVerifyViewController alloc] initWithNibName:@"MoneyVerifyViewController" bundle:nil];
+    [self.navigationController presentViewController:vc animated:YES completion:nil];
+    
+    vc.block = ^(NSString* token) {
+        if(token.length>0){
+            NSString* url = @"wallet/set_bank_card";
+            NSDictionary* params = @{@"name":self.nameInput.text,
+                                     @"bank":self.bankName.text,
+                                     @"subbank":self.bankDetailNname.text,
+                                     @"card":self.cardNum.text,
+                                     @"phone_captcha":self.verifyInput.text
+                                     };
+            
+            [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
+                if(success){
+                    if([[data objectForKey:@"ret"] intValue] == 1){
+                        [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"设置成功"];
+                        [self.navigationController popViewControllerAnimated:YES];
+                    }else{
+                        [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:[data objectForKey:@"msg"]];
+                    }
+                }
+            }];
         }
-    }];
+    };
+    
 }
 - (IBAction)editEnd:(id)sender {
     if([self getEnterAll]){

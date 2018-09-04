@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-typedef void(^InputMoneyPassword)(BOOL);
+typedef void(^InputMoneyPassword)(NSString*);
 
 @interface MoneyVerifyViewController : UIViewController
 @property(nonatomic,copy)InputMoneyPassword block;

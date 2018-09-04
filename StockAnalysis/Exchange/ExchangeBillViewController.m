@@ -50,6 +50,8 @@
     [self.nameArrrow setHidden:YES];
     [self.typeArrow setHidden:YES];
     
+    
+    
     [self.nameArray addObject:@"全部"];
     for (int i=0;i<8; i++) {
         NSString* info = [NSString stringWithFormat:@"期货%d",i];
@@ -162,6 +164,13 @@
         }
     }
     
+    
+    NSLog(@"kscreenWidth = %f",kScreenWidth);
+    if(kScreenWidth == 320){
+       [cell.name setFont:[UIFont systemFontOfSize:10]];
+    }
+//    [cell.name]
+    
     [tableView setBackgroundColor:[UIColor clearColor]];
     cell.backgroundColor=[UIColor clearColor];
     return cell;
@@ -173,11 +182,13 @@
         NSString* name = cell.name.text;
         if(tableView == self.nameList){
             [self.allNameBtn setTitle:name forState:UIControlStateNormal];
+            [self.nameArrrow setHidden:YES];
             
         }
         
         if(tableView == self.typeList){
             [self.allTypeBtn setTitle:name forState:UIControlStateNormal];
+            [self.typeArrow setHidden:YES];
         }
         
         [tableView setHidden:YES];

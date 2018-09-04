@@ -39,7 +39,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow_right" translatesAutoresizingMaskIntoConstraints="NO" id="DVW-wv-Y8z">
-                            <rect key="frame" x="357" y="9" width="26" height="26"/>
+                            <rect key="frame" x="374" y="9" width="9" height="26"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="26" id="BCH-zb-eD6"/>
                             </constraints>
@@ -146,10 +146,9 @@
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vjk-eU-cXK">
-                    <rect key="frame" x="35" y="281" width="345" height="47"/>
+                    <rect key="frame" x="35" y="280" width="345" height="47"/>
                     <color key="backgroundColor" red="0.8784313725490196" green="0.8784313725490196" blue="0.8784313725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="345" id="Lmz-9t-MD3"/>
                         <constraint firstAttribute="height" constant="47" id="TSG-yo-4ul"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -177,14 +176,16 @@
                 <constraint firstItem="oQc-YA-Rkr" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="21" id="Iy9-fr-vUP"/>
                 <constraint firstItem="mgn-sb-NIY" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="129" id="PEV-4k-syg"/>
                 <constraint firstItem="wLu-3u-k3K" firstAttribute="leading" secondItem="Ztj-ZS-CIU" secondAttribute="trailing" constant="23" id="QyK-Bg-hxX"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="Vjk-eU-cXK" secondAttribute="trailing" constant="34" id="S6D-5y-miS"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="oQc-YA-Rkr" secondAttribute="trailing" id="XpC-vJ-zmz"/>
                 <constraint firstItem="oQc-YA-Rkr" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="YkO-mZ-oet"/>
                 <constraint firstItem="L47-nt-za4" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" constant="1" id="a6r-yY-5QG"/>
                 <constraint firstItem="L47-nt-za4" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="ata-5i-3gp"/>
+                <constraint firstItem="Vjk-eU-cXK" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="35" id="c7S-rK-n62"/>
                 <constraint firstItem="wLu-3u-k3K" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="90" id="kn2-0K-Ark"/>
                 <constraint firstItem="Ztj-ZS-CIU" firstAttribute="leading" secondItem="4fy-lY-5ea" secondAttribute="trailing" constant="26" id="oFE-TK-QOc"/>
                 <constraint firstItem="Vjk-eU-cXK" firstAttribute="centerX" secondItem="Q5M-cg-NOt" secondAttribute="centerX" id="poZ-Bi-hYP"/>
-                <constraint firstItem="Vjk-eU-cXK" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="261" id="rSf-gT-YbW"/>
+                <constraint firstItem="Vjk-eU-cXK" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="260" id="rSf-gT-YbW"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
             <userDefinedRuntimeAttributes>
@@ -197,6 +198,6 @@
         </view>
     </objects>
     <resources>
-        <image name="arrow_right" width="26" height="26"/>
+        <image name="arrow_right" width="9" height="15"/>
     </resources>
 </document>

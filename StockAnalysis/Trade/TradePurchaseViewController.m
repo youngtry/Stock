@@ -13,6 +13,7 @@
 #import "TradeStockSelectTableViewCell.h"
 #import "TradeStockInfoTableViewCell.h"
 #import "askAndBidsTableViewCell.h"
+#import "MoneyVerifyViewController.h"
 @interface TradePurchaseViewController ()<SocketDelegate,UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UIView *editNumContainer;
 @property (weak, nonatomic) IBOutlet UIView *editPriceContainer;
@@ -372,19 +373,60 @@
     
 }
 - (IBAction)clickPurchase:(id)sender {
-    NSString* url = @"exchange/trade/add";
-    NSDictionary* parameters = @{@"market":self.marketNamelabel.titleLabel.text,
-                                 @"num":@"",
-                                 @"price":@"",
-                                 @"mode":@"buy",
-                                 @"is_limit":@""};
-    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+    UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
+    NSString* url1 = @"account/getConfirmState";
+    NSDictionary* params = @{};
+    [[HttpRequest getInstance] getWithURL:url1 parma:params block:^(BOOL success, id data) {
         if(success){
             if([[data objectForKey:@"ret"] intValue] == 1){
-                [HUDUtil showHudViewInSuperView:self.view withMessage:@"挂单成功"];
+                NSString* state = [[data objectForKey:@"data"] objectForKey:@"state"];
+                if([state isEqualToString:@"on"]){
+                    
+                    
+                    MoneyVerifyViewController* vc = [[MoneyVerifyViewController alloc] initWithNibName:@"MoneyVerifyViewController" bundle:nil];
+                    [temp presentViewController:vc animated:YES completion:nil];
+                    
+                    vc.block = ^(NSString* token) {
+                        if(token.length>0){
+                            NSString* url = @"exchange/trade/add";
+                            NSDictionary* parameters = @{@"market":self.marketNamelabel.titleLabel.text,
+                                                         @"num":@(1),
+                                                         @"price":@(1.5),
+                                                         @"mode":@"buy",
+                                                         @"is_limit":@(1),
+                                                         @"asset_token":token
+                                                         };
+                            [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+                                if(success){
+                                    if([[data objectForKey:@"ret"] intValue] == 1){
+                                        [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"挂单成功"];
+                                    }
+                                }
+                            }];
+                        }
+                    };
+                    
+                }else{
+                    NSString* url = @"exchange/trade/add";
+                    NSDictionary* parameters = @{@"market":self.marketNamelabel.titleLabel.text,
+                                                 @"num":@"",
+                                                 @"price":@"",
+                                                 @"mode":@"buy",
+                                                 @"is_limit":@"",
+                                                 @"asset_token":@""};
+                    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+                        if(success){
+                            if([[data objectForKey:@"ret"] intValue] == 1){
+                                [HUDUtil showHudViewInSuperView:temp.view withMessage:@"挂单成功"];
+                            }
+                        }
+                    }];
+                }
             }
         }
     }];
+    
+    
 }
 - (IBAction)clickAddPruchaseAmount:(id)sender {
     float amount = [self.purchaseAmountLabel.text floatValue];
