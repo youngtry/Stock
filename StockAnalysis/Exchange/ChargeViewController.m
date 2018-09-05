@@ -46,6 +46,16 @@
     }];
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.tabBarController.tabBar.hidden = YES;
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    self.tabBarController.tabBar.hidden = NO;
+}
+
 -(void)getExchangeBack:(NSDictionary*)data{
     //    NSDictionary* data = [[HttpRequest getInstance] httpBack];
     NSNumber* ret = [data objectForKey:@"ret"];

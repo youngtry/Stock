@@ -49,7 +49,7 @@
     {
         UIView *left = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth/2.0f, 50)];
         left.backgroundColor = [UIColor whiteColor];
-        UILabel *lab = [[UILabel alloc] initWithFrame:CGRectMake(16,0,60,14)];
+        UILabel *lab = [[UILabel alloc] initWithFrame:CGRectMake(16,0,45,14)];
         lab.font = kTextFont(14);
         lab.textColor = kColor(128,128,128);
         lab.text = @"股票：";
@@ -62,7 +62,7 @@
         [btn setImage:[UIImage imageNamed:@"arrow_down"] forState:UIControlStateNormal];
         [btn setTitleEdgeInsets:UIEdgeInsetsMake(0, -btn.imageView.size.width, 0, btn.imageView.size.width)];
         [btn setImageEdgeInsets:UIEdgeInsetsMake(0, btn.titleLabel.bounds.size.width, 0, -btn.titleLabel.bounds.size.width)];
-        
+        [btn.titleLabel setFont:[UIFont systemFontOfSize:15]];
         [left addSubview:btn];
         btn.centerY = left.centerY;
         
@@ -73,7 +73,7 @@
     {
         UIView *right = [[UIView alloc] initWithFrame:CGRectMake(kScreenWidth/2.0f, 0, kScreenWidth/2.0f, 50)];
         right.backgroundColor = [UIColor whiteColor];
-        UILabel *lab = [[UILabel alloc] initWithFrame:CGRectMake(16,0,60,14)];
+        UILabel *lab = [[UILabel alloc] initWithFrame:CGRectMake(16,0,45,14)];
         lab.font = kTextFont(14);
         lab.textColor = kColor(128,128,128);
         lab.text = @"委托：";
@@ -86,7 +86,7 @@
         [btn setImage:[UIImage imageNamed:@"arrow_down"] forState:UIControlStateNormal];
         [btn setTitleEdgeInsets:UIEdgeInsetsMake(0, -btn.imageView.size.width, 0, btn.imageView.size.width)];
         [btn setImageEdgeInsets:UIEdgeInsetsMake(0, btn.titleLabel.bounds.size.width, 0, -btn.titleLabel.bounds.size.width)];
-        
+        [btn.titleLabel setFont:[UIFont systemFontOfSize:15]];
         [right addSubview:btn];
         btn.centerY = right.centerY;
         

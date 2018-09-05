@@ -18,6 +18,8 @@
 #import "SocketInterface.h"
 #import "StockLittleViewController.h"
 #import "SetPasswordViewController.h"
+#import "AppData.h"
+#import "AdsViewController.h"
 @interface UserFirstViewController ()<TTAutoRunLabelDelegate,UITableViewDelegate,UITableViewDataSource,SocketDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *exchangeRMBLabel;
@@ -158,6 +160,24 @@
 
 
 -(void)getTempVerify{
+    NSString* url = @"account/veritypwd";
+    NSDictionary* params = @{@"password":[GameData getUserPassword]};
+    [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
+        if(success){
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                NSString* temp = [[data objectForKey:@"data"] objectForKey:@"verity_token"];
+                
+                [[AppData getInstance] setTempVerify:temp];
+                
+                SetPasswordViewController *vc = [[SetPasswordViewController alloc] init];
+                [vc setTitle:@"设置手势密码"];
+                [self.navigationController pushViewController:vc animated:YES];
+                
+            }else{
+                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+            }
+        }
+    }];
     
 }
 
@@ -314,6 +334,10 @@
         _adScrollView.clickBlock = ^(NSInteger index){
             //循环引用
             //            [weakSelf xxxx];
+            
+            AdsViewController* vc = [[AdsViewController alloc] initWithNibName:@"AdsViewController" bundle:nil];
+            [self.navigationController pushViewController:vc animated:YES];
+            
         };
     }else{
         _adScrollView.imageURLStrigArray = images;

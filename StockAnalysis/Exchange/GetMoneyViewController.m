@@ -20,14 +20,22 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.title = @"提现";
-    
-    
-    
+
     UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:@"提现记录" style:UIBarButtonItemStylePlain target:self action:@selector(clickRecord:)];
     self.navigationItem.rightBarButtonItem = right;
     
     
     self.assetName.text = [[AppData getInstance] getAssetName];
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.tabBarController.tabBar.hidden = YES;
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    self.tabBarController.tabBar.hidden = NO;
 }
 
 -(void)clickRecord:(id)sender{

@@ -211,7 +211,13 @@
             }
         }];
     }else if ([self.settitle.text isEqualToString:@"输入手势密码"]){
-        [self.navigationController popViewControllerAnimated:YES];
+        NSString* url = @"account/check_gesture";
+        [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+            if(success){
+                [self verifyGestureBack:data];
+            }
+        }];
+        
     }
     
     

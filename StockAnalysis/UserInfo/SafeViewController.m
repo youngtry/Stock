@@ -12,6 +12,7 @@
 #import "HttpRequest.h"
 #import "GuestrureTimeSetView.h"
 #import "AppData.h"
+#import "BindViewController.h"
 
 #define ScreenHeight [[UIScreen mainScreen] bounds].size.height
 #define ScreenWidth [[UIScreen mainScreen] bounds].size.width
@@ -38,18 +39,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setGuestureTimeLabel:) name:@"GuestureTimeSetting" object:nil];
     
-    NSDictionary *parameters = @{} ;
-//    NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithDictionary:para];
     
-    
-    NSString* url = @"account/bindInfo";
-    
-    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
-        if(success){
-//            NSDictionary* info = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-            [self getBindBack:data];
-        }
-    }];
     
 //    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"GetUserBindInfo"];
     
@@ -63,6 +53,20 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    self.tabBarController.tabBar.hidden = YES;
+    
+    NSDictionary *parameters = @{} ;
+    //    NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithDictionary:para];
+    
+    
+    NSString* url = @"account/bindInfo";
+    
+    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+        if(success){
+            [self getBindBack:data];
+        }
+    }];
+    
     NSString* url1 = @"account/getConfirmState";
     NSDictionary* params = @{};
     [[HttpRequest getInstance] getWithURL:url1 parma:params block:^(BOOL success, id data) {
@@ -79,9 +83,13 @@
     }];
 }
 
+
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    self.tabBarController.tabBar.hidden = NO;
+}
+
 -(void)test{
-    self.passwordInput.text = @"";
-    [self.verifyView setHidden:YES];
     [self.view endEditing:YES];
 }
 
@@ -178,9 +186,15 @@
     
 }
 - (IBAction)clickBindMail:(id)sender {
+    BindViewController* vc = [[BindViewController alloc] initWithNibName:@"BindViewController" bundle:nil];
+    [self.navigationController pushViewController:vc animated:YES];
+    vc.title = @"绑定邮箱";
     
 }
 - (IBAction)clickBindPhone:(id)sender {
+    BindViewController* vc = [[BindViewController alloc] initWithNibName:@"BindViewController" bundle:nil];
+    [self.navigationController pushViewController:vc animated:YES];
+    vc.title = @"绑定手机";
     
 }
 - (IBAction)clickCancelVerifyBtn:(id)sender {
@@ -188,6 +202,7 @@
     [self.verifyView setHidden:YES];
 }
 - (IBAction)clickSureVerifybtn:(id)sender {
+    [self test];
     NSString* url = @"account/veritypwd";
     NSDictionary* params = @{@"password":self.passwordInput.text};
     [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
@@ -212,6 +227,7 @@
 }
 
 -(void)showVerifyView{
+    [self test];
     [self.verifyView setHidden:NO];
 }
 

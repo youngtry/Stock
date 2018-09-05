@@ -21,7 +21,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.title = @"全部订单";
+//    self.title = @"全部订单";
     self.orderList.delegate = self;
     self.orderList.dataSource = self;
     
@@ -72,6 +72,10 @@
         cell.stateLabel.text = @"已完成";
     }else{
         cell.stateLabel.text = @"超时未支付,已取消";
+        if(kScreenWidth == 320){
+            cell.stateLabel.text = @"已取消";
+        }
+        
     }
     return cell;
 }

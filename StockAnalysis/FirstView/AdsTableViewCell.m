@@ -1,19 +1,18 @@
 //
-//  CommonOrderTableViewCell.m
+//  AdsTableViewCell.m
 //  StockAnalysis
 //
-//  Created by try on 2018/8/27.
+//  Created by try on 2018/9/5.
 //  Copyright © 2018年 try. All rights reserved.
 //
 
-#import "CommonOrderTableViewCell.h"
+#import "AdsTableViewCell.h"
 
-@implementation CommonOrderTableViewCell
+@implementation AdsTableViewCell
 
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
-    
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

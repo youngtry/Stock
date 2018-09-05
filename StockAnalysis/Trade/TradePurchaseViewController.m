@@ -113,6 +113,10 @@
     self.radioBtn.indexChangeBlock = ^(NSInteger index){
         DLog(@"index:%li",index);
     };
+    
+    if(kScreenWidth == 320){
+//        [self.marketNamelabel.titleLabel setFont:[UIFont systemFontOfSize:12]];
+    }
 }
 
 -(void)customeView{
@@ -125,7 +129,7 @@
     self.editPriceContainer.layer.cornerRadius = 3;
     
     self.editPercentContainer.layer.cornerRadius = 12;//self.editNumContainer.height/2.0f;
-    self.purchaseBtn.layer.cornerRadius = 20;
+    self.purchaseBtn.layer.cornerRadius = 15;
     
     self.ShowBuyTypeView.layer.borderWidth = 1;
     self.ShowBuyTypeView.layer.borderColor = [kColorRGBA(221, 221, 221, 1) CGColor];

@@ -67,6 +67,16 @@
     [self.typeArray addObject:@"扣除任务奖励"];
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.tabBarController.tabBar.hidden = YES;
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    self.tabBarController.tabBar.hidden = NO;
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -164,12 +174,9 @@
         }
     }
     
-    
-    NSLog(@"kscreenWidth = %f",kScreenWidth);
     if(kScreenWidth == 320){
-       [cell.name setFont:[UIFont systemFontOfSize:10]];
+       [cell.name setFont:[UIFont systemFontOfSize:9]];
     }
-//    [cell.name]
     
     [tableView setBackgroundColor:[UIColor clearColor]];
     cell.backgroundColor=[UIColor clearColor];

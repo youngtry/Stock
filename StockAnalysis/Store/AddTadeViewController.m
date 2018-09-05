@@ -68,7 +68,15 @@
         [_scrollTitle updateTagLine:index];
     }];
 }
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.tabBarController.tabBar.hidden = YES;
+}
 
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    self.tabBarController.tabBar.hidden = NO;
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -100,7 +108,7 @@
 
 -(UILabel*)titlePrice{
     if(nil == _titlePrice){
-        _titlePrice =  [[UILabel alloc] initWithFrame:CGRectMake(kScreenWidth* 0.6, 0, kScreenWidth* 0.15, 50)];
+        _titlePrice =  [[UILabel alloc] initWithFrame:CGRectMake(kScreenWidth* 0.58, 0, kScreenWidth* 0.17, 50)];
         _titlePrice.text = @"¥6.34";
         [_titlePrice setTextAlignment:NSTextAlignmentLeft];
         [_titlePrice setFont:[UIFont systemFontOfSize:18]];

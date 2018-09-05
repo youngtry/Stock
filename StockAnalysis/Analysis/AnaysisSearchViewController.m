@@ -70,6 +70,16 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.tabBarController.tabBar.hidden = YES;
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    self.tabBarController.tabBar.hidden = NO;
+}
+
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     
@@ -246,8 +256,9 @@
     if(_scrollTitle.tagIndex == 0 || ![_historyView isHidden]){
         NSDictionary* parameters = @{@"market":searchBar.text};
         NSString* url = @"market/search";
-        
+        [HUDUtil showHudViewInSuperView:self.view withMessage:@"正在搜索"];
         [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
+            [HUDUtil hideHudView];
             if(success){
                 if([[data objectForKey:@"ret"] intValue] == 1){
                     
@@ -278,9 +289,11 @@
             }
         }];
     }else{
+        [HUDUtil showHudViewInSuperView:self.view withMessage:@"正在搜索"];
         NSDictionary* parameters = @{@"asset":searchBar.text};
         NSString* url = @"market/shop/search";
         [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
+            [HUDUtil hideHudView];
             if(success){
                 if([[data objectForKey:@"ret"] intValue] == 1){
                     NSDictionary* market = [data objectForKey:@"data"];
