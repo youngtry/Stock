@@ -334,9 +334,9 @@
         _adScrollView.clickBlock = ^(NSInteger index){
             //循环引用
             //            [weakSelf xxxx];
-            
+            [weakSelf.navigationController setNavigationBarHidden:NO];
             AdsViewController* vc = [[AdsViewController alloc] initWithNibName:@"AdsViewController" bundle:nil];
-            [self.navigationController pushViewController:vc animated:YES];
+            [weakSelf.navigationController pushViewController:vc animated:YES];
             
         };
     }else{
