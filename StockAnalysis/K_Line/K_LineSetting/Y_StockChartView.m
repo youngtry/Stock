@@ -183,9 +183,7 @@
             Y_StockChartCenterViewType type = itemModel.centerViewType;
             
 
-            if(type == Y_StockChartcenterViewTypeMenu){
-                //进入菜单
-            }
+            
             
             if(type != self.currentCenterViewType)
             {
@@ -215,6 +213,13 @@
                 [self.kLineView reDraw];
             }
             [self bringSubviewToFront:self.segmentView];
+            
+            if(type == Y_StockChartcenterViewTypeMenu){
+                //进入菜单
+                [self clickMenu:_currentIndex];
+                //                return;
+                [self bringSubviewToFront:self.segmentTimeView];
+            }
         }
     }
 
@@ -281,6 +286,7 @@
         }];
         
         [self.segmentTimeView setHidden:NO];
+    
     }
     
 }

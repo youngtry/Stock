@@ -195,6 +195,8 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
 
 - (void)setSelectedBtn:(UIButton *)selectedBtn
 {
+    
+    NSLog(@"btn.tag = %ld",selectedBtn.tag);
     if(_selectedBtn == selectedBtn)
     {
         if(selectedBtn.tag != Y_StockChartSegmentStartTag)
@@ -231,7 +233,7 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
 //            make.bottom.equalTo(self);
 //            make.width.equalTo(self);
 //        }];
-        [_delegate clickMenu:3];
+//        [_delegate clickMenu:0];
         
         [UIView animateWithDuration:0.2f animations:^{
             [self layoutIfNeeded];
