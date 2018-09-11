@@ -197,6 +197,7 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
 {
     
     NSLog(@"btn.tag = %ld",selectedBtn.tag);
+
     if(_selectedBtn == selectedBtn)
     {
         if(selectedBtn.tag != Y_StockChartSegmentStartTag)
@@ -224,7 +225,9 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
     }
 
     _selectedIndex = selectedBtn.tag - Y_StockChartSegmentStartTag;
-    
+//    if(_selectedIndex < 4){
+//        [_delegate clickMenu:_selectedIndex];
+//    }
     if(_selectedIndex == 0 && self.indicatorView.frame.origin.x < 0)
     {
 //        [self.indicatorView mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -233,7 +236,7 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
 //            make.bottom.equalTo(self);
 //            make.width.equalTo(self);
 //        }];
-//        [_delegate clickMenu:0];
+//        [_delegate clickMenu:_selectedIndex];
         
         [UIView animateWithDuration:0.2f animations:^{
             [self layoutIfNeeded];

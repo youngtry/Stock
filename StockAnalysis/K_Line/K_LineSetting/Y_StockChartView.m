@@ -178,18 +178,19 @@
 //            NSLog(@"stockdata = %@",stockData);
             
             Y_StockChartViewItemModel *itemModel = self.itemModels[index];
-            
-            
+ 
             Y_StockChartCenterViewType type = itemModel.centerViewType;
+            Y_StockChartCenterViewType type1 = type;
+            if(type == Y_StockChartcenterViewTypeMenu){
+                type1 = Y_StockChartcenterViewTypeKline;
+                itemModel = [Y_StockChartViewItemModel itemModelWithTitle:@"5分" type:Y_StockChartcenterViewTypeKline];
+            }
             
-
-            
-            
-            if(type != self.currentCenterViewType)
+            if(type1 != self.currentCenterViewType)
             {
                 //移除当前View，设置新的View
-                self.currentCenterViewType = type;
-                switch (type) {
+                self.currentCenterViewType = type1;
+                switch (type1) {
                     case Y_StockChartcenterViewTypeKline:
                     {
                         self.kLineView.hidden = NO;
@@ -204,12 +205,12 @@
                 }
             }
             
-            if(type == Y_StockChartcenterViewTypeOther)
+            if(type1 == Y_StockChartcenterViewTypeOther)
             {
                 
             } else {
                 self.kLineView.kLineModels = (NSArray *)stockData;
-                self.kLineView.MainViewType = type;
+                self.kLineView.MainViewType = type1;
                 [self.kLineView reDraw];
             }
             [self bringSubviewToFront:self.segmentView];
@@ -217,8 +218,7 @@
             if(type == Y_StockChartcenterViewTypeMenu){
                 //进入菜单
                 [self clickMenu:_currentIndex];
-                //                return;
-                [self bringSubviewToFront:self.segmentTimeView];
+
             }
         }
     }
@@ -239,7 +239,10 @@
             make.top.equalTo(self.segmentTimeView);
             make.width.equalTo(self.segmentTimeView);
         }];
-        
+        [self.segmentTimeView.timeView setHidden:NO];
+        [self.segmentTimeView.MAView setHidden:YES];
+        [self.segmentTimeView.MACDView setHidden:YES];
+        [self.segmentTimeView.settingView setHidden:YES];
         [self.segmentTimeView setHidden:NO];
     }else if (index == 1){
         [self.segmentTimeView mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -254,7 +257,10 @@
             make.top.equalTo(self.segmentTimeView);
             make.width.equalTo(self.segmentTimeView);
         }];
-        
+        [self.segmentTimeView.timeView setHidden:YES];
+        [self.segmentTimeView.MAView setHidden:NO];
+        [self.segmentTimeView.MACDView setHidden:YES];
+        [self.segmentTimeView.settingView setHidden:YES];
         [self.segmentTimeView setHidden:NO];
     }else if (index == 2){
         [self.segmentTimeView mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -269,7 +275,10 @@
             make.top.equalTo(self.segmentTimeView);
             make.width.equalTo(self.segmentTimeView);
         }];
-        
+        [self.segmentTimeView.timeView setHidden:YES];
+        [self.segmentTimeView.MAView setHidden:YES];
+        [self.segmentTimeView.MACDView setHidden:NO];
+        [self.segmentTimeView.settingView setHidden:YES];
         [self.segmentTimeView setHidden:NO];
     }else if (index == 3){
         [self.segmentTimeView mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -284,15 +293,98 @@
             make.top.equalTo(self.segmentTimeView);
             make.width.equalTo(self.segmentTimeView);
         }];
-        
+        [self.segmentTimeView.timeView setHidden:YES];
+        [self.segmentTimeView.MAView setHidden:YES];
+        [self.segmentTimeView.MACDView setHidden:YES];
+        [self.segmentTimeView.settingView setHidden:NO];
         [self.segmentTimeView setHidden:NO];
     
     }
-    
+    [self bringSubviewToFront:self.segmentTimeView];
 }
 
 -(void)y_StockChartSegmentTimeView:(NSInteger)index{
+    NSLog(@"index = %ld",index);
+    self.currentIndex = index;
     
+    if (index == 105) {
+        
+        [Y_StockChartGlobalVariable setisBOLLLine:Y_StockChartTargetLineStatusBOLL];
+        self.kLineView.targetLineStatus = index;
+        [self.kLineView reDraw];
+        [self bringSubviewToFront:self.segmentView];
+        
+    } else  if(index >= 100 && index != 105) {
+        
+        [Y_StockChartGlobalVariable setisEMALine:index];
+        //        if(index == Y_StockChartTargetLineStatusMA)
+        //        {
+        //            [Y_StockChartGlobalVariable setisEMALine:Y_StockChartTargetLineStatusMA];
+        //        } else {
+        //            [Y_StockChartGlobalVariable setisEMALine:Y_StockChartTargetLineStatusEMA];
+        //        }
+        self.kLineView.targetLineStatus = index;
+        [self.kLineView reDraw];
+        [self bringSubviewToFront:self.segmentView];
+        
+    } else {
+        if(self.dataSource && [self.dataSource respondsToSelector:@selector(stockDatasWithIndex:)])
+        {
+            id stockData = [self.dataSource stockDatasWithIndex:index];
+            
+            if(!stockData)
+            {
+                return;
+            }
+            
+            //            NSLog(@"stockdata = %@",stockData);
+            
+            Y_StockChartViewItemModel *itemModel = self.itemModels[index];
+            
+            Y_StockChartCenterViewType type = itemModel.centerViewType;
+            Y_StockChartCenterViewType type1 = type;
+            if(type == Y_StockChartcenterViewTypeMenu){
+                //                self.currentIndex = 0;
+                type1 = Y_StockChartcenterViewTypeKline;
+                itemModel = [Y_StockChartViewItemModel itemModelWithTitle:@"分时" type:Y_StockChartcenterViewTypeTimeLine];
+            }
+            
+            if(type1 != self.currentCenterViewType)
+            {
+                //移除当前View，设置新的View
+                self.currentCenterViewType = type1;
+                switch (type1) {
+                    case Y_StockChartcenterViewTypeKline:
+                    {
+                        self.kLineView.hidden = NO;
+                        //                    [self bringSubviewToFront:self.kLineView];
+                        [self bringSubviewToFront:self.segmentView];
+                        
+                    }
+                        break;
+                        
+                    default:
+                        break;
+                }
+            }
+            
+            if(type1 == Y_StockChartcenterViewTypeOther)
+            {
+                
+            } else {
+                self.kLineView.kLineModels = (NSArray *)stockData;
+                self.kLineView.MainViewType = type1;
+                [self.kLineView reDraw];
+            }
+            [self bringSubviewToFront:self.segmentView];
+            
+            if(type == Y_StockChartcenterViewTypeMenu){
+                //进入菜单
+                //                [self clickMenu:_currentIndex];
+                
+            }
+        }
+    }
 }
 
 @end

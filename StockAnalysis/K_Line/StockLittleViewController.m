@@ -552,7 +552,7 @@
     if([name isEqualToString:@"kline.query"]){
         
         NSArray* result = [data objectForKey:@"result"];
-//        NSLog(@"result = %@",result);
+        NSLog(@"result = %@",result);
 //        NSMutableArray* need = [[NSMutableArray alloc] initWithCapacity:result.count];
         [self.klineArray removeAllObjects];
         for(int i=0;i<result.count;i++){

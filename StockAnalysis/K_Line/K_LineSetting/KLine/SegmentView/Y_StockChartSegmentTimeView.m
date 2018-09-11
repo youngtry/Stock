@@ -253,7 +253,7 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
                 
 //                NSLog(@"屏幕宽度：%f",kScreenWidth/667.0);
                 float left = (idx%6)+1;
-                NSLog(@"left = %f",left);
+//                NSLog(@"left = %f",left);
                 make.height.mas_equalTo(@(25*widthrate));
                 make.width.mas_equalTo(@(50));
                 if(idx<11){
