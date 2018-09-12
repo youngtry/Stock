@@ -7,8 +7,9 @@
 //
 
 #import "BindViewController.h"
+#import "XWCountryCodeController.h"
 
-@interface BindViewController ()
+@interface BindViewController ()<XWCountryCodeControllerDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *bindName;
 @property (weak, nonatomic) IBOutlet UITextField *bindAddressInput;
 @property (weak, nonatomic) IBOutlet UILabel *verify1Name;
@@ -16,6 +17,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *verify2name;
 @property (weak, nonatomic) IBOutlet UITextField *verify2Input;
 @property (weak, nonatomic) IBOutlet UIButton *confirmBtn;
+@property (weak, nonatomic) IBOutlet UITextField *mailAddressInput;
+@property (weak, nonatomic) IBOutlet UIButton *districtbtn;
 
 @end
 
@@ -27,14 +30,18 @@
     
     if([self.title isEqualToString:@"绑定邮箱"]){
         _bindName.text = @"邮箱地址";
-        _bindAddressInput.placeholder = @"请输入邮箱地址";
+        [_bindAddressInput setHidden:YES];
+        [_districtbtn setHidden:YES];
+        [_mailAddressInput setHidden:NO];
         _verify1Name.text = @"邮箱验证码";
         _verify1Input.placeholder = @"输入邮箱验证码";
         _verify2name.text = @"短信验证码";
         _verify2Input.placeholder = @"输入短信验证码";
     }else if ([self.title isEqualToString:@"绑定手机"]){
         _bindName.text = @"手机号码";
-        _bindAddressInput.placeholder = @"请输入手机号码";
+        [_bindAddressInput setHidden:NO];
+        [_districtbtn setHidden:NO];
+        [_mailAddressInput setHidden:YES];
         _verify1Name.text = @"短信验证码";
         _verify1Input.placeholder = @"输入短信验证码";
         _verify2name.text = @"邮箱验证码";
@@ -50,6 +57,11 @@
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     self.tabBarController.tabBar.hidden = NO;
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    [self returnCountryCode:@"+86"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -83,11 +95,10 @@
     
     if([self.title isEqualToString:@"绑定手机"]){
         NSString* url = @"account/bind_phone";
-        NSDictionary* params = @{@"phone":_bindName.text,
+        NSDictionary* params = @{@"phone":_bindAddressInput.text,
                                  @"phone_captcha":_verify1Input.text,
                                  @"email_captcha":_verify2Input.text,
-                                 @"password":@"",
-                                 @"district":@""
+                                 @"district":self.districtbtn.titleLabel.text
                                  };
         [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
             if(success){
@@ -101,10 +112,9 @@
         }];
     }else if([self.title isEqualToString:@"绑定邮箱"]){
         NSString* url = @"account/bind_email";
-        NSDictionary* params = @{@"email":_bindName.text,
+        NSDictionary* params = @{@"email":_mailAddressInput.text,
                                  @"phone_captcha":_verify2Input.text,
-                                 @"email_captcha":_verify1Input.text,
-                                 @"password":@""
+                                 @"email_captcha":_verify1Input.text
                                  };
         [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
             if(success){
@@ -118,6 +128,27 @@
         }];
     }
     
+}
+- (IBAction)clickDistrict:(id)sender {
+    XWCountryCodeController* countrycodeVC = [[XWCountryCodeController alloc] init];
+    countrycodeVC.deleagete = self;
+    [countrycodeVC toReturnCountryCode:^(NSString *countryCodeStr) {
+        NSLog(@"countryCodeStr = %@",countryCodeStr);
+        countryCodeStr = [countryCodeStr substringFromIndex:[countryCodeStr rangeOfString:@"+"].location];
+        NSLog(@"countryCodeStr = %@",countryCodeStr);
+        [self.districtbtn.titleLabel setText:countryCodeStr];
+    }];
+    
+    [self.navigationController pushViewController:countrycodeVC animated:YES];
+}
+
+#pragma mark - XWCountryCodeControllerDelegate
+-(void)returnCountryCode:(NSString *)countryCode{
+    
+    countryCode = [countryCode substringFromIndex:[countryCode rangeOfString:@"+"].location];
+    NSLog(@"countryCode = %@",countryCode);
+    [self.districtbtn.titleLabel setText:countryCode];
+   
 }
 
 /*

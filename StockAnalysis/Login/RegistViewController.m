@@ -55,6 +55,11 @@
     self.tabBarController.tabBar.hidden = NO;
 }
 
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    [self returnCountryCode:@"+86"];
+}
+
 -(void)clickLogin{
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -138,24 +143,22 @@
     }
     
     NSDictionary *parameters = @{ @"phone": self.phoneInput.text ,
-                                         @"captcha": self.verifyInput.text ,
-                                         @"password": self.passwordInput.text ,
-                                         @"district": self.countryCodeButton.titleLabel.text};
-//    NSMutableDictionary* para =  [[NSMutableDictionary alloc] initWithDictionary:parameters];
-    
+                                  @"captcha": self.verifyInput.text ,
+                                  @"password": self.passwordInput.text ,
+                                  @"district": self.countryCodeButton.titleLabel.text};
+
     NSString* url = @"register/phone";
-    
-//    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"RegisteBack"];
+
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
-//            NSDictionary* info = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
             NSNumber* number = [data objectForKey:@"ret"];
-            if([number intValue] == -1){
+            if([number intValue] == 1){
+                //注册成功
+                [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"注册成功"];
+                [self.navigationController popViewControllerAnimated:YES];
+            }else{
                 //注册失败
                 [HUDUtil showSystemTipView:self title:@"提示" withContent:[data objectForKey:@"msg"]];
-            }else if([number intValue] == 1){
-                //注册成功
-                [self.navigationController popViewControllerAnimated:YES];
             }
         }
     }];

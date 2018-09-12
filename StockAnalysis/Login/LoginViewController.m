@@ -59,6 +59,11 @@
     self.tabBarController.tabBar.hidden = NO;
 }
 
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    [self returnCountryCode:@"+86"];
+}
+
 -(void)test{
     [self.view endEditing:YES];
 }
@@ -113,6 +118,7 @@
 
     
     [[HttpRequest getInstance] postWithURL:url parma:paramDic block:^(BOOL success, id data) {
+        [HUDUtil hideHudView];
         if(success){
             //这里把判断ret才能知道是否正确登陆。
             NSLog(@"登录消息：%@",data);

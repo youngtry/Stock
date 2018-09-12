@@ -192,6 +192,7 @@
     
 }
 - (IBAction)clickBindPhone:(id)sender {
+    
     BindViewController* vc = [[BindViewController alloc] initWithNibName:@"BindViewController" bundle:nil];
     [self.navigationController pushViewController:vc animated:YES];
     vc.title = @"绑定手机";
