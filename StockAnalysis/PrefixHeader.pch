@@ -58,4 +58,5 @@
 #import "JSONKit.h"
 #import "HttpRequest.h"
 #import "SCAlertController.h"
+#import "ProtocolDefine.h"
 #endif /* PrefixHeader_pch */

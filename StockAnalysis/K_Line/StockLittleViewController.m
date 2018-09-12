@@ -155,17 +155,17 @@
     [super viewWillDisappear:animated];
     self.tabBarController.tabBar.hidden = NO;
     
-    NSDictionary *dicAll = @{@"method":@"state.unsubscribe",@"params":@[],@"id":@(1)};
+    NSDictionary *dicAll = @{@"method":@"state.unsubscribe",@"params":@[],@"id":@(PN_StateUnsubscribe)};
     
     NSString *strAll = [dicAll JSONString];
     [[SocketInterface sharedManager] sendRequest:strAll withName:@"state.unsubscribe"];
     
-    NSDictionary *dicAll1 = @{@"method":@"kline.unsubscribe",@"params":@[],@"id":@(1)};
+    NSDictionary *dicAll1 = @{@"method":@"kline.unsubscribe",@"params":@[],@"id":@(PN_KlineUnsubscribe)};
     
     NSString *strAll1 = [dicAll1 JSONString];
     [[SocketInterface sharedManager] sendRequest:strAll1 withName:@"kline.unsubscribe"];
     
-    NSDictionary *dicAll2 = @{@"method":@"deals.unsubscribe",@"params":@[],@"id":@(1)};
+    NSDictionary *dicAll2 = @{@"method":@"deals.unsubscribe",@"params":@[],@"id":@(PN_DealsUnsubscribe)};
     
     NSString *strAll2 = [dicAll2 JSONString];
     [[SocketInterface sharedManager] sendRequest:strAll2 withName:@"deals.unsubscribe"];
@@ -322,18 +322,18 @@
 - (IBAction)switchPhone:(id)sender {
     [self closeAllBtnView];
     
-    NSDictionary *dicAll = @{@"method":@"state.unsubscribe",@"params":@[],@"id":@(1)};
-    
+    NSDictionary *dicAll = @{@"method":@"state.unsubscribe",@"params":@[],@"id":@(PN_StateSubscribe)};
+
     NSString *strAll = [dicAll JSONString];
     [[SocketInterface sharedManager] sendRequest:strAll withName:@"state.unsubscribe"];
-    
-    NSDictionary *dicAll1 = @{@"method":@"kline.unsubscribe",@"params":@[],@"id":@(1)};
-    
+
+    NSDictionary *dicAll1 = @{@"method":@"kline.unsubscribe",@"params":@[],@"id":@(PN_KlineUnsubscribe)};
+
     NSString *strAll1 = [dicAll1 JSONString];
     [[SocketInterface sharedManager] sendRequest:strAll1 withName:@"kline.unsubscribe"];
-    
-    NSDictionary *dicAll2 = @{@"method":@"deals.unsubscribe",@"params":@[],@"id":@(1)};
-    
+
+    NSDictionary *dicAll2 = @{@"method":@"deals.unsubscribe",@"params":@[],@"id":@(PN_DealsUnsubscribe)};
+
     NSString *strAll2 = [dicAll2 JSONString];
     [[SocketInterface sharedManager] sendRequest:strAll2 withName:@"deals.unsubscribe"];
     
@@ -409,17 +409,17 @@
                           @(6)
                           ];
     
-    NSDictionary *dicAll = @{@"method":@"state.subscribe",@"params":dicParma,@"id":@(1)};
+    NSDictionary *dicAll = @{@"method":@"state.subscribe",@"params":dicParma,@"id":@(PN_StateSubscribe)};
     
     NSString *strAll = [dicAll JSONString];
     [[SocketInterface sharedManager] sendRequest:strAll withName:@"state.subscribe"];
     
-    NSDictionary *dicAll1 = @{@"method":@"kline.subscribe",@"params":dicParma1,@"id":@(1)};
+    NSDictionary *dicAll1 = @{@"method":@"kline.subscribe",@"params":dicParma1,@"id":@(PN_KlineSubscribe)};
     
     NSString *strAll1 = [dicAll1 JSONString];
     [[SocketInterface sharedManager] sendRequest:strAll1 withName:@"kline.subscribe"];
     
-    NSDictionary *dicAll2 = @{@"method":@"deals.subscribe",@"params":dicParma,@"id":@(1)};
+    NSDictionary *dicAll2 = @{@"method":@"deals.subscribe",@"params":dicParma,@"id":@(PN_DealsSubscribe)};
     
     NSString *strAll2 = [dicAll2 JSONString];
     [[SocketInterface sharedManager] sendRequest:strAll2 withName:@"deals.subscribe"];
@@ -530,7 +530,7 @@
     
 //    NSLog(@"Websocket Connected");
     
-    NSDictionary *dicAll = @{@"method":@"kline.query",@"params":dicParma,@"id":@(1)};
+    NSDictionary *dicAll = @{@"method":@"kline.query",@"params":dicParma,@"id":@(PN_KlineQuery)};
     
     NSString *strAll = [dicAll JSONString];
     [[SocketInterface sharedManager] sendRequest:strAll withName:@"kline.query"];
@@ -545,14 +545,21 @@
     
     NSNull* err =[data objectForKey:@"error"];
     
-    if(err){
-        NSLog(@"err = %@",err);
+    int requestID = 0;
+    id dataid = [data objectForKey:@"id"];
+    
+    if(dataid != [NSNull null]){
+        requestID = [[data objectForKey:@"id"] intValue];
     }
     
-    if([name isEqualToString:@"kline.query"]){
+    if(err){
+//        NSLog(@"err = %@",err);
+    }
+//    NSLog(@"socket data = %@",data);
+    if(requestID == PN_KlineQuery){
         
         NSArray* result = [data objectForKey:@"result"];
-        NSLog(@"result = %@",result);
+//        NSLog(@"data = %@,result = %@",data,result);
 //        NSMutableArray* need = [[NSMutableArray alloc] initWithCapacity:result.count];
         [self.klineArray removeAllObjects];
         for(int i=0;i<result.count;i++){

@@ -198,7 +198,7 @@
                           @(10),
                           @"0.1"
                           ];
-    NSDictionary *dicAll = @{@"method":@"depth.subscribe",@"params":dicParma,@"id":@(1)};
+    NSDictionary *dicAll = @{@"method":@"depth.subscribe",@"params":dicParma,@"id":@(PN_DepthSubscribe)};
     
     NSString *strAll = [dicAll JSONString];
     
@@ -464,7 +464,7 @@
     if(err){
         NSLog(@"err = %@",err);
     }
-    
+//    int requestID = [[data objectForKey:@"id"] intValue];
     if([name isEqualToString:@"depth.update"]){
         
         NSArray* params = [data objectForKey:@"params"];

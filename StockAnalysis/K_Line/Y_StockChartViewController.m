@@ -60,8 +60,10 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.currentIndex = -1;
-    self.stockChartView.backgroundColor = [UIColor backgroundColor];
+    [[SocketInterface sharedManager] openWebSocket];
     [SocketInterface sharedManager].delegate = self;
+    self.stockChartView.backgroundColor = [UIColor backgroundColor];
+    
 }
 
 - (NSMutableDictionary<NSString *,Y_KLineGroupModel *> *)modelsDict
@@ -146,9 +148,7 @@
 }
 
 -(void)sendKlineRequest{
-    
-    
-    
+
     NSString* starttime = [self getTimeStrWithString:@"2018-04-18 00:00:00"];
     NSLog(@"starttime = %@",starttime);
     NSString* endtime = [self getTimeStrWithString:@"2018-04-18 01:00:00"];
@@ -161,27 +161,32 @@
     
     NSLog(@"Websocket Connected");
     
-    NSDictionary *dicAll = @{@"method":@"kline.query",@"params":dicParma,@"id":@(1)};
+    NSDictionary *dicAll = @{@"method":@"kline.query",@"params":dicParma,@"id":@(PN_KlineQuery)};
     
     NSString *strAll = [dicAll JSONString];
     [[SocketInterface sharedManager] sendRequest:strAll withName:@"kline.query"];
 }
 
 -(void)getWebData:(id)message withName:(NSString *)name{
-    if([name isEqualToString:@"kline.query"]){
-        NSString* str = message;
-        NSData* strdata = [str dataUsingEncoding:NSUTF8StringEncoding];
-
-        NSDictionary* data = [NSJSONSerialization JSONObjectWithData:strdata options:NSJSONReadingMutableContainers error:nil];
+    
+    NSString* str = message;
+    NSData* strdata = [str dataUsingEncoding:NSUTF8StringEncoding];
+    
+    NSDictionary* data = [NSJSONSerialization JSONObjectWithData:strdata options:NSJSONReadingMutableContainers error:nil];
+    
+    NSNull* err =[data objectForKey:@"error"];
+    
+    if(err){
+        //            NSLog(@"err = %@",err);
+    }
+    
+    
+    int requestID = [[data objectForKey:@"id"] intValue];
+    if(requestID == PN_KlineQuery){
         
-        NSNull* err =[data objectForKey:@"error"];
-        
-        if(err){
-            NSLog(@"err = %@",err);
-        }
         
         NSArray* result = [data objectForKey:@"result"];
-        NSLog(@"result = %@",result);
+        NSLog(@"data = %@,result = %@",data,result);
         NSMutableArray* need = [[NSMutableArray alloc] initWithCapacity:result.count];
         for(int i=0;i<result.count;i++){
             NSString* date = result[i][0];
@@ -198,13 +203,15 @@
             [need  setObject:info atIndexedSubscript:i];
         }
         
-        NSLog(@"need = %@",need);
+//        NSLog(@"need = %@",need);
+        if(result.count>0){
+            Y_KLineGroupModel *groupModel = [Y_KLineGroupModel objectWithArray:need];
+            self.groupModel = groupModel;
+            [self.modelsDict setObject:groupModel forKey:self.type];
+            //        NSLog(@"groupModel = %@",groupModel);
+            [self.stockChartView reloadData];
+        }
         
-        Y_KLineGroupModel *groupModel = [Y_KLineGroupModel objectWithArray:need];
-        self.groupModel = groupModel;
-        [self.modelsDict setObject:groupModel forKey:self.type];
-        NSLog(@"groupModel = %@",groupModel);
-        [self.stockChartView reloadData];
     }
 }
 
