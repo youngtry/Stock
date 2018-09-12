@@ -150,9 +150,8 @@
     }else if([self.title isEqualToString:@"买入"]){
         [self.purchaseBtn setBackgroundColor:[UIColor colorWithRed:75.0/255.0 green:185.0/255.0 blue:112.0/255.0 alpha:1.0]];
     }
-//    [[SocketInterface sharedManager] openWebSocket];
-    
-    
+    [[SocketInterface sharedManager] openWebSocket];
+
     self.askList.tableFooterView = [UIView new];
     self.bidsList.tableFooterView = [UIView new];
     
@@ -199,7 +198,7 @@
                           @(10),
                           @"0.1"
                           ];
-    NSDictionary *dicAll = @{@"method":@"depth.subscribe",@"params":dicParma,@"id":@(1)};
+    NSDictionary *dicAll = @{@"method":@"depth.subscribe",@"params":dicParma,@"id":@(PN_DepthSubscribe)};
     
     NSString *strAll = [dicAll JSONString];
     
@@ -465,7 +464,7 @@
     if(err){
         NSLog(@"err = %@",err);
     }
-    
+//    int requestID = [[data objectForKey:@"id"] intValue];
     if([name isEqualToString:@"depth.update"]){
         
         NSArray* params = [data objectForKey:@"params"];

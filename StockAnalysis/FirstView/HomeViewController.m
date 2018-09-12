@@ -78,7 +78,7 @@
                             NSString* name = [info objectForKey:@"market"];
                             NSArray *dicParma = @[name
                                                   ];
-                            NSDictionary *dicAll = @{@"method":@"state.subscribe",@"params":dicParma,@"id":@(1)};
+                            NSDictionary *dicAll = @{@"method":@"state.subscribe",@"params":dicParma,@"id":@(PN_StateSubscribe)};
                             
                             NSString *strAll = [dicAll JSONString];
                             
@@ -186,6 +186,9 @@
     NSData* strdata = [str dataUsingEncoding:NSUTF8StringEncoding];
     
     NSDictionary* data = [NSJSONSerialization JSONObjectWithData:strdata options:NSJSONReadingMutableContainers error:nil];
+    
+//    int requestID = [[data objectForKey:@"id"] intValue];
+    
     if ([name isEqualToString:@"state.update"]){
         
 //        NSDictionary*
@@ -238,7 +241,7 @@
         [self.stockName removeAllObjects];
         self.stockName = temp;
         
-        NSDictionary *dicAll = @{@"method":@"state.unsubscribe",@"params":@[],@"id":@(1)};
+        NSDictionary *dicAll = @{@"method":@"state.unsubscribe",@"params":@[],@"id":@(PN_StateUnsubscribe)};
         
         NSString *strAll = [dicAll JSONString];
         [[SocketInterface sharedManager] sendRequest:strAll withName:@"state.unsubscribe"];
