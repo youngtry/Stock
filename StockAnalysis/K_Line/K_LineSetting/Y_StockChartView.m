@@ -254,17 +254,17 @@
 
 -(void)clickMenu:(NSInteger)index{
     if(index == 0){
-        [self.segmentTimeView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self);
-            make.left.mas_equalTo(@50);
-            make.height.equalTo(self).multipliedBy(2.0/5.0);
-            make.width.equalTo(@250);
-        }];
+//        [self.segmentTimeView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(self);
+//            make.left.mas_equalTo(@50);
+//            make.height.equalTo(self).multipliedBy(2.0/5.0);
+//            make.width.equalTo(@250);
+//        }];
         [self.segmentTimeView.timeView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.height.equalTo(self.segmentTimeView);
-            make.left.equalTo(self.segmentTimeView);
+            make.height.equalTo(self.segmentTimeView).multipliedBy(2.0/5.0);
+            make.left.equalTo(self.segmentTimeView.mas_right);
             make.top.equalTo(self.segmentTimeView);
-            make.width.equalTo(self.segmentTimeView);
+            make.width.equalTo(@250);
         }];
         [self.segmentTimeView.timeView setHidden:NO];
         [self.segmentTimeView.MAView setHidden:YES];
@@ -272,17 +272,17 @@
         [self.segmentTimeView.settingView setHidden:YES];
         [self.segmentTimeView setHidden:NO];
     }else if (index == 1){
-        [self.segmentTimeView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self).offset(self.frame.size.height/8.0);
-            make.left.mas_equalTo(@50);
-            make.height.equalTo(self).multipliedBy(1.0/8.0);
-            make.width.equalTo(@250);
-        }];
+//        [self.segmentTimeView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(self).offset(self.frame.size.height/8.0);
+//            make.left.mas_equalTo(@50);
+//            make.height.equalTo(self).multipliedBy(1.0/8.0);
+//            make.width.equalTo(@250);
+//        }];
         [self.segmentTimeView.MAView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.height.equalTo(self.segmentTimeView);
-            make.left.equalTo(self.segmentTimeView);
-            make.top.equalTo(self.segmentTimeView);
-            make.width.equalTo(self.segmentTimeView);
+            make.height.equalTo(self.segmentTimeView).multipliedBy(1.0/8.0);
+            make.left.equalTo(self.segmentTimeView.mas_right);
+            make.top.equalTo(self.segmentTimeView).offset(self.frame.size.height/8.0);
+            make.width.equalTo(@250);
         }];
         [self.segmentTimeView.timeView setHidden:YES];
         [self.segmentTimeView.MAView setHidden:NO];
@@ -290,17 +290,17 @@
         [self.segmentTimeView.settingView setHidden:YES];
         [self.segmentTimeView setHidden:NO];
     }else if (index == 2){
-        [self.segmentTimeView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self).offset(self.frame.size.height/4.0);
-            make.left.mas_equalTo(@50);
-            make.height.equalTo(self).multipliedBy(3.0/5.0);
-            make.width.equalTo(@250);
-        }];
+//        [self.segmentTimeView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(self).offset(self.frame.size.height/4.0);
+//            make.left.mas_equalTo(@50);
+//            make.height.equalTo(self).multipliedBy(3.0/5.0);
+//            make.width.equalTo(@250);
+//        }];
         [self.segmentTimeView.MACDView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.height.equalTo(self.segmentTimeView);
-            make.left.equalTo(self.segmentTimeView);
-            make.top.equalTo(self.segmentTimeView);
-            make.width.equalTo(self.segmentTimeView);
+            make.height.equalTo(self.segmentTimeView).multipliedBy(3.0/5.0);
+            make.left.equalTo(self.segmentTimeView.mas_right);
+            make.top.equalTo(self.segmentTimeView).offset(self.frame.size.height/4.0);
+            make.width.equalTo(@250);
         }];
         [self.segmentTimeView.timeView setHidden:YES];
         [self.segmentTimeView.MAView setHidden:YES];
@@ -308,17 +308,17 @@
         [self.segmentTimeView.settingView setHidden:YES];
         [self.segmentTimeView setHidden:NO];
     }else if (index == 3){
-        [self.segmentTimeView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self).offset(self.frame.size.height*3.0/8.0);
-            make.left.mas_equalTo(@50);
-            make.height.equalTo(self).multipliedBy(2.0/5.0);
-            make.width.equalTo(@360);
-        }];
+//        [self.segmentTimeView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(self).offset(self.frame.size.height*3.0/8.0);
+//            make.left.mas_equalTo(@50);
+//            make.height.equalTo(self).multipliedBy(2.0/5.0);
+//            make.width.equalTo(@360);
+//        }];
         [self.segmentTimeView.settingView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.height.equalTo(self.segmentTimeView);
-            make.left.equalTo(self.segmentTimeView);
-            make.top.equalTo(self.segmentTimeView);
-            make.width.equalTo(self.segmentTimeView);
+            make.height.equalTo(self.segmentTimeView).multipliedBy(2.0/5.0);
+            make.left.equalTo(self.segmentTimeView.mas_right);
+            make.top.equalTo(self.segmentTimeView).offset(self.frame.size.height*3.0/8.0);
+            make.width.equalTo(@360);
         }];
         [self.segmentTimeView.timeView setHidden:YES];
         [self.segmentTimeView.MAView setHidden:YES];
@@ -334,27 +334,7 @@
     NSLog(@"index = %ld",index);
     self.currentIndex = index;
     
-    if (index == 105) {
-        
-        [Y_StockChartGlobalVariable setisBOLLLine:Y_StockChartTargetLineStatusBOLL];
-        self.kLineView.targetLineStatus = index;
-        [self.kLineView reDraw];
-        [self bringSubviewToFront:self.segmentTimeView];
-        
-    } else  if(index >= 100 && index != 105) {
-        
-        [Y_StockChartGlobalVariable setisEMALine:index];
-        //        if(index == Y_StockChartTargetLineStatusMA)
-        //        {
-        //            [Y_StockChartGlobalVariable setisEMALine:Y_StockChartTargetLineStatusMA];
-        //        } else {
-        //            [Y_StockChartGlobalVariable setisEMALine:Y_StockChartTargetLineStatusEMA];
-        //        }
-        self.kLineView.targetLineStatus = index;
-        [self.kLineView reDraw];
-        [self bringSubviewToFront:self.segmentTimeView];
-        
-    } else {
+    if(index < 200){
         if(self.dataSource && [self.dataSource respondsToSelector:@selector(stockDatasWithIndex:)])
         {
             id stockData = [self.dataSource stockDatasWithIndex:index];
@@ -410,6 +390,84 @@
                 //                [self clickMenu:_currentIndex];
                 
             }
+    }
+    
+    if (index == 105) {
+        
+//        [Y_StockChartGlobalVariable setisBOLLLine:Y_StockChartTargetLineStatusBOLL];
+//        self.kLineView.targetLineStatus = index;
+//        [self.kLineView reDraw];
+//        [self bringSubviewToFront:self.segmentTimeView];
+        
+    } else  if(index >= 100 && index != 105) {
+        
+//        [Y_StockChartGlobalVariable setisEMALine:index];
+        //        if(index == Y_StockChartTargetLineStatusMA)
+        //        {
+        //            [Y_StockChartGlobalVariable setisEMALine:Y_StockChartTargetLineStatusMA];
+        //        } else {
+        //            [Y_StockChartGlobalVariable setisEMALine:Y_StockChartTargetLineStatusEMA];
+        //        }
+//        self.kLineView.targetLineStatus = index;
+//        [self.kLineView reDraw];
+//        [self bringSubviewToFront:self.segmentTimeView];
+        
+    } else {
+//        if(self.dataSource && [self.dataSource respondsToSelector:@selector(stockDatasWithIndex:)])
+//        {
+//            id stockData = [self.dataSource stockDatasWithIndex:index];
+//
+//            if(!stockData)
+//            {
+//                return;
+//            }
+//
+//            //            NSLog(@"stockdata = %@",stockData);
+//
+//            Y_StockChartViewItemModel *itemModel = self.itemModels[index];
+//
+//            Y_StockChartCenterViewType type = itemModel.centerViewType;
+//            Y_StockChartCenterViewType type1 = type;
+//            if(type == Y_StockChartcenterViewTypeMenu){
+//                //                self.currentIndex = 0;
+//                type1 = Y_StockChartcenterViewTypeKline;
+//                itemModel = [Y_StockChartViewItemModel itemModelWithTitle:@"分时" type:Y_StockChartcenterViewTypeTimeLine];
+//            }
+//
+//            if(type1 != self.currentCenterViewType)
+//            {
+//                //移除当前View，设置新的View
+//                self.currentCenterViewType = type1;
+//                switch (type1) {
+//                    case Y_StockChartcenterViewTypeKline:
+//                    {
+//                        self.kLineView.hidden = NO;
+//                        //                    [self bringSubviewToFront:self.kLineView];
+//                        [self bringSubviewToFront:self.segmentTimeView];
+//
+//                    }
+//                        break;
+//
+//                    default:
+//                        break;
+//                }
+//            }
+//
+//            if(type1 == Y_StockChartcenterViewTypeOther)
+//            {
+//
+//            } else {
+//                self.kLineView.kLineModels = (NSArray *)stockData;
+//                self.kLineView.MainViewType = type1;
+//                [self.kLineView reDraw];
+//            }
+//            [self bringSubviewToFront:self.segmentTimeView];
+//
+//            if(type == Y_StockChartcenterViewTypeMenu){
+//                //进入菜单
+//                //                [self clickMenu:_currentIndex];
+//
+//            }
         }
     }
 }

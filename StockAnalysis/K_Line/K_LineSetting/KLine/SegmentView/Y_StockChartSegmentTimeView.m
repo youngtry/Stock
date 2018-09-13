@@ -51,6 +51,24 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
     return self;
 }
 
+-(UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
+{
+    
+    UIView *view = [super hitTest:point withEvent:event];
+    if (view == nil) {
+        for (UIView *subView in self.subviews) {
+            for (UIView *btnView in subView.subviews) {
+                CGPoint btnPoint = [btnView convertPoint:point fromView:self];
+                if (CGRectContainsPoint(btnView.bounds, btnPoint)){
+                    return btnView;
+                }
+                
+            }
+        }
+    }
+    return view;
+}
+
 -(UIView*)timeView{
     if(!_timeView)
     {
@@ -81,7 +99,7 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
                 if(preBtn)
                 {
                     float top = (((float)(idx/5)));
-                    NSLog(@"上边为:%f,height = %f",top,preBtn.frame.size.height);
+//                    NSLog(@"上边为:%f,height = %f",top,preBtn.frame.size.height);
                     if(idx<5){
                         make.top.equalTo(_timeView);
                     }else{
@@ -131,7 +149,7 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
             [btn setTitleColor:[UIColor mainTextColor] forState:UIControlStateNormal];
             [btn setTitleColor:[UIColor ma30Color] forState:UIControlStateSelected];
             btn.titleLabel.font = [UIFont systemFontOfSize:13];
-            btn.tag = Y_StockChartSegmentStartTag + 100 + idx;
+            btn.tag = Y_StockChartSegmentStartTag + 200 + idx;
             [btn addTarget:self action:@selector(maButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
             [btn setTitle:title forState:UIControlStateNormal];
             [_MAView addSubview:btn];
@@ -175,7 +193,7 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
             [btn setTitleColor:[UIColor mainTextColor] forState:UIControlStateNormal];
             [btn setTitleColor:[UIColor ma30Color] forState:UIControlStateSelected];
             btn.titleLabel.font = [UIFont systemFontOfSize:11];
-            btn.tag = Y_StockChartSegmentStartTag + 100 + idx;
+            btn.tag = Y_StockChartSegmentStartTag + 300 + idx;
             [btn addTarget:self action:@selector(macdButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
             [btn setTitle:title forState:UIControlStateNormal];
             [_MACDView addSubview:btn];
@@ -189,7 +207,7 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
                 if(preBtn)
                 {
                     float top = (((float)(idx/5)));
-                    NSLog(@"上边为:%f,height = %f",top,preBtn.frame.size.height);
+//                    NSLog(@"上边为:%f,height = %f",top,preBtn.frame.size.height);
                     if(idx<5){
                         make.top.equalTo(_MACDView);
                     }else{
@@ -252,7 +270,7 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
             }
             float widthrate = kScreenWidth/667.0;
             btn.titleLabel.font = [UIFont systemFontOfSize:13];
-            btn.tag = Y_StockChartSegmentStartTag + 100 + idx;
+            btn.tag = Y_StockChartSegmentStartTag + 400 + idx;
             [btn addTarget:self action:@selector(settingButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
             [btn setTitle:title forState:UIControlStateNormal];
             [_settingView addSubview:btn];
@@ -317,11 +335,22 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
     return _settingView;
 }
 
+-(void)setAllbtnUnSelect:(UIView*) view{
+    for (UIView* subview in view.subviews) {
+        if([subview isKindOfClass:[UIButton class]]){
+            UIButton* btn = (UIButton*)subview;
+            [btn setSelected:NO];
+        }
+    }
+}
+
 -(void)timeButtonClicked:(id)sender{
     NSLog(@"按钮点击");
-    [self setHidden:YES];
-    
+//    [self setHidden:YES];
+    [self setAllbtnUnSelect:_timeView];
+    [self.timeView setHidden:YES];
     UIButton* btn = sender;
+    [btn setSelected:YES];
     if(self.delegate && [self.delegate respondsToSelector:@selector(y_StockChartSegmentTimeView:)])
     {
         [self.delegate y_StockChartSegmentTimeView:btn.tag-Y_StockChartSegmentStartTag];
@@ -331,24 +360,46 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
 -(void)maButtonClicked:(id)sender{
     NSLog(@"按钮点击");
     [self setHidden:YES];
-    
+    [self setAllbtnUnSelect:_MAView];
+    [self.MAView setHidden:YES];
     UIButton* btn = sender;
-    if(self.delegate && [self.delegate respondsToSelector:@selector(y_StockChartSegmentTimeView:)])
-    {
-        [self.delegate y_StockChartSegmentTimeView:btn.tag-Y_StockChartSegmentStartTag];
-    }
+    [btn setSelected:YES];
+//    UIButton* btn = sender;
+//    if(self.delegate && [self.delegate respondsToSelector:@selector(y_StockChartSegmentTimeView:)])
+//    {
+//        [self.delegate y_StockChartSegmentTimeView:btn.tag-Y_StockChartSegmentStartTag];
+//    }
 }
 
 -(void)macdButtonClicked:(id)sender{
     NSLog(@"按钮点击");
     [self setHidden:YES];
-    
+    [self setAllbtnUnSelect:_MACDView];
+    [self.MACDView setHidden:YES];
     UIButton* btn = sender;
-    if(self.delegate && [self.delegate respondsToSelector:@selector(y_StockChartSegmentTimeView:)])
-    {
-        [self.delegate y_StockChartSegmentTimeView:btn.tag-Y_StockChartSegmentStartTag];
-    }
+    [btn setSelected:YES];
+//    UIButton* btn = sender;
+//    if(self.delegate && [self.delegate respondsToSelector:@selector(y_StockChartSegmentTimeView:)])
+//    {
+//        [self.delegate y_StockChartSegmentTimeView:btn.tag-Y_StockChartSegmentStartTag];
+//    }
 }
+
+-(void)settingButtonClicked:(id)sender{
+    NSLog(@"按钮点击");
+    //    [self setHidden:YES];
+    [self setAllbtnUnSelect:_settingView];
+    [self.settingView setHidden:YES];
+    UIButton* btn = sender;
+    [btn setSelected:YES];
+    //    UIButton* btn = sender;
+    //    btn.selected = YES;
+    //    if(self.delegate && [self.delegate respondsToSelector:@selector(y_StockChartSegmentTimeView:)])
+    //    {
+    //        [self.delegate y_StockChartSegmentTimeView:btn.tag-Y_StockChartSegmentStartTag];
+    //    }
+}
+
 - (void)setItems:(NSArray *)items
 {
     _items = items;
@@ -390,17 +441,7 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
         index++;
     }
 }
--(void)settingButtonClicked:(id)sender{
-    NSLog(@"按钮点击");
-//    [self setHidden:YES];
-    
-    UIButton* btn = sender;
-    btn.selected = YES;
-    if(self.delegate && [self.delegate respondsToSelector:@selector(y_StockChartSegmentTimeView:)])
-    {
-//        [self.delegate y_StockChartSegmentTimeView:btn.tag-Y_StockChartSegmentStartTag];
-    }
-}
+
 
 - (void)setSelectedIndex:(NSUInteger)selectedIndex
 {
@@ -408,6 +449,69 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
     UIButton *btn = (UIButton *)[self viewWithTag:Y_StockChartSegmentStartTag + selectedIndex];
     NSAssert(btn, @"按钮初始化出错");
     [self event_segmentButtonClicked:btn];
+}
+
+- (void)setSelectedBtn:(UIButton *)selectedBtn
+{
+//    return;
+    NSLog(@"btn.tag = %ld",selectedBtn.tag);
+    
+    if(_selectedBtn == selectedBtn)
+    {
+        if(selectedBtn.tag != Y_StockChartSegmentStartTag)
+        {
+            return;
+        } else {
+            
+        }
+    }
+    
+    if(selectedBtn.tag >= 2100 && selectedBtn.tag < 2103)
+    {
+//        [_secondLevelSelectedBtn1 setSelected:NO];
+//        [selectedBtn setSelected:YES];
+//        _secondLevelSelectedBtn1 = selectedBtn;
+        
+    } else if(selectedBtn.tag >= 2103) {
+//        [_secondLevelSelectedBtn2 setSelected:NO];
+//        [selectedBtn setSelected:YES];
+//        _secondLevelSelectedBtn2 = selectedBtn;
+    } else if(selectedBtn.tag != Y_StockChartSegmentStartTag){
+        [_selectedBtn setSelected:NO];
+        [selectedBtn setSelected:YES];
+        _selectedBtn = selectedBtn;
+    }
+    
+    _selectedIndex = selectedBtn.tag - Y_StockChartSegmentStartTag;
+        if(_selectedIndex < 4){
+            [_delegate clickMenu:_selectedIndex];
+        }
+    if(_selectedIndex == 0 )
+    {
+        //        [self.indicatorView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        //            make.height.equalTo(self);
+        //            make.left.equalTo(self);
+        //            make.bottom.equalTo(self);
+        //            make.width.equalTo(self);
+        //        }];
+//        [_delegate clickMenu:_selectedIndex];
+        
+        [UIView animateWithDuration:0.2f animations:^{
+            [self layoutIfNeeded];
+        }];
+    } else {
+//        [self.indicatorView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//            make.height.equalTo(self);
+//            make.right.equalTo(self.mas_left);
+//            make.bottom.equalTo(self);
+//            make.width.equalTo(self);
+//        }];
+        [UIView animateWithDuration:0.2f animations:^{
+            [self layoutIfNeeded];
+        }];
+        
+    }
+    [self layoutIfNeeded];
 }
 
 - (void)event_segmentButtonClicked:(UIButton *)btn
@@ -422,7 +526,7 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
 //    if(self.delegate && [self.delegate respondsToSelector:@selector(y_StockChartSegmentView:clickSegmentButtonIndex:)])
 //    {
 //        [self.delegate y_StockChartSegmentView:self clickSegmentButtonIndex: btn.tag-Y_StockChartSegmentStartTag];
-//    }
+//    } 
 }
 
 - (UIButton *)private_createButtonWithTitle:(NSString *)title tag:(NSInteger)tag
