@@ -11,6 +11,7 @@
 #import "AITabContentView.h"
 #import "Masonry.h"
 #import "EntryOrdersVC.h"
+#import "PendingOrderHistoryViewController.h"
 
 @interface AllEntryOrdersVC ()
 @property(nonatomic,strong) AITabScrollview *scrollTitle;
@@ -57,9 +58,18 @@
         [_scrollTitle updateTagLine:index];
     }];
 }
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.tabBarController.tabBar.hidden = YES;
+}
 
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    self.tabBarController.tabBar.hidden = NO;
+}
 -(void)clickRight:(id)sender{
-    
+    PendingOrderHistoryViewController *vc = [PendingOrderHistoryViewController new];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 -(AITabScrollview*)scrollTitle{

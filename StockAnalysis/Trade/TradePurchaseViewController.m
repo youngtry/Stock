@@ -14,6 +14,7 @@
 #import "TradeStockInfoTableViewCell.h"
 #import "askAndBidsTableViewCell.h"
 #import "MoneyVerifyViewController.h"
+#import "SortView.h"
 @interface TradePurchaseViewController ()<SocketDelegate,UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UIView *editNumContainer;
 @property (weak, nonatomic) IBOutlet UIView *editPriceContainer;
@@ -117,6 +118,34 @@
     if(kScreenWidth == 320){
 //        [self.marketNamelabel.titleLabel setFont:[UIFont systemFontOfSize:12]];
     }
+    
+    [self setSortListTitleView];
+}
+
+-(void)setSortListTitleView{
+    WeakSelf(weakSelf)
+//    SortView *sort1 = [[SortView alloc] initWithFrame:CGRectMake(15, 0, 0, 15) title:@"股票"];
+//    sort1.block = ^(BOOL isUp){
+//        //TODO 数据排序，reload
+//    };
+//    sort1.centerY = _sortContantView.centerY;
+//    [_sortContantView addSubview:sort1];
+    
+    SortView *sort2 = [[SortView alloc] initWithFrame:CGRectMake(0, 0, 0, 15) title:@"涨跌幅"];
+    sort2.block = ^(BOOL isUp){
+        //TODO 数据排序，reload
+    };
+    sort2.centerY = _sortContantView.centerY;
+    sort2.centerX = _sortContantView.width/2;
+    [_sortContantView addSubview:sort2];
+    
+    SortView *sort3 = [[SortView alloc] initWithFrame:CGRectMake(0, 0, 0, 15) title:@"成交量"];
+    sort3.block = ^(BOOL isUp){
+        //TODO 数据排序，reload
+    };
+    sort3.right = _sortContantView.width;
+    sort3.centerY = _sortContantView.centerY;
+    [_sortContantView addSubview:sort3];
 }
 
 -(void)customeView{

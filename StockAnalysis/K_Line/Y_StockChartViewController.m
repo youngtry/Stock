@@ -148,10 +148,22 @@
 }
 
 -(void)sendKlineRequest{
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    
+    [formatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
+    
+    NSDate *datenow = [NSDate date];
+    NSDate *lastdate = [NSDate dateWithTimeInterval:-60*60 sinceDate:datenow];
+    
+    NSString *currentTimeString = [formatter stringFromDate:datenow];
+    NSString *lastTimeString = [formatter stringFromDate:lastdate];
+    
+    NSLog(@"currentTimeString =  %@,%@",currentTimeString,lastTimeString);
 
-    NSString* starttime = [self getTimeStrWithString:@"2018-04-18 00:00:00"];
+    NSString* starttime = [self getTimeStrWithString:lastTimeString];
     NSLog(@"starttime = %@",starttime);
-    NSString* endtime = [self getTimeStrWithString:@"2018-04-18 01:00:00"];
+    NSString* endtime = [self getTimeStrWithString:currentTimeString];
     
     
     NSArray *dicParma = @[@"LDGFRMB",
@@ -180,8 +192,12 @@
         //            NSLog(@"err = %@",err);
     }
     
+    int requestID = 0;
+    id dataid = [data objectForKey:@"id"];
     
-    int requestID = [[data objectForKey:@"id"] intValue];
+    if(dataid != [NSNull null]){
+        requestID = [[data objectForKey:@"id"] intValue];
+    }
     if(requestID == PN_KlineQuery){
         
         
@@ -192,6 +208,7 @@
             NSString* date = result[i][0];
             long long time = [date longLongValue];
             time = time*1000;
+            date = [NSString stringWithFormat:@"%lld",time];
             NSString* open = [NSString stringWithFormat:@"%.5f",[result[i][1] floatValue]] ;
             
             NSString* close = [NSString stringWithFormat:@"%.5f",[result[i][2] floatValue]];
@@ -235,28 +252,28 @@
 {
     if(!_stockChartView) {
         _stockChartView = [Y_StockChartView new];
-        _stockChartView.itemModels = @[
-                                       [Y_StockChartViewItemModel itemModelWithTitle:@"指标" type:Y_StockChartcenterViewTypeOther],
-                                       [Y_StockChartViewItemModel itemModelWithTitle:@"分时" type:Y_StockChartcenterViewTypeTimeLine],
-                                       [Y_StockChartViewItemModel itemModelWithTitle:@"1分" type:Y_StockChartcenterViewTypeKline],
-                                       [Y_StockChartViewItemModel itemModelWithTitle:@"5分" type:Y_StockChartcenterViewTypeKline],
-                                       [Y_StockChartViewItemModel itemModelWithTitle:@"30分" type:Y_StockChartcenterViewTypeKline],
-                                       [Y_StockChartViewItemModel itemModelWithTitle:@"60分" type:Y_StockChartcenterViewTypeKline],
-                                       [Y_StockChartViewItemModel itemModelWithTitle:@"日线" type:Y_StockChartcenterViewTypeKline],
-                                       [Y_StockChartViewItemModel itemModelWithTitle:@"周线" type:Y_StockChartcenterViewTypeKline],
-
-                                       ];
 //        _stockChartView.itemModels = @[
-//                                       [Y_StockChartViewItemModel itemModelWithTitle:@"15分" type:Y_StockChartcenterViewTypeMenu],
-//                                       [Y_StockChartViewItemModel itemModelWithTitle:@"MA" type:Y_StockChartcenterViewTypeMenu],
-//                                       [Y_StockChartViewItemModel itemModelWithTitle:@"MACD" type:Y_StockChartcenterViewTypeMenu],
-//                                       [Y_StockChartViewItemModel itemModelWithTitle:@"设置" type:Y_StockChartcenterViewTypeMenu],
-//                                       [Y_StockChartViewItemModel itemModelWithTitle:@"" type:Y_StockChartcenterViewTypeMenu],
-//                                       [Y_StockChartViewItemModel itemModelWithTitle:@"" type:Y_StockChartcenterViewTypeMenu],
-//                                       [Y_StockChartViewItemModel itemModelWithTitle:@"" type:Y_StockChartcenterViewTypeMenu],
-//                                       [Y_StockChartViewItemModel itemModelWithTitle:@"切换" type:Y_StockChartcenterViewTypeMenu],
+//                                       [Y_StockChartViewItemModel itemModelWithTitle:@"指标" type:Y_StockChartcenterViewTypeOther],
+//                                       [Y_StockChartViewItemModel itemModelWithTitle:@"分时" type:Y_StockChartcenterViewTypeTimeLine],
+//                                       [Y_StockChartViewItemModel itemModelWithTitle:@"1分" type:Y_StockChartcenterViewTypeKline],
+//                                       [Y_StockChartViewItemModel itemModelWithTitle:@"5分" type:Y_StockChartcenterViewTypeKline],
+//                                       [Y_StockChartViewItemModel itemModelWithTitle:@"30分" type:Y_StockChartcenterViewTypeKline],
+//                                       [Y_StockChartViewItemModel itemModelWithTitle:@"60分" type:Y_StockChartcenterViewTypeKline],
+//                                       [Y_StockChartViewItemModel itemModelWithTitle:@"日线" type:Y_StockChartcenterViewTypeKline],
+//                                       [Y_StockChartViewItemModel itemModelWithTitle:@"周线" type:Y_StockChartcenterViewTypeKline],
 //
 //                                       ];
+        _stockChartView.itemModels = @[
+                                       [Y_StockChartViewItemModel itemModelWithTitle:@"15分" type:Y_StockChartcenterViewTypeMenu],
+                                       [Y_StockChartViewItemModel itemModelWithTitle:@"MA" type:Y_StockChartcenterViewTypeMenu],
+                                       [Y_StockChartViewItemModel itemModelWithTitle:@"MACD" type:Y_StockChartcenterViewTypeMenu],
+                                       [Y_StockChartViewItemModel itemModelWithTitle:@"设置" type:Y_StockChartcenterViewTypeMenu],
+                                       [Y_StockChartViewItemModel itemModelWithTitle:@"" type:Y_StockChartcenterViewTypeMenu],
+                                       [Y_StockChartViewItemModel itemModelWithTitle:@"" type:Y_StockChartcenterViewTypeMenu],
+                                       [Y_StockChartViewItemModel itemModelWithTitle:@"" type:Y_StockChartcenterViewTypeMenu],
+                                       [Y_StockChartViewItemModel itemModelWithTitle:@"切换" type:Y_StockChartcenterViewTypeMenu],
+
+                                       ];
         _stockChartView.backgroundColor = [UIColor orangeColor];
         _stockChartView.dataSource = self;
         [self.view addSubview:_stockChartView];

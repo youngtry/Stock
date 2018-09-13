@@ -13,6 +13,7 @@
 #import "GuestrureTimeSetView.h"
 #import "AppData.h"
 #import "BindViewController.h"
+#import "ModifyMoneyPasswordViewController.h"
 
 #define ScreenHeight [[UIScreen mainScreen] bounds].size.height
 #define ScreenWidth [[UIScreen mainScreen] bounds].size.width
@@ -176,8 +177,26 @@
     // Dispose of any resources that can be recreated.
 }
 - (IBAction)clickMoneyPassword:(id)sender {
-    SetMoneyPasswordViewController* vc = [[SetMoneyPasswordViewController alloc] initWithNibName:@"SetMoneyPasswordViewController" bundle:nil];
-    [self.navigationController pushViewController:vc animated:YES];
+    
+    NSString* url = @"account/has_assetpwd";
+    NSDictionary* params = @{};
+    
+    [[HttpRequest getInstance] getWithURL:url parma:params block:^(BOOL success, id data) {
+        if(success){
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                BOOL isSet = [[[data objectForKey:@"data"] objectForKey:@"has_assetpwd"] boolValue];
+                if(!isSet){
+                    SetMoneyPasswordViewController* vc = [[SetMoneyPasswordViewController alloc] initWithNibName:@"SetMoneyPasswordViewController" bundle:nil];
+                    [self.navigationController pushViewController:vc animated:YES];
+                }else{
+                    ModifyMoneyPasswordViewController* vc = [[ModifyMoneyPasswordViewController alloc] initWithNibName:@"ModifyMoneyPasswordViewController" bundle:nil];
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+            }
+        }
+    }];
+    
+    
 }
 - (IBAction)clickPassword:(id)sender {
     

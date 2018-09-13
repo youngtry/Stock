@@ -52,7 +52,14 @@
         [self addSubview:_kLineView];
         [_kLineView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.bottom.right.top.equalTo(self);
-            make.left.equalTo(self.segmentView.mas_right);
+            AppDelegate *appdelegate = [UIApplication sharedApplication].delegate;
+            if(appdelegate.isEable){
+                //横屏
+                make.left.equalTo(self.segmentTimeView.mas_right);
+            }else{
+                make.left.equalTo(self.segmentView.mas_right);
+            }
+//            make.left.equalTo(self.segmentView.mas_right);
         }];
     }
     return _kLineView;
@@ -85,13 +92,12 @@
     if(!_segmentTimeView)
     {
         _segmentTimeView = [Y_StockChartSegmentTimeView new];
-//        _segmentView.delegate = self;
+        _segmentTimeView.delegate = self;
         [self addSubview:_segmentTimeView];
         [_segmentTimeView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self);
-            make.left.mas_equalTo(@50);
-            make.height.equalTo(self).multipliedBy(2.0/5.0);
-            make.width.equalTo(@250);
+            make.bottom.left.top.equalTo(self);
+            
+            make.width.equalTo(@50);
         }];
     }
     return _segmentTimeView;
@@ -107,21 +113,28 @@
         {
             [items addObject:item.title];
         }
-        self.segmentView.items = items;
+        AppDelegate *appdelegate = [UIApplication sharedApplication].delegate;
+        if(appdelegate.isEable){
+            //横屏
+            self.segmentTimeView.items = items;
+        }else{
+            self.segmentView.items = items;
+        }
+        
         Y_StockChartViewItemModel *firstModel = itemModels.firstObject;
         self.currentCenterViewType = firstModel.centerViewType;
     }
     if(self.dataSource)
     {
-//        AppDelegate *appdelegate = [UIApplication sharedApplication].delegate;
-//        if(appdelegate.isEable){
-//            //横屏
-//            self.segmentView.selectedIndex = 2;
-//        }else{
-//
-//        }
+        AppDelegate *appdelegate = [UIApplication sharedApplication].delegate;
+        if(appdelegate.isEable){
+            //横屏
+            self.segmentTimeView.selectedIndex = 0;
+        }else{
+            self.segmentView.selectedIndex = 2;
+        }
         
-        self.segmentView.selectedIndex = 2;
+        
         
     }
 }
@@ -131,12 +144,26 @@
     _dataSource = dataSource;
     if(self.itemModels)
     {
-        self.segmentView.selectedIndex = 2;
+        AppDelegate *appdelegate = [UIApplication sharedApplication].delegate;
+        if(appdelegate.isEable){
+            //横屏
+            self.segmentTimeView.selectedIndex = 0;
+        }else{
+            self.segmentView.selectedIndex = 2;
+        }
+//        self.segmentView.selectedIndex = 2;
     }
 }
 - (void)reloadData
 {
-    self.segmentView.selectedIndex = self.segmentView.selectedIndex;
+    AppDelegate *appdelegate = [UIApplication sharedApplication].delegate;
+    if(appdelegate.isEable){
+        //横屏
+        self.segmentTimeView.selectedIndex = self.segmentTimeView.selectedIndex;
+    }else{
+        self.segmentView.selectedIndex = self.segmentView.selectedIndex;
+    }
+//    self.segmentView.selectedIndex = self.segmentView.selectedIndex;
 }
 
 #pragma mark - 代理方法
@@ -217,7 +244,7 @@
             
             if(type == Y_StockChartcenterViewTypeMenu){
                 //进入菜单
-                [self clickMenu:_currentIndex];
+//                [self clickMenu:_currentIndex];
 
             }
         }
@@ -312,7 +339,7 @@
         [Y_StockChartGlobalVariable setisBOLLLine:Y_StockChartTargetLineStatusBOLL];
         self.kLineView.targetLineStatus = index;
         [self.kLineView reDraw];
-        [self bringSubviewToFront:self.segmentView];
+        [self bringSubviewToFront:self.segmentTimeView];
         
     } else  if(index >= 100 && index != 105) {
         
@@ -325,7 +352,7 @@
         //        }
         self.kLineView.targetLineStatus = index;
         [self.kLineView reDraw];
-        [self bringSubviewToFront:self.segmentView];
+        [self bringSubviewToFront:self.segmentTimeView];
         
     } else {
         if(self.dataSource && [self.dataSource respondsToSelector:@selector(stockDatasWithIndex:)])
@@ -358,7 +385,7 @@
                     {
                         self.kLineView.hidden = NO;
                         //                    [self bringSubviewToFront:self.kLineView];
-                        [self bringSubviewToFront:self.segmentView];
+                        [self bringSubviewToFront:self.segmentTimeView];
                         
                     }
                         break;
@@ -376,7 +403,7 @@
                 self.kLineView.MainViewType = type1;
                 [self.kLineView reDraw];
             }
-            [self bringSubviewToFront:self.segmentView];
+            [self bringSubviewToFront:self.segmentTimeView];
             
             if(type == Y_StockChartcenterViewTypeMenu){
                 //进入菜单

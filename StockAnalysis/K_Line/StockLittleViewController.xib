@@ -141,13 +141,12 @@
                                 <action selector="openSettingView:" destination="-1" eventType="touchUpInside" id="iZF-Ak-u7w"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="owk-9W-qCu">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="owk-9W-qCu">
                             <rect key="frame" x="300" y="0.0" width="75" height="42"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="42" id="Zcv-wx-X8T"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <state key="normal" title="切换">
+                            <state key="normal" image="switchphone">
                                 <color key="titleColor" cocoaTouchSystemColor="lightTextColor"/>
                             </state>
                             <connections>
@@ -248,25 +247,25 @@
                     <rect key="frame" x="-1" y="530" width="376" height="20"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="买入量" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dSB-iE-X2a">
-                            <rect key="frame" x="28" y="3" width="66" height="15"/>
+                            <rect key="frame" x="28" y="3" width="65.5" height="15"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="买入价" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WZb-5v-ubO">
-                            <rect key="frame" x="122.5" y="3" width="51.5" height="15"/>
+                            <rect key="frame" x="122" y="3" width="52" height="15"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="卖出价" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vw1-IL-bcf">
-                            <rect key="frame" x="206" y="3" width="52.5" height="15"/>
+                            <rect key="frame" x="206" y="3" width="52" height="15"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="卖出量" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8W7-HO-6r9">
-                            <rect key="frame" x="285.5" y="3" width="53.5" height="15"/>
+                            <rect key="frame" x="285" y="3" width="54" height="15"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                             <nil key="highlightedColor"/>
@@ -619,7 +618,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gLP-y5-Nl0">
-                            <rect key="frame" x="72" y="8" width="50" height="25"/>
+                            <rect key="frame" x="72" y="8" width="50.5" height="25"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <state key="normal" title="5" backgroundImage="btnbg">
                                 <color key="titleColor" cocoaTouchSystemColor="lightTextColor"/>
@@ -629,7 +628,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vzd-zd-usZ">
-                            <rect key="frame" x="136" y="8" width="49.5" height="25"/>
+                            <rect key="frame" x="136.5" y="8" width="50" height="25"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <state key="normal" title="10" backgroundImage="btnbg">
                                 <color key="titleColor" cocoaTouchSystemColor="lightTextColor"/>
@@ -639,7 +638,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="alk-Q9-Xii">
-                            <rect key="frame" x="193.5" y="8" width="50.5" height="25"/>
+                            <rect key="frame" x="194.5" y="8" width="50" height="25"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <state key="normal" title="20" backgroundImage="btnbg">
                                 <color key="titleColor" cocoaTouchSystemColor="lightTextColor"/>
@@ -649,7 +648,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b6H-D2-YGj">
-                            <rect key="frame" x="252" y="8" width="50" height="25"/>
+                            <rect key="frame" x="252.5" y="8" width="49.5" height="25"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <state key="normal" title="60" backgroundImage="btnbg">
                                 <color key="titleColor" cocoaTouchSystemColor="lightTextColor"/>
@@ -932,5 +931,6 @@
     <resources>
         <image name="btnbg" width="50" height="25"/>
         <image name="btnselectbg" width="50" height="25"/>
+        <image name="switchphone" width="19" height="19"/>
     </resources>
 </document>

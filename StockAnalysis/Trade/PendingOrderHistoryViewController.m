@@ -27,7 +27,15 @@
     
     self.title = @"历史记录";
 }
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.tabBarController.tabBar.hidden = YES;
+}
 
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    self.tabBarController.tabBar.hidden = NO;
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -49,7 +57,8 @@
     lab.text = @"历史挂单";
     [header addSubview:lab];
     
-    UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 20)];
+    UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth*0.15, 20)];
+    [btn.titleLabel setFont:[UIFont systemFontOfSize:12]];
     [btn setTitle:@"筛选" forState:UIControlStateNormal];
     [btn setTitleColor:kThemeYellow forState:UIControlStateNormal];
     [btn setImage:[UIImage imageNamed:@"arrow_down"] forState:UIControlStateNormal];

@@ -33,9 +33,13 @@
     }
 }
 
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    self.tabBarController.tabBar.hidden = NO;
+}
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    
+    self.tabBarController.tabBar.hidden = YES;
     NSString* url = @"account/userinfo";
     NSDictionary *parameters = @{} ;
     [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {

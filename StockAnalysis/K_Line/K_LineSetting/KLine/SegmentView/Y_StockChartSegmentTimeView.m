@@ -19,7 +19,7 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
     
 }
 
-
+@property (nonatomic, strong) UIButton *selectedBtn;
 @end
 
 @implementation Y_StockChartSegmentTimeView
@@ -31,7 +31,15 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
     // Drawing code
 }
 */
-
+- (instancetype)initWithItems:(NSArray *)items
+{
+    self = [super initWithFrame:CGRectZero];
+    if(self)
+    {
+        self.items = items;
+    }
+    return self;
+}
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -341,7 +349,47 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
         [self.delegate y_StockChartSegmentTimeView:btn.tag-Y_StockChartSegmentStartTag];
     }
 }
-
+- (void)setItems:(NSArray *)items
+{
+    _items = items;
+    if(items.count == 0 || !items)
+    {
+        return;
+    }
+    NSInteger index = 0;
+    NSInteger count = items.count;
+    UIButton *preBtn = nil;
+    
+    for (NSString *title in items)
+    {
+        UIButton *btn = [self private_createButtonWithTitle:title tag:Y_StockChartSegmentStartTag+index];
+        UIView *view = [UIView new];
+        view.backgroundColor = [UIColor colorWithRed:0.f/255.f green:0.f/255.f blue:0/255.f alpha:1];
+        [self addSubview:btn];
+        [self addSubview:view];
+        if([title isEqualToString:@""]){
+            [view setHidden:YES];
+        }
+        [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.mas_left);
+            make.height.equalTo(self).multipliedBy(1.0f/count);
+            make.width.equalTo(self);
+            if(preBtn)
+            {
+                make.top.equalTo(preBtn.mas_bottom).offset(0.5);
+            } else {
+                make.top.equalTo(self);
+            }
+        }];
+        [view mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.right.equalTo(btn);
+            make.top.equalTo(btn.mas_bottom);
+            make.height.equalTo(@0.5);
+        }];
+        preBtn = btn;
+        index++;
+    }
+}
 -(void)settingButtonClicked:(id)sender{
     NSLog(@"按钮点击");
 //    [self setHidden:YES];
@@ -350,8 +398,42 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
     btn.selected = YES;
     if(self.delegate && [self.delegate respondsToSelector:@selector(y_StockChartSegmentTimeView:)])
     {
-        [self.delegate y_StockChartSegmentTimeView:btn.tag-Y_StockChartSegmentStartTag];
+//        [self.delegate y_StockChartSegmentTimeView:btn.tag-Y_StockChartSegmentStartTag];
     }
 }
 
+- (void)setSelectedIndex:(NSUInteger)selectedIndex
+{
+    _selectedIndex = selectedIndex;
+    UIButton *btn = (UIButton *)[self viewWithTag:Y_StockChartSegmentStartTag + selectedIndex];
+    NSAssert(btn, @"按钮初始化出错");
+    [self event_segmentButtonClicked:btn];
+}
+
+- (void)event_segmentButtonClicked:(UIButton *)btn
+{
+    self.selectedBtn = btn;
+    
+//    if(btn.tag == Y_StockChartSegmentStartTag)
+//    {
+//        return;
+//    }
+//    
+//    if(self.delegate && [self.delegate respondsToSelector:@selector(y_StockChartSegmentView:clickSegmentButtonIndex:)])
+//    {
+//        [self.delegate y_StockChartSegmentView:self clickSegmentButtonIndex: btn.tag-Y_StockChartSegmentStartTag];
+//    }
+}
+
+- (UIButton *)private_createButtonWithTitle:(NSString *)title tag:(NSInteger)tag
+{
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btn setTitleColor:[UIColor mainTextColor] forState:UIControlStateNormal];
+    [btn setTitleColor:[UIColor ma30Color] forState:UIControlStateSelected];
+    btn.titleLabel.font = [UIFont systemFontOfSize:13];
+    btn.tag = tag;
+    [btn addTarget:self action:@selector(event_segmentButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [btn setTitle:title forState:UIControlStateNormal];
+    return btn;
+}
 @end

@@ -22,6 +22,8 @@
 @property (nonatomic,strong)UIImageView *imageView;//画图所需
 
 @property (nonatomic,strong)UILabel* settitle;
+
+@property (nonatomic,strong)UIButton* skipSetBtn;
 @end
 
 @implementation SetPasswordViewController
@@ -71,6 +73,14 @@
         }
         
     }
+    
+    [self.view addSubview:self.skipSetBtn];
+    if([self.title isEqualToString:@"设置手势密码"]){
+        [self.skipSetBtn setHidden:NO];
+    }else{
+        [self.skipSetBtn setHidden:YES];
+    }
+    
 
 }
 
@@ -86,6 +96,22 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(UIButton*)skipSetBtn{
+    if(nil == _skipSetBtn){
+        _skipSetBtn = [UIButton buttonWithType:UIButtonTypeSystem];
+        [_skipSetBtn setTitle:@"暂不设置" forState:UIControlStateNormal];
+        [_skipSetBtn setFrame:CGRectMake(kScreenWidth*0.6, kScreenHeight*0.9, kScreenWidth*0.2, 20)];
+        [_skipSetBtn setTintColor:kColorRGBA(0, 0, 0, 0.25)];
+        [_skipSetBtn addTarget:self action:@selector(clickSkipBtn) forControlEvents:UIControlEventTouchUpInside];
+    }
+    
+    return _skipSetBtn;
+}
+
+-(void)clickSkipBtn{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 -(NSMutableArray *)selectorArr
@@ -236,7 +262,6 @@
         //设置成功
         self.title = @"验证手势密码";
         self.settitle.text = @"验证手势密码";
-        
     }else{
         //设置失败
         [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"设置失败，请重新设置"];

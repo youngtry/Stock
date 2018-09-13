@@ -17,6 +17,10 @@
 @end
 
 @interface Y_StockChartSegmentTimeView : UIView
+- (instancetype)initWithItems:(NSArray *)items;
+
+@property (nonatomic, strong) NSArray *items;
+
 @property (nonatomic, weak) id <Y_StockChartSegmentTimeViewDelegate> delegate;
 @property (nonatomic, strong) UIView *timeView;
 
@@ -25,4 +29,6 @@
 @property (nonatomic, strong) UIView *MACDView;
 
 @property (nonatomic, strong) UIView *settingView;
+
+@property (nonatomic, assign) NSUInteger selectedIndex;
 @end

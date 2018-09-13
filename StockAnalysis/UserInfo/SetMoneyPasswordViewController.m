@@ -42,7 +42,15 @@
     [self.view endEditing:YES];
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.tabBarController.tabBar.hidden = YES;
+}
 
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    self.tabBarController.tabBar.hidden = NO;
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -75,7 +83,7 @@
         return;
     }
     if(self.moneyAgainPassword.text.length == 0){
-        [HUDUtil showSystemTipView:self title:@"提示" withContent:@"请再次输入密码"];
+        [HUDUtil showSystemTipView:self title:@"提示" withContent:@"请输入邮箱验证码"];
         return;
     }
     
