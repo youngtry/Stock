@@ -63,8 +63,9 @@ typedef NS_ENUM(NSInteger, Y_KLineType) {
  */
 @property (nonatomic, assign,readonly) Y_KLineType currentLineTypeIndex;
 
-
+-(void)showTimeline;
 -(void) reloadData;
+-(void)setSelect:(NSInteger)index;
 @end
 
 /************************ItemModel类************************/

@@ -59,4 +59,5 @@
 #import "HttpRequest.h"
 #import "SCAlertController.h"
 #import "ProtocolDefine.h"
+#import "AppData.h"
 #endif /* PrefixHeader_pch */

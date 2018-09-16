@@ -182,7 +182,8 @@
     
     countryCode = [countryCode substringFromIndex:[countryCode rangeOfString:@"+"].location];
     NSLog(@"countryCode = %@",countryCode);
-    [self.countryCodeButton.titleLabel setText:countryCode];
+//    [self.countryCodeButton.titleLabel setText:countryCode];
+    [self.countryCodeButton setTitle:countryCode forState:UIControlStateNormal];
 }
 /*
 #pragma mark - Navigation

@@ -292,11 +292,14 @@
     
     FirstListTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     if(cell){
+        
         NSString* name = cell.nameLabel.text;
         StockLittleViewController* vc = [[StockLittleViewController alloc] initWithNibName:@"StockLittleViewController" bundle:nil];
         vc.title = name;
-//        id temp = self.parentViewController.view.selfViewController.navigationController;
+        //        id temp = self.parentViewController.view.selfViewController.navigationController;
         [self.navigationController pushViewController:vc animated:YES];
+        
+        
     }
 }
 /*

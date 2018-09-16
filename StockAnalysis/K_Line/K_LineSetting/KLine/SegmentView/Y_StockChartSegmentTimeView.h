@@ -31,4 +31,6 @@
 @property (nonatomic, strong) UIView *settingView;
 
 @property (nonatomic, assign) NSUInteger selectedIndex;
+
+@property (nonatomic, assign) NSUInteger timeSelectedIndex;
 @end

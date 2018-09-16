@@ -526,7 +526,7 @@
 //        isNeedPostNotification = YES;
 //    }
     
-    NSLog(@"这是  %f-----%f=====%f",scrollView.contentSize.width,scrollView.contentOffset.x,self.kLineMainView.frame.size.width);
+//    NSLog(@"这是  %f-----%f=====%f",scrollView.contentSize.width,scrollView.contentOffset.x,self.kLineMainView.frame.size.width);
 }
 
 - (void)dealloc

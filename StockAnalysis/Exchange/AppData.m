@@ -12,6 +12,7 @@
 @property(nonatomic)int buttnIndex;
 @property(nonatomic,strong)NSString* asset;
 @property(nonatomic,strong)NSString* tempVerifyToken;
+@property(nonatomic,strong)NSString* originTime;
 @end
 
 @implementation AppData
@@ -35,6 +36,7 @@
         self.buttnIndex = 0;
         self.asset = @"";
         self.tempVerify = @"";
+        self.originTime = @"";
     }
     return self;
 }
@@ -61,6 +63,13 @@
 
 -(NSString*)getTempVerify{
     return self.tempVerifyToken;
+}
+-(void)setOriginTime:(NSString *)originTime{
+    _originTime = originTime;
+}
+
+-(NSString*)getOriginTime{
+    return _originTime;
 }
 
 @end

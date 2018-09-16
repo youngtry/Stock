@@ -274,11 +274,11 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
 - (void)event_segmentButtonClicked:(UIButton *)btn
 {
     self.selectedBtn = btn;
-
-    if(btn.tag == Y_StockChartSegmentStartTag)
-    {
-        return;
-    }
+    
+//    if(btn.tag == Y_StockChartSegmentStartTag)
+//    {
+//        return;
+//    }
     
     if(self.delegate && [self.delegate respondsToSelector:@selector(y_StockChartSegmentView:clickSegmentButtonIndex:)])
     {

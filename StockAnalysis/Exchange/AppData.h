@@ -21,4 +21,7 @@
 
 -(void)setTempVerify:(NSString* )verify;
 -(NSString* )getTempVerify;
+
+-(void)setOriginTime:(NSString* )originTime;
+-(NSString* )getOriginTime;
 @end

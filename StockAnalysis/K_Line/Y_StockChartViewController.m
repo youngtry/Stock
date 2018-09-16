@@ -36,6 +36,8 @@
 @property (nonatomic, assign) NSInteger currentIndex;
 
 @property (nonatomic, copy) NSString *type;
+@property (nonatomic, copy) NSString *originTime;
+@property (nonatomic, assign) NSInteger preciseTime;
 
 @end
 
@@ -47,6 +49,23 @@
     [super viewWillAppear:animated];
     [UIApplication sharedApplication].statusBarHidden = YES;
 //    self.tabBarController.tabBar.hidden = YES;
+    
+    NSDictionary* params = @{@"market":self.title};
+    NSString* url  = @"market/info";
+    [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
+        if(success){
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                [[AppData getInstance] setOriginTime:[[data objectForKey:@"data"] objectForKey:@"created_at"]];
+            }else{
+                [[AppData getInstance] setOriginTime:@""];
+                [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"数据出错"];
+            }
+            
+        }
+        _originTime = [[AppData getInstance] getOriginTime];
+        self.stockChartView.backgroundColor = [UIColor backgroundColor];
+        
+    }];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -54,6 +73,7 @@
     [super viewWillDisappear:animated];
     [UIApplication sharedApplication].statusBarHidden = NO;
 //    self.tabBarController.tabBar.hidden = NO;
+    
 }
 
 - (void)viewDidLoad {
@@ -62,9 +82,15 @@
     self.currentIndex = -1;
     [[SocketInterface sharedManager] openWebSocket];
     [SocketInterface sharedManager].delegate = self;
-    self.stockChartView.backgroundColor = [UIColor backgroundColor];
+    
+    
+    _preciseTime = 0;
+
+    
+  
     
 }
+
 
 - (NSMutableDictionary<NSString *,Y_KLineGroupModel *> *)modelsDict
 {
@@ -81,46 +107,85 @@
 
 -(id) stockDatasWithIndex:(NSInteger)index
 {
+    NSInteger precise = 0;
     NSString *type;
     switch (index) {
         case 0:
         {
-            type = @"1min";
+            type = @"分时";
+            precise = 60;
         }
             break;
         case 1:
         {
-            type = @"1min";
+            type = @"1分";
+            precise = 60;
         }
             break;
         case 2:
         {
-            type = @"1min";
+            type = @"3分";
+            precise = 180;
         }
             break;
         case 3:
         {
-            type = @"5min";
+            type = @"5分";
+            precise = 300;
         }
             break;
         case 4:
         {
-            type = @"30min";
+            type = @"15分";
+            precise = 900;
         }
             break;
         case 5:
         {
-            type = @"1hour";
+            type = @"30分";
+            precise = 1800;
         }
             break;
         case 6:
         {
-            type = @"1day";
+            type = @"1小时";
+            precise = 3600;
         }
             break;
         case 7:
         {
-            type = @"1week";
+            type = @"2小时";
+            precise = 7200;
+        }
+            break;
+        case 8:
+        {
+            type = @"4小时";
+            precise = 14400;
+        }
+            break;
+        case 9:
+        {
+            type = @"6小时";
+            precise = 21600;
+        }
+            break;
+        case 10:
+        {
+            type = @"12小时";
+            precise = 43200;
+        }
+            break;
+        case 11:
+        {
+            type = @"1天";
+            precise = 86400;
+        }
+            break;
+        case 12:
+        {
+            type = @"1周";
+            precise = 604800;
         }
             break;
             
@@ -130,16 +195,17 @@
     
     self.currentIndex = index;
     self.type = type;
+    self.preciseTime = precise;
     if(![self.modelsDict objectForKey:type])
     {
-//        [self reloadData];
-        [self sendKlineRequest];
+        [self sendKlineRequest:index];
     } else {
         return [self.modelsDict objectForKey:type].models;
     }
     return nil;
 }
 - (NSString *)getTimeStrWithString:(NSString *)str{
+    
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];// 创建一个时间格式化对象
     [dateFormatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"]; //设定时间的格式
     NSDate *tempDate = [dateFormatter dateFromString:str];//将字符串转换为时间对象
@@ -147,15 +213,25 @@
     return timeStr;
 }
 
--(void)sendKlineRequest{
+-(void)sendKlineRequest:(NSInteger)index{
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    
+    NSTimeZone* timeZone = [NSTimeZone timeZoneWithName:@"BeiJing"];
+    [formatter setTimeZone:timeZone];
     [formatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
     
     NSDate *datenow = [NSDate date];
     NSDate *lastdate = [NSDate dateWithTimeInterval:-60*60 sinceDate:datenow];
+    NSDate* origindate = lastdate;
+    if(_originTime.length > 0){
+        origindate = [formatter dateFromString:_originTime];
+    }
+//    _preciseTime = 6;
     
+    NSDate* expecttime = [NSDate dateWithTimeIntervalSinceNow:-_preciseTime*500];
+
+    lastdate =  [origindate laterDate:expecttime];
+
     NSString *currentTimeString = [formatter stringFromDate:datenow];
     NSString *lastTimeString = [formatter stringFromDate:lastdate];
     
@@ -166,10 +242,10 @@
     NSString* endtime = [self getTimeStrWithString:currentTimeString];
     
     
-    NSArray *dicParma = @[@"LDGFRMB",
+    NSArray *dicParma = @[self.title,
                           @([starttime longLongValue]),
                           @([endtime longLongValue]),
-                          @(6)];
+                          @(self.preciseTime)];
     
     NSLog(@"Websocket Connected");
     
@@ -186,10 +262,12 @@
     
     NSDictionary* data = [NSJSONSerialization JSONObjectWithData:strdata options:NSJSONReadingMutableContainers error:nil];
     
-    NSNull* err =[data objectForKey:@"error"];
+    id err =[data objectForKey:@"error"];
     
-    if(err){
-        //            NSLog(@"err = %@",err);
+    if( err != [NSNull null]){
+        NSDictionary* errinfo = err;
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:[errinfo objectForKey:@"message"]];
+        return;
     }
     
     int requestID = 0;
@@ -198,17 +276,20 @@
     if(dataid != [NSNull null]){
         requestID = [[data objectForKey:@"id"] intValue];
     }
+    
     if(requestID == PN_KlineQuery){
         
         
         NSArray* result = [data objectForKey:@"result"];
-        NSLog(@"data = %@,result = %@",data,result);
+        NSLog(@"收到数据:%ld",result.count);
+//        NSLog(@"data = %@,result = %@",data,result);
         NSMutableArray* need = [[NSMutableArray alloc] initWithCapacity:result.count];
         for(int i=0;i<result.count;i++){
             NSString* date = result[i][0];
             long long time = [date longLongValue];
             time = time*1000;
             date = [NSString stringWithFormat:@"%lld",time];
+//            NSLog(@"date = %@",date);
             NSString* open = [NSString stringWithFormat:@"%.5f",[result[i][1] floatValue]] ;
             
             NSString* close = [NSString stringWithFormat:@"%.5f",[result[i][2] floatValue]];
@@ -252,17 +333,7 @@
 {
     if(!_stockChartView) {
         _stockChartView = [Y_StockChartView new];
-//        _stockChartView.itemModels = @[
-//                                       [Y_StockChartViewItemModel itemModelWithTitle:@"指标" type:Y_StockChartcenterViewTypeOther],
-//                                       [Y_StockChartViewItemModel itemModelWithTitle:@"分时" type:Y_StockChartcenterViewTypeTimeLine],
-//                                       [Y_StockChartViewItemModel itemModelWithTitle:@"1分" type:Y_StockChartcenterViewTypeKline],
-//                                       [Y_StockChartViewItemModel itemModelWithTitle:@"5分" type:Y_StockChartcenterViewTypeKline],
-//                                       [Y_StockChartViewItemModel itemModelWithTitle:@"30分" type:Y_StockChartcenterViewTypeKline],
-//                                       [Y_StockChartViewItemModel itemModelWithTitle:@"60分" type:Y_StockChartcenterViewTypeKline],
-//                                       [Y_StockChartViewItemModel itemModelWithTitle:@"日线" type:Y_StockChartcenterViewTypeKline],
-//                                       [Y_StockChartViewItemModel itemModelWithTitle:@"周线" type:Y_StockChartcenterViewTypeKline],
-//
-//                                       ];
+
         _stockChartView.itemModels = @[
                                        [Y_StockChartViewItemModel itemModelWithTitle:@"15分" type:Y_StockChartcenterViewTypeMenu],
                                        [Y_StockChartViewItemModel itemModelWithTitle:@"MA" type:Y_StockChartcenterViewTypeMenu],

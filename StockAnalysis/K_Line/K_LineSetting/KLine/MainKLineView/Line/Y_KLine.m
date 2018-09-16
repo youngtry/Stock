@@ -69,7 +69,7 @@
     NSDateFormatter *formatter = [NSDateFormatter new];
     formatter.dateFormat = @"HH:mm";
     NSString *dateStr = [formatter stringFromDate:date];
-    
+//    NSLog(@"**************date = %@",dateStr);
     CGPoint drawDatePoint = CGPointMake(self.kLinePositionModel.LowPoint.x + 1, self.maxY + 1.5);
     if(CGPointEqualToPoint(self.lastDrawDatePoint, CGPointZero) || drawDatePoint.x - self.lastDrawDatePoint.x > 60 )
     {

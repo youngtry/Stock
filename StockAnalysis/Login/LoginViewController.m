@@ -114,7 +114,10 @@
     [HUDUtil showHudViewInSuperView:self.view withMessage:@"登陆中……"];
     
     NSString* url = @"account/login/phone";
-    NSDictionary *paramDic = @{ @"phone":self.usernameInput.text,@"password":self.passwordInput.text};
+    NSDictionary *paramDic = @{ @"phone":self.usernameInput.text,
+                                @"password":self.passwordInput.text,
+                                @"district":self.countryCodeButton.titleLabel.text
+                                };
 
     
     [[HttpRequest getInstance] postWithURL:url parma:paramDic block:^(BOOL success, id data) {
@@ -194,8 +197,8 @@
     
     countryCode = [countryCode substringFromIndex:[countryCode rangeOfString:@"+"].location];
     NSLog(@"countryCode = %@",countryCode);
-    [self.countryCodeButton.titleLabel setText:countryCode];
-//    [self.countryCodeButton setTitle:countryCode forState:UIControlStateNormal];
+//    [self.countryCodeButton.titleLabel setText:countryCode];
+    [self.countryCodeButton setTitle:countryCode forState:UIControlStateNormal];
 }
 /*
 #pragma mark - Navigation

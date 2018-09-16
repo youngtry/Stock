@@ -40,7 +40,7 @@
                                 <constraint firstAttribute="height" constant="1" id="P8D-ve-T7T"/>
                             </constraints>
                         </view>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="emg-wb-7QF">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="emg-wb-7QF">
                             <rect key="frame" x="37" y="17" width="72" height="20"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="72" id="v29-jB-grl"/>

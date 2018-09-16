@@ -130,6 +130,7 @@
         if(appdelegate.isEable){
             //横屏
             self.segmentTimeView.selectedIndex = 0;
+            self.segmentTimeView.timeSelectedIndex = 4;
         }else{
             self.segmentView.selectedIndex = 2;
         }
@@ -148,6 +149,7 @@
         if(appdelegate.isEable){
             //横屏
             self.segmentTimeView.selectedIndex = 0;
+            self.segmentTimeView.timeSelectedIndex = 4;
         }else{
             self.segmentView.selectedIndex = 2;
         }
@@ -159,13 +161,19 @@
     AppDelegate *appdelegate = [UIApplication sharedApplication].delegate;
     if(appdelegate.isEable){
         //横屏
-        self.segmentTimeView.selectedIndex = self.segmentTimeView.selectedIndex;
+        self.segmentTimeView.timeSelectedIndex = self.segmentTimeView.timeSelectedIndex;
     }else{
         self.segmentView.selectedIndex = self.segmentView.selectedIndex;
     }
 //    self.segmentView.selectedIndex = self.segmentView.selectedIndex;
 }
+-(void)showTimeline{
+    [self y_StockChartSegmentView:_segmentView clickSegmentButtonIndex:1];
+}
 
+-(void)setSelect:(NSInteger)index{
+    self.segmentView.selectedIndex = index;
+}
 #pragma mark - 代理方法
 
 - (void)y_StockChartSegmentView:(Y_StockChartSegmentView *)segmentView clickSegmentButtonIndex:(NSInteger)index
@@ -208,11 +216,7 @@
  
             Y_StockChartCenterViewType type = itemModel.centerViewType;
             Y_StockChartCenterViewType type1 = type;
-            if(type == Y_StockChartcenterViewTypeMenu){
-                type1 = Y_StockChartcenterViewTypeKline;
-                itemModel = [Y_StockChartViewItemModel itemModelWithTitle:@"5分" type:Y_StockChartcenterViewTypeKline];
-            }
-            
+
             if(type1 != self.currentCenterViewType)
             {
                 //移除当前View，设置新的View
@@ -242,11 +246,6 @@
             }
             [self bringSubviewToFront:self.segmentView];
             
-            if(type == Y_StockChartcenterViewTypeMenu){
-                //进入菜单
-//                [self clickMenu:_currentIndex];
-
-            }
         }
     }
 
@@ -271,6 +270,7 @@
         [self.segmentTimeView.MACDView setHidden:YES];
         [self.segmentTimeView.settingView setHidden:YES];
         [self.segmentTimeView setHidden:NO];
+        [self bringSubviewToFront:self.segmentTimeView.timeView];
     }else if (index == 1){
 //        [self.segmentTimeView mas_remakeConstraints:^(MASConstraintMaker *make) {
 //            make.top.equalTo(self).offset(self.frame.size.height/8.0);
@@ -289,6 +289,7 @@
         [self.segmentTimeView.MACDView setHidden:YES];
         [self.segmentTimeView.settingView setHidden:YES];
         [self.segmentTimeView setHidden:NO];
+        [self bringSubviewToFront:self.segmentTimeView.MAView];
     }else if (index == 2){
 //        [self.segmentTimeView mas_remakeConstraints:^(MASConstraintMaker *make) {
 //            make.top.equalTo(self).offset(self.frame.size.height/4.0);
@@ -307,6 +308,7 @@
         [self.segmentTimeView.MACDView setHidden:NO];
         [self.segmentTimeView.settingView setHidden:YES];
         [self.segmentTimeView setHidden:NO];
+        [self bringSubviewToFront:self.segmentTimeView.MACDView];
     }else if (index == 3){
 //        [self.segmentTimeView mas_remakeConstraints:^(MASConstraintMaker *make) {
 //            make.top.equalTo(self).offset(self.frame.size.height*3.0/8.0);
@@ -317,27 +319,30 @@
         [self.segmentTimeView.settingView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.height.equalTo(self.segmentTimeView).multipliedBy(2.0/5.0);
             make.left.equalTo(self.segmentTimeView.mas_right);
-            make.top.equalTo(self.segmentTimeView).offset(self.frame.size.height*3.0/8.0);
+            make.top.equalTo(self.segmentTimeView).offset(self.segmentTimeView.frame.size.height*3.0/8.0);
             make.width.equalTo(@360);
         }];
         [self.segmentTimeView.timeView setHidden:YES];
         [self.segmentTimeView.MAView setHidden:YES];
         [self.segmentTimeView.MACDView setHidden:YES];
         [self.segmentTimeView.settingView setHidden:NO];
+        [self bringSubviewToFront:self.segmentTimeView.settingView];
         [self.segmentTimeView setHidden:NO];
     
     }
     [self bringSubviewToFront:self.segmentTimeView];
 }
 
+
+
 -(void)y_StockChartSegmentTimeView:(NSInteger)index{
-    NSLog(@"index = %ld",index);
+    NSLog(@"**********index = %ld",index);
     self.currentIndex = index;
     
     if(index < 200){
         if(self.dataSource && [self.dataSource respondsToSelector:@selector(stockDatasWithIndex:)])
         {
-            id stockData = [self.dataSource stockDatasWithIndex:index];
+            id stockData = [self.dataSource stockDatasWithIndex:index-100];
             
             if(!stockData)
             {
@@ -346,14 +351,15 @@
             
             //            NSLog(@"stockdata = %@",stockData);
             
-            Y_StockChartViewItemModel *itemModel = self.itemModels[index];
+//            Y_StockChartViewItemModel *itemModel = self.itemModels[index];
             
-            Y_StockChartCenterViewType type = itemModel.centerViewType;
-            Y_StockChartCenterViewType type1 = type;
-            if(type == Y_StockChartcenterViewTypeMenu){
-                //                self.currentIndex = 0;
-                type1 = Y_StockChartcenterViewTypeKline;
-                itemModel = [Y_StockChartViewItemModel itemModelWithTitle:@"分时" type:Y_StockChartcenterViewTypeTimeLine];
+//            Y_StockChartCenterViewType type = itemModel.centerViewType;
+            
+            Y_StockChartCenterViewType type1 = Y_StockChartcenterViewTypeKline;
+            
+//            Y_StockChartViewItemModel* itemModel = [Y_StockChartViewItemModel itemModelWithTitle:@"5分" type:Y_StockChartcenterViewTypeTimeLine];
+            if(index == 100){
+                type1 = Y_StockChartcenterViewTypeTimeLine;
             }
             
             if(type1 != self.currentCenterViewType)
@@ -384,12 +390,7 @@
                 [self.kLineView reDraw];
             }
             [self bringSubviewToFront:self.segmentTimeView];
-            
-            if(type == Y_StockChartcenterViewTypeMenu){
-                //进入菜单
-                //                [self clickMenu:_currentIndex];
-                
-            }
+
     }
     
     if (index == 105) {
