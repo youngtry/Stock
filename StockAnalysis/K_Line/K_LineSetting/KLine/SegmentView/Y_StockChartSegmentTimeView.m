@@ -444,6 +444,11 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
         if([title isEqualToString:@""]){
             [view setHidden:YES];
         }
+        
+        if([title isEqualToString:@"切换"]){
+            [btn setImage:[UIImage imageNamed:@"switchphone.png"] forState:UIControlStateNormal];
+            [btn setTitle:@"" forState:UIControlStateNormal];
+        }
         NSLog(@"title = %@,index = %ld",title,index);
         
         [btn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -492,6 +497,11 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
         [_delegate clickMenu:_selectedIndex];
     }
     
+    if(_selectedIndex == 7){
+        //切换横竖屏
+        [_delegate noticeSwitch];
+    }
+    
     [UIView animateWithDuration:0.02f animations:^{
         [self layoutIfNeeded];
     }];
@@ -510,6 +520,9 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
     [self setAllbtnUnSelect:self];
     self.selectedBtn = btn;
     [btn setSelected:YES];
+    
+    
+    
 }
 
 - (UIButton *)private_createButtonWithTitle:(NSString *)title tag:(NSInteger)tag

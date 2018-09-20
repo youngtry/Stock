@@ -31,6 +31,15 @@
     
     self.assetName.text = [[AppData getInstance] getAssetName];
     
+    UITapGestureRecognizer *f = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(test)];
+    [self.view addGestureRecognizer:f];
+    self.view.userInteractionEnabled = YES;
+    
+    
+}
+
+-(void)test{
+    [self.view endEditing:YES];
 }
 
 -(void)viewWillAppear:(BOOL)animated{

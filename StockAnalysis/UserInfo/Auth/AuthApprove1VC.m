@@ -43,8 +43,17 @@
     UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:@"权益" style:UIBarButtonItemStylePlain target:self action:@selector(onRightNavClick)];
     self.navigationItem.rightBarButtonItem = right;
     
+    UITapGestureRecognizer *f = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(test)];
+    [self.view addGestureRecognizer:f];
+    self.view.userInteractionEnabled = YES;
+    
     
 }
+
+-(void)test{
+    [self.view endEditing:YES];
+}
+
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.tabBarController.tabBar.hidden = YES;

@@ -355,9 +355,10 @@
                 make.edges.equalTo(self.view);
             }
         }];
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(dismiss)];
-        tap.numberOfTapsRequired = 2;
-        [self.view addGestureRecognizer:tap];
+        WeakSelf(weakSelf);
+        _stockChartView.switchPhone = ^(void){
+            [weakSelf dismiss];
+        };
     }
     return _stockChartView;
 }

@@ -333,7 +333,11 @@
     [self bringSubviewToFront:self.segmentTimeView];
 }
 
-
+-(void)noticeSwitch{
+    if(self.switchPhone){
+        self.switchPhone();
+    }
+}
 
 -(void)y_StockChartSegmentTimeView:(NSInteger)index{
     NSLog(@"**********index = %ld",index);

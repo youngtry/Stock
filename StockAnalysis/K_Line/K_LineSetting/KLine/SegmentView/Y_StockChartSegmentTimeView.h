@@ -13,6 +13,7 @@
 - (void)y_StockChartSegmentTimeView:(NSInteger)index;
 
 - (void)clickMenu:(NSInteger)index;
+- (void)noticeSwitch;
 
 @end
 

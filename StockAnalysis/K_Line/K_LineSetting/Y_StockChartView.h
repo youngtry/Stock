@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Y_StockChartConstant.h"
 
+typedef void(^switchPhone)(void);
 //种类
 typedef NS_ENUM(NSInteger, Y_KLineType) {
     KLineTypeTimeShare = 1,
@@ -62,6 +63,9 @@ typedef NS_ENUM(NSInteger, Y_KLineType) {
  *  当前选中的索引
  */
 @property (nonatomic, assign,readonly) Y_KLineType currentLineTypeIndex;
+
+
+@property (nonatomic, copy) switchPhone switchPhone;
 
 -(void)showTimeline;
 -(void) reloadData;

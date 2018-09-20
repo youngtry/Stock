@@ -12,7 +12,7 @@
 #include <arpa/inet.h>
 #import <net/if.h>
 
-#define ServerURL @"http://exchange-test.oneitfarm.com/server/"
+#define ServerURL @"https://exchange-test.oneitfarm.com/server/"
 
 @interface HttpRequest()
 @property(nonatomic,strong)NSDictionary* dataDictionary;
@@ -216,7 +216,7 @@
         NSDictionary* info = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
 //        NSString *s = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         
-        if([url isEqualToString:@"http://exchange-test.oneitfarm.com/server/account/login/phone"] || [url isEqualToString:@"http://exchange-test.oneitfarm.com/server/account/login/email"]){
+        if([url isEqualToString:@"https://exchange-test.oneitfarm.com/server/account/login/phone"] || [url isEqualToString:@"https://exchange-test.oneitfarm.com/server/account/login/email"]){
             //登陆请求应答，保存新的account_token
             NSDictionary* datainfo = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil ];
             NSNumber* number = [datainfo objectForKey:@"ret"];
@@ -305,7 +305,7 @@
         NSDictionary* info = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         //        NSString *s = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         
-        if([url isEqualToString:@"http://exchange-test.oneitfarm.com/server/account/login/phone"] || [url isEqualToString:@"http://exchange-test.oneitfarm.com/server/account/login/email"]){
+        if([url isEqualToString:@"https://exchange-test.oneitfarm.com/server/account/login/phone"] || [url isEqualToString:@"https://exchange-test.oneitfarm.com/server/account/login/email"]){
             //登陆请求应答，保存新的account_token
             NSDictionary* datainfo = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil ];
             NSNumber* number = [datainfo objectForKey:@"ret"];

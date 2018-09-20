@@ -28,7 +28,7 @@
 @property (weak, nonatomic) IBOutlet UIView *verifyView;
 @property (weak, nonatomic) IBOutlet UITextField *passwordInput;
 @property (weak, nonatomic) IBOutlet UISwitch *switchBtn;
-
+@property (nonatomic, assign) NSInteger verifyType;
 @end
 
 @implementation SafeViewController
@@ -40,7 +40,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setGuestureTimeLabel:) name:@"GuestureTimeSetting" object:nil];
     
-    
+    _verifyType = 0;
     
 //    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"GetUserBindInfo"];
     
@@ -167,8 +167,9 @@
     
 }
 - (IBAction)clickTimeSelect:(id)sender {
-    GuestrureTimeSetView* timeset = [[GuestrureTimeSetView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
-    [self.view addSubview:timeset];
+    [self.verifyView setHidden:NO];
+    _verifyType = 1;
+    
 //    [self.navigationController ]
 }
 
@@ -178,28 +179,15 @@
 }
 - (IBAction)clickMoneyPassword:(id)sender {
     
-    NSString* url = @"account/has_assetpwd";
-    NSDictionary* params = @{};
+    _verifyType = 3;
+    [self.verifyView setHidden:NO];
     
-    [[HttpRequest getInstance] getWithURL:url parma:params block:^(BOOL success, id data) {
-        if(success){
-            if([[data objectForKey:@"ret"] intValue] == 1){
-                BOOL isSet = [[[data objectForKey:@"data"] objectForKey:@"has_assetpwd"] boolValue];
-                if(!isSet){
-                    SetMoneyPasswordViewController* vc = [[SetMoneyPasswordViewController alloc] initWithNibName:@"SetMoneyPasswordViewController" bundle:nil];
-                    [self.navigationController pushViewController:vc animated:YES];
-                }else{
-                    ModifyMoneyPasswordViewController* vc = [[ModifyMoneyPasswordViewController alloc] initWithNibName:@"ModifyMoneyPasswordViewController" bundle:nil];
-                    [self.navigationController pushViewController:vc animated:YES];
-                }
-            }
-        }
-    }];
+    
     
     
 }
 - (IBAction)clickPassword:(id)sender {
-    
+    _verifyType = 2;
     [self.verifyView setHidden:NO];
     
     
@@ -230,13 +218,40 @@
             if([[data objectForKey:@"ret"] intValue] == 1){
                 NSString* temp = [[data objectForKey:@"data"] objectForKey:@"verity_token"];
                 
+                
+                
                 [[AppData getInstance] setTempVerify:temp];
                 
                 [self clickCancelVerifyBtn:nil];
                 
-                SetPasswordViewController *vc = [[SetPasswordViewController alloc] init];
-                [vc setTitle:@"设置手势密码"];
-                [self.navigationController pushViewController:vc animated:YES];
+                if(_verifyType == 1){
+                    GuestrureTimeSetView* timeset = [[GuestrureTimeSetView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
+                    [self.view addSubview:timeset];
+                }else if (_verifyType == 2){
+                    SetPasswordViewController *vc = [[SetPasswordViewController alloc] init];
+                    [vc setTitle:@"设置手势密码"];
+                    [self.navigationController pushViewController:vc animated:YES];
+                }else if (_verifyType == 3){
+                    NSString* url1 = @"account/has_assetpwd";
+                    NSDictionary* params1 = @{};
+                    
+                    [[HttpRequest getInstance] getWithURL:url1 parma:params1 block:^(BOOL success, id data) {
+                        if(success){
+                            if([[data objectForKey:@"ret"] intValue] == 1){
+                                BOOL isSet = [[[data objectForKey:@"data"] objectForKey:@"has_assetpwd"] boolValue];
+                                if(!isSet){
+                                    SetMoneyPasswordViewController* vc = [[SetMoneyPasswordViewController alloc] initWithNibName:@"SetMoneyPasswordViewController" bundle:nil];
+                                    [self.navigationController pushViewController:vc animated:YES];
+                                }else{
+                                    ModifyMoneyPasswordViewController* vc = [[ModifyMoneyPasswordViewController alloc] initWithNibName:@"ModifyMoneyPasswordViewController" bundle:nil];
+                                    [self.navigationController pushViewController:vc animated:YES];
+                                }
+                            }
+                        }
+                    }];
+                }
+                
+                
                 
             }else{
                 [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];

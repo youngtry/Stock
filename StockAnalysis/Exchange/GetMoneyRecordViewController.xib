@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -59,7 +59,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow_right" translatesAutoresizingMaskIntoConstraints="NO" id="5b0-ec-Da5">
-                            <rect key="frame" x="321" y="8" width="26" height="26"/>
+                            <rect key="frame" x="338" y="7.5" width="9" height="26"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="26" id="i2n-D9-NLK"/>
                             </constraints>
@@ -103,7 +103,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="您当前无提现地址" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gcs-oW-fZg">
-                            <rect key="frame" x="127" y="1" width="217" height="41"/>
+                            <rect key="frame" x="127" y="1.5" width="217" height="41"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="41" id="r3e-Ms-Ten"/>
                             </constraints>
@@ -171,7 +171,7 @@
                     </state>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                            <integer key="value" value="20"/>
+                            <integer key="value" value="25"/>
                         </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                     </userDefinedRuntimeAttributes>
@@ -215,6 +215,6 @@
         </view>
     </objects>
     <resources>
-        <image name="arrow_right" width="26" height="26"/>
+        <image name="arrow_right" width="9" height="15"/>
     </resources>
 </document>
