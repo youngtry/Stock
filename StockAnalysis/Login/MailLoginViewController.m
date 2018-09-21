@@ -26,7 +26,7 @@
     // Do any additional setup after loading the view from its nib.
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mailLoginBack) name:@"MailLoginBack" object:nil];
     
-    
+    self.title =  @"登录";
     
     UITapGestureRecognizer *f = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(test)];
     [self.view addGestureRecognizer:f];

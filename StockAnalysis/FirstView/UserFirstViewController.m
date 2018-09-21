@@ -252,8 +252,7 @@
                             [self.stockName addObject:info];
                             
                             NSString* name = [info objectForKey:@"market"];
-                            NSArray *dicParma = @[name
-                                                  ];
+                            NSArray *dicParma = @[name];
                             NSDictionary *dicAll = @{@"method":@"state.subscribe",@"params":dicParma,@"id":@(PN_StateSubscribe)};
                             
                             NSString *strAll = [dicAll JSONString];

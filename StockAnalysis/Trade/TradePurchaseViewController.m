@@ -15,6 +15,7 @@
 #import "askAndBidsTableViewCell.h"
 #import "MoneyVerifyViewController.h"
 #import "SortView.h"
+#import "PendingOrderTableViewCell.h"
 @interface TradePurchaseViewController ()<SocketDelegate,UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UIView *editNumContainer;
 @property (weak, nonatomic) IBOutlet UIView *editPriceContainer;
@@ -51,6 +52,7 @@
 
 @property (nonatomic,strong)NSMutableArray* asksArray;
 @property (nonatomic,strong)NSMutableArray* bidsArray;
+@property (weak, nonatomic) IBOutlet UITableView *dealList;
 
 @property (nonatomic)BOOL firstOpen;
 @end
@@ -78,6 +80,11 @@
     self.bidsList.delegate = self;
     self.bidsList.dataSource = self;
     
+    self.dealList.delegate = self;
+    self.dealList.dataSource = self;
+    self.dealList.tableFooterView = [UIView new];
+    self.dealList.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
     [self.sortGuideView setHidden:YES];
     [self.buyTypeView setHidden:YES];
     [self.marketPriceView setHidden:YES];
@@ -102,8 +109,10 @@
     
     if([self.title isEqualToString:@"卖出"]){
         [self.purchaseBtn setBackgroundColor:[UIColor redColor]];
+        [self.purchaseBtn setTitle:@"卖出" forState:UIControlStateNormal];
     }else if([self.title isEqualToString:@"买入"]){
         [self.purchaseBtn setBackgroundColor:[UIColor greenColor]];
+        [self.purchaseBtn setTitle:@"买入" forState:UIControlStateNormal];
     }
     
     //单选按钮
@@ -480,6 +489,8 @@
     price++;
     self.purchasePriceLabel.text = [NSString stringWithFormat:@"%.3f",price];
 }
+- (IBAction)clickCancel:(id)sender {
+}
 
 #pragma mark ---------SocketDalegate------------
 -(void)getWebData:(id)message withName:(NSString *)name{
@@ -545,6 +556,10 @@
     if(tableView == self.bidsList){
         return self.bidsArray.count;
     }
+    
+    if(tableView == self.dealList){
+        return 1;
+    }
 
         return 5;
 }
@@ -558,6 +573,10 @@
     
     if(tableView == self.askList || tableView == self.bidsList){
         return 20;
+    }
+    
+    if(tableView == self.dealList){
+        return 105;
     }
     
     return 40;
@@ -626,6 +645,15 @@
         }
         
         cell.price.textColor = [UIColor colorWithRed:51/255.0 green:143/255.0 blue:71/255.0 alpha:1];
+        
+        return cell;
+    }
+    
+    if(tableView == self.dealList){
+        PendingOrderTableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
+        if(!cell){
+            cell = [[[NSBundle mainBundle] loadNibNamed:@"PendingOrderTableViewCell" owner:self options:nil] objectAtIndex:0];
+        }
         
         return cell;
     }

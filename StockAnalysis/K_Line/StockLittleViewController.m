@@ -787,6 +787,7 @@
     
     NSString *strAll = [dicAll JSONString];
     [[SocketInterface sharedManager] sendRequest:strAll withName:@"kline.query"];
+    [HUDUtil showHudViewInSuperView:self.view withMessage:@"数据请求中"];
 }
 
 -(void)getWebData:(id)message withName:(NSString *)name{
@@ -810,7 +811,7 @@
     }
 //    NSLog(@"socket data = %@",data);
     if(requestID == PN_KlineQuery){
-        
+        [HUDUtil hideHudView];
         NSArray* result = [data objectForKey:@"result"];
         NSLog(@"result = %ld",result.count);
 //        NSMutableArray* need = [[NSMutableArray alloc] initWithCapacity:result.count];

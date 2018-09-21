@@ -17,7 +17,7 @@
 #import "StoreViewController.h"
 #import "TradeViewController.h"
 #import "SocketInterface.h"
-@interface TabViewController ()
+@interface TabViewController ()<UINavigationControllerDelegate>
 
 @property(nonatomic,strong)UINavigationController* nav1;
 @property(nonatomic,strong)UINavigationController* nav2;
@@ -29,6 +29,7 @@
 @implementation TabViewController
 
 -(instancetype)init{
+    
     self = [super init];
     if(self){
         self.viewControllers = [self getControllers];
@@ -37,6 +38,10 @@
         self.tabBar.barStyle = UIBarStyleBlack;
         self.tabBar.barTintColor = [UIColor colorWithRed:38.0/225.0 green:45.0/255.0 blue:53.0/255.0 alpha:1.0];
         
+//        UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] init];
+//        
+//        backBtn.title = @"";//设置系统自带返回按键的标题
+        self.navigationItem.leftBarButtonItem.title = @"";
     }
     return self;
 }
@@ -96,6 +101,23 @@
     // Do any additional setup after loading the view.
     
 //    self.tabBar.backgroundColor = kThemeColor;
+}
+
+
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    UIViewController *root = navigationController.viewControllers[0];
+    
+    if (root != viewController) {
+        UIBarButtonItem *itemleft = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStylePlain target:self action:@selector(popAction:)];
+        viewController.navigationItem.leftBarButtonItem = itemleft;
+    }
+}
+
+
+- (void)popAction:(UIBarButtonItem *)barButtonItem
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (BOOL)shouldAutorotate

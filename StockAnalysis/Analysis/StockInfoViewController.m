@@ -36,6 +36,25 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     
+    
+    if([self.title isEqualToString:@"自选"]){
+        [self getSelectInfo];
+    }
+    
+    if([self.title isEqualToString:@"指数"]){
+        [self getZhishuInfo];
+    }
+    
+    if([self.title isEqualToString:@"沪深"] || [self.title isEqualToString:@"板块"]){
+        [self getHushenInfo];
+    }
+    
+    if([self.title isEqualToString:@"港美"]){
+        [self getGangmeiInfo];
+    }
+    
+    [HUDUtil showHudViewInSuperView:self.view withMessage:@"数据请求中"];
+    
     if([self.title containsString:@"china_"]){
         NSString* asset = [self.title substringFromIndex:6];
         NSLog(@"asset = %@",asset);
@@ -46,6 +65,7 @@
         NSString* url = @"market/item";
         
         [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+            [HUDUtil hideHudView];
             if(success){
                 //            NSLog(@"list = %@",data);
                 if([[data objectForKey:@"ret"] intValue] == 1){
@@ -67,6 +87,7 @@
         NSString* url = @"market/global/pricelist";
         
         [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
+            [HUDUtil hideHudView];
             if(success){
 //                NSLog(@"list = %@",data);
                 if([[data objectForKey:@"ret"] intValue] == 1){
@@ -81,6 +102,93 @@
     }
     
     
+}
+
+-(void)getSelectInfo{
+
+    NSDictionary* parameters = @{@"page":@(1),
+                                 @"page_limit":@(10),
+                                 @"order_by":@"price",
+                                 @"order":@"desc"
+                                 };
+    NSString* url = @"market/follow/list";
+    
+    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+        [HUDUtil hideHudView];
+        if(success){
+//            NSLog(@"list = %@",data);
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                _items = [[data objectForKey:@"data"] objectForKey:@"items"];
+                if(_items){
+                    //                    NSLog(@"items = %@,数量为：%lu",_items,(unsigned long)_items.count);
+                    [self.tableView reloadData];
+                }
+            }
+        }
+    }];
+}
+
+-(void)getZhishuInfo{
+    NSDictionary* parameters = @{};
+    NSString* url = @"market/asset/index/tickerAll";
+    
+    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+        [HUDUtil hideHudView];
+        if(success){
+//            NSLog(@"list = %@",data);
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                _items = [[data objectForKey:@"data"] objectForKey:@"tickers"];
+                if(_items){
+                    //                    NSLog(@"items = %@,数量为：%lu",_items,(unsigned long)_items.count);
+                    [self.tableView reloadData];
+                }
+            }
+        }
+    }];
+}
+
+-(void)getHushenInfo{
+    NSDictionary* parameters = @{@"order_by":@"price",
+                                 @"order":@"desc",
+                                 @"asset":@"RMB"
+                                 };
+    NSString* url = @"market/item";
+    
+    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+        [HUDUtil hideHudView];
+        if(success){
+//            NSLog(@"list = %@",data);
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                _items = [[data objectForKey:@"data"] objectForKey:@"items"];
+                if(_items){
+                    //                    NSLog(@"items = %@,数量为：%lu",_items,(unsigned long)_items.count);
+                    [self.tableView reloadData];
+                }
+            }
+        }
+    }];
+}
+
+-(void)getGangmeiInfo{
+    NSDictionary* parameters = @{@"order_by":@"price",
+                                 @"order":@"desc",
+                                 @"asset":@"USD"
+                                 };
+    NSString* url = @"market/item";
+    
+    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+        [HUDUtil hideHudView];
+        if(success){
+//            NSLog(@"list = %@",data);
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                _items = [[data objectForKey:@"data"] objectForKey:@"items"];
+                if(_items){
+                    //                    NSLog(@"items = %@,数量为：%lu",_items,(unsigned long)_items.count);
+                    [self.tableView reloadData];
+                }
+            }
+        }
+    }];
 }
 
 -(UITableView*)tableView{
@@ -147,15 +255,30 @@
 //        NSLog(@"keys = %ld",self.items.allValues.count);
         NSDictionary* item = self.items[indexPath.row];
         if(item){
-            if([self.title containsString:@"china_"]){
+            if([self.title isEqualToString:@"自选"] || [self.title isEqualToString:@"沪深"] || [self.title isEqualToString:@"港美"] ||[self.title isEqualToString:@"板块"]){
                 cell.titleLabel.text = [item objectForKey:@"market"];
+            }else if ([self.title isEqualToString:@"指数"]){
+                cell.titleLabel.text = [item objectForKey:@"asset"];
             }else if ([self.title containsString:@"global_"]){
                 cell.titleLabel.text = [item objectForKey:@"store"];
             }
             
-            cell.volLabel.text = [item objectForKey:@"volume"];
-            cell.priceLabel.text = [item objectForKey:@"price"];
-            NSString* incre = [item objectForKey:@"increase"];
+            if (![self.title isEqualToString:@"指数"]){
+                cell.volLabel.text = [item objectForKey:@"volume"];
+            }
+            
+            
+            if ([self.title isEqualToString:@"指数"]){
+                cell.priceLabel.text = [item objectForKey:@"open"];
+            }else{
+                cell.priceLabel.text = [item objectForKey:@"price"];
+            }
+            NSString* incre = @"";
+            if ([self.title isEqualToString:@"指数"]){
+                incre = [item objectForKey:@"changePercent"];
+            }else{
+                incre = [item objectForKey:@"increase"];
+            }
             float ins = [incre floatValue];
             incre = [NSString stringWithFormat:@"%.2f%%",ins*100];
             cell.percentLabel.text = incre;

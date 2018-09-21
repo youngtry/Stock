@@ -44,9 +44,32 @@
 //    [self.authCodeContainer addGestureRecognizer:tap];
     self.authCodeContainer.userInteractionEnabled = YES;
     
+    UIButton *leftBarButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    leftBarButton.frame = CGRectMake(0, 0, 18, 40);
+    [leftBarButton setImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
+    
+    [leftBarButton addTarget:self action:@selector(viewWillBack) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:leftBarButton];
+    //用于调整返回按钮的位置
+    UIBarButtonItem *space_item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    space_item.width = -10;
+    //通过这个方法设置，手势返回的操作就不会关闭了
+    self.navigationItem.leftBarButtonItems = @[space_item, item];
+    
+ 
     UITapGestureRecognizer *f = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(test)];
     [self.view addGestureRecognizer:f];
     self.view.userInteractionEnabled = YES;
+}
+
+-(void)viewWillBack{
+    if(_secondContainer.isHidden){
+        [self.navigationController popViewControllerAnimated:YES];
+    }else{
+        [_secondContainer setHidden:YES];
+        [_firstContainer setHidden:NO];
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -88,6 +111,8 @@
         }
     }];
 }
+
+
 
 -(void)test{
     [self.view endEditing:YES];

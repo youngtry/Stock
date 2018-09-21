@@ -14,6 +14,7 @@
 #import "StoreUnitViewController.h"
 #import "AddTadeViewController.h"
 #import "OrderViewController.h"
+#import "StockListViewController.h"
 @interface StoreViewController ()
 @property(nonatomic,strong) AITabScrollview *scrollTitle;
 @property(nonatomic,strong) AITabContentView*scrollContent;
@@ -125,6 +126,7 @@
     [btn setImage:[UIImage imageNamed:@"arrow_down"] forState:UIControlStateNormal];
     [btn setTitleEdgeInsets:UIEdgeInsetsMake(0, -btn.imageView.size.width-10, 0, btn.imageView.size.width+10)];
     [btn setImageEdgeInsets:UIEdgeInsetsMake(0, btn.titleLabel.bounds.size.width+10, 0, -btn.titleLabel.bounds.size.width-10)];
+    [btn addTarget:self action:@selector(showStockList) forControlEvents:UIControlEventTouchUpInside];
 //    btn.centerY = v.centerY;
     [v addSubview:btn];
     
@@ -144,6 +146,11 @@
     lab1.right = lab2.left - 5;
     
     [self.view addSubview:header];
+}
+
+-(void)showStockList{
+    StockListViewController* vc = [[StockListViewController alloc] initWithNibName:@"StockListViewController" bundle:nil];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 

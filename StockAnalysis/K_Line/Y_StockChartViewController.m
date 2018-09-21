@@ -253,6 +253,7 @@
     
     NSString *strAll = [dicAll JSONString];
     [[SocketInterface sharedManager] sendRequest:strAll withName:@"kline.query"];
+    [HUDUtil showHudViewInSuperView:self.view withMessage:@"数据请求中"];
 }
 
 -(void)getWebData:(id)message withName:(NSString *)name{
@@ -278,7 +279,7 @@
     }
     
     if(requestID == PN_KlineQuery){
-        
+        [HUDUtil hideHudView];
         
         NSArray* result = [data objectForKey:@"result"];
         NSLog(@"收到数据:%ld",result.count);
