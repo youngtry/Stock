@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -155,9 +155,9 @@
                         <constraint firstItem="jmV-dU-bPL" firstAttribute="trailing" secondItem="aah-wR-lum" secondAttribute="trailing" id="iRv-HI-iwb"/>
                         <constraint firstAttribute="height" constant="176" id="mrd-6Y-iSs"/>
                         <constraint firstItem="OIi-o7-wie" firstAttribute="trailing" secondItem="aah-wR-lum" secondAttribute="trailing" id="o1c-38-NvA"/>
-                        <constraint firstItem="jmV-dU-bPL" firstAttribute="leading" secondItem="6YM-lR-B2X" secondAttribute="leading" constant="95" id="q4U-ts-6iD"/>
                         <constraint firstItem="QcW-8G-c5p" firstAttribute="leading" secondItem="aah-wR-lum" secondAttribute="leading" id="xMj-He-wBF"/>
                         <constraint firstItem="aah-wR-lum" firstAttribute="leading" secondItem="sDg-Q8-tYi" secondAttribute="leading" constant="37" id="y01-xH-JzF"/>
+                        <constraint firstItem="jmV-dU-bPL" firstAttribute="leading" secondItem="6YM-lR-B2X" secondAttribute="trailing" constant="8" id="yfF-58-xoK"/>
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TJf-lr-aVE">
@@ -207,7 +207,7 @@
                 <constraint firstItem="Eic-8n-bxo" firstAttribute="top" secondItem="TJf-lr-aVE" secondAttribute="top" constant="64" id="yLl-53-XIk"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
-            <point key="canvasLocation" x="32.5" y="60.5"/>
+            <point key="canvasLocation" x="31.199999999999999" y="59.820089955022496"/>
         </view>
     </objects>
     <resources>

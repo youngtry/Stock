@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AuthApprove21ViewController : UIViewController
+@interface AuthApprove21ViewController : BaseViewController
 
 @end

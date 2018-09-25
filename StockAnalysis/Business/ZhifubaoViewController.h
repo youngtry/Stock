@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ZhifubaoViewController : UIViewController
+@interface ZhifubaoViewController : BaseViewController
 
 @end

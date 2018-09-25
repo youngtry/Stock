@@ -19,7 +19,7 @@
 //2.block传值  typedef void(^returnBlock)(NSString *showText);
 typedef void(^returnCountryCodeBlock) (NSString *countryCodeStr);
 
-@interface XWCountryCodeController : UIViewController
+@interface XWCountryCodeController : BaseViewController
 
 //代理
 @property (nonatomic, assign) id<XWCountryCodeControllerDelegate> deleagete;

@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ChargeAddressViewController : UIViewController
+@interface ChargeAddressViewController : BaseViewController
 
 @end

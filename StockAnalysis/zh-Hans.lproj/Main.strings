@@ -1,0 +1,30 @@
+
+/* Class = "UILabel"; text = "Loaded by ThirdViewController"; ObjectID = "2n3-1t-Sn3"; */
+"2n3-1t-Sn3.text" = "Loaded by ThirdViewController";
+
+/* Class = "UILabel"; text = "Third View"; ObjectID = "MOn-2R-Xea"; */
+"MOn-2R-Xea.text" = "Third View";
+
+/* Class = "UILabel"; text = "Loaded by SecondViewController"; ObjectID = "NDk-cv-Gan"; */
+"NDk-cv-Gan.text" = "Loaded by SecondViewController";
+
+/* Class = "UITabBarItem"; title = "Third"; ObjectID = "TR8-CR-8Zk"; */
+"TR8-CR-8Zk.title" = "Third";
+
+/* Class = "UITabBarItem"; title = "First"; ObjectID = "acW-dT-cKf"; */
+"acW-dT-cKf.title" = "First";
+
+/* Class = "UILabel"; text = "Forth View"; ObjectID = "bev-Tp-2sz"; */
+"bev-Tp-2sz.text" = "Forth View";
+
+/* Class = "UITabBarItem"; title = "Second"; ObjectID = "cPa-gy-q4n"; */
+"cPa-gy-q4n.title" = "Second";
+
+/* Class = "UITabBarItem"; title = "Forth"; ObjectID = "gEv-8d-dxV"; */
+"gEv-8d-dxV.title" = "Forth";
+
+/* Class = "UILabel"; text = "Loaded by ForthViewController"; ObjectID = "ww5-6b-ZhM"; */
+"ww5-6b-ZhM.text" = "Loaded by ForthViewController";
+
+/* Class = "UILabel"; text = "Second View"; ObjectID = "zEq-FU-wV5"; */
+"zEq-FU-wV5.text" = "Second View";

@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WechatViewController : UIViewController
+@interface WechatViewController : BaseViewController
 
 @end

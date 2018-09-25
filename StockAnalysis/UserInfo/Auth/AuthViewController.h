@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AuthViewController : UIViewController
+@interface AuthViewController : BaseViewController
 
 @end

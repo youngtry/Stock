@@ -12,6 +12,6 @@ typedef enum{
     Trade_BuyIn,
     Trade_SoldOut,
 }TradeState;
-@interface EntryOrdersVC : UIViewController
+@interface EntryOrdersVC : BaseViewController
 @property(nonatomic,assign)TradeState state;
 @end

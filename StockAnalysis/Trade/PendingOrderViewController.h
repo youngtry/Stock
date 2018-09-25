@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PendingOrderViewController : UIViewController
+@interface PendingOrderViewController : BaseViewController
 
 @end

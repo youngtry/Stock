@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SafeViewController : UIViewController
+@interface SafeViewController : BaseViewController
 
 -(void)showVerifyView;
 

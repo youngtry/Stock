@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PendingOrderHistoryViewController : UIViewController
+@interface PendingOrderHistoryViewController : BaseViewController
 
 @end

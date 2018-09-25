@@ -11,6 +11,7 @@
 #import "MailRegistViewController.h"
 #import "HttpRequest.h"
 #import "HUDUtil.h"
+#import "LoginViewController.h"
 @interface RegistViewController ()<XWCountryCodeControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *countryCodeButton;
 @property (weak, nonatomic) IBOutlet UITextField *phoneInput;
@@ -173,7 +174,12 @@
         [HUDUtil showSystemTipView:self title:@"提示" withContent:[data objectForKey:@"msg"]];
     }else if([number intValue] == 1){
         //注册成功
-        [self.navigationController popViewControllerAnimated:YES];
+        for (UIViewController*vc in self.navigationController.childViewControllers) {
+            if([vc isKindOfClass:[LoginViewController class]]){
+                [self.navigationController popToViewController:vc animated:YES];
+                break;
+            }
+        }
     }
 }
 //1.代理传值

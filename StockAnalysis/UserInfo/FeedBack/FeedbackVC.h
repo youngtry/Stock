@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FeedbackVC : UIViewController
+@interface FeedbackVC : BaseViewController
 
 @end

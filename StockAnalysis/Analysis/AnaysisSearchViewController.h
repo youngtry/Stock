@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AnaysisSearchViewController : UIViewController
+@interface AnaysisSearchViewController : BaseViewController
 
 @end

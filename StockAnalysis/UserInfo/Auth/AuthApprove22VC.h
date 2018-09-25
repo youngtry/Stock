@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AuthApprove22VC : UIViewController
+@interface AuthApprove22VC : BaseViewController
 
 @end

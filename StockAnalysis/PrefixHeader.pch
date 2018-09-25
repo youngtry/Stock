@@ -60,4 +60,6 @@
 #import "SCAlertController.h"
 #import "ProtocolDefine.h"
 #import "AppData.h"
+#import "BaseViewController.h"
+#import "VerifyRules.h"
 #endif /* PrefixHeader_pch */

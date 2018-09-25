@@ -10,6 +10,6 @@
 
 typedef void(^InputMoneyPassword)(NSString*);
 
-@interface MoneyVerifyViewController : UIViewController
+@interface MoneyVerifyViewController : BaseViewController
 @property(nonatomic,copy)InputMoneyPassword block;
 @end

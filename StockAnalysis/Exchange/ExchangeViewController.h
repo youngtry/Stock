@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ExchangeViewController : UIViewController
+@interface ExchangeViewController : BaseViewController
 
 @end

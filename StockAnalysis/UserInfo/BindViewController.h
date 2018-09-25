@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface BindViewController : UIViewController
+@interface BindViewController : BaseViewController
 
 @end

@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MailRegistViewController : UIViewController
+@interface MailRegistViewController : BaseViewController
 
 @end

@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TradeDetailViewController : UIViewController
+@interface TradeDetailViewController : BaseViewController
 
 @end

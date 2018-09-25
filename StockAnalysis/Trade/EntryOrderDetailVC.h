@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface EntryOrderDetailVC : UIViewController
+@interface EntryOrderDetailVC : BaseViewController
 
 @end

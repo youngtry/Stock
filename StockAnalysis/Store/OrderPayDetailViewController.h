@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface OrderPayDetailViewController : UIViewController
+@interface OrderPayDetailViewController : BaseViewController
 @property (weak, nonatomic) IBOutlet UIView *authView;
 @property (weak, nonatomic) IBOutlet UIView *depositView;
 @property (weak, nonatomic) IBOutlet UILabel *authLabel;

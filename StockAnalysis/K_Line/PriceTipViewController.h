@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PriceTipViewController : UIViewController
+@interface PriceTipViewController : BaseViewController
 
 @end

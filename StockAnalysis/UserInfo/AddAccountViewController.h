@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AddAccountViewController : UIViewController
+@interface AddAccountViewController : BaseViewController
 
 @end

@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MailLoginViewController : UIViewController
+@interface MailLoginViewController : BaseViewController
 
 @end

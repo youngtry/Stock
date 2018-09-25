@@ -28,6 +28,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    
+    
     UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:@"注册账户" style:UIBarButtonItemStylePlain target:self action:@selector(clickRegist:)];
     self.navigationItem.rightBarButtonItem = right;
     
@@ -44,16 +46,18 @@
     [_lookPwBtn setImage:[UIImage imageNamed:@"eye-c.png"] forState:UIControlStateNormal];
     [_lookPwBtn setImage:[UIImage imageNamed:@"eye-o.png"] forState:UIControlStateSelected];
     
-    [self.countryCodeButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -self.countryCodeButton.imageView.size.width-5, 0, self.countryCodeButton.imageView.size.width+5)];
-    [self.countryCodeButton setImageEdgeInsets:UIEdgeInsetsMake(0, self.countryCodeButton.titleLabel.bounds.size.width+5, 0, -self.countryCodeButton.titleLabel.bounds.size.width-5)];
-
+//    [self.countryCodeButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -self.countryCodeButton.imageView.size.width-5, 0, self.countryCodeButton.imageView.size.width+5)];
+//    [self.countryCodeButton setImageEdgeInsets:UIEdgeInsetsMake(0, self.countryCodeButton.titleLabel.bounds.size.width+5, 0, -self.countryCodeButton.titleLabel.bounds.size.width-5)];
     
-//    [self.countryCodeButton setTitle:@"+86" forState:UIControlStateNormal];
+    
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.tabBarController.tabBar.hidden = YES;
+    
+    
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -63,7 +67,9 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    [self returnCountryCode:@"+86"];
+//    [self returnCountryCode:@"+86"];
+    
+    [self.countryCodeButton setTitle:@"+86" forState:UIControlStateNormal];
 }
 
 -(void)test{
@@ -75,7 +81,7 @@
     NSDictionary* data = [[HttpRequest getInstance] httpBack];
     NSNumber* number = [data objectForKey:@"ret"];
     if([number intValue] == 1){
-        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"登陆成功"];
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"登录成功"];
         
         [GameData setUserAccount:self.usernameInput.text];
         [GameData setUserPassword:self.passwordInput.text];
@@ -103,17 +109,16 @@
     // Dispose of any resources that can be recreated.
 }
 - (IBAction)clickLoginIn:(id)sender {
-    if(self.usernameInput.text.length != 11){
+    if(![VerifyRules phoneNumberIsTure:self.usernameInput.text]){
         [HUDUtil showSystemTipView:self title:@"提示" withContent:@"请输入正确的手机号"];
         return;
     }
-    
-    if(self.passwordInput.text.length == 0){
-        [HUDUtil showSystemTipView:self title:@"提示" withContent:@"请输入密码"];
+    if(![VerifyRules passWordIsTure:self.passwordInput.text]){
+        [HUDUtil showSystemTipView:self title:@"密码格式错误" withContent:@"请输入8-16个字符,不能使用中文、空格,至少含数字/字母/符号2种组合,必须要同时包括大小写字母"];
         return;
     }
     
-    [HUDUtil showHudViewInSuperView:self.view withMessage:@"登陆中……"];
+    [HUDUtil showHudViewInSuperView:self.view withMessage:@"登录中……"];
     
     NSString* url = @"account/login/phone";
     NSDictionary *paramDic = @{ @"phone":self.usernameInput.text,
@@ -129,7 +134,7 @@
             NSLog(@"登录消息：%@",data);
             NSNumber* number = [data objectForKey:@"ret"];
             if([number intValue] == 1){
-                [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"登陆成功"];
+                [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"登录成功"];
                 
                 [GameData setUserAccount:self.usernameInput.text];
                 [GameData setUserPassword:self.passwordInput.text];
@@ -145,7 +150,7 @@
                 [HUDUtil showSystemTipView:self title:@"提示" withContent:[data objectForKey:@"msg"]];
             }
         }else{
-            [HUDUtil hideHudViewWithFailureMessage:@"登陆失败"];
+            [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"登录失败"];
         }
     }];
 }

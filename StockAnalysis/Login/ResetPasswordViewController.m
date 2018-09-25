@@ -45,9 +45,10 @@
     self.authCodeContainer.userInteractionEnabled = YES;
     
     UIButton *leftBarButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    leftBarButton.frame = CGRectMake(0, 0, 18, 40);
+    leftBarButton.frame = CGRectMake(0, 0, 50, 40);
     [leftBarButton setImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
-    
+    leftBarButton.titleLabel.font = [UIFont systemFontOfSize:17];
+    [leftBarButton setContentEdgeInsets:UIEdgeInsetsMake(0, -40, 0, 0)];
     [leftBarButton addTarget:self action:@selector(viewWillBack) forControlEvents:UIControlEventTouchUpInside];
     
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:leftBarButton];
@@ -69,6 +70,8 @@
     }else{
         [_secondContainer setHidden:YES];
         [_firstContainer setHidden:NO];
+        self.authCodeTextFiled.text = @"";
+        [self requestVerifyImage];
     }
 }
 
@@ -85,12 +88,19 @@
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     
+    [self requestVerifyImage];
+    
+}
+
+-(void)requestVerifyImage{
     NSString* url = @"captcha/picture";
     NSDictionary* parameters = @{};
     
+    [HUDUtil showHudViewInSuperView:self.view withMessage:@"验证码请求中……"];
     [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
+        [HUDUtil hideHudView];
         if(success){
-            NSLog(@"data = %@",data);
+//            NSLog(@"data = %@",data);
             if([[data objectForKey:@"ret"] intValue] == 1){
                 NSDictionary* picdata = [data objectForKey:@"data"];
                 
@@ -99,7 +109,7 @@
                 NSString* image = [picdata objectForKey:@"base64_png"];
                 
                 NSString* imagestr = [image substringFromIndex:22];
-//                NSLog(@"imagestr = %@",imagestr);
+                //                NSLog(@"imagestr = %@",imagestr);
                 
                 NSData* decodeData = [[NSData alloc] initWithBase64EncodedString:imagestr options:NSDataBase64DecodingIgnoreUnknownCharacters];
                 
@@ -111,7 +121,6 @@
         }
     }];
 }
-
 
 
 -(void)test{
@@ -150,10 +159,9 @@
                                  @"value":self.authCodeTextFiled.text};
     
     NSString* url = @"captcha/picture/verify";
-    
+    NSLog(@"输入验证码为:%@",self.authCodeTextFiled.text);
     [[HttpRequest getInstance] postWithURL:url parma:paremeters block:^(BOOL success, id data) {
         if(success){
-            NSLog(@"验证码信息:%@",data);
             
             if([[data objectForKey:@"ret"] intValue]== 1){
                 //验证成功
@@ -161,6 +169,7 @@
                 self.firstContainer.hidden = YES;
             }else if ([[data objectForKey:@"ret"] intValue]== -1){
                 [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                [self requestVerifyImage];
             }
         }
     }];

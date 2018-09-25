@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SetMoneyPasswordViewController : UIViewController
+@interface SetMoneyPasswordViewController : BaseViewController
 
 @end

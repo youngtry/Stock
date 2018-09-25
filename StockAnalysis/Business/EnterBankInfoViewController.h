@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface EnterBankInfoViewController : UIViewController
+@interface EnterBankInfoViewController : BaseViewController
 
 @end

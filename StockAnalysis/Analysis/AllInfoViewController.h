@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AllInfoViewController : UIViewController
+@interface AllInfoViewController : BaseViewController
 
 
 

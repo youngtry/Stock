@@ -11,7 +11,7 @@
 
 typedef void(^returnUnit) (NSString *unit);
 
-@interface StoreUnitViewController : UIViewController
+@interface StoreUnitViewController : BaseViewController
 @property (weak, nonatomic) IBOutlet UILabel *cnyName;
 @property (weak, nonatomic) IBOutlet UILabel *usdName;
 @property (weak, nonatomic) IBOutlet UIImageView *cnyIcon;

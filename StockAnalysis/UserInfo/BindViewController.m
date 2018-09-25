@@ -46,6 +46,7 @@
         _verify1Input.placeholder = @"输入短信验证码";
         _verify2name.text = @"邮箱验证码";
         _verify2Input.placeholder = @"输入邮箱验证码";
+        [self returnCountryCode:@"+86"];
     }
 }
 
@@ -61,7 +62,7 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    [self returnCountryCode:@"+86"];
+    
 }
 
 - (void)didReceiveMemoryWarning {

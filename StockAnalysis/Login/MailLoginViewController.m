@@ -81,7 +81,7 @@
     
 //    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"MailLoginBack"];
     
-    [HUDUtil showHudViewInSuperView:self.view withMessage:@"登陆中……"];
+    [HUDUtil showHudViewInSuperView:self.view withMessage:@"登录中……"];
 }
 - (IBAction)clickPhoneLogin:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
@@ -116,7 +116,7 @@
     
     NSNumber* number = [data objectForKey:@"ret"];
     if([number intValue] == 1){
-        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"登陆成功"];
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"登录成功"];
         [GameData setUserAccount:self.mailInput.text];
         [GameData setUserPassword:self.passwordInput.text];
         [GameData setAccountList:self.mailInput.text withPassword:self.passwordInput.text];

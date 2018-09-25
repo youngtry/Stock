@@ -17,7 +17,7 @@
 //2.block传值  typedef void(^returnBlock)(NSString *showText);
 typedef void(^returnBankCodeBlock) (NSString *bankCodeStr);
 
-@interface BankCodeViewController : UIViewController
+@interface BankCodeViewController : BaseViewController
 
 @property (nonatomic, assign) id<BankCodeViewControllerDelegate> deleagete;
 

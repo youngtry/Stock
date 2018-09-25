@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MyTipsViewController : UIViewController
+@interface MyTipsViewController : BaseViewController
 
 @end

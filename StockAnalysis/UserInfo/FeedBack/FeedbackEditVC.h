@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FeedbackEditVC : UIViewController
+@interface FeedbackEditVC : BaseViewController
 @property(nonatomic,strong)NSString* title1;
 @property(nonatomic,strong)NSString* title2;
 @end

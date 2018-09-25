@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface BuySellViewController : UIViewController
+@interface BuySellViewController : BaseViewController
 
 @end

@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ResetPasswordViewController : UIViewController
+@interface ResetPasswordViewController : BaseViewController
 
 @end

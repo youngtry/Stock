@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MoneyInOutViewController : UIViewController
+@interface MoneyInOutViewController : BaseViewController
 @property (weak, nonatomic) IBOutlet UILabel *turnOutName;
 @property (weak, nonatomic) IBOutlet UILabel *turnInName;
 @property (weak, nonatomic) IBOutlet UILabel *leftMonetCount;

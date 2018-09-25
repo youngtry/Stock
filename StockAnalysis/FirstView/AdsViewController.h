@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AdsViewController : UIViewController
+@interface AdsViewController : BaseViewController
 
 @end

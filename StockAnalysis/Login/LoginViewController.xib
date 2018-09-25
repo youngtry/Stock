@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -40,13 +40,11 @@
                                 <constraint firstAttribute="height" constant="1" id="P8D-ve-T7T"/>
                             </constraints>
                         </view>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="emg-wb-7QF">
-                            <rect key="frame" x="37" y="17" width="72" height="20"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="72" id="v29-jB-grl"/>
-                            </constraints>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="emg-wb-7QF">
+                            <rect key="frame" x="37" y="17" width="78" height="20"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                            <state key="normal" title="+12345" image="arrow_down">
+                            <state key="normal" title="+12345">
                                 <color key="titleColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
                             <connections>
@@ -68,21 +66,12 @@
                                 <constraint firstAttribute="height" constant="1" id="dTG-V9-bgp"/>
                             </constraints>
                         </view>
-                        <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TKs-Z4-E6W">
-                            <rect key="frame" x="75" y="77" width="263" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="8~16个字母与数字,至少有一个大写" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TKs-Z4-E6W">
+                            <rect key="frame" x="75" y="77" width="226" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
-                        </textField>
-                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="手机号" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="f7T-iv-6XE">
-                            <rect key="frame" x="127" y="8" width="211" height="30"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="30" id="2oL-l5-ga4"/>
-                            </constraints>
-                            <nil key="textColor"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                            <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                         </textField>
                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="48G-6D-z03" userLabel="lookpw">
                             <rect key="frame" x="309" y="86" width="21" height="12"/>
@@ -92,6 +81,17 @@
                                 <action selector="clickLookPw:" destination="-1" eventType="touchUpInside" id="ebA-HT-qcl"/>
                             </connections>
                         </button>
+                        <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="手机号" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="f7T-iv-6XE">
+                            <rect key="frame" x="123" y="16" width="215" height="22"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <nil key="textColor"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                            <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                        </textField>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="arrow_down" translatesAutoresizingMaskIntoConstraints="NO" id="mcl-iY-xHb">
+                            <rect key="frame" x="100" y="23" width="15" height="9"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
@@ -99,14 +99,9 @@
                         <constraint firstItem="QFC-dN-nAW" firstAttribute="top" secondItem="qzo-MG-jE9" secondAttribute="top" constant="36" id="37P-XK-XHy"/>
                         <constraint firstAttribute="height" constant="107" id="3p0-9Z-LuF"/>
                         <constraint firstItem="JqC-km-vbC" firstAttribute="leading" secondItem="QFC-dN-nAW" secondAttribute="leading" id="5ut-os-cvP"/>
-                        <constraint firstItem="f7T-iv-6XE" firstAttribute="leading" secondItem="emg-wb-7QF" secondAttribute="leading" constant="90" id="8em-xF-R7r"/>
-                        <constraint firstItem="emg-wb-7QF" firstAttribute="leading" secondItem="QFC-dN-nAW" secondAttribute="leading" id="A28-tY-dGz"/>
-                        <constraint firstItem="f7T-iv-6XE" firstAttribute="trailing" secondItem="QFC-dN-nAW" secondAttribute="trailing" id="UuU-FW-cW3"/>
                         <constraint firstItem="QFC-dN-nAW" firstAttribute="leading" secondItem="qzo-MG-jE9" secondAttribute="leading" constant="37" id="dIF-uy-kCr"/>
-                        <constraint firstItem="emg-wb-7QF" firstAttribute="bottom" secondItem="QFC-dN-nAW" secondAttribute="bottom" id="frJ-At-zR9"/>
                         <constraint firstItem="JqC-km-vbC" firstAttribute="trailing" secondItem="QFC-dN-nAW" secondAttribute="trailing" id="oDq-9e-XHa"/>
                         <constraint firstItem="JqC-km-vbC" firstAttribute="top" secondItem="QFC-dN-nAW" secondAttribute="top" constant="69" id="tjH-SU-x8u"/>
-                        <constraint firstItem="f7T-iv-6XE" firstAttribute="top" secondItem="QFC-dN-nAW" secondAttribute="top" constant="-28" id="xSP-4S-AOu"/>
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7vX-CO-YBv">
@@ -165,7 +160,7 @@
                 <constraint firstAttribute="top" secondItem="qzo-MG-jE9" secondAttribute="bottom" constant="-327" id="o4a-7q-xOU"/>
                 <constraint firstItem="Gnn-q2-hpc" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="oS7-x6-Sqp"/>
             </constraints>
-            <point key="canvasLocation" x="24.5" y="51.5"/>
+            <point key="canvasLocation" x="23.199999999999999" y="50.824587706146929"/>
         </view>
     </objects>
     <resources>

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SearchTableViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
+@interface SearchTableViewController : BaseViewController<UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic,strong)UITableView *tableView;
 
 @property(nonatomic,strong)NSMutableArray* searchResultList;

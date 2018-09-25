@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AddTadeViewController : UIViewController
+@interface AddTadeViewController : BaseViewController
 
 @end

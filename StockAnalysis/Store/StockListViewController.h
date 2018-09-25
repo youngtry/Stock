@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface StockListViewController : UIViewController
+@interface StockListViewController : BaseViewController
 
 @end
 

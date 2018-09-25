@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface StockInfoViewController : UIViewController
+@interface StockInfoViewController : BaseViewController
 @property(nonatomic)int index;
 @end
