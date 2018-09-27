@@ -62,8 +62,8 @@
         return;
     }
     
-    if(self.passwordInput.text.length == 0){
-        [HUDUtil showSystemTipView:self title:@"提示" withContent:@"请输入密码"];
+    if(![VerifyRules passWordIsTure:self.passwordInput.text]){
+        [HUDUtil showSystemTipView:self title:@"密码格式错误" withContent:@"请输入8-16个字符,不能使用中文、空格,至少含数字/字母/符号2种组合,必须要同时包括大小写字母"];
         return;
     }
     

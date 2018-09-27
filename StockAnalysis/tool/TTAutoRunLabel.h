@@ -27,6 +27,7 @@ typedef NS_ENUM(NSInteger, RunDirectionType){
 @property(nonatomic, weak)id<TTAutoRunLabelDelegate>delegate;
 @property(nonatomic, assign)CGFloat speed;
 @property(nonatomic, assign)RunDirectionType directionType;
+@property(nonatomic, assign)NSInteger contentTag;
 
 -(void)addContentView:(UIView*)view;
 -(void)startAnimation;

@@ -135,7 +135,7 @@
     runLabel.directionType = Leftype;
     [runLabel setRunViewColor:[UIColor colorWithRed:16./255.0 green:142.0/255.0 blue:233.0/255.0 alpha:0.1]];
     [self addSubview:runLabel];
-    [runLabel addContentView:[self createLabelWithText:@"繁华声 遁入空门 折煞了梦偏冷 辗转一生 情债又几 如你默认 生死枯等 枯等一圈 又一圈的 浮图塔 断了几层 断了谁的痛直奔 一盏残灯 倾塌的山门 容我再等 历史转身 等酒香醇 等你弹 一曲古筝" textColor:[self randomColor] labelFont:[UIFont systemFontOfSize:14]]];
+//    [runLabel addContentView:[self createLabelWithText:@"繁华声 遁入空门 折煞了梦偏冷 辗转一生 情债又几 如你默认 生死枯等 枯等一圈 又一圈的 浮图塔 断了几层 断了谁的痛直奔 一盏残灯 倾塌的山门 容我再等 历史转身 等酒香醇 等你弹 一曲古筝" textColor:[self randomColor] labelFont:[UIFont systemFontOfSize:14]]];
     [runLabel startAnimation];
 }
 

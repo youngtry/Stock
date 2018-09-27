@@ -14,6 +14,7 @@
 #import "TCRotatorImageView.h"
 #import "SocketInterface.h"
 #import "StockLittleViewController.h"
+#import "AdsViewController.h"
 @interface HomeViewController ()<TTAutoRunLabelDelegate,UITableViewDataSource,UITableViewDelegate,SocketDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *activityContainer;
@@ -22,7 +23,8 @@
 @property (nonatomic,strong) TCRotatorImageView *adScrollView;
 
 @property (nonatomic,strong) NSMutableArray* stockName;
-
+@property (nonatomic,strong) TTAutoRunLabel* runLabel;
+@property (nonatomic,strong) NSMutableArray* tipsContent;
 
 @end
 
@@ -38,8 +40,14 @@
     self.stockName =  [NSMutableArray new];
     self.randList.delegate = self;
     self.randList.dataSource = self;
+    self.tipsContent = [NSMutableArray new];
 }
-
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [_runLabel stopAnimation];
+    [_runLabel removeFromSuperview];
+    _runLabel = nil;
+}
 - (void)viewWillAppear:(BOOL)animated{
 //    NSLog(@"viewWillAppear");
     [self.navigationController setNavigationBarHidden:YES];
@@ -96,35 +104,62 @@
 }
 
 -(void)getTipsAndAdsBack:(NSDictionary*)data{
-    [self createAutoRunLabel:@"" view:self.activityContainer fontsize:14];
+//    [self createAutoRunLabel:@"" view:self.activityContainer fontsize:14];
 //    [self createAutoRunLabel:@"" view:self.adView fontsize:30];
 //    NSDictionary* data = [[HttpRequest getInstance] httpBack];
     NSNumber* ret = [data objectForKey:@"ret"];
     if([ret intValue] == 1)
     {
         NSDictionary* info = [data objectForKey:@"data"];
-        NSLog(@"首页广告:%@",info);
+        //        NSLog(@"首页广告:%@",info);
+        NSArray *ads = data[@"data"][@"ads"];
+        [self refreshAdView:ads];
+        NSArray* tips = data[@"data"][@"tips"];
+        
+        [self.tipsContent removeAllObjects];
+        for (NSDictionary* tip in tips) {
+            NSString* text = [tip objectForKey:@"content"];
+            NSString* title = [tip objectForKey:@"title"];
+//            NSLog(@"text = %@,  title = %@",text,title);
+            [self.tipsContent addObject:title];
+        }
+        if(self.tipsContent.count>0){
+            [self createAutoRunLabel:self.tipsContent[0] view:self.activityContainer fontsize:14 withTag:0];
+        }
     }
     
-    NSArray *ads = data[@"data"][@"ads"];
-    [self refreshAdView:ads];
 }
 
+#pragma mark TTAutoRunLabelDelegate
 
+-(void)operateLabel:(TTAutoRunLabel *)autoLabel animationDidStopFinished:(BOOL)finished{
+//    NSLog(@"autoLabel = %ld",autoLabel.contentTag);
+    [autoLabel stopAnimation];
+    if(autoLabel.contentTag<self.tipsContent.count-1){
+        [self createAutoRunLabel:self.tipsContent[autoLabel.contentTag+1] view:self.activityContainer fontsize:14 withTag:autoLabel.contentTag+1];
+    }else{
+        [self createAutoRunLabel:self.tipsContent[0] view:self.activityContainer fontsize:14 withTag:0];
+    }
+}
 - (void)viewDidAppear:(BOOL)animated{
 //    NSLog(@"viewdidappear");
     
 }
 
--(void)createAutoRunLabel:(NSString *)content view:(UIView* )contentview fontsize:(int)size{
-    content = @"繁华声 遁入空门 折煞了梦偏冷 辗转一生 情债又几 如你默认 生死枯等 枯等一圈 又一圈的 浮图塔 断了几层 断了谁的痛直奔 一盏残灯 倾塌的山门 容我再等 历史转身 等酒香醇 等你弹 一曲古筝";
-    TTAutoRunLabel* runLabel = [[TTAutoRunLabel alloc] initWithFrame:CGRectMake(contentview.frame.size.width*0.05, contentview.frame.size.height*0.1, contentview.frame.size.width*0.95, contentview.frame.size.height)];
-    runLabel.delegate = self;
-    runLabel.directionType = Leftype;
+-(void)createAutoRunLabel:(NSString *)content view:(UIView* )contentview fontsize:(int)size withTag:(NSInteger) tag{
+//    content = @"繁华声 遁入空门 折煞了梦偏冷 辗转一生 情债又几 如你默认 生死枯等 枯等一圈 又一圈的 浮图塔 断了几层 断了谁的痛直奔 一盏残灯 倾塌的山门 容我再等 历史转身 等酒香醇 等你弹 一曲古筝";
+    if(_runLabel){
+        [_runLabel stopAnimation];
+        [_runLabel removeFromSuperview];
+        _runLabel = nil;
+    }
+    _runLabel = [[TTAutoRunLabel alloc] initWithFrame:CGRectMake(contentview.frame.size.width*0.07, contentview.frame.size.height*0.1, contentview.frame.size.width*0.95, contentview.frame.size.height)];
+    _runLabel.delegate = self;
+    _runLabel.directionType = Leftype;
     //    [runLabel setRunViewColor:[UIColor colorWithRed:16./255.0 green:142.0/255.0 blue:233.0/255.0 alpha:0.1]];
-    [contentview addSubview:runLabel];
-    [runLabel addContentView:[self createLabelWithText:content textColor:[UIColor colorWithRed:102.0/255.0 green:102.0/255.0 blue:102.0/255.0 alpha:1] labelFont:[UIFont systemFontOfSize:size]]];
-    [runLabel startAnimation];
+    [contentview addSubview:_runLabel];
+    [_runLabel addContentView:[self createLabelWithText:content textColor:[UIColor colorWithRed:102.0/255.0 green:102.0/255.0 blue:102.0/255.0 alpha:1] labelFont:[UIFont systemFontOfSize:size]]];
+    [_runLabel startAnimation];
 }
 
 -(UILabel*)createLabelWithText:(NSString* )text textColor:(UIColor* )textColor labelFont:(UIFont *)font{
@@ -174,6 +209,9 @@
         _adScrollView.clickBlock = ^(NSInteger index){
             //循环引用
             //            [weakSelf xxxx];
+            [weakSelf.navigationController setNavigationBarHidden:NO];
+            AdsViewController* vc = [[AdsViewController alloc] initWithNibName:@"AdsViewController" bundle:nil];
+            [weakSelf.navigationController pushViewController:vc animated:YES];
         };
     }else{
         _adScrollView.imageURLStrigArray = images;

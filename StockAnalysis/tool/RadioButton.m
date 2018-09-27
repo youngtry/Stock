@@ -32,6 +32,8 @@
     return self;
 }
 
+
+
 -(void)createTitleButtons:(NSArray*)titles{
     CGFloat x = 0;
     int i=0;
@@ -75,6 +77,10 @@
         [self selectButton:index];
         [self onSelectChanged];
     }
+}
+
+-(void)setSelectIndex:(NSInteger)select{
+    [self selectButton:-1];
 }
 
 -(void)selectButton:(NSInteger)index{

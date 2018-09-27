@@ -13,4 +13,6 @@
 @property(nonatomic,copy) void(^indexChangeBlock)(NSInteger);
 
 -(void)reloadFrame:(CGRect)frame;
+
+-(void)setSelectIndex:(NSInteger) select;
 @end

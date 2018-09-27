@@ -23,7 +23,7 @@
 
 +(BOOL)passWordIsTure:(NSString *)text{
     
-    NSString *passWordGex = @"^(?=.*[a-zA-Z0-9].*)(?=.*[a-zA-Z\\W].*)(?=.*[0-9\\W].*).{6,20}$";
+    NSString *passWordGex = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z0-9].*)[\\S]{8,16}$";
     
     NSPredicate *passWordPred = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",passWordGex];
     
