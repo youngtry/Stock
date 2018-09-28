@@ -8,7 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol CancelDelegate <NSObject>
+- (void)sendCancelNotice; //声明协议方法
+@end
+
 @interface PendingOrderTableViewCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *typeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *stockName;
+@property (weak, nonatomic) IBOutlet UILabel *timeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *priceLabel;
+@property (weak, nonatomic) IBOutlet UILabel *amountLabel;
+@property (weak, nonatomic) IBOutlet UILabel *realLabel;
 @property(nonatomic,assign)BOOL isBuyIn;//买入/卖出
+@property (weak, nonatomic) id<CancelDelegate> delegate;
 @end

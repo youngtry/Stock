@@ -14,12 +14,14 @@
             <connections>
                 <outlet property="ShowBuyTypeView" destination="S2w-IL-008" id="tFh-O5-sxa"/>
                 <outlet property="askList" destination="WwZ-ch-hCJ" id="hWf-0X-CeL"/>
+                <outlet property="avaliableMoney" destination="zQm-gG-Qse" id="7yZ-6U-4zU"/>
                 <outlet property="bidsList" destination="tXw-KY-4v5" id="bzO-LZ-hN4"/>
                 <outlet property="buyTypeLimitBtn" destination="Ifr-rz-iwy" id="Ws9-hN-ILY"/>
                 <outlet property="buyTypeMarketBtn" destination="Txz-n3-xKF" id="GjK-IH-W3B"/>
                 <outlet property="buyTypeView" destination="RXX-Lw-G32" id="5rT-D9-XAF"/>
                 <outlet property="buyTypeViewArrow" destination="Bse-zZ-kCX" id="gzV-Vx-wJY"/>
                 <outlet property="buyTypeViewImage" destination="qkx-35-6jZ" id="g7z-0E-ZCn"/>
+                <outlet property="canButAmount" destination="6e3-CK-L0t" id="oY7-yX-NXQ"/>
                 <outlet property="dealList" destination="mLJ-OC-VVz" id="6Ah-qx-Ehm"/>
                 <outlet property="depthView" destination="D4U-8i-MNp" id="38Q-En-Sdt"/>
                 <outlet property="editNumContainer" destination="Rem-vS-SPe" id="Sfm-ZH-IfE"/>
@@ -30,8 +32,10 @@
                 <outlet property="marketPriceView" destination="FaO-Ml-PHi" id="ltU-TW-Etv"/>
                 <outlet property="periodPrice" destination="fwQ-YU-aSk" id="NAV-dC-nvT"/>
                 <outlet property="priceRMBLabel" destination="Api-32-3IS" id="epx-eB-13K"/>
+                <outlet property="purchaseAmountInput" destination="WOu-dA-cYQ" id="tcV-dL-k0k"/>
                 <outlet property="purchaseAmountLabel" destination="DmS-OP-JhZ" id="ELA-MB-pqF"/>
                 <outlet property="purchaseBtn" destination="Oby-3v-lPa" id="oIo-Mo-iKa"/>
+                <outlet property="purchasePriceInput" destination="ICy-Vc-iKJ" id="Ig1-oW-kV6"/>
                 <outlet property="purchasePriceLabel" destination="Zyj-dk-Uzt" id="Smv-cv-33u"/>
                 <outlet property="rateLabel" destination="f4y-KC-MYS" id="LwX-24-Rmu"/>
                 <outlet property="selectBuyTypeBtn" destination="NYL-da-xeJ" id="jfO-OG-M0O"/>
@@ -128,13 +132,20 @@
                                         <action selector="clickAddPruchaseAmount:" destination="-1" eventType="touchUpInside" id="Sg6-fJ-cV5"/>
                                     </connections>
                                 </button>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="700.0000" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DmS-OP-JhZ">
+                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="700.0000" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DmS-OP-JhZ">
                                     <rect key="frame" x="48" y="4" width="90" height="30"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
+                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="000.0000" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="WOu-dA-cYQ">
+                                    <rect key="frame" x="48" y="4" width="90" height="30"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                </textView>
                                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="d0Z-ee-TcK">
                                     <rect key="frame" x="40" y="0.0" width="1" height="37"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
@@ -203,13 +214,20 @@
                                         <action selector="clickAddPruchasePrice:" destination="-1" eventType="touchUpInside" id="LtL-om-yvQ"/>
                                     </connections>
                                 </button>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="700.0000" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zyj-dk-Uzt">
+                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="700.0000" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zyj-dk-Uzt">
                                     <rect key="frame" x="48" y="4" width="90" height="30"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
+                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="000.000" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ICy-Vc-iKJ">
+                                    <rect key="frame" x="48" y="4" width="90" height="30"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                </textView>
                                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JOP-uP-yRf">
                                     <rect key="frame" x="40" y="0.0" width="1" height="37"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>

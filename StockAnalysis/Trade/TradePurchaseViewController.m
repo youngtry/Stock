@@ -16,7 +16,7 @@
 #import "MoneyVerifyViewController.h"
 #import "SortView.h"
 #import "PendingOrderTableViewCell.h"
-@interface TradePurchaseViewController ()<SocketDelegate,UITableViewDelegate,UITableViewDataSource>
+@interface TradePurchaseViewController ()<SocketDelegate,UITableViewDelegate,UITableViewDataSource,CancelDelegate>
 @property (weak, nonatomic) IBOutlet UIView *editNumContainer;
 @property (weak, nonatomic) IBOutlet UIView *editPriceContainer;
 @property (weak, nonatomic) IBOutlet UIView *editPercentContainer;
@@ -40,6 +40,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *priceRMBLabel;
 @property (weak, nonatomic) IBOutlet UILabel *purchasePriceLabel;
 @property (weak, nonatomic) IBOutlet UILabel *purchaseAmountLabel;
+@property (weak, nonatomic) IBOutlet UITextView *purchaseAmountInput;
+@property (weak, nonatomic) IBOutlet UITextView *purchasePriceInput;
 @property (nonatomic,strong)RadioButton *radioBtn;
 @property (weak, nonatomic) IBOutlet UIView *ShowBuyTypeView;
 @property (weak, nonatomic) IBOutlet UIButton *buyTypeLimitBtn;
@@ -47,6 +49,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *buyTypeMarketBtn;
 @property (weak, nonatomic) IBOutlet UIImageView *buyTypeViewImage;
 @property (weak, nonatomic) IBOutlet UIImageView *buyTypeViewArrow;
+@property (weak, nonatomic) IBOutlet UILabel *avaliableMoney;
+@property (weak, nonatomic) IBOutlet UILabel *canButAmount;
 @property (nonatomic,strong)NSMutableArray* titleArray;
 @property (nonatomic,strong)NSMutableArray* infoArray;
 
@@ -54,8 +58,12 @@
 @property (nonatomic,strong)NSMutableArray* bidsArray;
 @property (weak, nonatomic) IBOutlet UITableView *dealList;
 
+@property (nonatomic,strong)NSMutableDictionary* dealData;
+
 @property (nonatomic)BOOL firstOpen;
 @end
+
+
 
 @implementation TradePurchaseViewController
 
@@ -67,6 +75,8 @@
    
     self.asksArray = [NSMutableArray new];
     self.bidsArray = [NSMutableArray new];
+    
+    self.dealData = [NSMutableDictionary new];
     
     self.stcokInfoView.delegate = self;
     self.stcokInfoView.dataSource = self;
@@ -120,8 +130,17 @@
     self.radioBtn = [[RadioButton alloc] initWithFrame:self.editPercentContainer.bounds titles:tiles selectIndex:-1];
     [self.editPercentContainer addSubview:self.radioBtn];
     self.editPercentContainer.backgroundColor = [UIColor whiteColor];
+    WeakSelf(weakSelf);
     self.radioBtn.indexChangeBlock = ^(NSInteger index){
         DLog(@"index:%li",index);
+        float available = [[weakSelf.avaliableMoney.text substringFromIndex:[weakSelf.avaliableMoney.text rangeOfString:@"可用 "].length] floatValue];
+        if([[weakSelf.priceRMBLabel.text substringFromIndex:1] floatValue] > 0){
+            
+            float willbuy = available*0.25*(index+1)/[[self.priceRMBLabel.text substringFromIndex:1] floatValue];
+            float willmoney = available*0.25*(index+1);
+            weakSelf.purchasePriceInput.text = [NSString stringWithFormat:@"%.3f",willmoney];
+            weakSelf.purchaseAmountInput.text = [NSString stringWithFormat:@"%.4f",willbuy];
+        }
     };
     
     if(kScreenWidth == 320){
@@ -129,10 +148,46 @@
     }
     
     [self setSortListTitleView];
+//    [self setMoneyInfo];
+}
+
+-(void)setMoneyInfo{
+    NSDictionary *parameters = @{};
+    
+    NSString* url = @"wallet/balance";
+
+    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+        if(success){
+            NSNumber* rest = [data objectForKey:@"ret"];
+            if([rest intValue] == 1){
+                NSDictionary* datainfo = [data objectForKey:@"data"];
+                NSLog(@"datainfo = %@",datainfo);
+                NSDictionary* exchangeinfo = [datainfo objectForKey:@"exchange"];
+                
+                NSArray* keys = [exchangeinfo allKeys];
+                NSDictionary* money;
+                for (NSString* keyinfo in keys) {
+                    NSLog(@"keyinfo = %@",keyinfo);
+                    NSLog(@"marketNamelabel = %@",self.marketNamelabel.titleLabel.text);
+                    if([self.marketNamelabel.titleLabel.text containsString:keyinfo]){
+                        money = [exchangeinfo objectForKey:keyinfo];
+                    }
+                }
+
+                float available = [[money objectForKey:@"available"] floatValue];
+                self.avaliableMoney.text = [NSString stringWithFormat:@"可用 %.4f",available];
+                if([[self.priceRMBLabel.text substringFromIndex:1] floatValue] > 0){
+                    float canbuy = available/[[self.priceRMBLabel.text substringFromIndex:1] floatValue];
+                    self.canButAmount.text = [NSString stringWithFormat:@"可买 %.8f",canbuy];
+                }
+                
+            }
+        }
+    }];
 }
 
 -(void)setSortListTitleView{
-    WeakSelf(weakSelf)
+//    WeakSelf(weakSelf)
 //    SortView *sort1 = [[SortView alloc] initWithFrame:CGRectMake(15, 0, 0, 15) title:@"股票"];
 //    sort1.block = ^(BOOL isUp){
 //        //TODO 数据排序，reload
@@ -198,36 +253,6 @@
     
     [SocketInterface sharedManager].delegate = self;
     [self requestAnalysis];
-    
-//    NSString* starttime = [self getTimeStrWithString:@"2018-08-07 00:00:00"];
-//    NSString* endtime = [self getTimeStrWithString:@"2018-08-08 01:00:00"];
-    
-    NSDictionary* parameters = @{@"market":@"",
-                                 @"state":@"",
-                                 @"page":@"1",
-                                 @"page_limit":@"10"
-                                 };
-    
-    NSString* url = @"exchange/trades";
-    
-    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
-        if(success){
-            NSLog(@"挂单列表:%@",data);
-            if([[data objectForKey:@"ret"] intValue] == 1){
-//                NSArray* trade = [[data objectForKey:@"data"] objectForKey:@"trades"];
-//                NSLog(@"trade = %ld",trade.count);
-//                if(trade.count>0){
-//                   [self setStcokInfo:trade[0]];
-//                }
-                
-                
-            }
-        }
-    }];
-    
-    
-    
-    
     
 }
 
@@ -337,13 +362,13 @@
 
 -(void)setStcokInfo:(NSDictionary*)info{
     
-    self.marketNamelabel.titleLabel.text = [info objectForKey:@"market"];
+    [self.marketNamelabel setTitle:[info objectForKey:@"market"] forState:UIControlStateNormal];
     self.priceRMBLabel.text = [NSString stringWithFormat:@"¥%@",[info objectForKey:@"price"]];
     self.periodPrice.text = [NSString stringWithFormat:@"%d",[[info objectForKey:@"volume"] intValue]] ;
     self.rateLabel.text = [NSString stringWithFormat:@"%.2f%%",[[info objectForKey:@"increase"] floatValue]*100];
     
     [self getTradeInfo:[info objectForKey:@"market"]];
-    
+    [self setMoneyInfo];
 }
 
 -(void)viewDidLayoutSubviews{
@@ -429,39 +454,21 @@
                     
                     vc.block = ^(NSString* token) {
                         if(token.length>0){
-                            NSString* url = @"exchange/trade/add";
-                            NSDictionary* parameters = @{@"market":self.marketNamelabel.titleLabel.text,
-                                                         @"num":@(1),
-                                                         @"price":@(1.5),
-                                                         @"mode":@"buy",
-                                                         @"is_limit":@(1),
-                                                         @"asset_token":token
-                                                         };
-                            [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
-                                if(success){
-                                    if([[data objectForKey:@"ret"] intValue] == 1){
-                                        [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"挂单成功"];
-                                    }
-                                }
-                            }];
+                            if([self.title isEqualToString:@"买入"]){
+                                [self buyStock:token];
+                            }else if ([self.title isEqualToString:@"卖出"]){
+                                [self sellStock:token];
+                            }
+                            
                         }
                     };
                     
                 }else{
-                    NSString* url = @"exchange/trade/add";
-                    NSDictionary* parameters = @{@"market":self.marketNamelabel.titleLabel.text,
-                                                 @"num":@"",
-                                                 @"price":@"",
-                                                 @"mode":@"buy",
-                                                 @"is_limit":@"",
-                                                 @"asset_token":@""};
-                    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
-                        if(success){
-                            if([[data objectForKey:@"ret"] intValue] == 1){
-                                [HUDUtil showHudViewInSuperView:temp.view withMessage:@"挂单成功"];
-                            }
-                        }
-                    }];
+                    if([self.title isEqualToString:@"买入"]){
+                        [self buyStock:@""];
+                    }else if ([self.title isEqualToString:@"卖出"]){
+                        [self sellStock:@""];
+                    }
                 }
             }
         }
@@ -469,27 +476,146 @@
     
     
 }
+
+-(void)buyStock:(NSString*)token{
+    UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
+    NSString* url = @"exchange/trade/add";
+    NSDictionary* parameters = @{@"market":self.marketNamelabel.titleLabel.text,
+                                 @"num":@([self.purchaseAmountInput.text floatValue]),
+                                 @"price":@([self.purchasePriceInput.text floatValue]),
+                                 @"mode":@"buy",
+                                 @"is_limit":@(1),
+                                 @"asset_token":token
+                                 };
+    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+        if(success){
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"挂单成功"];
+                
+                NSString* type = self.title;
+                NSString* stcokname = self.marketNamelabel.titleLabel.text;
+                NSDate *currentDate = [NSDate date];
+                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                [dateFormatter setDateFormat:@"yyy-MM-dd HH:mm:ss"];
+                NSString *currentDateString = [dateFormatter stringFromDate:currentDate];
+                NSString* price = self.priceRMBLabel.text;
+                NSString* amount = self.purchaseAmountInput.text;
+                NSString* real = self.purchasePriceInput.text;
+                
+                [self.dealData removeAllObjects];
+                [self.dealData setObject:type forKey:@"DealType"];
+                [self.dealData setObject:stcokname forKey:@"StockName"];
+                [self.dealData setObject:currentDateString forKey:@"DealTime"];
+                [self.dealData setObject:price forKey:@"DealPrice"];
+                [self.dealData setObject:amount forKey:@"DealAmount"];
+                [self.dealData setObject:real forKey:@"DealMoney"];
+                
+                [self setMoneyInfo];
+                [self.radioBtn setSelectIndex:-1];
+                self.purchaseAmountInput.text = @"000.0000";
+                self.purchasePriceInput.text = @"000.000";
+                
+                [self.dealList reloadData];
+            }
+        }
+    }];
+}
+
+-(void)sellStock:(NSString*)token{
+    UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
+    NSString* url = @"exchange/trade/add";
+    NSDictionary* parameters = @{@"market":self.marketNamelabel.titleLabel.text,
+                                 @"num":@([self.purchaseAmountInput.text floatValue]),
+                                 @"price":@([self.purchasePriceInput.text floatValue]),
+                                 @"mode":@"sell",
+                                 @"is_limit":@(1),
+                                 @"asset_token":token
+                                 };
+    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+        if(success){
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"挂单成功"];
+                
+                NSString* type = self.title;
+                NSString* stcokname = self.marketNamelabel.titleLabel.text;
+                NSDate *currentDate = [NSDate date];
+                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                [dateFormatter setDateFormat:@"yyy-MM-dd HH:mm:ss"];
+                NSString *currentDateString = [dateFormatter stringFromDate:currentDate];
+                NSString* price = self.priceRMBLabel.text;
+                NSString* amount = self.purchaseAmountInput.text;
+                NSString* real = self.purchasePriceInput.text;
+                
+                [self.dealData removeAllObjects];
+                [self.dealData setObject:type forKey:@"DealType"];
+                [self.dealData setObject:stcokname forKey:@"StockName"];
+                [self.dealData setObject:currentDateString forKey:@"DealTime"];
+                [self.dealData setObject:price forKey:@"DealPrice"];
+                [self.dealData setObject:amount forKey:@"DealAmount"];
+                [self.dealData setObject:real forKey:@"DealMoney"];
+                
+                [self setMoneyInfo];
+                [self.radioBtn setSelectIndex:-1];
+                self.purchaseAmountInput.text = @"000.0000";
+                self.purchasePriceInput.text = @"000.000";
+                
+                [self.dealList reloadData];
+            }
+        }
+    }];
+}
 - (IBAction)clickAddPruchaseAmount:(id)sender {
-    float amount = [self.purchaseAmountLabel.text floatValue];
+    float amount = [self.purchaseAmountInput.text floatValue];
+    float available = [[self.canButAmount.text substringFromIndex:[self.canButAmount.text rangeOfString:@"可买 "].length] floatValue];
     amount++;
-    self.purchaseAmountLabel.text = [NSString stringWithFormat:@"%.4f",amount];
+    if(amount>available){
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"超出所能购买的最多数目了"];
+    }else{
+        self.purchaseAmountInput.text = [NSString stringWithFormat:@"%.4f",amount];
+        float price = amount*([[self.priceRMBLabel.text substringFromIndex:1] floatValue]);
+        self.purchasePriceInput.text = [NSString stringWithFormat:@"%.3f",price];
+    }
+    
 }
 - (IBAction)clickAReducePruchaseAmount:(id)sender {
-    float amount = [self.purchaseAmountLabel.text floatValue];
+    float amount = [self.purchaseAmountInput.text floatValue];
     amount--;
-    self.purchaseAmountLabel.text = [NSString stringWithFormat:@"%.4f",amount];
+    if(amount<0){
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"数目不可小于0"];
+    }else{
+        self.purchaseAmountInput.text = [NSString stringWithFormat:@"%.4f",amount];
+        float price = amount*([[self.priceRMBLabel.text substringFromIndex:1] floatValue]);
+        self.purchasePriceInput.text = [NSString stringWithFormat:@"%.3f",price];
+    }
+    
 }
 - (IBAction)clickReducePruchasePrice:(id)sender {
-    float price = [self.purchasePriceLabel.text floatValue];
+    float price = [self.purchasePriceInput.text floatValue];
     price--;
-    self.purchasePriceLabel.text = [NSString stringWithFormat:@"%.3f",price];
+    if(price<0){
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"购买总价不可低于0"];
+    }else{
+        self.purchasePriceInput.text = [NSString stringWithFormat:@"%.3f",price];
+        float amount = price/([[self.priceRMBLabel.text substringFromIndex:1] floatValue]);
+        self.purchaseAmountInput.text = [NSString stringWithFormat:@"%.4f",amount];
+    }
+    
 }
 - (IBAction)clickAddPruchasePrice:(id)sender {
-    float price = [self.purchasePriceLabel.text floatValue];
+    float price = [self.purchasePriceInput.text floatValue];
+    float available = [[self.avaliableMoney.text substringFromIndex:[self.avaliableMoney.text rangeOfString:@"可用 "].length] floatValue];
     price++;
-    self.purchasePriceLabel.text = [NSString stringWithFormat:@"%.3f",price];
+    if(price>available){
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"购买总价不可高于总余额"];
+    }else{
+        self.purchasePriceInput.text = [NSString stringWithFormat:@"%.3f",price];
+        float amount = price/([[self.priceRMBLabel.text substringFromIndex:1] floatValue]);
+        self.purchaseAmountInput.text = [NSString stringWithFormat:@"%.4f",amount];
+    }
+    
 }
 - (IBAction)clickCancel:(id)sender {
+    
 }
 
 #pragma mark ---------SocketDalegate------------
@@ -531,6 +657,13 @@
         
     }
 }
+#pragma mark - Cancel Delegate
+
+-(void)sendCancelNotice{
+    [self.dealData removeAllObjects];
+    [self.dealList reloadData];
+}
+
 
 #pragma mark - Table view data source
 
@@ -558,9 +691,13 @@
     }
     
     if(tableView == self.dealList){
-        return 1;
+        if(self.dealData.count>0){
+            return 1;
+        }else{
+            return 0;
+        }
+        
     }
-
         return 5;
 }
 
@@ -653,7 +790,24 @@
         PendingOrderTableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
         if(!cell){
             cell = [[[NSBundle mainBundle] loadNibNamed:@"PendingOrderTableViewCell" owner:self options:nil] objectAtIndex:0];
+            
+            cell.delegate = self;
         }
+        
+        
+        cell.typeLabel.text = [self.dealData objectForKey:@"DealType"];
+        
+        if([self.title isEqualToString:@"买入"]){
+            cell.isBuyIn = YES;
+        }else if([self.title isEqualToString:@"卖出"]){
+            cell.isBuyIn = NO;
+        }
+        
+        cell.stockName.text = [self.dealData objectForKey:@"StockName"];
+        cell.timeLabel.text = [self.dealData objectForKey:@"DealTime"];
+        cell.priceLabel.text = [self.dealData objectForKey:@"DealPrice"];
+        cell.amountLabel.text = [self.dealData objectForKey:@"DealAmount"];
+        cell.realLabel.text = [self.dealData objectForKey:@"DealMoney"];
         
         return cell;
     }
@@ -702,6 +856,8 @@
         [self.sortGuideView setHidden:YES];
         
         [self setStcokInfo:self.infoArray[indexPath.row]];
+        
+        
     }
     
     if(tableView == self.askList || tableView == self.bidsList){

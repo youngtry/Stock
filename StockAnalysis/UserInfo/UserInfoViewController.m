@@ -72,7 +72,7 @@
         [self.navigationController popToRootViewControllerAnimated:YES];
         NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
         [defaultdata setBool:NO forKey:@"IsLogin"];
-        
+        self.tabBarController.tabBar.hidden = NO;
         [self.navigationController popViewControllerAnimated:YES];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"ChangeAfterLogin" object:nil];
     }];

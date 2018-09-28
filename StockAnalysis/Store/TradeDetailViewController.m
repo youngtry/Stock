@@ -17,6 +17,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    UITapGestureRecognizer *f = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(test)];
+    [self.view addGestureRecognizer:f];
+    self.view.userInteractionEnabled = YES;
+}
+
+-(void)test{
+    [self.view endEditing:YES];
 }
 
 - (void)didReceiveMemoryWarning {

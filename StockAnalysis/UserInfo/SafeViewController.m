@@ -29,6 +29,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *passwordInput;
 @property (weak, nonatomic) IBOutlet UISwitch *switchBtn;
 @property (nonatomic, assign) NSInteger verifyType;
+@property (weak, nonatomic) IBOutlet UISwitch *guestureSwitchbBtn;
 @end
 
 @implementation SafeViewController
@@ -82,6 +83,20 @@
             }
         }
     }];
+    
+    NSString* url2 = @"account/has_gesture";
+    NSDictionary* params2 = @{};
+    [[HttpRequest getInstance] getWithURL:url2 parma:params2 block:^(BOOL success, id data) {
+        if(success){
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                if([[[data objectForKey:@"data"] objectForKey:@"has_gesture"] boolValue]){
+                    [_guestureSwitchbBtn setOn:YES];
+                }else{
+                    [_guestureSwitchbBtn setOn:NO];
+                }
+            }
+        }
+    }];
 }
 
 
@@ -128,9 +143,9 @@
     
 }
 - (IBAction)clickGestureVerify:(id)sender {
-    UISwitch* btn = (UISwitch*)sender;
-    BOOL ison = [btn isOn];
-    NSLog(@"clickGestureVerify ison = %d",ison);
+    
+    _verifyType = 4;
+    [self.verifyView setHidden:NO];
 }
 - (IBAction)clickTwiceVerify:(id)sender {
     UISwitch* btn = (UISwitch*)sender;
@@ -217,9 +232,7 @@
         if(success){
             if([[data objectForKey:@"ret"] intValue] == 1){
                 NSString* temp = [[data objectForKey:@"data"] objectForKey:@"verity_token"];
-                
-                
-                
+
                 [[AppData getInstance] setTempVerify:temp];
                 
                 [self clickCancelVerifyBtn:nil];
@@ -249,6 +262,27 @@
                             }
                         }
                     }];
+                }else if (_verifyType == 4){
+                    BOOL ison = [_guestureSwitchbBtn isOn];
+                    if(!ison){
+                        NSDictionary *parameters = @{  @"gesture": @"" ,
+                                                       @"verity_token":[[AppData getInstance] getTempVerify]
+                                                       };
+                        
+                        NSString* url = @"account/set_gesture";
+                        [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+                            if(success){
+                                if([[data objectForKey:@"ret"] intValue] == 1){
+                                    [_guestureSwitchbBtn setOn:NO];
+                                }
+                            }
+                        }];
+                    }else{
+                        SetPasswordViewController *vc = [[SetPasswordViewController alloc] init];
+                        [vc setTitle:@"设置手势密码"];
+                        [self.navigationController pushViewController:vc animated:YES];
+                    }
+                    
                 }
                 
                 

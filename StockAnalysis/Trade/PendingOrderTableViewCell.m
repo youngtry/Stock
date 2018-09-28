@@ -34,4 +34,9 @@
         self.typeLabel.textColor = kSoldOutRed;
     }
 }
+- (IBAction)clickCancel:(id)sender {
+    if(self.delegate && [self.delegate respondsToSelector:@selector(sendCancelNotice)]){
+        [self.delegate sendCancelNotice];
+    }
+}
 @end

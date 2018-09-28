@@ -10,7 +10,8 @@
 #import "HttpRequest.h"
 #import "HUDUtil.h"
 #import "AppData.h"
-
+#import "LoginViewController.h"
+#import "GameData.h"
 #define ScreenHeight [[UIScreen mainScreen] bounds].size.height
 #define ScreenWidth [[UIScreen mainScreen] bounds].size.width
 
@@ -24,6 +25,7 @@
 @property (nonatomic,strong)UILabel* settitle;
 
 @property (nonatomic,strong)UIButton* skipSetBtn;
+@property (nonatomic,strong)UIButton* forgetSetBtn;
 @end
 
 @implementation SetPasswordViewController
@@ -75,10 +77,18 @@
     }
     
     [self.view addSubview:self.skipSetBtn];
+    [self.view addSubview:self.forgetSetBtn];
+
     if([self.title isEqualToString:@"设置手势密码"]){
         [self.skipSetBtn setHidden:NO];
     }else{
         [self.skipSetBtn setHidden:YES];
+    }
+    
+    if([self.title isEqualToString:@"输入手势密码"]){
+        [self.forgetSetBtn setHidden:NO];
+    }else{
+        [self.forgetSetBtn setHidden:YES];
     }
     
 
@@ -102,7 +112,7 @@
     if(nil == _skipSetBtn){
         _skipSetBtn = [UIButton buttonWithType:UIButtonTypeSystem];
         [_skipSetBtn setTitle:@"暂不设置" forState:UIControlStateNormal];
-        [_skipSetBtn setFrame:CGRectMake(kScreenWidth*0.6, kScreenHeight*0.9, kScreenWidth*0.2, 20)];
+        [_skipSetBtn setFrame:CGRectMake(kScreenWidth*0.6, kScreenHeight*0.8, kScreenWidth*0.2, 20)];
         [_skipSetBtn setTintColor:kColorRGBA(0, 0, 0, 0.25)];
         [_skipSetBtn addTarget:self action:@selector(clickSkipBtn) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -110,8 +120,74 @@
     return _skipSetBtn;
 }
 
+-(UIButton*)forgetSetBtn{
+    if(nil == _forgetSetBtn){
+        _forgetSetBtn = [UIButton buttonWithType:UIButtonTypeSystem];
+        [_forgetSetBtn setTitle:@"忘记密码" forState:UIControlStateNormal];
+        [_forgetSetBtn setFrame:CGRectMake(kScreenWidth*0.6, kScreenHeight*0.9, kScreenWidth*0.2, 20)];
+        [_forgetSetBtn setTintColor:kColorRGBA(0, 0, 0, 0.25)];
+        [_forgetSetBtn addTarget:self action:@selector(getTempVerify) forControlEvents:UIControlEventTouchUpInside];
+    }
+    
+    return _forgetSetBtn;
+}
+
+
+-(void)getTempVerify{
+    NSString* url = @"account/veritypwd";
+    NSDictionary* params = @{@"password":[GameData getUserPassword]};
+    [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
+        if(success){
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                NSString* temp = [[data objectForKey:@"data"] objectForKey:@"verity_token"];
+                
+                [[AppData getInstance] setTempVerify:temp];
+                
+                [self clickForgetBtn];
+                
+            }else{
+                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+            }
+        }
+    }];
+    
+}
+
+-(void)clickForgetBtn{
+    NSDictionary *parameters = @{  @"gesture": @"" ,
+                                   @"verity_token":[[AppData getInstance] getTempVerify]
+                                   };
+    
+    NSString* url = @"account/set_gesture";
+    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+        if(success){
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                LoginViewController* vc = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];
+                [self.navigationController pushViewController:vc animated:YES];
+            }
+            
+        }
+    }];
+    
+    
+}
+
 -(void)clickSkipBtn{
-    [self.navigationController popViewControllerAnimated:YES];
+    NSDictionary *parameters = @{  @"gesture": @"" ,
+                                   @"verity_token":[[AppData getInstance] getTempVerify]
+                                   };
+    
+    NSString* url = @"account/set_gesture";
+    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+        if(success){
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                [self.navigationController popViewControllerAnimated:YES];
+            }
+            
+        }
+    }];
+    
+    
 }
 
 -(NSMutableArray *)selectorArr
@@ -204,7 +280,10 @@
             }
         }
     }
-    self.imageView.image = [self drawLine];//每次移动过程中都要调用这个方法，把画出的图输出显示
+    if(self.selectorArr.count>0){
+       self.imageView.image = [self drawLine];//每次移动过程中都要调用这个方法，把画出的图输出显示
+    }
+    
     
 }
 //手势结束触发
@@ -217,7 +296,9 @@
         gesture = [NSString stringWithFormat:@"%@%ld",gesture,(long)tag];
     }
     NSLog(@"gesture =%@",gesture);
-    
+    if(self.selectorArr.count == 0){
+        return;
+    }
     NSDictionary *parameters = @{  @"gesture": gesture ,
                                    @"verity_token":[[AppData getInstance] getTempVerify]
                                    };

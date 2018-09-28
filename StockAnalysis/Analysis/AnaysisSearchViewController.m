@@ -266,23 +266,21 @@
                     
                     if(market.count>0){
                         NSArray* result = [market objectForKey:@"market"];
-                        //                    NSLog(@"搜索结果：%@,%@",result,data);
+                        [[SearchData getInstance].searchList removeAllObjects];
+                        NSLog(@"搜索结果：%@,%@",result,data);
                         if(result.count >0){
-                            [[SearchData getInstance].searchList removeAllObjects];
+                            
                             for (int i=0; i<result.count; i++) {
                                 NSDictionary* info = result[i];
 //                                NSLog(@"i= %d,info = %@",i,info);
                                 [[SearchData getInstance].searchList addObject:info];
                                 
                             }
-                            
-                            if([_historyView isHidden]){
-                                [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowSearchList" object:nil];
-                            }else{
-                                [self addDataToShowList];
-                            }
-                            
-                            
+                        }
+                        if([_historyView isHidden]){
+                            [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowSearchList" object:nil];
+                        }else{
+                            [self addDataToShowList];
                         }
                     }
                 }
@@ -300,19 +298,21 @@
                     
                     if(market.count>0){
                         NSArray* result = [market objectForKey:@"assets"];
-                        //                    NSLog(@"搜索结果：%@,%@",result,data);
+                        //
+                        [[SearchData getInstance].searchList removeAllObjects];
+                        NSLog(@"搜索结果：%@,%@",result,data);
                         if(result.count >0){
-                            [[SearchData getInstance].searchList removeAllObjects];
+                            
                             for (int i=0; i<result.count; i++) {
                                 NSDictionary* info = result[i];
 //                                NSLog(@"i= %d,info = %@",i,info);
                                 [[SearchData getInstance].searchList addObject:info];
                                 
                             }
-                            if([_historyView isHidden]){
-                                [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowSearchList" object:nil];
-                            }
-                            
+                        }
+                        
+                        if([_historyView isHidden]){
+                            [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowSearchList" object:nil];
                         }
                     }
                 }
