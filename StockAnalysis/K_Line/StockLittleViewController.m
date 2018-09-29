@@ -19,6 +19,7 @@
 #import "Y_StockChartViewController.h"
 #import "PriceTipViewController.h"
 #import "SearchData.h"
+#import "TradePurchaseViewController.h"
 #define IS_IPHONE (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
 #define SCREEN_MAX_LENGTH MAX(kScreenWidth,kScreenHeight)
 #define IS_IPHONE_X (IS_IPHONE && SCREEN_MAX_LENGTH == 812.0)
@@ -45,6 +46,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *MACDBtn;
 @property (weak, nonatomic) IBOutlet UIButton *settingBtn;
 @property (weak, nonatomic) IBOutlet UIButton *switchBtn;
+
 
 
 
@@ -432,6 +434,14 @@
             }
         }
     }
+}
+- (IBAction)clickBuy:(id)sender {
+//    TradePurchaseViewController* vc = [[TradePurchaseViewController alloc] initWithNibName:@"TradePurchaseViewController" bundle:nil];
+//    vc.title = @"买入";
+//    [self.navigationController pushViewController:vc animated:YES];
+//    [vc setTradeName:self.title];
+}
+- (IBAction)clickSell:(id)sender {
 }
 
 -(void)requestSubscribe{
@@ -1048,5 +1058,4 @@
     // Pass the selected object to the new view controller.
 }
 */
-
 @end

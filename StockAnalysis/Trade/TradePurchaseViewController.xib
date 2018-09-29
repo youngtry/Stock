@@ -27,6 +27,7 @@
                 <outlet property="editNumContainer" destination="Rem-vS-SPe" id="Sfm-ZH-IfE"/>
                 <outlet property="editPercentContainer" destination="c60-AZ-nqG" id="Cbz-r1-nHW"/>
                 <outlet property="editPriceContainer" destination="MIl-iB-rVL" id="WHS-h4-X3Z"/>
+                <outlet property="enterKLine" destination="vBN-6e-yMJ" id="rSa-t3-O5g"/>
                 <outlet property="marketNamelabel" destination="3fE-YV-80o" id="C7f-hS-2vQ"/>
                 <outlet property="marketPriceLabel" destination="Arp-M6-wjK" id="Ek2-Dd-S4n"/>
                 <outlet property="marketPriceView" destination="FaO-Ml-PHi" id="ltU-TW-Etv"/>

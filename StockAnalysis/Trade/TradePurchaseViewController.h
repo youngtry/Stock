@@ -12,4 +12,6 @@
 
 @interface TradePurchaseViewController : BaseViewController
 
+@property(nonatomic,strong)NSString* tradeName;
+
 @end

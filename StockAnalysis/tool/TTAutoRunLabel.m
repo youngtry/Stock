@@ -143,7 +143,7 @@
     CAKeyframeAnimation *moveAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
     moveAnimation.path = movePath.CGPath;
     moveAnimation.removedOnCompletion = YES;
-    NSLog(@"_animationViewWidth = %f",_animationViewWidth);
+//    NSLog(@"_animationViewWidth = %f",_animationViewWidth);
 //    moveAnimation.duration = _animationViewWidth;
     moveAnimation.duration = 4.0;
     moveAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];

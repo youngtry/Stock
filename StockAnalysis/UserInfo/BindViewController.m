@@ -48,8 +48,18 @@
         _verify2Input.placeholder = @"输入邮箱验证码";
         [self returnCountryCode:@"+86"];
     }
+    
+    UITapGestureRecognizer *f = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(test)];
+    [self.view addGestureRecognizer:f];
+    self.view.userInteractionEnabled = YES;
+    
+    [self.confirmBtn setBackgroundColor:[UIColor colorWithRed:224.0/255.0 green:224.0/255.0 blue:224.0/255.0 alpha:1.0]];
+    [self.confirmBtn setEnabled:NO];
+    
 }
-
+-(void)test{
+    [self.view endEditing:YES];
+}
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.tabBarController.tabBar.hidden = YES;
@@ -69,13 +79,32 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
--(BOOL)chechInput{
-    if(_bindAddressInput.text.length==0){
-        
-        [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"输入不正确,请重新输入"];
-        
-        return NO;
+- (IBAction)endEdit:(id)sender {
+    if([self chechInput]){
+        [self.confirmBtn setBackgroundColor:[UIColor colorWithRed:243.0/255.0 green:186.0/255.0 blue:46.0/255.0 alpha:1.0]];
+        [self.confirmBtn setEnabled:YES];
+    }else{
+        [self.confirmBtn setBackgroundColor:[UIColor colorWithRed:224.0/255.0 green:224.0/255.0 blue:224.0/255.0 alpha:1.0]];
+        [self.confirmBtn setEnabled:NO];
     }
+}
+-(BOOL)chechInput{
+    if([self.title isEqualToString:@"绑定邮箱"]){
+        if(_mailAddressInput.text.length==0){
+            
+            [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"输入不正确,请重新输入"];
+            
+            return NO;
+        }
+    }else if ([self.title isEqualToString:@"绑定手机"]){
+        if(_bindAddressInput.text.length==0){
+            
+            [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"输入不正确,请重新输入"];
+            
+            return NO;
+        }
+    }
+    
     if(_verify1Input.text.length==0){
         [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"输入不正确,请重新输入"];
         return NO;
@@ -89,10 +118,6 @@
     
 }
 - (IBAction)clickComfirm:(id)sender {
-    
-    if(![self chechInput]){
-        return;
-    }
     
     if([self.title isEqualToString:@"绑定手机"]){
         NSString* url = @"account/bind_phone";

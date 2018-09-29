@@ -16,6 +16,7 @@
 #import "MoneyVerifyViewController.h"
 #import "SortView.h"
 #import "PendingOrderTableViewCell.h"
+#import "StockLittleViewController.h"
 @interface TradePurchaseViewController ()<SocketDelegate,UITableViewDelegate,UITableViewDataSource,CancelDelegate>
 @property (weak, nonatomic) IBOutlet UIView *editNumContainer;
 @property (weak, nonatomic) IBOutlet UIView *editPriceContainer;
@@ -58,6 +59,7 @@
 @property (nonatomic,strong)NSMutableArray* bidsArray;
 @property (weak, nonatomic) IBOutlet UITableView *dealList;
 
+@property (weak, nonatomic) IBOutlet UIImageView *enterKLine;
 @property (nonatomic,strong)NSMutableDictionary* dealData;
 
 @property (nonatomic)BOOL firstOpen;
@@ -77,6 +79,8 @@
     self.bidsArray = [NSMutableArray new];
     
     self.dealData = [NSMutableDictionary new];
+    
+    self.tradeName = @"";
     
     self.stcokInfoView.delegate = self;
     self.stcokInfoView.dataSource = self;
@@ -254,6 +258,53 @@
     [SocketInterface sharedManager].delegate = self;
     [self requestAnalysis];
     
+    [self.enterKLine setUserInteractionEnabled:YES];
+    
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
+    [self.enterKLine addGestureRecognizer:singleTap];
+    
+}
+
+- (void)handleSingleTap:(UIGestureRecognizer *)gestureRecognizer {
+    UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
+    NSString* name = self.marketNamelabel.titleLabel.text;
+    StockLittleViewController* vc = [[StockLittleViewController alloc] initWithNibName:@"StockLittleViewController" bundle:nil];
+    vc.title = name;
+    [temp pushViewController:vc animated:YES];
+}
+
+-(void)setTradeName:(NSString *)tradeName{
+    _tradeName = tradeName;
+
+    NSDictionary* parameters = @{@"order_by":@"price",
+                                 @"order":@"desc",
+                                 @"asset":_tradeName
+                                 };
+    NSString* url = @"market/item";
+    
+    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+        if(success){
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                self.infoArray = [[data objectForKey:@"data"] objectForKey:@"items"];
+                if(self.infoArray){
+                    NSLog(@"items = %@",self.infoArray);
+                    
+                    if(self.infoArray.count>0){
+                        NSDictionary* stockinfo = self.infoArray[0];
+                        [self setStcokInfo:stockinfo];
+                    }
+                    [self.stcokInfoView reloadData];
+                    
+                    NSInteger selectedIndex1 = 0;
+                    NSIndexPath *selectedIndexPath1 = [NSIndexPath indexPathForRow:selectedIndex1 inSection:0];
+                    [self.stcokInfoView selectRowAtIndexPath:selectedIndexPath1 animated:NO scrollPosition:UITableViewScrollPositionNone];
+                    
+                    
+                    [self.marketNamelabel setTitle:_tradeName forState:UIControlStateNormal];
+                }
+            }
+        }
+    }];
 }
 
 -(void)getTradeInfo:(NSString*)name{
