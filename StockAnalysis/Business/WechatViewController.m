@@ -36,6 +36,11 @@
     self.view.userInteractionEnabled = YES;
     
     [self.saveBtn setEnabled:NO];
+    
+    NSString *fullPath = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"] stringByAppendingPathComponent:@"wechat_pay.jpg"];
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    [fileManager removeItemAtPath:fullPath error:nil];
 }
 -(void)test{
     [self.view endEditing:YES];
@@ -53,10 +58,7 @@
 -(void)viewDidDisappear:(BOOL)animated{
     [super viewDidDisappear:animated];
     
-    NSString *fullPath = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"] stringByAppendingPathComponent:@"wechat_pay.jpg"];
     
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    [fileManager removeItemAtPath:fullPath error:nil];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -65,6 +67,8 @@
 - (IBAction)clickSaveBtn:(id)sender {
     
     MoneyVerifyViewController* vc = [[MoneyVerifyViewController alloc] initWithNibName:@"MoneyVerifyViewController" bundle:nil];
+    vc.modalPresentationStyle = UIModalPresentationOverFullScreen;
+    self.definesPresentationContext = YES;
     [self.navigationController presentViewController:vc animated:YES completion:nil];
     
     vc.block = ^(NSString* token) {
@@ -83,7 +87,8 @@
             NSString* url = @"wallet/set_wechat_pay";
             NSDictionary* params = @{@"name":self.wechatNickname.text,
                                      @"wechat_id":self.wechatID.text,
-                                     @"phone_captcha":self.verifyInput.text
+                                     @"phone_captcha":self.verifyInput.text,
+                                     @"asset_token":token
                                      };
             
             NSDictionary* file = @{@"paycode":fullPath};
@@ -95,6 +100,7 @@
                         [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"设置成功"];
                         [fileManager removeItemAtPath:fullPath error:nil];
                         [self.navigationController popViewControllerAnimated:YES];
+                        
                     }else{
                         [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:[data objectForKey:@"msg"]];
                     }
@@ -180,7 +186,7 @@
 #pragma mark -实现图片选择器代理-（上传图片的网络请求也是在这个方法里面进行，这里我不再介绍具体怎么上传图片）
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     [picker dismissViewControllerAnimated:YES completion:^{}];
-    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage]; //通过key值获取到图片
+    UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage]; //通过key值获取到图片
 
     _erweimaImage.image = image;
     [_upBtn setHidden:YES];

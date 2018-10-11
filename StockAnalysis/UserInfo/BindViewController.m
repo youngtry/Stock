@@ -19,6 +19,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *confirmBtn;
 @property (weak, nonatomic) IBOutlet UITextField *mailAddressInput;
 @property (weak, nonatomic) IBOutlet UIButton *districtbtn;
+@property (weak, nonatomic) IBOutlet UILabel *distrcLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *arrowImage;
+@property (weak, nonatomic) IBOutlet UILabel *tipLabel;
 
 @end
 
@@ -33,20 +36,27 @@
         [_bindAddressInput setHidden:YES];
         [_districtbtn setHidden:YES];
         [_mailAddressInput setHidden:NO];
+        [self.distrcLabel setHidden:YES];
+        [self.arrowImage setHidden:YES];
         _verify1Name.text = @"邮箱验证码";
         _verify1Input.placeholder = @"输入邮箱验证码";
         _verify2name.text = @"短信验证码";
         _verify2Input.placeholder = @"输入短信验证码";
+        _tipLabel.text = @"注意：一经绑定，无法修改，请填写真实有效邮箱";
     }else if ([self.title isEqualToString:@"绑定手机"]){
         _bindName.text = @"手机号码";
         [_bindAddressInput setHidden:NO];
         [_districtbtn setHidden:NO];
         [_mailAddressInput setHidden:YES];
+        [self.distrcLabel setHidden:NO];
+        [self.arrowImage setHidden:NO];
         _verify1Name.text = @"短信验证码";
         _verify1Input.placeholder = @"输入短信验证码";
         _verify2name.text = @"邮箱验证码";
         _verify2Input.placeholder = @"输入邮箱验证码";
-        [self returnCountryCode:@"+86"];
+//        [self returnCountryCode:@"+86"];
+        self.distrcLabel.text = @"+86";
+        _tipLabel.text = @"注意：一经绑定，无法修改，请填写真实有效手机号";
     }
     
     UITapGestureRecognizer *f = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(test)];
@@ -124,7 +134,7 @@
         NSDictionary* params = @{@"phone":_bindAddressInput.text,
                                  @"phone_captcha":_verify1Input.text,
                                  @"email_captcha":_verify2Input.text,
-                                 @"district":self.districtbtn.titleLabel.text
+                                 @"district":self.distrcLabel.text
                                  };
         [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
             if(success){
@@ -162,7 +172,8 @@
         NSLog(@"countryCodeStr = %@",countryCodeStr);
         countryCodeStr = [countryCodeStr substringFromIndex:[countryCodeStr rangeOfString:@"+"].location];
         NSLog(@"countryCodeStr = %@",countryCodeStr);
-        [self.districtbtn.titleLabel setText:countryCodeStr];
+//        [self.districtbtn.titleLabel setText:countryCodeStr];
+        self.distrcLabel.text = countryCodeStr;
     }];
     
     [self.navigationController pushViewController:countrycodeVC animated:YES];
@@ -173,7 +184,8 @@
     
     countryCode = [countryCode substringFromIndex:[countryCode rangeOfString:@"+"].location];
     NSLog(@"countryCode = %@",countryCode);
-    [self.districtbtn.titleLabel setText:countryCode];
+//    [self.districtbtn.titleLabel setText:countryCode];
+    self.distrcLabel.text = countryCode;
    
 }
 

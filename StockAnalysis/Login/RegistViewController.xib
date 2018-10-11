@@ -13,6 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RegistViewController">
             <connections>
                 <outlet property="countryCodeButton" destination="6YM-lR-B2X" id="pgv-IH-dRg"/>
+                <outlet property="distrcLabel" destination="7ub-Rj-Ggr" id="W8T-yQ-XQs"/>
                 <outlet property="lookPwBtn" destination="fe8-Rf-V1S" id="XPZ-sO-cbD"/>
                 <outlet property="passwordInput" destination="6PM-Tp-zUB" id="zrF-Aq-37n"/>
                 <outlet property="phoneInput" destination="jmV-dU-bPL" id="hTN-qT-0m5"/>
@@ -65,11 +66,12 @@
                             </constraints>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6YM-lR-B2X">
-                            <rect key="frame" x="37" y="15" width="87" height="22"/>
+                            <rect key="frame" x="37" y="12" width="87" height="25"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="87" id="Ou8-5n-awP"/>
+                                <constraint firstAttribute="height" constant="25" id="tph-cc-j9U"/>
                             </constraints>
-                            <state key="normal" title="+12345" image="arrow_down">
+                            <state key="normal">
                                 <color key="titleColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
                             <connections>
@@ -140,6 +142,17 @@
                                 <action selector="clickLookPw:" destination="-1" eventType="touchUpInside" id="Hd6-Vm-mT7"/>
                             </connections>
                         </button>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="arrow_down" translatesAutoresizingMaskIntoConstraints="NO" id="TLL-FP-C43">
+                            <rect key="frame" x="100" y="23" width="15" height="9"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="+12345" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7ub-Rj-Ggr">
+                            <rect key="frame" x="33" y="17" width="91" height="21"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>

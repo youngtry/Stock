@@ -54,9 +54,9 @@
     [self.priceSwitchBtn setOn:self.isTip];
     [self.priceTipSettingView setHidden:!self.isTip];
     if(self.isTip){
-        [self requetTipInfo];
+        
     }
-    
+    [self requetTipInfo];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -135,7 +135,7 @@
     
     if(self.isUpdate){
         self.state = @"enable";
-        NSString* url = @"market/notice/state";
+        NSString* url = @"market/notice/update";
         NSDictionary* params = @{@"notice_id":@(self.accountID),
                                  @"state":self.state,
                                  @"upper_limit":@([self.topLimitInput.text intValue]),
@@ -162,8 +162,11 @@
         [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
             if(success){
                 if([[data objectForKey:@"ret"] intValue] == 1){
-                    [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"价格提醒添加成功"];
-                    [self.navigationController popViewControllerAnimated:YES];
+//                    [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"价格提醒添加成功"];
+//                    [self.navigationController popViewControllerAnimated:YES];
+                    self.isUpdate = YES;
+                    self.accountID = [[[data objectForKey:@"data"] objectForKey:@"notice_id"] intValue];
+                    [self clickSaveBtn:nil];
                 }else{
                     [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:[data objectForKey:@"msg"]];
                 }

@@ -9,7 +9,7 @@
 #import "EntryOrdersVC.h"
 #import "PendingOrderTableViewCell.h"
 #import "EntryOrderDetailVC.h"
-@interface EntryOrdersVC ()<UITableViewDelegate,UITableViewDataSource>
+@interface EntryOrdersVC ()<UITableViewDelegate,UITableViewDataSource,CancelDelegate>
 @property(nonatomic,strong)UITableView *tableView;
 @property(nonatomic,strong)NSMutableArray *data;
 @property(nonatomic,assign)NSInteger currentPage;
@@ -72,6 +72,23 @@
     
 }
 
+-(void)sendCancelNotice:(BOOL)success withReason:(NSString *)msg{
+    if(success){
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"撤销成功"];
+        self.currentPage = 0;
+        self.isUpdate = YES;
+        if(self.state == Trade_All){
+            [self getAllList:1];
+        }else if (self.state == Trade_BuyIn){
+            [self getBuyList:1];
+        }else if (self.state == Trade_SoldOut){
+            [self getSellList:1];
+        }
+    }else{
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:msg];
+    }
+}
+
 -(void)getAllList:(NSInteger) page{
     self.currentPage = page;
     NSString* url = @"exchange/trades";
@@ -106,6 +123,7 @@
     NSString* url = @"exchange/trades";
     NSDictionary* params = @{@"page":@(page),
                              @"page_limit":@(10),
+                             @"mode":@"buy"
                              };
     [HUDUtil showHudViewInSuperView:self.view withMessage:@"数据加载中……"];
     [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
@@ -138,6 +156,7 @@
     NSString* url = @"exchange/trades";
     NSDictionary* params = @{@"page":@(page),
                              @"page_limit":@(10),
+                             @"mode":@"sell"
                              };
     [HUDUtil showHudViewInSuperView:self.view withMessage:@"数据加载中……"];
     [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
@@ -176,7 +195,7 @@
     if(!cell){
         cell = [[[NSBundle mainBundle] loadNibNamed:@"PendingOrderTableViewCell" owner:self options:nil] objectAtIndex:0];
     }
-    
+    cell.delegate = self;
     NSDictionary* data = self.data[indexPath.row];
     
     cell.stockName.text = [data objectForKey:@"market"];
@@ -192,7 +211,7 @@
     cell.priceLabel.text = [data objectForKey:@"price"];
     cell.amountLabel.text = [data objectForKey:@"num"];
     cell.realLabel.text = [data objectForKey:@"deal_money"];
-    
+    cell.tradeID = [data objectForKey:@"id"];
     return cell;
 }
 

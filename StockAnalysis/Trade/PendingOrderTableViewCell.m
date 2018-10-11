@@ -16,6 +16,7 @@
     [super awakeFromNib];
     // Initialization code
     self.isBuyIn = YES;
+    self.tradeID = @"0";
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -35,8 +36,24 @@
     }
 }
 - (IBAction)clickCancel:(id)sender {
-    if(self.delegate && [self.delegate respondsToSelector:@selector(sendCancelNotice)]){
-        [self.delegate sendCancelNotice];
-    }
+    
+    NSString* url = @"exchange/trade/cancel";
+    NSDictionary* params = @{@"trade_id":self.tradeID};
+    
+    [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
+        if(success){
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                if(self.delegate && [self.delegate respondsToSelector:@selector(sendCancelNotice:withReason:)]){
+                    [self.delegate sendCancelNotice:YES withReason:@""];
+                }
+            }else{
+                if(self.delegate && [self.delegate respondsToSelector:@selector(sendCancelNotice:withReason:)]){
+                    [self.delegate sendCancelNotice:NO withReason:[data objectForKey:@"msg"]];
+                }
+            }
+        }
+    }];
+    
+    
 }
 @end

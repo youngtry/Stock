@@ -38,16 +38,7 @@
     self.moneyList.dataSource = self;
     
     
-    NSDictionary *parameters = @{ @"type": @"exchange"};
     
-    NSString* url = @"wallet/balance";
-    
-//    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"GetExchangeBack"];
-    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
-        if(success){
-            [self getExchangeBack:data];
-        }
-    }];
     
     
     
@@ -82,6 +73,20 @@
                     
                 }
             }
+        }
+    }];
+    
+    [self requestExchangeList];
+}
+
+-(void)requestExchangeList{
+    NSDictionary *parameters = @{ @"type": @"exchange"};
+    
+    NSString* url = @"wallet/balance";
+    
+    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+        if(success){
+            [self getExchangeBack:data];
         }
     }];
 }

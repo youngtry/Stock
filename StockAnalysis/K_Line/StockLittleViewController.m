@@ -436,12 +436,19 @@
     }
 }
 - (IBAction)clickBuy:(id)sender {
-//    TradePurchaseViewController* vc = [[TradePurchaseViewController alloc] initWithNibName:@"TradePurchaseViewController" bundle:nil];
-//    vc.title = @"买入";
-//    [self.navigationController pushViewController:vc animated:YES];
-//    [vc setTradeName:self.title];
+    TradePurchaseViewController* vc = [[TradePurchaseViewController alloc] initWithNibName:@"TradePurchaseViewController" bundle:nil];
+    vc.title = @"买入";
+    [self.navigationController pushViewController:vc animated:YES];
+    [vc setTradeName:self.title];
+    
+    
+    
 }
 - (IBAction)clickSell:(id)sender {
+    TradePurchaseViewController* vc = [[TradePurchaseViewController alloc] initWithNibName:@"TradePurchaseViewController" bundle:nil];
+    vc.title = @"卖出";
+    [self.navigationController pushViewController:vc animated:YES];
+    [vc setTradeName:self.title];
 }
 
 -(void)requestSubscribe{

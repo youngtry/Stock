@@ -12,11 +12,14 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BindViewController">
             <connections>
+                <outlet property="arrowImage" destination="upL-TT-jFe" id="EIw-fH-dTU"/>
                 <outlet property="bindAddressInput" destination="bgC-1e-VaE" id="nhe-fw-5wg"/>
                 <outlet property="bindName" destination="zXp-ET-2lU" id="Sf9-cY-3zk"/>
                 <outlet property="confirmBtn" destination="UEC-S8-dsW" id="MzA-Oq-sB9"/>
+                <outlet property="distrcLabel" destination="qbP-0y-nQy" id="pGb-Sn-2Kw"/>
                 <outlet property="districtbtn" destination="Fhr-xa-44T" id="fSm-Jd-xFL"/>
                 <outlet property="mailAddressInput" destination="9Hx-pj-HcP" id="qKS-Ca-Non"/>
+                <outlet property="tipLabel" destination="kM4-Fx-CJa" id="f2f-Og-3pR"/>
                 <outlet property="verify1Input" destination="6d0-gq-n6t" id="OVx-Dw-tfr"/>
                 <outlet property="verify1Name" destination="tgi-0H-hoo" id="reg-3T-DhB"/>
                 <outlet property="verify2Input" destination="YRw-Qe-TZe" id="fKk-PD-fAc"/>
@@ -33,11 +36,18 @@
                     <rect key="frame" x="0.0" y="20" width="375" height="45"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
+                        <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入邮箱地址" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9Hx-pj-HcP">
+                            <rect key="frame" x="108" y="7" width="251" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <nil key="textColor"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </textField>
                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fhr-xa-44T">
                             <rect key="frame" x="108" y="12" width="78" height="20"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                            <state key="normal" title="+12345" image="arrow_down">
+                            <state key="normal">
                                 <color key="titleColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
                             <connections>
@@ -63,13 +73,17 @@
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
                         </textField>
-                        <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入邮箱地址" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9Hx-pj-HcP">
-                            <rect key="frame" x="108" y="7" width="251" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <nil key="textColor"/>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="arrow_down" translatesAutoresizingMaskIntoConstraints="NO" id="upL-TT-jFe">
+                            <rect key="frame" x="168" y="18" width="15" height="9"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="+12345" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qbP-0y-nQy">
+                            <rect key="frame" x="110" y="13" width="50" height="17"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <textInputTraits key="textInputTraits"/>
-                        </textField>
+                            <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
@@ -182,7 +196,7 @@
             </subviews>
             <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
-            <point key="canvasLocation" x="31.5" y="61.5"/>
+            <point key="canvasLocation" x="31.199999999999999" y="60.719640179910051"/>
         </view>
     </objects>
     <resources>

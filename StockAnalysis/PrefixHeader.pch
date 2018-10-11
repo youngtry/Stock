@@ -62,4 +62,5 @@
 #import "AppData.h"
 #import "BaseViewController.h"
 #import "VerifyRules.h"
+#import "GameData.h"
 #endif /* PrefixHeader_pch */

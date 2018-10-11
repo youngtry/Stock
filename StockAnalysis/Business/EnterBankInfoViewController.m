@@ -64,6 +64,8 @@
 - (IBAction)clickBindBtn:(id)sender {
     
     MoneyVerifyViewController* vc = [[MoneyVerifyViewController alloc] initWithNibName:@"MoneyVerifyViewController" bundle:nil];
+    vc.modalPresentationStyle = UIModalPresentationOverFullScreen;
+    self.definesPresentationContext = YES;
     [self.navigationController presentViewController:vc animated:YES completion:nil];
     
     vc.block = ^(NSString* token) {

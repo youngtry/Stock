@@ -20,6 +20,8 @@
 #import "SetPasswordViewController.h"
 #import "AppData.h"
 #import "AdsViewController.h"
+#import "MarqueeView.h"
+#import "MarqueeContentViewController.h"
 @interface UserFirstViewController ()<TTAutoRunLabelDelegate,UITableViewDelegate,UITableViewDataSource,SocketDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *exchangeRMBLabel;
@@ -32,8 +34,13 @@
 @property (nonatomic,strong) TCRotatorImageView *adScrollView;
 
 @property (nonatomic,strong) NSMutableArray* stockName;
+@property (nonatomic,strong) NSMutableArray* tipsTitle;
 @property (nonatomic,strong) NSMutableArray* tipsContent;
 @property (nonatomic,strong) TTAutoRunLabel* runLabel;
+
+@property (nonatomic, strong) MarqueeView *marqueeView;
+@property (nonatomic, assign) NSInteger updateIndex;
+
 @end
 
 @implementation UserFirstViewController
@@ -42,15 +49,18 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 
-    [SocketInterface sharedManager].delegate = self;
+    
     //
     self.stockName = [NSMutableArray new];
     self.randList.delegate = self;
     self.randList.dataSource = self;
+    self.tipsTitle = [NSMutableArray new];
     self.tipsContent = [NSMutableArray new];
+    self.updateIndex = 0;
     
     NSString* username = [GameData getUserAccount];
     NSString* password = [GameData getUserPassword];
+    
     NSLog(@"username = %@,password = %@",username,password);
     [HUDUtil showHudViewInSuperView:self.view withMessage:@"登录中，请稍后"];
     if([username containsString:@"@"]){
@@ -66,9 +76,16 @@
                 //                NSLog(@"登录消息 = %@",data);
                 if([[data objectForKey:@"ret"] intValue] == 1){
                     [self autoLoginBack];
+                    [GameData setUserPassword:password];
                 }else{
                     NSString* msg = [data objectForKey:@"msg"];
-                    [HUDUtil showSystemTipView:self title:@"登录失败" withContent:msg];
+                    [HUDUtil showSystemTipView:self.navigationController title:@"登录失败" withContent:msg];
+                    
+                    NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
+                    [defaultdata setBool:NO forKey:@"IsLogin"];
+                    
+                    [self.navigationController popViewControllerAnimated:YES];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"ChangeAfterLogin" object:nil];
                 }
             }
         }];
@@ -86,9 +103,15 @@
                 //                NSLog(@"登录消息1 = %@",data);
                 if([[data objectForKey:@"ret"] intValue] == 1){
                     [self autoLoginBack];
+                    [GameData setUserPassword:password];
                 }else{
                     NSString* msg = [data objectForKey:@"msg"];
-                    [HUDUtil showSystemTipView:self title:@"登录失败" withContent:msg];
+                    [HUDUtil showSystemTipView:self.navigationController title:@"登录失败" withContent:msg];
+                    NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
+                    [defaultdata setBool:NO forKey:@"IsLogin"];
+                    
+                    [self.navigationController popViewControllerAnimated:YES];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"ChangeAfterLogin" object:nil];
                 }
                 
                 
@@ -109,10 +132,10 @@
 -(void)operateLabel:(TTAutoRunLabel *)autoLabel animationDidStopFinished:(BOOL)finished{
 //    NSLog(@"autoLabel = %ld",autoLabel.contentTag);
     [autoLabel stopAnimation];
-    if(autoLabel.contentTag<self.tipsContent.count-1){
-        [self createAutoRunLabel:self.tipsContent[autoLabel.contentTag+1] view:self.autoRunActivityView fontsize:14 withTag:autoLabel.contentTag+1];
+    if(autoLabel.contentTag<self.tipsTitle.count-1){
+        [self createAutoRunLabel:self.tipsTitle[autoLabel.contentTag+1] view:self.autoRunActivityView fontsize:14 withTag:autoLabel.contentTag+1];
     }else{
-        [self createAutoRunLabel:self.tipsContent[0] view:self.autoRunActivityView fontsize:14 withTag:0];
+        [self createAutoRunLabel:self.tipsTitle[0] view:self.autoRunActivityView fontsize:14 withTag:0];
     }
 }
 
@@ -252,6 +275,17 @@
 - (void)viewWillAppear:(BOOL)animated{
     //    NSLog(@"viewWillAppear");
     [self.navigationController setNavigationBarHidden:YES];
+    
+    [SocketInterface sharedManager].delegate = self;
+    [[SocketInterface sharedManager] openWebSocket];
+    
+    if(_marqueeView){
+        [_marqueeView removeFromSuperview];
+        _marqueeView = nil;
+    }
+    self.updateIndex = 0;
+    [self.stockName removeAllObjects];
+    
     NSString* url1 = @"news/home";
     NSDictionary* parameters1 = @{};
 //    [[HttpRequest getInstance] getWithUrl:url notification:@"FirstTipAndAds"];
@@ -281,21 +315,33 @@
                             
                             NSDictionary* info = result[i];
                             [self.stockName addObject:info];
-                            
-                            NSString* name = [info objectForKey:@"market"];
-                            NSArray *dicParma = @[name];
-                            NSDictionary *dicAll = @{@"method":@"state.subscribe",@"params":dicParma,@"id":@(PN_StateSubscribe)};
-                            
-                            NSString *strAll = [dicAll JSONString];
-                            [[SocketInterface sharedManager] sendRequest:strAll withName:@"state.subscribe"];
                         }
                         
-                        [_randList reloadData];
+                        [self requestStockInfo:self.updateIndex];
                     }
                 }
             }
         }
     }];
+}
+
+-(void)requestStockInfo:(NSInteger)index{
+    
+    if(index >= self.stockName.count){
+        NSDictionary *dicAll = @{@"method":@"state.unsubscribe",@"params":@[],@"id":@(PN_StateUnsubscribe)};
+        //
+        NSString *strAll = [dicAll JSONString];
+        [[SocketInterface sharedManager] sendRequest:strAll withName:@"state.unsubscribe"];
+        [_randList reloadData];
+        return;
+    }
+    NSDictionary* info = self.stockName[index];
+    NSString* name = [info objectForKey:@"market"];
+    NSArray *dicParma = @[name];
+    NSDictionary *dicAll = @{@"method":@"state.subscribe",@"params":dicParma,@"id":@(PN_StateSubscribe)};
+    
+    NSString *strAll = [dicAll JSONString];
+    [[SocketInterface sharedManager] sendRequest:strAll withName:@"state.subscribe"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -317,19 +363,55 @@
         NSArray* tips = data[@"data"][@"tips"];
         
         [self.tipsContent removeAllObjects];
+        [self.tipsTitle removeAllObjects];
         for (NSDictionary* tip in tips) {
             NSString* text = [tip objectForKey:@"content"];
             NSString* title = [tip objectForKey:@"title"];
 //            NSLog(@"text = %@,  title = %@",text,title);
-            [self.tipsContent addObject:title];
+            [self.tipsTitle addObject:title];
+            [self.tipsContent addObject:text];
         }
-        if(self.tipsContent.count>0){
-            [self createAutoRunLabel:self.tipsContent[0] view:self.autoRunActivityView fontsize:14 withTag:0];
+        if(self.tipsTitle.count>0){
+//            [self createAutoRunLabel:self.tipsContent[0] view:self.autoRunActivityView fontsize:14 withTag:0];
+            if(_marqueeView){
+                [_marqueeView removeFromSuperview];
+                _marqueeView = nil;
+            }
+            [self.autoRunActivityView addSubview:self.marqueeView];
         }
         
     }
     
 }
+
+- (MarqueeView *)marqueeView{
+    if (!_marqueeView) {
+        MarqueeView *marqueeView =[[MarqueeView alloc]initWithFrame:CGRectMake(10, 0, self.autoRunActivityView.width-15, self.autoRunActivityView.height) withTitle:self.tipsTitle];
+        marqueeView.titleColor = kColor(102, 102, 102);
+        marqueeView.titleFont = [UIFont systemFontOfSize:14];
+        marqueeView.backgroundColor = [UIColor clearColor];
+        __weak MarqueeView *marquee = marqueeView;
+        marqueeView.handlerTitleClickCallBack = ^(NSInteger index){
+            
+            NSLog(@"%@----%zd",marquee.titleArr[index-1],index);
+            
+            MarqueeContentViewController* vc = [[MarqueeContentViewController alloc] initWithNibName:@"MarqueeContentViewController" bundle:nil];
+            vc.title = marquee.titleArr[index-1];
+            
+            [self.navigationController pushViewController:vc animated:YES];
+            if(self.tipsContent.count>= index){
+                vc.block = ^{
+                    vc.contentTextView.text = self.tipsContent[index-1];
+                };
+            }
+            
+        };
+        _marqueeView = marqueeView;
+    }
+    return _marqueeView;
+    
+}
+
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     //返回白色
@@ -405,7 +487,16 @@
             
             NSString* name = params[0];
             NSLog(@"name = %@ 涨幅 = %f",name,rate);
+            
             [self addRateToArray:name withRate:[NSString stringWithFormat:@"%f",rate] withPrice:price];
+            
+            NSDictionary *dicAll = @{@"method":@"state.unsubscribe",@"params":@[],@"id":@(PN_StateUnsubscribe)};
+            //
+            NSString *strAll = [dicAll JSONString];
+            [[SocketInterface sharedManager] sendRequest:strAll withName:@"state.unsubscribe"];
+            
+            self.updateIndex++;
+            [self requestStockInfo:self.updateIndex];
             
         }
         
@@ -421,33 +512,37 @@
             break;
         }
     }
+    if(self.updateIndex < self.stockName.count-1){
+        return;
+    }
     
     NSMutableArray* temp = [NSMutableArray new];
     for (NSMutableDictionary* info in self.stockName) {
         float ratedata = [[info objectForKey:@"rate"] floatValue];
         if(temp.count == 0){
-            [temp setObject:info atIndexedSubscript:0];
+            [temp addObject:info];
         }else{
+            int index = 0;
             for (int i=0;i<temp.count;i++){
                 NSMutableDictionary* lastinfo =temp[i];
                 float lastrate = [[lastinfo objectForKey:@"rate"] floatValue];
-                if(ratedata<lastrate){
-                    [temp setObject:info atIndexedSubscript:i+1];
-                    break;
+                if(ratedata>=lastrate){
+                    if(i == 0){
+                        index = 0;
+                    }else{
+                        index = i-1;
+                    }
+                }else{
+                    index = i+1;
                 }
             }
+            [temp insertObject:info atIndex:index];
         }
     }
-    
+
     if(temp.count == self.stockName.count){
         [self.stockName removeAllObjects];
         self.stockName = temp;
-        
-        NSDictionary *dicAll = @{@"method":@"state.unsubscribe",@"params":@[],@"id":@(PN_StateUnsubscribe)};
-        
-        NSString *strAll = [dicAll JSONString];
-        [[SocketInterface sharedManager] sendRequest:strAll withName:@"state.unsubscribe"];
-        [_randList reloadData];
     }
     
 }

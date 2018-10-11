@@ -133,6 +133,31 @@
         AuthApprove1VC*vc = [AuthApprove1VC new];
         [self.navigationController pushViewController:vc animated:YES];
     }else if (indexPath.row == 1){
+        
+        NSString *fullPath1 = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"] stringByAppendingPathComponent:@"Auth_1.jpg"];
+        NSString *fullPath2 = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"] stringByAppendingPathComponent:@"Auth_2.jpg"];
+        NSString *fullPath3 = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"] stringByAppendingPathComponent:@"Auth_3.jpg"];
+        
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        BOOL result1 = [fileManager fileExistsAtPath:fullPath1];
+        BOOL result2 = [fileManager fileExistsAtPath:fullPath2];
+        BOOL result3 = [fileManager fileExistsAtPath:fullPath3];
+        NSLog(@"这个文件已经存在：%@",result1?@"是的":@"不存在");
+        NSLog(@"这个文件已经存在：%@",result2?@"是的":@"不存在");
+        NSLog(@"这个文件已经存在：%@",result3?@"是的":@"不存在");
+        NSLog(@"path1 = %@,path2 = %@,path3 = %@",fullPath1,fullPath2,fullPath3);
+        if(result1){
+            [fileManager removeItemAtPath:fullPath1 error:nil];
+        }
+        
+        if(result2){
+            [fileManager removeItemAtPath:fullPath2 error:nil];
+        }
+        
+        if(result3){
+            [fileManager removeItemAtPath:fullPath3 error:nil];
+        }
+        
         AuthApprove21ViewController *vc = [[AuthApprove21ViewController alloc] initWithNibName:@"AuthApprove21ViewController" bundle:nil];
         [self.navigationController pushViewController:vc animated:YES];
     }

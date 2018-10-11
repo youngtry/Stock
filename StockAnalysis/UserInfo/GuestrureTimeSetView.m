@@ -183,6 +183,7 @@
     btn.layer.borderWidth = 0;
     btnTitle = btn.titleLabel.text;;
 //    NSLog(@"btnTitle = %@",btnTitle);
+    
 }
 
 
@@ -193,6 +194,7 @@
 -(void)sureCallback{
     [self removeFromSuperview];
 //    NSLog(@"btnTitle = %@",btnTitle);
+    [GameData setGuestureTime:btnTitle];
     NSNotification * notice =[NSNotification notificationWithName:@"GuestureTimeSetting" object:nil userInfo:@{@"text":[NSString stringWithFormat:@"%@",btnTitle]}];
     
     [[NSNotificationCenter defaultCenter]postNotification:notice];

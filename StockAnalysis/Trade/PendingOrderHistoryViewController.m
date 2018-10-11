@@ -9,7 +9,7 @@
 #import "PendingOrderHistoryViewController.h"
 #import "PendingOrderTableViewCell.h"
 #import "EntryOrderDetailVC.h"
-@interface PendingOrderHistoryViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface PendingOrderHistoryViewController ()<UITableViewDelegate,UITableViewDataSource,CancelDelegate>
 @property(nonatomic,strong)UITableView *tableView;
 @property(nonatomic,strong)NSMutableArray *data;
 @property(nonatomic,assign)NSInteger currentPage;
@@ -52,6 +52,18 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)sendCancelNotice:(BOOL)success withReason:(NSString *)msg{
+    if(success){
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"撤销成功"];
+        self.currentPage = 0;
+        self.isUpdate = YES;
+        [self.data removeAllObjects];
+        [self getAllHistory:1];
+    }else{
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:msg];
+    }
 }
 
 -(void)getAllHistory:(NSInteger)page{
@@ -123,7 +135,7 @@
     if(!cell){
         cell = [[[NSBundle mainBundle] loadNibNamed:@"PendingOrderTableViewCell" owner:self options:nil] objectAtIndex:0];
     }
-    
+    cell.delegate = self;
     NSDictionary* data = self.data[indexPath.row];
     
     cell.stockName.text = [data objectForKey:@"market"];
@@ -139,7 +151,7 @@
     cell.priceLabel.text = [data objectForKey:@"price"];
     cell.amountLabel.text = [data objectForKey:@"num"];
     cell.realLabel.text = [data objectForKey:@"deal_money"];
-
+    cell.tradeID = [data objectForKey:@"id"];
     return cell;
 }
 

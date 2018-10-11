@@ -18,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *verifyInput;
 @property (weak, nonatomic) IBOutlet UITextField *passwordInput;
 @property (weak, nonatomic) IBOutlet UIButton *lookPwBtn;
+@property (weak, nonatomic) IBOutlet UILabel *distrcLabel;
 
 @end
 
@@ -41,8 +42,10 @@
     [_lookPwBtn setImage:[UIImage imageNamed:@"eye-c.png"] forState:UIControlStateNormal];
     [_lookPwBtn setImage:[UIImage imageNamed:@"eye-o.png"] forState:UIControlStateSelected];
     
-    [self.countryCodeButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -self.countryCodeButton.imageView.size.width-5, 0, self.countryCodeButton.imageView.size.width+5)];
-    [self.countryCodeButton setImageEdgeInsets:UIEdgeInsetsMake(0, self.countryCodeButton.titleLabel.bounds.size.width+5, 0, -self.countryCodeButton.titleLabel.bounds.size.width-5)];
+//    [self.countryCodeButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -self.countryCodeButton.imageView.size.width-5, 0, self.countryCodeButton.imageView.size.width+5)];
+//    [self.countryCodeButton setImageEdgeInsets:UIEdgeInsetsMake(0, self.countryCodeButton.titleLabel.bounds.size.width+5, 0, -self.countryCodeButton.titleLabel.bounds.size.width-5)];
+    
+    self.distrcLabel.text = @"+86";
     
 }
 
@@ -58,7 +61,7 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    [self returnCountryCode:@"+86"];
+    
 }
 
 -(void)clickLogin{
@@ -104,7 +107,7 @@
         NSLog(@"countryCodeStr = %@",countryCodeStr);
         countryCodeStr = [countryCodeStr substringFromIndex:[countryCodeStr rangeOfString:@"+"].location];
         NSLog(@"countryCodeStr = %@",countryCodeStr);
-        [self.countryCodeButton.titleLabel setText:countryCodeStr];
+        self.distrcLabel.text = countryCodeStr;
     }];
     
     [self.navigationController pushViewController:countrycodeVC animated:YES];
@@ -142,15 +145,16 @@
         [HUDUtil showSystemTipView:self title:@"密码格式错误" withContent:@"请输入8-16个字符,不能使用中文、空格,至少含数字/字母/符号2种组合,必须要同时包括大小写字母"];
         return;
     }
-    
+    [HUDUtil showHudViewInSuperView:self.view withMessage:@"注册中……"];
     NSDictionary *parameters = @{ @"phone": self.phoneInput.text ,
                                   @"captcha": self.verifyInput.text ,
                                   @"password": self.passwordInput.text ,
-                                  @"district": self.countryCodeButton.titleLabel.text};
+                                  @"district": self.distrcLabel.text};
 
     NSString* url = @"register/phone";
 
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+        [HUDUtil hideHudView];
         if(success){
             NSNumber* number = [data objectForKey:@"ret"];
             if([number intValue] == 1){
@@ -189,7 +193,9 @@
     countryCode = [countryCode substringFromIndex:[countryCode rangeOfString:@"+"].location];
     NSLog(@"countryCode = %@",countryCode);
 //    [self.countryCodeButton.titleLabel setText:countryCode];
-    [self.countryCodeButton setTitle:countryCode forState:UIControlStateNormal];
+//    [self.countryCodeButton setTitle:countryCode forState:UIControlStateNormal];
+    
+    self.distrcLabel.text = countryCode;
 }
 /*
 #pragma mark - Navigation

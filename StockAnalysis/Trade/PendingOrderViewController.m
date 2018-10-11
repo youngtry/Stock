@@ -11,7 +11,7 @@
 #import "EntryOrderDetailVC.h"
 #import "TradeStockSelectTableViewCell.h"
 
-@interface PendingOrderViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface PendingOrderViewController ()<UITableViewDelegate,UITableViewDataSource,CancelDelegate>
 @property(nonatomic,strong)UITableView *tableView;
 @property(nonatomic,strong)NSMutableArray *data;
 @property(nonatomic,assign)NSInteger currentPage;
@@ -56,6 +56,7 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
     //    [self getAllHistory:1 WithName:@""];
     [self getAllStocks];
+    
 }
 
 -(void)viewDidDisappear:(BOOL)animated{
@@ -237,6 +238,18 @@
     
 }
 
+-(void)sendCancelNotice:(BOOL)success withReason:(NSString *)msg{
+    if(success){
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"撤销成功"];
+        self.currentPage = 0;
+        [self.data removeAllObjects];
+        self.isUpdate = YES;
+        [self getAllStocks];
+    }else{
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:msg];
+    }
+}
+
 #pragma mark - TableDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if(tableView == self.tableView){
@@ -255,7 +268,7 @@
         if(!cell){
             cell = [[[NSBundle mainBundle] loadNibNamed:@"PendingOrderTableViewCell" owner:self options:nil] objectAtIndex:0];
         }
-        
+        cell.delegate = self;
         NSDictionary* data = self.data[indexPath.row];
         
         cell.stockName.text = [data objectForKey:@"market"];
@@ -271,6 +284,7 @@
         cell.priceLabel.text = [data objectForKey:@"price"];
         cell.amountLabel.text = [data objectForKey:@"num"];
         cell.realLabel.text = [data objectForKey:@"deal_money"];
+        cell.tradeID = [data objectForKey:@"id"];
         
         return cell;
     }else if (tableView == self.stockList){

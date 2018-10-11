@@ -19,6 +19,9 @@
 +(void)setAccountList:(NSString*)account withPassword:(NSString*)pwd;
 +(NSArray*)getAccountList;
 
++(void)setGuestureTime:(NSString*)time;
++(NSString*)getGuestureTime;
+
 
 
 @end

@@ -12,6 +12,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoginViewController">
             <connections>
                 <outlet property="countryCodeButton" destination="emg-wb-7QF" id="2p0-CA-S28"/>
+                <outlet property="distrcLabel" destination="300-G0-GSa" id="hkc-84-tpT"/>
                 <outlet property="lookPwBtn" destination="48G-6D-z03" id="aPS-ay-5hg"/>
                 <outlet property="passwordInput" destination="TKs-Z4-E6W" id="VuT-RH-7p0"/>
                 <outlet property="usernameInput" destination="f7T-iv-6XE" id="ZMj-SA-daM"/>
@@ -44,7 +45,7 @@
                             <rect key="frame" x="37" y="17" width="78" height="20"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                            <state key="normal" title="+12345">
+                            <state key="normal">
                                 <color key="titleColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
                             <connections>
@@ -92,6 +93,13 @@
                             <rect key="frame" x="100" y="23" width="15" height="9"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="+12345" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="300-G0-GSa">
+                            <rect key="frame" x="39" y="19" width="76" height="18"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>

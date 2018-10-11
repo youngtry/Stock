@@ -58,6 +58,8 @@
 - (IBAction)clickSendVerifyBtn:(id)sender {
     
 }
+- (IBAction)sendMailVerify:(id)sender {
+}
 - (IBAction)clickSureBtn:(id)sender {
     if(self.originPwInput.text.length == 0){
         [HUDUtil showSystemTipView:self title:@"提示" withContent:@"请输入旧密码"];

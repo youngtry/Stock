@@ -41,6 +41,12 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setGuestureTimeLabel:) name:@"GuestureTimeSetting" object:nil];
     
+    if([GameData getGuestureTime]){
+        self.guestureTime.text = [GameData getGuestureTime];
+    }else{
+        self.guestureTime.text = @"2分钟";
+    }
+    
     _verifyType = 0;
     
 //    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"GetUserBindInfo"];

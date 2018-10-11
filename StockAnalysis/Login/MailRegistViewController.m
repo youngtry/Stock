@@ -11,6 +11,7 @@
 #import "HttpRequest.h"
 #import "HUDUtil.h"
 #import "LoginViewController.h"
+#import "MailLoginViewController.h"
 
 @interface MailRegistViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *mailInput;
@@ -85,7 +86,7 @@
         [HUDUtil showSystemTipView:self title:@"密码格式错误" withContent:@"请输入8-16个字符,不能使用中文、空格,至少含数字/字母/符号2种组合,必须要同时包括大小写字母"];
         return;
     }
-    
+    [HUDUtil showHudViewInSuperView:self.view withMessage:@"注册中……"];
     NSDictionary *parameters = @{ @"email": self.mailInput.text,
                                   @"captcha": self.verifyInput.text,
                                   @"password": self.passwordInput.text};
@@ -95,6 +96,7 @@
     
 //    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"MailRegisteBack"];
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+        [HUDUtil hideHudView];
         if(success){
             [self mailRegisteBack:data];
         }
@@ -110,12 +112,24 @@
         [HUDUtil showSystemTipView:self title:@"提示" withContent:[data objectForKey:@"msg"]];
     }else if([number intValue] == 1){
         //注册成功
+        BOOL ishavemailLogin = NO;
         for (UIViewController*vc in self.navigationController.childViewControllers) {
-            if([vc isKindOfClass:[LoginViewController class]]){
+            if([vc isKindOfClass:[MailLoginViewController class]]){
                 [self.navigationController popToViewController:vc animated:YES];
+                ishavemailLogin = YES;
                 break;
             }
         }
+        //如果没找到邮箱登录界面
+        if(!ishavemailLogin){
+            for (UIViewController*vc in self.navigationController.childViewControllers) {
+                if([vc isKindOfClass:[LoginViewController class]]){
+                    [self.navigationController popToViewController:vc animated:YES];
+                    break;
+                }
+            }
+        }
+        
     }
 }
 - (IBAction)clickLookPw:(id)sender {

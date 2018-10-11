@@ -10,6 +10,7 @@
 #import "WSAuthCode.h"
 #import "HttpRequest.h"
 #import "HUDUtil.h"
+#import "GameData.h"
 @interface ResetPasswordViewController ()
 @property (weak, nonatomic) IBOutlet UIView *secondContainer;
 @property (weak, nonatomic) IBOutlet UIView *firstContainer;
@@ -200,6 +201,7 @@
         [HUDUtil showSystemTipView:self title:@"提示" withContent:@"请输入验证码"];
         return;
     }
+    [HUDUtil showHudViewInSuperView:self.view withMessage:@"重置中……"];
     
     if([self.userNameTextField.text containsString:@"@"]){
         //邮箱重置
@@ -207,32 +209,34 @@
                                 @"captcha": self.verifyInput.text ,
                                 @"password": self.passwordInput.text};
         
-//        NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithDictionary:para];
         NSString* url = @"account/resetpwd_by_email";
         
-//        [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"ResetPwdBack"];
         [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+            [HUDUtil hideHudView];
             if(success){
-//                NSDictionary* info = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                [GameData setAccountList:self.userNameTextField.text withPassword:self.passwordInput.text];
+                if([[GameData getUserAccount] isEqualToString:self.userNameTextField.text]){
+                    [GameData setUserPassword:self.passwordInput.text];
+                }
                 [self resetBack:data];
             }
         }];
     }else{
         
-        NSDictionary *parameters = @{ @"phone": self.userNameTextField.text ,
-                                @"captcha": self.verifyInput.text ,
-                                @"password": self.passwordInput.text};
-        
-//        NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithDictionary:para];
-        
+        NSDictionary *parameters = @{@"phone": self.userNameTextField.text ,
+                                     @"captcha": self.verifyInput.text ,
+                                     @"password": self.passwordInput.text};
+
         
         NSString* url = @"account/resetpwd_by_phone";
-        
-//        [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"ResetPwdBack"];
-        
+
         [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+            [HUDUtil hideHudView];
             if(success){
-//                NSDictionary* info = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                [GameData setAccountList:self.userNameTextField.text withPassword:self.passwordInput.text];
+                if([[GameData getUserAccount] isEqualToString:self.userNameTextField.text]){
+                    [GameData setUserPassword:self.passwordInput.text];
+                }
                 [self resetBack:data];
             }
         }];

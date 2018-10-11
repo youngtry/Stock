@@ -36,9 +36,6 @@
 //    _contentVCs = [NSMutableArray new];
     chinaTitles = [[NSMutableArray alloc] init];
     globalTitles = [[NSMutableArray alloc] init];
-    
-    
-    
 
     //国内外切换
     _segment = [[UISegmentedControl alloc] initWithItems:@[@"国内",@"全球"]];
@@ -75,7 +72,7 @@
     
     NSDictionary* parameters = @{};
     NSString* url = @"market/assortment";
-    
+    [chinaTitles addObject:@"自选"];
     [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
             if([[data objectForKey:@"ret"] intValue] == 1){
@@ -126,16 +123,22 @@
 
 -(void)changeToInternal{
     NSMutableArray* vcs = [NSMutableArray new];
-    NSArray *titles = @[@"自选",@"指数",@"沪深",@"板块",@"港美"];
-
-    for (int i=0; i<titles.count; i++) {
+    NSArray *titles = @[@"自选"];
+    
+    
+    
+    for (int i=0; i<chinaTitles.count; i++) {
         StockInfoViewController *vc = [[StockInfoViewController alloc] init];
         vc.index = i;
-//        [vc setTitle:[NSString stringWithFormat:@"china_%@",chinaTitles[i]]];
-        [vc setTitle:titles[i]];
+        if(i>0){
+            [vc setTitle:[NSString stringWithFormat:@"china_%@",chinaTitles[i]]];
+        }else{
+            [vc setTitle:chinaTitles[i]];
+        }
+        
         [vcs addObject:vc];
     }
-    [_scrollTitle configParameter:horizontal viewArr:titles tabWidth:kScreenWidth/titles.count tabHeight:42 index:0 block:^(NSInteger index) {
+    [_scrollTitle configParameter:horizontal viewArr:chinaTitles tabWidth:kScreenWidth/chinaTitles.count tabHeight:42 index:0 block:^(NSInteger index) {
         [_scrollContent updateTab:index];
     }];
     [_scrollContent configParam:vcs Index:0 block:^(NSInteger index) {

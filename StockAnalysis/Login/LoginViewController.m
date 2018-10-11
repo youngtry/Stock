@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *countryCodeButton;
 @property (weak, nonatomic) IBOutlet UITextField *usernameInput;
 @property (weak, nonatomic) IBOutlet UIButton *lookPwBtn;
+@property (weak, nonatomic) IBOutlet UILabel *distrcLabel;
 @property (weak, nonatomic) IBOutlet UITextField *passwordInput;
 @end
 
@@ -49,7 +50,7 @@
 //    [self.countryCodeButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -self.countryCodeButton.imageView.size.width-5, 0, self.countryCodeButton.imageView.size.width+5)];
 //    [self.countryCodeButton setImageEdgeInsets:UIEdgeInsetsMake(0, self.countryCodeButton.titleLabel.bounds.size.width+5, 0, -self.countryCodeButton.titleLabel.bounds.size.width-5)];
     
-    
+    self.distrcLabel.text = @"+86";
     
 }
 
@@ -69,7 +70,7 @@
     [super viewDidAppear:animated];
 //    [self returnCountryCode:@"+86"];
     
-    [self.countryCodeButton setTitle:@"+86" forState:UIControlStateNormal];
+//    [self.countryCodeButton setTitle:@"+86" forState:UIControlStateNormal];
 }
 
 -(void)test{
@@ -123,7 +124,7 @@
     NSString* url = @"account/login/phone";
     NSDictionary *paramDic = @{ @"phone":self.usernameInput.text,
                                 @"password":self.passwordInput.text,
-                                @"district":self.countryCodeButton.titleLabel.text
+                                @"district":self.distrcLabel.text
                                 };
 
     
@@ -173,7 +174,8 @@
         NSLog(@"countryCodeStr = %@",countryCodeStr);
         countryCodeStr = [countryCodeStr substringFromIndex:[countryCodeStr rangeOfString:@"+"].location];
         NSLog(@"countryCodeStr = %@",countryCodeStr);
-        [self.countryCodeButton.titleLabel setText:countryCodeStr];
+//        [self.countryCodeButton.titleLabel setText:countryCodeStr];
+        self.distrcLabel.text = countryCodeStr;
     }];
 
     [self.navigationController pushViewController:countrycodeVC animated:YES];
@@ -205,7 +207,8 @@
     countryCode = [countryCode substringFromIndex:[countryCode rangeOfString:@"+"].location];
     NSLog(@"countryCode = %@",countryCode);
 //    [self.countryCodeButton.titleLabel setText:countryCode];
-    [self.countryCodeButton setTitle:countryCode forState:UIControlStateNormal];
+//    [self.countryCodeButton setTitle:countryCode forState:UIControlStateNormal];
+    self.distrcLabel.text = countryCode;
 }
 /*
 #pragma mark - Navigation

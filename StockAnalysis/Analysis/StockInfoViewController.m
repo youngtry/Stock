@@ -261,6 +261,8 @@
                 cell.titleLabel.text = [item objectForKey:@"asset"];
             }else if ([self.title containsString:@"global_"]){
                 cell.titleLabel.text = [item objectForKey:@"store"];
+            }else if ([self.title containsString:@"china_"]){
+                cell.titleLabel.text = [item objectForKey:@"market"];
             }
             
             if (![self.title isEqualToString:@"指数"]){

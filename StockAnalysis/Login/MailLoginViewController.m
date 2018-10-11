@@ -11,6 +11,7 @@
 #import "HttpRequest.h"
 #import "HUDUtil.h"
 #import "GameData.h"
+#import "MailRegistViewController.h"
 @interface MailLoginViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *mailInput;
 @property (weak, nonatomic) IBOutlet UITextField *passwordInput
@@ -36,7 +37,18 @@
     
     [_lookPwBtn setImage:[UIImage imageNamed:@"eye-c.png"] forState:UIControlStateNormal];
     [_lookPwBtn setImage:[UIImage imageNamed:@"eye-o.png"] forState:UIControlStateSelected];
+    
+    UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:@"注册账户" style:UIBarButtonItemStylePlain target:self action:@selector(clickRegist:)];
+    self.navigationItem.rightBarButtonItem = right;
+    
 }
+-(void)clickRegist:(id)sender{
+    DLog(@"clickRegist");
+    
+    MailRegistViewController *vc = [[MailRegistViewController alloc] initWithNibName:@"MailRegistViewController" bundle:nil];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.tabBarController.tabBar.hidden = YES;
@@ -66,7 +78,7 @@
         [HUDUtil showSystemTipView:self title:@"密码格式错误" withContent:@"请输入8-16个字符,不能使用中文、空格,至少含数字/字母/符号2种组合,必须要同时包括大小写字母"];
         return;
     }
-    
+    [HUDUtil showHudViewInSuperView:self.view withMessage:@"登录中……"];
     NSDictionary *parameters = @{ @"email": self.mailInput.text ,
                                   @"password": self.passwordInput.text};
     
@@ -74,6 +86,7 @@
     NSString* url = @"account/login/email";
                      
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+        [HUDUtil hideHudView];
         if(success){
             [self mailLoginBack:data];
         }

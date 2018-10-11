@@ -126,7 +126,12 @@
                         [[NSNotificationCenter defaultCenter] postNotificationName:@"ChangeAfterLogin" object:nil];
                     }else{
                         NSString* msg = [data objectForKey:@"msg"];
-                        [HUDUtil showSystemTipView:self title:@"登录失败" withContent:msg];
+                        [HUDUtil showSystemTipView:self.navigationController title:@"登录失败" withContent:msg];
+                        NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
+                        [defaultdata setBool:NO forKey:@"IsLogin"];
+                        
+                        [self.navigationController popToRootViewControllerAnimated:YES];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:@"ChangeAfterLogin" object:nil];
                     }
                 }
             }];
@@ -153,7 +158,12 @@
                         [[NSNotificationCenter defaultCenter] postNotificationName:@"ChangeAfterLogin" object:nil];
                     }else{
                         NSString* msg = [data objectForKey:@"msg"];
-                        [HUDUtil showSystemTipView:self title:@"登录失败" withContent:msg];
+                        [HUDUtil showSystemTipView:self.navigationController title:@"登录失败" withContent:msg];
+                        NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
+                        [defaultdata setBool:NO forKey:@"IsLogin"];
+                        
+                        [self.navigationController popToRootViewControllerAnimated:YES];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:@"ChangeAfterLogin" object:nil];
                     }
                     
                     

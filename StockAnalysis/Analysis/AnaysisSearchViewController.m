@@ -381,6 +381,7 @@
             
             StockLittleViewController* vc = [[StockLittleViewController alloc] initWithNibName:@"StockLittleViewController" bundle:nil];
             [self.navigationController pushViewController:vc animated:YES];
+            vc.title = name;
 //            [self presentViewController:vc animated:YES completion:nil];
         }
     }

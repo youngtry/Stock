@@ -9,6 +9,8 @@
 #import "MoneyInOutViewController.h"
 #import "AppData.h"
 #import "MoneyVerifyViewController.h"
+#import "ExchangeViewController.h"
+#import "Business ViewController.h"
 
 @interface MoneyInOutViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *turnBtn;
@@ -124,8 +126,9 @@
 - (IBAction)clickTurnBtn:(id)sender {
     UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
     MoneyVerifyViewController* vc = [[MoneyVerifyViewController alloc] initWithNibName:@"MoneyVerifyViewController" bundle:nil];
+    vc.modalPresentationStyle = UIModalPresentationOverFullScreen;
+    temp.definesPresentationContext = YES;
     [temp presentViewController:vc animated:YES completion:nil];
-//    [temp.view addSubview:vc.view];
     
     vc.block = ^(NSString* token) {
         if(token.length>0){
@@ -147,7 +150,23 @@
                 if(success){
                     if([[data objectForKey:@"ret"] intValue] == 1){
                         [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"转入成功"];
-                        [temp popViewControllerAnimated:YES];
+                        
+                        if([self.title isEqualToString:@"0"]){
+                            for (UIViewController*vc in temp.childViewControllers) {
+                                if([vc isKindOfClass:[ExchangeViewController class]]){
+                                    [temp popToViewController:vc animated:YES];
+                                    break;
+                                }
+                            }
+                        }else{
+                            for (UIViewController*vc in temp.childViewControllers) {
+                                if([vc isKindOfClass:[Business_ViewController class]]){
+                                    [temp popToViewController:vc animated:YES];
+                                    break;
+                                }
+                            }
+                        }
+                        
                     }else{
                         [HUDUtil showHudViewTipInSuperView:temp.view withMessage:[data objectForKey:@"msg"]];
                     }

@@ -77,6 +77,8 @@
 
 - (IBAction)clickVerify:(id)sender {
 }
+- (IBAction)clickMailVerify:(id)sender {
+}
 - (IBAction)clickResetPassword:(id)sender {
     if(self.moneyPassword.text.length == 0){
         [HUDUtil showSystemTipView:self title:@"提示" withContent:@"请输入密码"];

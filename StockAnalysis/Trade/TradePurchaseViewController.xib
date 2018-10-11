@@ -274,6 +274,9 @@
                             <state key="normal" title="充值">
                                 <color key="titleColor" red="0.93333333333333335" green="0.72549019607843135" blue="0.035294117647058823" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
+                            <connections>
+                                <action selector="clickChargeBtn:" destination="-1" eventType="touchUpInside" id="qdK-62-HzZ"/>
+                            </connections>
                         </button>
                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FaO-Ml-PHi">
                             <rect key="frame" x="0.0" y="62" width="187" height="37"/>

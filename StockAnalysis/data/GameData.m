@@ -53,15 +53,22 @@
         acclist = [NSArray new];
     }
     
+    NSMutableArray* temp = [[NSMutableArray alloc] initWithArray:acclist];
+    
     for (NSDictionary* info in acclist) {
         NSLog(@"所存储的账号:%@",info);
         if([[info objectForKey:@"account"] isEqualToString:account]){
-            NSLog(@"所存账号已存在");
-            return;
+            if([[info objectForKey:@"password"] isEqualToString:pwd]){
+                NSLog(@"所存账号已存在");
+                return;
+            }else{
+                [temp removeObject:info];
+            }
+
         }
     }
     
-    NSMutableArray* temp = [[NSMutableArray alloc] initWithArray:acclist];
+    
     
     [temp addObject:acc];
     
@@ -76,6 +83,20 @@
     NSArray* acclist = [defaults objectForKey:@"AccountList"];
     
     return acclist;
+}
+
++(void)setGuestureTime:(NSString *)time{
+    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    
+    [defaults setObject:time forKey:@"GuestureTime"];
+    
+    [defaults synchronize];
+}
+
++(NSString*)getGuestureTime{
+    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    NSString* username = [defaults stringForKey:@"GuestureTime"];
+    return username;
 }
 
 @end

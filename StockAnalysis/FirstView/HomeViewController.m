@@ -15,6 +15,8 @@
 #import "SocketInterface.h"
 #import "StockLittleViewController.h"
 #import "AdsViewController.h"
+#import "MarqueeView.h"
+#import "MarqueeContentViewController.h"
 @interface HomeViewController ()<TTAutoRunLabelDelegate,UITableViewDataSource,UITableViewDelegate,SocketDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *activityContainer;
@@ -25,6 +27,10 @@
 @property (nonatomic,strong) NSMutableArray* stockName;
 @property (nonatomic,strong) TTAutoRunLabel* runLabel;
 @property (nonatomic,strong) NSMutableArray* tipsContent;
+
+@property (nonatomic, strong) MarqueeView *marqueeView;
+
+@property (nonatomic, assign) NSInteger updateIndex;
 
 @end
 
@@ -41,6 +47,7 @@
     self.randList.delegate = self;
     self.randList.dataSource = self;
     self.tipsContent = [NSMutableArray new];
+    self.updateIndex = 0;
 }
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
@@ -54,6 +61,13 @@
     [self.navigationController setNavigationBarHidden:YES];
     
     [self.navigationController setNavigationBarHidden:YES];
+    
+    if(_marqueeView){
+        [_marqueeView removeFromSuperview];
+        _marqueeView = nil;
+    }
+    self.updateIndex = 0;
+    [self.stockName removeAllObjects];
     NSString* url = @"news/home";
     
     NSDictionary* parameters = @{};
@@ -83,25 +97,34 @@
                             
                             NSDictionary* info = result[i];
                             [self.stockName addObject:info];
-                            
-                            NSString* name = [info objectForKey:@"market"];
-                            NSArray *dicParma = @[name
-                                                  ];
-                            NSDictionary *dicAll = @{@"method":@"state.subscribe",@"params":dicParma,@"id":@(PN_StateSubscribe)};
-                            
-                            NSString *strAll = [dicAll JSONString];
-                            
-                            [[SocketInterface sharedManager] sendRequest:strAll withName:@"state.subscribe"];
-                            
                         }
                         
-                        [_randList reloadData];
+                        [self requestStockInfo:self.updateIndex];
                     }
                 }
             }
         }
     }];
     
+}
+
+-(void)requestStockInfo:(NSInteger)index{
+    
+    if(index >= self.stockName.count){
+        NSDictionary *dicAll = @{@"method":@"state.unsubscribe",@"params":@[],@"id":@(PN_StateUnsubscribe)};
+        //
+        NSString *strAll = [dicAll JSONString];
+        [[SocketInterface sharedManager] sendRequest:strAll withName:@"state.unsubscribe"];
+        [_randList reloadData];
+        return;
+    }
+    NSDictionary* info = self.stockName[index];
+    NSString* name = [info objectForKey:@"market"];
+    NSArray *dicParma = @[name];
+    NSDictionary *dicAll = @{@"method":@"state.subscribe",@"params":dicParma,@"id":@(PN_StateSubscribe)};
+    
+    NSString *strAll = [dicAll JSONString];
+    [[SocketInterface sharedManager] sendRequest:strAll withName:@"state.subscribe"];
 }
 
 -(void)getTipsAndAdsBack:(NSDictionary*)data{
@@ -125,9 +148,41 @@
             [self.tipsContent addObject:title];
         }
         if(self.tipsContent.count>0){
-            [self createAutoRunLabel:self.tipsContent[0] view:self.activityContainer fontsize:14 withTag:0];
+//            [self createAutoRunLabel:self.tipsContent[0] view:self.activityContainer fontsize:14 withTag:0];
+            if(_marqueeView){
+                [_marqueeView removeFromSuperview];
+                _marqueeView = nil;
+            }
+            [self.activityContainer addSubview:self.marqueeView];
         }
     }
+    
+}
+
+- (MarqueeView *)marqueeView{
+    if (!_marqueeView) {
+        MarqueeView *marqueeView =[[MarqueeView alloc]initWithFrame:CGRectMake(10, 0, self.activityContainer.width-15, self.activityContainer.height) withTitle:self.tipsContent];
+        marqueeView.titleColor = kColor(102, 102, 102);
+        marqueeView.titleFont = [UIFont systemFontOfSize:14];
+        marqueeView.backgroundColor = [UIColor clearColor];
+        __weak MarqueeView *marquee = marqueeView;
+        marqueeView.handlerTitleClickCallBack = ^(NSInteger index){
+            
+            NSLog(@"%@----%zd",marquee.titleArr[index-1],index);
+            MarqueeContentViewController* vc = [[MarqueeContentViewController alloc] initWithNibName:@"MarqueeContentViewController" bundle:nil];
+            vc.title = marquee.titleArr[index-1];
+            
+            [self.navigationController pushViewController:vc animated:YES];
+            if(self.tipsContent.count>= index){
+                vc.block = ^{
+                    vc.contentTextView.text = self.tipsContent[index-1];
+                };
+            }
+            
+        };
+        _marqueeView = marqueeView;
+    }
+    return _marqueeView;
     
 }
 
@@ -244,6 +299,14 @@
             NSLog(@"name = %@ 涨幅 = %f",name,rate);
             [self addRateToArray:name withRate:[NSString stringWithFormat:@"%f",rate] withPrice:price];
             
+            NSDictionary *dicAll = @{@"method":@"state.unsubscribe",@"params":@[],@"id":@(PN_StateUnsubscribe)};
+            //
+            NSString *strAll = [dicAll JSONString];
+            [[SocketInterface sharedManager] sendRequest:strAll withName:@"state.unsubscribe"];
+            
+            self.updateIndex++;
+            [self requestStockInfo:self.updateIndex];
+            
         }
         
     }
@@ -258,33 +321,37 @@
             break;
         }
     }
+    if(self.updateIndex < self.stockName.count-1){
+        return;
+    }
     
     NSMutableArray* temp = [NSMutableArray new];
     for (NSMutableDictionary* info in self.stockName) {
         float ratedata = [[info objectForKey:@"rate"] floatValue];
         if(temp.count == 0){
-            [temp setObject:info atIndexedSubscript:0];
+            [temp addObject:info];
         }else{
+            int index = 0;
             for (int i=0;i<temp.count;i++){
                 NSMutableDictionary* lastinfo =temp[i];
                 float lastrate = [[lastinfo objectForKey:@"rate"] floatValue];
-                if(ratedata<lastrate){
-                    [temp setObject:info atIndexedSubscript:i+1];
-                    break;
+                if(ratedata>=lastrate){
+                    if(i == 0){
+                        index = 0;
+                    }else{
+                        index = i-1;
+                    }
+                }else{
+                    index = i+1;
                 }
             }
+            [temp insertObject:info atIndex:index];
         }
     }
     
     if(temp.count == self.stockName.count){
         [self.stockName removeAllObjects];
         self.stockName = temp;
-        
-        NSDictionary *dicAll = @{@"method":@"state.unsubscribe",@"params":@[],@"id":@(PN_StateUnsubscribe)};
-        
-        NSString *strAll = [dicAll JSONString];
-        [[SocketInterface sharedManager] sendRequest:strAll withName:@"state.unsubscribe"];
-        [_randList reloadData];
     }
     
 }

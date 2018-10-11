@@ -34,6 +34,7 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.tabBarController.tabBar.hidden = YES;
+
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -90,7 +91,7 @@
 #pragma mark -实现图片选择器代理-（上传图片的网络请求也是在这个方法里面进行，这里我不再介绍具体怎么上传图片）
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     [picker dismissViewControllerAnimated:YES completion:^{}];
-    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage]; //通过key值获取到图片
+    UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage]; //通过key值获取到图片
     self.authImage.image = image;
     
     //上传图片到服务器--在这里进行图片上传的网络请求，这里不再介绍
