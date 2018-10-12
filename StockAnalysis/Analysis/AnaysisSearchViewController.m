@@ -258,8 +258,9 @@
         NSString* url = @"market/search";
         [HUDUtil showHudViewInSuperView:self.view withMessage:@"正在搜索"];
         [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
-            [HUDUtil hideHudView];
+            
             if(success){
+                [HUDUtil hideHudView];
                 if([[data objectForKey:@"ret"] intValue] == 1){
                     
                     NSDictionary* market = [data objectForKey:@"data"];
@@ -291,8 +292,9 @@
         NSDictionary* parameters = @{@"asset":searchBar.text};
         NSString* url = @"market/shop/search";
         [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
-            [HUDUtil hideHudView];
+            
             if(success){
+                [HUDUtil hideHudView];
                 if([[data objectForKey:@"ret"] intValue] == 1){
                     NSDictionary* market = [data objectForKey:@"data"];
                     

@@ -65,8 +65,9 @@
         NSString* url = @"market/item";
         
         [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
-            [HUDUtil hideHudView];
+            
             if(success){
+                [HUDUtil hideHudView];
                 //            NSLog(@"list = %@",data);
                 if([[data objectForKey:@"ret"] intValue] == 1){
                     _items = [[data objectForKey:@"data"] objectForKey:@"items"];
@@ -87,8 +88,9 @@
         NSString* url = @"market/global/pricelist";
         
         [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
-            [HUDUtil hideHudView];
+            
             if(success){
+                [HUDUtil hideHudView];
 //                NSLog(@"list = %@",data);
                 if([[data objectForKey:@"ret"] intValue] == 1){
                     _items = [[data objectForKey:@"data"] objectForKey:@"assets"];

@@ -399,8 +399,9 @@
     NSString* url = @"market/follow/list";
     
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
-        [HUDUtil hideHudView];
+        
         if(success){
+            [HUDUtil hideHudView];
             //            NSLog(@"list = %@",data);
             if([[data objectForKey:@"ret"] intValue] == 1){
                 NSArray* items = [[data objectForKey:@"data"] objectForKey:@"items"];
@@ -607,8 +608,10 @@
                                  @"is_limit":@(1),
                                  @"asset_token":token
                                  };
+    [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
+            [HUDUtil hideHudView];
             if([[data objectForKey:@"ret"] intValue] == 1){
                 [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"挂单成功"];
                 

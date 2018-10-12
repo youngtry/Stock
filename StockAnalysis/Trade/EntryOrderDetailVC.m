@@ -48,8 +48,9 @@
     NSDictionary* params = @{@"trade_id":self.stockId};
     [HUDUtil showHudViewInSuperView:self.view withMessage:@"加载数据中"];
     [[HttpRequest getInstance] getWithURL:url parma:params block:^(BOOL success, id data) {
-        [HUDUtil hideHudView];
+        
         if(success){
+            [HUDUtil hideHudView];
             if([[data objectForKey:@"ret"] intValue] == 1){
                 NSDictionary* info = [[data objectForKey:@"data"] objectForKey:@"trade"];
                 [self.stockInfo setDictionary:info];

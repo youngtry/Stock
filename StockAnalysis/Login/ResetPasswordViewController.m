@@ -212,8 +212,9 @@
         NSString* url = @"account/resetpwd_by_email";
         
         [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
-            [HUDUtil hideHudView];
+            
             if(success){
+                [HUDUtil hideHudView];
                 [GameData setAccountList:self.userNameTextField.text withPassword:self.passwordInput.text];
                 if([[GameData getUserAccount] isEqualToString:self.userNameTextField.text]){
                     [GameData setUserPassword:self.passwordInput.text];
@@ -231,8 +232,9 @@
         NSString* url = @"account/resetpwd_by_phone";
 
         [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
-            [HUDUtil hideHudView];
+            
             if(success){
+                [HUDUtil hideHudView];
                 [GameData setAccountList:self.userNameTextField.text withPassword:self.passwordInput.text];
                 if([[GameData getUserAccount] isEqualToString:self.userNameTextField.text]){
                     [GameData setUserPassword:self.passwordInput.text];

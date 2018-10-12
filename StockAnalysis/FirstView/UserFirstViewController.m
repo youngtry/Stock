@@ -71,8 +71,9 @@
         NSString* url = @"account/login/email";
         
         [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
-            [HUDUtil hideHudView];
+            
             if(success){
+                [HUDUtil hideHudView];
                 //                NSLog(@"登录消息 = %@",data);
                 if([[data objectForKey:@"ret"] intValue] == 1){
                     [self autoLoginBack];
@@ -98,8 +99,9 @@
         NSString* url = @"account/login/phone";
         
         [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
-            [HUDUtil hideHudView];
+            
             if(success){
+                [HUDUtil hideHudView];
                 //                NSLog(@"登录消息1 = %@",data);
                 if([[data objectForKey:@"ret"] intValue] == 1){
                     [self autoLoginBack];

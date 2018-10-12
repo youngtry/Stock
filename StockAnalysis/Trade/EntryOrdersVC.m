@@ -97,8 +97,9 @@
                              };
     [HUDUtil showHudViewInSuperView:self.view withMessage:@"数据加载中……"];
     [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
-        [HUDUtil hideHudView];
+        
         if(success){
+            [HUDUtil hideHudView];
             if([[data objectForKey:@"ret"] intValue] == 1){
                 NSArray* trades = [[data objectForKey:@"data"] objectForKey:@"trades"];
                 if(trades.count == 0){
@@ -127,8 +128,9 @@
                              };
     [HUDUtil showHudViewInSuperView:self.view withMessage:@"数据加载中……"];
     [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
-        [HUDUtil hideHudView];
+        
         if(success){
+            [HUDUtil hideHudView];
             if([[data objectForKey:@"ret"] intValue] == 1){
                 NSArray* trades = [[data objectForKey:@"data"] objectForKey:@"trades"];
                 if(trades.count == 0){
@@ -160,8 +162,9 @@
                              };
     [HUDUtil showHudViewInSuperView:self.view withMessage:@"数据加载中……"];
     [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
-        [HUDUtil hideHudView];
+        
         if(success){
+            [HUDUtil hideHudView];
             if([[data objectForKey:@"ret"] intValue] == 1){
                 NSArray* trades = [[data objectForKey:@"data"] objectForKey:@"trades"];
                 if(trades.count == 0){
