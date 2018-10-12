@@ -117,8 +117,12 @@
 
 -(void)setGuestureTimeLabel:(NSNotification *)notification{
 //     NSLog(@"收到消息啦!!!");
+    if([[notification.userInfo objectForKey:@"text"] isEqualToString:@""]){
+        
+    }else{
+        self.guestureTime.text=[notification.userInfo objectForKey:@"text"];
+    }
     
-    self.guestureTime.text=[notification.userInfo objectForKey:@"text"];
 }
 
 -(void)getBindBack:(NSDictionary* )data{

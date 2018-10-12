@@ -44,6 +44,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *timeSelectBtn;
 @property (weak, nonatomic) IBOutlet UIButton *MAbtn;
 @property (weak, nonatomic) IBOutlet UIButton *MACDBtn;
+@property (weak, nonatomic) IBOutlet UIView *MACDView;
 @property (weak, nonatomic) IBOutlet UIButton *settingBtn;
 @property (weak, nonatomic) IBOutlet UIButton *switchBtn;
 
@@ -218,6 +219,7 @@
                             tipspic = @"tips.png";
                             self.isTip = YES;
                         }else if([[item objectForKey:@"state"] isEqualToString:@"disable"]){
+                            tipspic = @"addTips.png";
                             self.isTip = NO;
                         }
                     }
@@ -292,6 +294,7 @@
     [self.timeSelectView setHidden:YES];
     [self.settingView setHidden:YES];
     [self.MAView setHidden:YES];
+    [self.MACDView setHidden:YES];
     
     [self.timeSelectBtn setTitleColor:[UIColor lightTextColor] forState:UIControlStateNormal];
     [self.MAbtn setTitleColor:[UIColor lightTextColor] forState:UIControlStateNormal];
@@ -326,9 +329,17 @@
     }
 }
 - (IBAction)openMACDView:(id)sender {
-    [self closeAllBtnView];
+ 
     UIButton* btn = sender;
-    [btn setTitleColor:[UIColor colorWithRed:243.0/255.0 green:186.0/255.0 blue:46.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+
+    
+    if(!self.MACDView.hidden){
+        [self closeAllBtnView];
+    }else{
+        [self closeAllBtnView];
+        [self.MACDView setHidden:NO];
+        [btn setTitleColor:[UIColor colorWithRed:243.0/255.0 green:186.0/255.0 blue:46.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+    }
 }
 - (IBAction)openSettingView:(id)sender {
     UIButton* btn = sender;
@@ -421,8 +432,11 @@
     NSLog(@"btntext = %@",btntext);
     if(![btntext isEqualToString:@"关闭"]){
        [btn setTitleColor:[UIColor colorWithRed:243.0/255.0 green:186.0/255.0 blue:46.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+        [self.MAbtn setTitle:@"MA" forState:UIControlStateNormal];
+    }else{
+        [self.MAbtn setTitle:btntext forState:UIControlStateNormal];
     }
-    [self.MAbtn setTitle:btntext forState:UIControlStateNormal];
+    
     [self.MAView setHidden:YES];
     
     for (UIView* child in [self.MAView subviews]) {
@@ -435,6 +449,31 @@
         }
     }
 }
+- (IBAction)clickMACDBtn:(id)sender {
+    UIButton* btn = sender;
+    NSString* btntext = btn.titleLabel.text;
+    NSLog(@"btntext = %@",btntext);
+    if(![btntext isEqualToString:@"关闭"]){
+        [btn setTitleColor:[UIColor colorWithRed:243.0/255.0 green:186.0/255.0 blue:46.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+        [self.MACDBtn setTitle:@"MACD" forState:UIControlStateNormal];
+    }else{
+        [self.MACDBtn setTitle:btntext forState:UIControlStateNormal];
+    }
+    
+    [self.MACDView setHidden:YES];
+    
+    for (UIView* child in [self.MACDView subviews]) {
+        if([child isKindOfClass:[UIButton class]]){
+            UIButton* nextbtn = (UIButton*)child;
+            //            NSLog(@"nextbtn = %@",nextbtn.titleLabel.text);
+            if(![nextbtn.titleLabel.text isEqualToString:btntext]){
+                [nextbtn setTitleColor:[UIColor lightTextColor] forState:UIControlStateNormal];
+            }
+        }
+    }
+}
+
+
 - (IBAction)clickBuy:(id)sender {
     TradePurchaseViewController* vc = [[TradePurchaseViewController alloc] initWithNibName:@"TradePurchaseViewController" bundle:nil];
     vc.title = @"买入";

@@ -113,7 +113,7 @@
     }else{
         [self.priceTipSettingView setHidden:YES];
         self.state = @"disable";
-        NSString* url = @"market/notice/state";
+        NSString* url = @"market/notice/update";
         NSDictionary* params = @{@"notice_id":@(self.accountID),
                                  @"state":self.state
                                  };

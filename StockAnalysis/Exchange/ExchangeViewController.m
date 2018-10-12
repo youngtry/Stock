@@ -163,6 +163,32 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 - (IBAction)hideZero:(id)sender {
+    UISwitch* btn = sender;
+    if(btn.isOn){
+        [self hideZeroMoney];
+    }else{
+        [self requestExchangeList];
+    }
+}
+
+-(void)hideZeroMoney{
+    NSArray* keys = [self.exchangeInfo allKeys];
+    NSMutableArray* hideKey = [NSMutableArray new];
+    for (NSString* key in keys) {
+        NSDictionary* info = [self.exchangeInfo objectForKey:key];
+        float left = [[info objectForKey:@"available"] floatValue];
+        if(left <= 0){
+            [hideKey addObject:key];
+        }
+    }
+    
+    for (NSString* key in hideKey) {
+        [self.exchangeInfo removeObjectForKey:key];
+    }
+    
+    
+    [_moneyList reloadData];
+    
 }
 #pragma mark -UITableVIewDataSource
 

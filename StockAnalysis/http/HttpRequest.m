@@ -228,14 +228,12 @@
         }
         
         block(1,info);
-        
-        
-        
+ 
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         // 失败
         DLog(@"%@xxxxxfailed! error = %@",url,error);
         dispatch_async(dispatch_get_main_queue(), ^{
-//            [HUDUtil hideHudView];
+            [HUDUtil hideHudViewWithFailureMessage:[error localizedDescription]];
         });
         block(0,nil);
     }];
@@ -323,7 +321,9 @@
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         // 失败
         DLog(@"%@xxxxxfailed! error = %@",url,error);
-//        [HUDUtil hideHudView];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [HUDUtil hideHudViewWithFailureMessage:[error localizedDescription]];
+        });
         block(0,nil);
     }];
 }

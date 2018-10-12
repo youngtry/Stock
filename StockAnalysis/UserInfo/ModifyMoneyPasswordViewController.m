@@ -36,6 +36,9 @@
     [_lookOriginPwbtn setImage:[UIImage imageNamed:@"eye-c.png"] forState:UIControlStateNormal];
     [_lookOriginPwbtn setImage:[UIImage imageNamed:@"eye-o.png"] forState:UIControlStateSelected];
     
+    _lookNewPwBtn.imageEdgeInsets = UIEdgeInsetsMake(6, 10, 6, 10);
+    _lookOriginPwbtn.imageEdgeInsets = UIEdgeInsetsMake(6, 10, 6, 10);
+    
 }
 
 -(void)test{

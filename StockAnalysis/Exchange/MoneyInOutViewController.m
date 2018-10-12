@@ -145,7 +145,7 @@
                                          @"mode":mode,
                                          @"asset_token":token
                                          };
-            
+            [HUDUtil showHudViewInSuperView:temp.view withMessage:@"请求中…"];
             [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
                 if(success){
                     if([[data objectForKey:@"ret"] intValue] == 1){

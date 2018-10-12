@@ -11,6 +11,7 @@
 #import "AppData.h"
 @interface ChargeAddressViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *assetName;
+@property (weak, nonatomic) IBOutlet UITextView *addressLabel;
 
 @end
 
@@ -58,6 +59,13 @@
 }
 - (IBAction)clickSelectAsset:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
+}
+- (IBAction)clickCopy:(id)sender {
+    [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"已复制到剪贴板"];
+    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+    pasteboard.string = self.addressLabel.text;
+    
+
 }
 /*
 #pragma mark - Navigation
