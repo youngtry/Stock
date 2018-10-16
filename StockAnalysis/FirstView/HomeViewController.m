@@ -54,6 +54,7 @@
     [_runLabel stopAnimation];
     [_runLabel removeFromSuperview];
     _runLabel = nil;
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(requestStockAllData) object:nil];
 }
 - (void)viewWillAppear:(BOOL)animated{
 //    NSLog(@"viewWillAppear");
@@ -66,8 +67,7 @@
         [_marqueeView removeFromSuperview];
         _marqueeView = nil;
     }
-    self.updateIndex = 0;
-    [self.stockName removeAllObjects];
+    
     NSString* url = @"news/home";
     
     NSDictionary* parameters = @{};
@@ -80,15 +80,24 @@
         }
     }];
     
+    
+    [self requestStockAllData];
+}
+
+-(void)requestStockAllData{
+    
+    self.updateIndex = 0;
+    [self.stockName removeAllObjects];
+    
     NSDictionary* parameters1 = @{@"market":@""};
     NSString* url1 = @"market/search";
-//
+    
     [[HttpRequest getInstance] getWithURL:url1 parma:parameters1 block:^(BOOL success, id data) {
         if(success){
             if([[data objectForKey:@"ret"] intValue] == 1){
                 NSLog(@"股市数据:%@",data);
                 NSDictionary* market = [data objectForKey:@"data"];
-            
+                
                 if(market.count>0){
                     NSArray* result = [market objectForKey:@"market"];
                     if(result.count >0){
@@ -105,7 +114,6 @@
             }
         }
     }];
-    
 }
 
 -(void)requestStockInfo:(NSInteger)index{
@@ -116,6 +124,9 @@
         NSString *strAll = [dicAll JSONString];
         [[SocketInterface sharedManager] sendRequest:strAll withName:@"state.unsubscribe"];
         [_randList reloadData];
+        
+        [self performSelector:@selector(requestStockAllData) withObject:nil afterDelay:2.0];
+        
         return;
     }
     NSDictionary* info = self.stockName[index];
@@ -155,6 +166,10 @@
             }
             [self.activityContainer addSubview:self.marqueeView];
         }
+    }else{
+        
+        [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+        
     }
     
 }

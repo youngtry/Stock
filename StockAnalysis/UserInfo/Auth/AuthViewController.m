@@ -42,11 +42,15 @@
     self.tabBarController.tabBar.hidden = YES;
     NSString* url = @"account/userinfo";
     NSDictionary *parameters = @{} ;
+    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
+            [HUDUtil hideHudView];
             if([[data objectForKey:@"ret"] intValue] == 1){
                 self.authLevel = [[[[data objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"level"] intValue];
                 [self.table reloadData];
+            }else{
+                [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
             }
         }
     }];

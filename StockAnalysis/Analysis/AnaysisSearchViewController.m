@@ -91,6 +91,7 @@
                                  @"order_by":@"price"
                                  };
     NSString* url = @"market/follow/list";
+    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
             if([[data objectForKey:@"ret"] intValue] == 1){
@@ -112,6 +113,10 @@
                         
                     }
                 }
+            }else{
+                
+                [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                
             }
         }
     }];
@@ -284,6 +289,10 @@
                             [self addDataToShowList];
                         }
                     }
+                }else{
+                    
+                    [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                    
                 }
             }
         }];
@@ -317,6 +326,10 @@
                             [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowSearchList" object:nil];
                         }
                     }
+                }else{
+                    
+                    [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                    
                 }
             }
         }];

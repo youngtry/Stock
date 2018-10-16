@@ -136,8 +136,10 @@
                                  @"email_captcha":_verify2Input.text,
                                  @"district":self.distrcLabel.text
                                  };
+        [HUDUtil showHudViewInSuperView:self.navigationController.view withMessage:@"请求中…"];
         [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
             if(success){
+                [HUDUtil hideHudView];
                 if([[data objectForKey:@"ret"] intValue] == 1){
                     [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"绑定成功"];
                     [self.navigationController popViewControllerAnimated:YES];
@@ -152,8 +154,10 @@
                                  @"phone_captcha":_verify2Input.text,
                                  @"email_captcha":_verify1Input.text
                                  };
+        [HUDUtil showHudViewInSuperView:self.navigationController.view withMessage:@"请求中…"];
         [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
             if(success){
+                [HUDUtil hideHudView];
                 if([[data objectForKey:@"ret"] intValue] == 1){
                     [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"绑定成功"];
                     [self.navigationController popViewControllerAnimated:YES];

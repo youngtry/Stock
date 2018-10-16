@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -45,7 +44,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$≈0.00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nq9-uS-XAb">
-                            <rect key="frame" x="130" y="86" width="82" height="21"/>
+                            <rect key="frame" x="130.5" y="86" width="82" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="82" id="41Q-fR-OlZ"/>
                             </constraints>
@@ -90,10 +89,10 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jKe-gE-l6t" userLabel="充值">
-                    <rect key="frame" x="0.0" y="157" width="95.5" height="83"/>
+                    <rect key="frame" x="0.0" y="157" width="95" height="83"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vkz-eL-4Qi">
-                            <rect key="frame" x="0.0" y="0.0" width="95.5" height="83"/>
+                            <rect key="frame" x="0.0" y="0.0" width="95" height="83"/>
                             <connections>
                                 <action selector="clickChargeButton:" destination="-1" eventType="touchUpInside" id="YNw-nD-iDo"/>
                             </connections>
@@ -118,7 +117,7 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cYH-nJ-CJY" userLabel="体现">
-                    <rect key="frame" x="95.5" y="157" width="95" height="83"/>
+                    <rect key="frame" x="95" y="157" width="95" height="83"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yvI-ga-ngY">
                             <rect key="frame" x="0.0" y="0.0" width="95" height="83"/>
@@ -147,7 +146,7 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2y8-a0-FV1" userLabel="资金">
-                    <rect key="frame" x="189.5" y="157" width="95" height="83"/>
+                    <rect key="frame" x="189" y="157" width="95" height="83"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QXh-Nc-5eD">
                             <rect key="frame" x="0.0" y="0.0" width="95" height="83"/>
@@ -176,10 +175,10 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vzb-DH-e65" userLabel="账单">
-                    <rect key="frame" x="280.5" y="157" width="94.5" height="83"/>
+                    <rect key="frame" x="280" y="157" width="95" height="83"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UDm-oa-Ox2">
-                            <rect key="frame" x="0.0" y="0.0" width="94.5" height="83"/>
+                            <rect key="frame" x="0.0" y="0.0" width="95" height="83"/>
                             <connections>
                                 <action selector="clickBillButton:" destination="-1" eventType="touchUpInside" id="mEI-Iq-sfH"/>
                             </connections>
@@ -219,7 +218,7 @@
                             <color key="textColor" red="0.56862745098039214" green="0.56862745098039214" blue="0.56862745098039214" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="guM-hf-6hE">
+                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="guM-hf-6hE">
                             <rect key="frame" x="233" y="7" width="49" height="31"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                             <connections>

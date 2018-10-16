@@ -106,7 +106,7 @@
     
     NSDictionary* file = @{@"card_front":fullPath1,
                            @"card_back":fullPath2,
-                           @"card_hand_held":fullPath2
+                           @"card_hand_held":fullPath3
                            };
     [HUDUtil showHudViewInSuperView:self.navigationController.view withMessage:@"认证中,请稍后"];
     [[HttpRequest getInstance] postWithURLWithFile:url parma:params file:file block:^(BOOL success, id data) {

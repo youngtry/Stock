@@ -73,8 +73,10 @@
     NSDictionary* parameters = @{};
     NSString* url = @"market/assortment";
     [chinaTitles addObject:@"自选"];
+    
     [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
+            
             if([[data objectForKey:@"ret"] intValue] == 1){
                 if([[data objectForKey:@"data"] objectForKey:@"tabs"]){
                     NSArray* tabs = [[data objectForKey:@"data"] objectForKey:@"tabs"];
@@ -86,6 +88,10 @@
                     //默认国内
                     [self changeToInternal];
                 }
+            }else{
+                
+                [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                
             }
         }
     }];
@@ -93,9 +99,16 @@
     NSString* url1 = @"market/global/assortment";
     [[HttpRequest getInstance] getWithURL:url1 parma:parameters block:^(BOOL success, id data) {
         if(success){
-            if([[data objectForKey:@"data"] objectForKey:@"tabs"]){
-                globalTitles = [[data objectForKey:@"data"] objectForKey:@"tabs"];
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                if([[data objectForKey:@"data"] objectForKey:@"tabs"]){
+                    globalTitles = [[data objectForKey:@"data"] objectForKey:@"tabs"];
+                }
+            }else{
+                
+                [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                
             }
+            
         }
     }];
     

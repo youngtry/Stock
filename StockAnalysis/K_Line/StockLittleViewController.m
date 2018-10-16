@@ -163,6 +163,10 @@
                         
                     }
                 }
+            }else{
+                
+                [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                
             }
         }
         
@@ -249,6 +253,7 @@
     if(self.isFollow){
         NSDictionary* parameters = @{@"market":self.title};
         NSString* url = @"/market/unfollow";
+        [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
         [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
             if(success){
                 if([[data objectForKey:@"ret"] intValue] == 1){
@@ -260,12 +265,17 @@
                             break;
                         }
                     }
+                }else{
+                    
+                    [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                    
                 }
             }
         }];
     }else{
         NSDictionary* parameters = @{@"market":self.title};
         NSString* url = @"/market/follow";
+        [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
         [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
             if(success){
                 if([[data objectForKey:@"ret"] intValue] == 1){
@@ -277,6 +287,10 @@
                             break;
                         }
                     }
+                    
+                }else{
+                    
+                    [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
                     
                 }
             }
@@ -869,7 +883,7 @@
     if(requestID == PN_KlineQuery){
         [HUDUtil hideHudView];
         NSArray* result = [data objectForKey:@"result"];
-        NSLog(@"result = %ld",result.count);
+        NSLog(@"result = %lu",(unsigned long)result.count);
 //        NSMutableArray* need = [[NSMutableArray alloc] initWithCapacity:result.count];
         [self.klineArray removeAllObjects];
         for(int i=0;i<result.count;i++){

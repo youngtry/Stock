@@ -10,6 +10,6 @@
 
 @interface SortView : UIView
 -(instancetype)initWithFrame:(CGRect)frame title:(NSString*)str;
-
+-(void)setTitleWithFont:(NSInteger)fontIndex withColor:(UIColor*)color;
 @property(nonatomic,copy) void(^block)(BOOL);
 @end

@@ -62,6 +62,7 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.tabBarController.tabBar.hidden = YES;
+    
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -113,15 +114,15 @@
     }else{
         [self.priceTipSettingView setHidden:YES];
         self.state = @"disable";
-        NSString* url = @"market/notice/update";
-        NSDictionary* params = @{@"notice_id":@(self.accountID),
-                                 @"state":self.state
+        NSString* url = @"market/notice/del";
+        NSDictionary* params = @{@"notice_id":@(self.accountID)
+//                                 @"state":self.state
                                  };
-        
+        [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
         [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
             if(success){
                 if([[data objectForKey:@"ret"] intValue] == 1){
-                    [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"更新成功"];
+                    [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"价格提醒删除成功"];
                 }else{
                     [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:[data objectForKey:@"msg"]];
                 }
@@ -141,7 +142,7 @@
                                  @"upper_limit":@([self.topLimitInput.text intValue]),
                                  @"lower_limit":@([self.lowLimitInput.text intValue])
                                  };
-        
+        [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
         [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
             if(success){
                 if([[data objectForKey:@"ret"] intValue] == 1){
@@ -158,7 +159,7 @@
                                  @"lower_limit":self.lowLimitInput.text,
                                  @"market":self.stockName.text
                                  };
-        
+        [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
         [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
             if(success){
                 if([[data objectForKey:@"ret"] intValue] == 1){

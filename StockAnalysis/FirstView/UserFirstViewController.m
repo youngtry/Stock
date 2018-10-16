@@ -40,6 +40,7 @@
 
 @property (nonatomic, strong) MarqueeView *marqueeView;
 @property (nonatomic, assign) NSInteger updateIndex;
+@property (weak, nonatomic) IBOutlet UIButton *userInfoBtn;
 
 @end
 
@@ -57,6 +58,7 @@
     self.tipsTitle = [NSMutableArray new];
     self.tipsContent = [NSMutableArray new];
     self.updateIndex = 0;
+    _usernameLabel.text = @"用户名";
     
     NSString* username = [GameData getUserAccount];
     NSString* password = [GameData getUserPassword];

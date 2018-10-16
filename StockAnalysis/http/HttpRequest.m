@@ -332,6 +332,12 @@
 -(void)formatAFNetwork:(AFHTTPSessionManager*)manager{
 //    NSLog(@"新的token = %@",_token);
 //    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    
+    NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
+    
+    BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
+    
+    
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     // 设置超时时间
@@ -343,7 +349,10 @@
 //    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json",@"text/json",@"text/xml",@"text/html",@"text/plain", nil ];
     // 设置请求头参数
     [manager.requestSerializer setValue:@"multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW" forHTTPHeaderField:@"content-type"];
-    [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@",_token] forHTTPHeaderField:@"authorization"];
+    if( islogin){
+        [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@",_token] forHTTPHeaderField:@"authorization"];
+    }
+    
     [manager.requestSerializer setValue:@"no-cache" forHTTPHeaderField:@"Cache-Control"];
     [manager.requestSerializer setValue:@"57bb5e1b-7c27-4f1d-a5c2-fd56b5604d38" forHTTPHeaderField:@"Postman-Token"];
 }

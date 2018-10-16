@@ -40,6 +40,11 @@
     [self addSubview:_title];
 }
 
+-(void)setTitleWithFont:(NSInteger)fontIndex withColor:(UIColor*)color{
+    _title.font = kTextFont(fontIndex);
+    _title.textColor = color;
+}
+
 -(void)addTriangle{
     _up = [[UIImageView alloc] initWithImage:[SortView getTriangleImage:_isUp]];
     _up.left = _title.right + 2;

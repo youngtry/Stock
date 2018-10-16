@@ -19,6 +19,7 @@
                 <outlet property="randList" destination="7SX-ZS-Ab6" id="wS3-PA-HlO"/>
                 <outlet property="shopRMBLabel" destination="1wT-o6-rV4" id="nj9-YC-hj5"/>
                 <outlet property="shopUSDLabel" destination="NIf-Oy-uJc" id="3mg-C2-FZn"/>
+                <outlet property="userInfoBtn" destination="qYK-ni-SWv" id="Em9-uM-v7E"/>
                 <outlet property="usernameLabel" destination="IQ5-Ar-qvg" id="vtX-jD-gph"/>
                 <outlet property="view" destination="qH5-Ld-EgS" id="vC0-Yh-dMn"/>
             </connections>

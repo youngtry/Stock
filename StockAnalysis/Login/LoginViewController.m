@@ -149,6 +149,7 @@
                 [self.navigationController popViewControllerAnimated:YES];
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"ChangeAfterLogin" object:nil];
             }else{
+                [HUDUtil hideHudView];
                 //登陆失败
                 [HUDUtil showSystemTipView:self title:@"提示" withContent:[data objectForKey:@"msg"]];
             }

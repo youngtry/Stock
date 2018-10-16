@@ -19,6 +19,7 @@
 #import "StockLittleViewController.h"
 #import "ChargeViewController.h"
 #import "ChargeAddressViewController.h"
+#import "LoginViewController.h"
 @interface TradePurchaseViewController ()<SocketDelegate,UITableViewDelegate,UITableViewDataSource,CancelDelegate>
 @property (weak, nonatomic) IBOutlet UIView *editNumContainer;
 @property (weak, nonatomic) IBOutlet UIView *editPriceContainer;
@@ -84,7 +85,7 @@
     
     self.dealData = [NSMutableDictionary new];
     
-    self.tradeName = @"";
+    _tradeName = @"";
     
     self.stcokInfoView.delegate = self;
     self.stcokInfoView.dataSource = self;
@@ -162,6 +163,10 @@
 }
 
 -(void)setMoneyInfo{
+    UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
+    if(nil == temp){
+        temp = self.navigationController;
+    }
     NSDictionary *parameters = @{};
     
     NSString* url = @"wallet/balance";
@@ -191,6 +196,10 @@
                     self.canButAmount.text = [NSString stringWithFormat:@"可买 %.8f",canbuy];
                 }
                 
+            }else{
+                
+                [HUDUtil showHudViewInSuperView:temp.view withMessage:[data objectForKey:@"msg"]];
+                
             }
         }
     }];
@@ -206,6 +215,7 @@
 //    [_sortContantView addSubview:sort1];
     
     SortView *sort2 = [[SortView alloc] initWithFrame:CGRectMake(0, 0, 0, 15) title:@"涨跌幅"];
+    [sort2 setTitleWithFont:12 withColor:kColor(88, 88, 88)];
     sort2.block = ^(BOOL isUp){
         //TODO 数据排序，reload
     };
@@ -214,6 +224,7 @@
     [_sortContantView addSubview:sort2];
     
     SortView *sort3 = [[SortView alloc] initWithFrame:CGRectMake(0, 0, 0, 15) title:@"成交量"];
+    [sort3 setTitleWithFont:12 withColor:kColor(88, 88, 88)];
     sort3.block = ^(BOOL isUp){
         //TODO 数据排序，reload
     };
@@ -247,6 +258,34 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.tabBarController.tabBar.hidden = YES;
+    
+//    UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
+//
+//    NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
+//    BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
+//    if(!islogin){
+//        SCAlertController *alert = [SCAlertController alertControllerWithTitle:@"提示" message:@"请先登录" preferredStyle:  UIAlertControllerStyleAlert];
+//        alert.messageColor = kColor(136, 136, 136);
+//
+//        //退出
+//        SCAlertAction *exitAction = [SCAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//            //登录
+//            LoginViewController* vc = [[LoginViewController alloc ] initWithNibName:@"LoginViewController" bundle:nil];
+//            [temp pushViewController:vc animated:YES];
+//        }];
+//        //单独修改一个按钮的颜色
+//        exitAction.textColor = kColor(243, 186, 46);
+//        [alert addAction:exitAction];
+//
+//        [temp presentViewController:alert animated:YES completion:nil];
+//    }
+    
+    
+  
+    
+    
+    
+    
      self.firstOpen = YES;
     NSLog(@"title = %@",self.title);
     if([self.title isEqualToString:@"卖出"]){
@@ -282,6 +321,9 @@
 
 - (void)handleSingleTap:(UIGestureRecognizer *)gestureRecognizer {
     UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
+    if(nil == temp){
+        temp = self.navigationController;
+    }
     NSString* name = self.marketNamelabel.titleLabel.text;
     StockLittleViewController* vc = [[StockLittleViewController alloc] initWithNibName:@"StockLittleViewController" bundle:nil];
     vc.title = name;
@@ -290,7 +332,20 @@
 
 -(void)setTradeName:(NSString *)tradeName{
     _tradeName = tradeName;
-
+    UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
+    if(nil == temp){
+        temp = self.navigationController;
+    }
+    
+//    [self.marketNamelabel setTitle:_tradeName forState:UIControlStateNormal];
+//    //        self.marketNamelabel.titleLabel.text = cell.name.text;
+//
+//    [self getPendingOrders];
+//
+//    [self.sortGuideView setHidden:YES];
+//
+//    [self setStcokInfo:_tradeName];
+    
     NSDictionary* parameters = @{@"order_by":@"price",
                                  @"order":@"desc",
                                  @"asset":_tradeName
@@ -317,6 +372,10 @@
                     
                     [self.marketNamelabel setTitle:_tradeName forState:UIControlStateNormal];
                 }
+            }else{
+                
+                [HUDUtil showHudViewInSuperView:temp.view withMessage:[data objectForKey:@"msg"]];
+                
             }
         }
     }];
@@ -336,13 +395,18 @@
 }
 
 -(void)requestAnalysis{
-    
+    UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
+    if(nil == temp){
+        temp = self.navigationController;
+    }
     NSDictionary* parameters = @{};
     NSString* url = @"market/assortment";
     [self.titleArray removeAllObjects];
     [self.titleArray addObject:@"自选"];
+    [HUDUtil showHudViewInSuperView:temp.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
+            [HUDUtil hideHudView];
             if([[data objectForKey:@"ret"] intValue] == 1){
                 if([[data objectForKey:@"data"] objectForKey:@"tabs"]){
                     NSArray* tabs = [[data objectForKey:@"data"] objectForKey:@"tabs"];
@@ -367,6 +431,8 @@
                     
                     
                 }
+            }else{
+                [HUDUtil showHudViewInSuperView:temp.view withMessage:[data objectForKey:@"msg"]];
             }
         }
     }];
@@ -390,48 +456,66 @@
 }
 
 -(void)getSelectInfo{
-    
-    NSDictionary* parameters = @{@"page":@(1),
-                                 @"page_limit":@(10),
-                                 @"order_by":@"price",
-                                 @"order":@"desc"
-                                 };
-    NSString* url = @"market/follow/list";
-    
-    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+    NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
+    BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
+    if(islogin){
+        NSDictionary* parameters = @{@"page":@(1),
+                                     @"page_limit":@(10),
+                                     @"order_by":@"price",
+                                     @"order":@"desc"
+                                     };
+        NSString* url = @"market/follow/list";
         
-        if(success){
-            [HUDUtil hideHudView];
-            //            NSLog(@"list = %@",data);
-            if([[data objectForKey:@"ret"] intValue] == 1){
-                NSArray* items = [[data objectForKey:@"data"] objectForKey:@"items"];
-                
-                if(_firstOpen){
-                    if(items.count>0){
+        [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+            
+            if(success){
+                [HUDUtil hideHudView];
+                //            NSLog(@"list = %@",data);
+                if([[data objectForKey:@"ret"] intValue] == 1){
+                    NSArray* items = [[data objectForKey:@"data"] objectForKey:@"items"];
+                    
+                    if(_firstOpen){
+                        if(items.count>0){
+                            [self.infoArray removeAllObjects];
+                            [self.infoArray addObjectsFromArray:items];
+                            if(self.infoArray.count>0){
+                                NSDictionary* stockinfo = self.infoArray[0];
+                                [self setStcokInfo:stockinfo];
+                            }
+                            [self.stcokInfoView reloadData];
+                            [self getPendingOrders];
+                        }else{
+                            [self setOpenSelect];
+                            
+                        }
+                        _firstOpen = NO;
+                    }else{
                         [self.infoArray removeAllObjects];
                         [self.infoArray addObjectsFromArray:items];
-                        if(self.infoArray.count>0){
-                            NSDictionary* stockinfo = self.infoArray[0];
-                            [self setStcokInfo:stockinfo];
+                        if(self.infoArray){
+                            [self.stcokInfoView reloadData];
                         }
-                        [self.stcokInfoView reloadData];
-                    }else{
-                        [self setOpenSelect];
-                        
                     }
-                    _firstOpen = NO;
+                    
+                    
                 }else{
-                    [self.infoArray removeAllObjects];
-                    [self.infoArray addObjectsFromArray:items];
-                    if(self.infoArray){
-                        [self.stcokInfoView reloadData];
+                    UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
+                    if(nil == temp){
+                        temp = self.navigationController;
                     }
+                    [HUDUtil showHudViewTipInSuperView:temp.view withMessage:[data objectForKey:@"msg"]];
+                    
                 }
-                
-                
             }
+        }];
+    }else{
+        if(_firstOpen){
+            [self setOpenSelect];
+            _firstOpen = NO;
         }
-    }];
+    }
+    
+    
 }
 
 -(void)setOpenSelect{
@@ -471,6 +555,13 @@
                     
                     [self getPendingOrders];
                 }
+            }else{
+                UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
+                if(nil == temp){
+                    temp = self.navigationController;
+                }
+                [HUDUtil showHudViewTipInSuperView:temp.view withMessage:[data objectForKey:@"msg"]];
+                
             }
         }
     }];
@@ -559,10 +650,15 @@
 }
 - (IBAction)clickPurchase:(id)sender {
     UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
+    if(nil == temp){
+        temp = self.navigationController;
+    }
     NSString* url1 = @"account/getConfirmState";
     NSDictionary* params = @{};
+    [HUDUtil showHudViewInSuperView:temp.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] getWithURL:url1 parma:params block:^(BOOL success, id data) {
         if(success){
+            [HUDUtil hideHudView];
             if([[data objectForKey:@"ret"] intValue] == 1){
                 NSString* state = [[data objectForKey:@"data"] objectForKey:@"state"];
                 if([state isEqualToString:@"on"]){
@@ -591,6 +687,8 @@
                         [self sellStock:@""];
                     }
                 }
+            }else{
+                [HUDUtil showHudViewInSuperView:temp.view withMessage:[data objectForKey:@"msg"]];
             }
         }
     }];
@@ -600,6 +698,9 @@
 
 -(void)buyStock:(NSString*)token{
     UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
+    if(nil == temp){
+        temp = self.navigationController;
+    }
     NSString* url = @"exchange/trade/add";
     NSDictionary* parameters = @{@"market":self.marketNamelabel.titleLabel.text,
                                  @"num":@([self.purchaseAmountInput.text floatValue]),
@@ -641,6 +742,10 @@
                 [self getPendingOrders];
                 
 //                [self.dealList reloadData];
+            }else{
+                
+                [HUDUtil showHudViewInSuperView:temp.view withMessage:[data objectForKey:@"msg"]];
+                
             }
         }
     }];
@@ -648,6 +753,9 @@
 
 -(void)sellStock:(NSString*)token{
     UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
+    if(nil == temp){
+        temp = self.navigationController;
+    }
     NSString* url = @"exchange/trade/add";
     NSDictionary* parameters = @{@"market":self.marketNamelabel.titleLabel.text,
                                  @"num":@([self.purchaseAmountInput.text floatValue]),
@@ -656,8 +764,10 @@
                                  @"is_limit":@(1),
                                  @"asset_token":token
                                  };
+    [HUDUtil showHudViewInSuperView:temp.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
+            [HUDUtil hideHudView];
             if([[data objectForKey:@"ret"] intValue] == 1){
                 [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"挂单成功"];
                 
@@ -686,16 +796,24 @@
                 
                 [self getPendingOrders];
 //                [self.dealList reloadData];
+            }else{
+                
+                [HUDUtil showHudViewInSuperView:temp.view withMessage:[data objectForKey:@"msg"]];
+                
             }
         }
     }];
 }
 - (IBAction)clickAddPruchaseAmount:(id)sender {
+    UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
+    if(nil == temp){
+        temp = self.navigationController;
+    }
     float amount = [self.purchaseAmountInput.text floatValue];
     float available = [[self.canButAmount.text substringFromIndex:[self.canButAmount.text rangeOfString:@"可买 "].length] floatValue];
     amount++;
     if(amount>available){
-        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"超出所能购买的最多数目了"];
+        [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"超出所能购买的最多数目了"];
     }else{
         self.purchaseAmountInput.text = [NSString stringWithFormat:@"%.8f",amount];
         float price = amount*([[self.priceRMBLabel.text substringFromIndex:1] floatValue]);
@@ -704,10 +822,14 @@
     
 }
 - (IBAction)clickAReducePruchaseAmount:(id)sender {
+    UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
+    if(nil == temp){
+        temp = self.navigationController;
+    }
     float amount = [self.purchaseAmountInput.text floatValue];
     amount--;
     if(amount<0){
-        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"数目不可小于0"];
+        [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"数目不可小于0"];
     }else{
         self.purchaseAmountInput.text = [NSString stringWithFormat:@"%.8f",amount];
         float price = amount*([[self.priceRMBLabel.text substringFromIndex:1] floatValue]);
@@ -716,10 +838,14 @@
     
 }
 - (IBAction)clickReducePruchasePrice:(id)sender {
+    UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
+    if(nil == temp){
+        temp = self.navigationController;
+    }
     float price = [self.purchasePriceInput.text floatValue];
     price--;
     if(price<0){
-        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"购买总价不可低于0"];
+        [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"购买总价不可低于0"];
     }else{
         self.purchasePriceInput.text = [NSString stringWithFormat:@"%.4f",price];
         float amount = price/([[self.priceRMBLabel.text substringFromIndex:1] floatValue]);
@@ -728,11 +854,15 @@
     
 }
 - (IBAction)clickAddPruchasePrice:(id)sender {
+    UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
+    if(nil == temp){
+        temp = self.navigationController;
+    }
     float price = [self.purchasePriceInput.text floatValue];
     float available = [[self.avaliableMoney.text substringFromIndex:[self.avaliableMoney.text rangeOfString:@"可用 "].length] floatValue];
     price++;
     if(price>available){
-        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"购买总价不可高于总余额"];
+        [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"购买总价不可高于总余额"];
     }else{
         self.purchasePriceInput.text = [NSString stringWithFormat:@"%.4f",price];
         float amount = price/([[self.priceRMBLabel.text substringFromIndex:1] floatValue]);
@@ -745,7 +875,10 @@
 }
 - (IBAction)clickChargeBtn:(id)sender {
     
-    
+    UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
+    if(nil == temp){
+        temp = self.navigationController;
+    }
     NSDictionary *parameters = @{};
     
     NSString* url = @"wallet/balance";
@@ -768,7 +901,7 @@
                         market = keyinfo;
                     }
                 }
-                UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
+                
                 ChargeAddressViewController *vc = [[ChargeAddressViewController alloc] initWithNibName:@"ChargeAddressViewController" bundle:nil];
                 
                 [[AppData getInstance] setAssetName:market];
@@ -779,6 +912,10 @@
                 }
                 
                 
+            }else{
+                
+                [HUDUtil showHudViewInSuperView:temp.view withMessage:[data objectForKey:@"msg"]];
+                
             }
         }
     }];
@@ -787,6 +924,10 @@
 }
 
 -(void)getPendingOrders{
+    UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
+    if(nil == temp){
+        temp = self.navigationController;
+    }
     NSString* mode = @"buy";
     if([self.title isEqualToString:@"买入"]){
         mode = @"buy";
@@ -812,7 +953,7 @@
                 [self.dealList reloadData];
                 
             }else{
-                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                [HUDUtil showHudViewTipInSuperView:temp.view withMessage:[data objectForKey:@"msg"]];
             }
         }
     }];
@@ -861,6 +1002,9 @@
 
 -(void)sendCancelNotice:(BOOL)success withReason:(NSString *)msg{
     UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
+    if(nil == temp){
+        temp = self.navigationController;
+    }
     if(success){
         [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"撤销成功"];
         [self getPendingOrders];
@@ -1050,9 +1194,14 @@
                                      @"asset":name
                                      };
         NSString* url = @"market/item";
-        
+        UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
+        if(nil == temp){
+            temp = self.navigationController;
+        }
+        [HUDUtil showHudViewInSuperView:temp.view withMessage:@"请求中…"];
         [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
             if(success){
+                [HUDUtil hideHudView];
                 //            NSLog(@"list = %@",data);
                 if([[data objectForKey:@"ret"] intValue] == 1){
                     [self.infoArray removeAllObjects];
@@ -1061,6 +1210,10 @@
 //                        NSLog(@"items = %@",self.infoArray);
                         [self.stcokInfoView reloadData];
                     }
+                }else{
+                    
+                    [HUDUtil showHudViewInSuperView:temp.view withMessage:[data objectForKey:@"msg"]];
+                    
                 }
             }
         }];

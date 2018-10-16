@@ -110,9 +110,10 @@
                                          @"password": [GameData getUserPassword]};
             
             NSString* url = @"account/login/email";
-            
+            [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
             [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
                 if(success){
+                    [HUDUtil hideHudView];
                     //                NSLog(@"登录消息 = %@",data);
                     if([[data objectForKey:@"ret"] intValue] == 1){
 //                        [self autoLoginBack];
@@ -142,9 +143,10 @@
             
             
             NSString* url = @"account/login/phone";
-            
+            [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
             [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
                 if(success){
+                    [HUDUtil hideHudView];
 //                    NSLog(@"登录消息1 = %@",data);
                     if([[data objectForKey:@"ret"] intValue] == 1){
 //                        [self autoLoginBack];

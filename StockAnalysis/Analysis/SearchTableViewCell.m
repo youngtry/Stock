@@ -39,6 +39,7 @@
         NSString* url = @"/market/unfollow";
         [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
             if(success){
+                [HUDUtil hideHudView];
                 if([[data objectForKey:@"ret"] intValue] == 1){
                     [self setIfLike:NO];
                     for (NSDictionary* info in [SearchData getInstance].specialList) {
@@ -55,6 +56,7 @@
         NSString* url = @"/market/follow";
         [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
             if(success){
+                [HUDUtil hideHudView];
                 if([[data objectForKey:@"ret"] intValue] == 1){
                     [self setIfLike:YES];
                     for (NSDictionary* info in [SearchData getInstance].searchList) {

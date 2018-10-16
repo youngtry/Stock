@@ -133,10 +133,10 @@
                                      };
             
             NSDictionary* file = @{@"paycode":fullPath};
-            
+            [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
             [[HttpRequest getInstance] postWithURLWithFile:url parma:params file:file block:^(BOOL success, id data) {
                 if(success){
-                    
+                    [HUDUtil hideHudView];
                     if([[data objectForKey:@"ret"] intValue] == 1){
                         [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"设置成功"];
                         [fileManager removeItemAtPath:fullPath error:nil];

@@ -99,8 +99,10 @@
     NSDictionary* params = @{@"page":@(page),
                              @"page_limit":@(10)
                              };
+    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
         if(success){
+            [HUDUtil hideHudView];
             if([[data objectForKey:@"ret"] intValue] == 1){
                 NSArray* list = [[data objectForKey:@"data"] objectForKey:@"trades"];
                 if(list.count>0){

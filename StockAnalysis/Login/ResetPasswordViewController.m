@@ -118,6 +118,10 @@
                 self.authCodeContainer.image = decodeImage;
                 
                 
+            }else{
+                
+                [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                
             }
         }
     }];
@@ -161,9 +165,10 @@
     
     NSString* url = @"captcha/picture/verify";
     NSLog(@"输入验证码为:%@",self.authCodeTextFiled.text);
+    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] postWithURL:url parma:paremeters block:^(BOOL success, id data) {
         if(success){
-            
+            [HUDUtil hideHudView];
             if([[data objectForKey:@"ret"] intValue]== 1){
                 //验证成功
                 self.secondContainer.hidden = NO;

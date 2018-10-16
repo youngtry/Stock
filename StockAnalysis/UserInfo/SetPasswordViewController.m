@@ -164,6 +164,10 @@
             if([[data objectForKey:@"ret"] intValue] == 1){
                 LoginViewController* vc = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];
                 [self.navigationController pushViewController:vc animated:YES];
+            }else{
+                
+                [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                
             }
             
         }
@@ -182,6 +186,10 @@
         if(success){
             if([[data objectForKey:@"ret"] intValue] == 1){
                 [self.navigationController popViewControllerAnimated:YES];
+            }else{
+                
+                [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                
             }
             
         }
@@ -302,11 +310,12 @@
     NSDictionary *parameters = @{  @"gesture": gesture ,
                                    @"verity_token":[[AppData getInstance] getTempVerify]
                                    };
-    
+    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
     if([self.settitle.text isEqualToString:@"设置手势密码"]){
         NSString* url = @"account/set_gesture";
         [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
             if(success){
+                [HUDUtil hideHudView];
                 [self setGestureBack:data];
             }
         }];
@@ -314,6 +323,7 @@
         NSString* url = @"account/check_gesture";
         [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
             if(success){
+                [HUDUtil hideHudView];
                 [self verifyGestureBack:data];
             }
         }];
@@ -321,6 +331,7 @@
         NSString* url = @"account/check_gesture";
         [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
             if(success){
+                [HUDUtil hideHudView];
                 [self verifyGestureBack:data];
             }
         }];

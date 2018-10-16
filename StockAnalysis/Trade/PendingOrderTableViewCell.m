@@ -39,7 +39,6 @@
     
     NSString* url = @"exchange/trade/cancel";
     NSDictionary* params = @{@"trade_id":self.tradeID};
-    
     [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
         if(success){
             if([[data objectForKey:@"ret"] intValue] == 1){

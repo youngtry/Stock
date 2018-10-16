@@ -86,6 +86,10 @@
                 }else{
                     [self.switchBtn setOn:NO];
                 }
+            }else{
+                
+                [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                
             }
         }
     }];
@@ -100,6 +104,10 @@
                 }else{
                     [_guestureSwitchbBtn setOn:NO];
                 }
+            }else{
+                
+                [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                
             }
         }
     }];
@@ -149,6 +157,10 @@
             self.phoneBindLabel.hidden = YES;
             self.phoneBindImage.hidden = NO;
         }
+    }else{
+        
+        [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+        
     }
     
 }
@@ -170,7 +182,7 @@
     
     NSString* url = @"account/setConfirmCheck";
     NSDictionary* params = @{@"state":state};
-    
+    [HUDUtil showHudViewInSuperView:self.navigationController.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
         if(success){
             if([[data objectForKey:@"ret"] intValue] == 1){
@@ -269,6 +281,10 @@
                                     ModifyMoneyPasswordViewController* vc = [[ModifyMoneyPasswordViewController alloc] initWithNibName:@"ModifyMoneyPasswordViewController" bundle:nil];
                                     [self.navigationController pushViewController:vc animated:YES];
                                 }
+                            }else{
+                                
+                                [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                                
                             }
                         }
                     }];
@@ -284,6 +300,10 @@
                             if(success){
                                 if([[data objectForKey:@"ret"] intValue] == 1){
                                     [_guestureSwitchbBtn setOn:NO];
+                                }else{
+                                    
+                                    [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                                    
                                 }
                             }
                         }];

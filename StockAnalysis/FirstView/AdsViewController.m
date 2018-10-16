@@ -33,7 +33,7 @@
     NSDictionary* params = @{@"page":@(1),
                              @"page_limit":@(10)
                              };
-    
+    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] getWithURL:url parma:params block:^(BOOL success, id data) {
         if(success){
             if([[data objectForKey:@"ret"] intValue] == 1){
@@ -41,6 +41,10 @@
                 NSArray* ads = [[data objectForKey:@"data"] objectForKey:@"ads"];
                 self.adData = [[NSMutableArray alloc] initWithArray:ads];
                 [self.adList reloadData];
+            }else{
+                
+                [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                
             }
         }
     }];

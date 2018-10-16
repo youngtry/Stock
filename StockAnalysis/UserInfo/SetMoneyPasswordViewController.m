@@ -106,8 +106,10 @@
     NSString* url = @"account/set_assetpwd";
     
 //    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"SetMoneyPasswordBack"];
+    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
+            [HUDUtil hideHudView];
             [self setMoneyPasswordBack:data];
         }
     }];

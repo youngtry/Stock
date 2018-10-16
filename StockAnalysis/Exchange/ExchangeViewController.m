@@ -36,12 +36,7 @@
     
     self.moneyList.delegate = self;
     self.moneyList.dataSource = self;
-    
-    
-    
-    
-    
-    
+
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -72,6 +67,10 @@
                     
                     
                 }
+            }else{
+                
+                [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                
             }
         }
     }];
@@ -83,9 +82,10 @@
     NSDictionary *parameters = @{ @"type": @"exchange"};
     
     NSString* url = @"wallet/balance";
-    
+    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
+            [HUDUtil hideHudView];
             [self getExchangeBack:data];
         }
     }];

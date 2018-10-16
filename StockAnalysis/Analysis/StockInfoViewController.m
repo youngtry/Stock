@@ -75,6 +75,8 @@
                         //                    NSLog(@"items = %@,数量为：%lu",_items,(unsigned long)_items.count);
                         [self.tableView reloadData];
                     }
+                }else{
+                    [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
                 }
             }
         }];
@@ -86,7 +88,6 @@
                                      @"asset":asset
                                      };
         NSString* url = @"market/global/pricelist";
-        
         [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
             
             if(success){
@@ -98,6 +99,8 @@
                         //                    NSLog(@"items = %@,数量为：%lu",_items,(unsigned long)_items.count);
                         [self.tableView reloadData];
                     }
+                }else{
+                    [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
                 }
             }
         }];
@@ -116,8 +119,9 @@
     NSString* url = @"market/follow/list";
     
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
-        [HUDUtil hideHudView];
+//        [HUDUtil hideHudView];
         if(success){
+            [HUDUtil hideHudView];
 //            NSLog(@"list = %@",data);
             if([[data objectForKey:@"ret"] intValue] == 1){
                 _items = [[data objectForKey:@"data"] objectForKey:@"items"];
@@ -125,6 +129,8 @@
                     //                    NSLog(@"items = %@,数量为：%lu",_items,(unsigned long)_items.count);
                     [self.tableView reloadData];
                 }
+            }else{
+                [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
             }
         }
     }];

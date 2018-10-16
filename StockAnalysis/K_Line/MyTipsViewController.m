@@ -38,9 +38,10 @@
                              @"page_limit":@(10),
                              @"state":@""
                              };
-    
+    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] getWithURL:url parma:params block:^(BOOL success, id data) {
         if(success){
+            [HUDUtil hideHudView];
             if([[data objectForKey:@"ret"] intValue] == 1){
                 [self.myTips removeAllObjects];
                 NSArray* items = [[data objectForKey:@"data"] objectForKey:@"items"];
@@ -51,6 +52,8 @@
                 }
                 
                 [self.tipsList reloadData];
+            }else{
+                [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
             }
         }
     }];

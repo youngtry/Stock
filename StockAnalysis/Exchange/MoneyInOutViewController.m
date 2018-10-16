@@ -53,8 +53,10 @@
     NSString* url = @"wallet/balance";
     
     //    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"GetExchangeBack"];
+    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
+            [HUDUtil hideHudView];
             [self showLeftMoney:data];
         }
     }];
@@ -93,6 +95,10 @@
             }
             
         }
+    }else{
+        
+        [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+        
     }
     
 }

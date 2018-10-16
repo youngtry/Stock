@@ -84,8 +84,10 @@
     NSDictionary* parameters = @{};
     NSString* url = @"market/assortment";
     [self.allStocks removeAllObjects];
+    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
+            [HUDUtil hideHudView];
             if([[data objectForKey:@"ret"] intValue] == 1){
                 if([[data objectForKey:@"data"] objectForKey:@"tabs"]){
                     NSArray* tabs = [[data objectForKey:@"data"] objectForKey:@"tabs"];
@@ -116,6 +118,8 @@
                         }];
                     }
                 }
+            }else{
+                [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
             }
         }
     }];
@@ -245,7 +249,7 @@
         self.currentPage = 0;
         [self.data removeAllObjects];
         self.isUpdate = YES;
-        [self getAllStocks];
+        [self getAllHistory:1 WithName:self.stockNameBtn.titleLabel.text];
     }else{
         [HUDUtil showHudViewTipInSuperView:self.view withMessage:msg];
     }
