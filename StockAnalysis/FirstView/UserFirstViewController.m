@@ -95,7 +95,9 @@
     }else{
         //手机号登录
         NSDictionary *parameters = @{@"phone": [GameData getUserAccount],
-                                     @"password": [GameData getUserPassword]};
+                                     @"password": [GameData getUserPassword],
+                                     @"district":[GameData getDistrict]
+                                     };
         
         
         NSString* url = @"account/login/phone";
@@ -594,9 +596,7 @@
     
     FirstListTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     if(cell){
-        
-        
-        
+
         NSString* name = cell.nameLabel.text;
         StockLittleViewController* vc = [[StockLittleViewController alloc] initWithNibName:@"StockLittleViewController" bundle:nil];
         vc.title = name;

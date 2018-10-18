@@ -120,7 +120,7 @@
                 
             }else{
                 
-                [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
                 
             }
         }
@@ -220,7 +220,7 @@
             
             if(success){
                 [HUDUtil hideHudView];
-                [GameData setAccountList:self.userNameTextField.text withPassword:self.passwordInput.text];
+                [GameData setAccountList:self.userNameTextField.text withPassword:self.passwordInput.text withDistrict:@""];
                 if([[GameData getUserAccount] isEqualToString:self.userNameTextField.text]){
                     [GameData setUserPassword:self.passwordInput.text];
                 }
@@ -240,7 +240,7 @@
             
             if(success){
                 [HUDUtil hideHudView];
-                [GameData setAccountList:self.userNameTextField.text withPassword:self.passwordInput.text];
+                [GameData setAccountList:self.userNameTextField.text withPassword:self.passwordInput.text withDistrict:@"+86"];
                 if([[GameData getUserAccount] isEqualToString:self.userNameTextField.text]){
                     [GameData setUserPassword:self.passwordInput.text];
                 }

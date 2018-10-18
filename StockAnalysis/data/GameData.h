@@ -16,7 +16,10 @@
 +(void)setUserPassword:(NSString* )password;
 +(NSString* )getUserPassword;
 
-+(void)setAccountList:(NSString*)account withPassword:(NSString*)pwd;
++(void)setDistrict:(NSString* )district;
++(NSString* )getDistrict;
+
++(void)setAccountList:(NSString*)account withPassword:(NSString*)pwd  withDistrict:(NSString*)district;
 +(NSArray*)getAccountList;
 
 +(void)setGuestureTime:(NSString*)time;

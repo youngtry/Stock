@@ -14,6 +14,7 @@
 #import "PendingOrderViewController.h"
 #import "PendingOrderHistoryViewController.h"
 #import "AllEntryOrdersVC.h"
+#import "LoginViewController.h"
 @interface TradeViewController ()
 @property(nonatomic,strong) AITabScrollview *scrollTitle;
 @property(nonatomic,strong) AITabContentView*scrollContent;
@@ -33,11 +34,35 @@
     
     UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:@"全部挂单" style:UIBarButtonItemStylePlain target:self action:@selector(clickAllTrade:)];
     self.navigationItem.rightBarButtonItem = right;
+    
+    NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
+    BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
+    if(!islogin){
+        SCAlertController *alert = [SCAlertController alertControllerWithTitle:@"提示" message:@"请先登录" preferredStyle:  UIAlertControllerStyleAlert];
+        alert.messageColor = kColor(136, 136, 136);
+        
+        //退出
+        SCAlertAction *exitAction = [SCAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            //登录
+            LoginViewController* vc = [[LoginViewController alloc ] initWithNibName:@"LoginViewController" bundle:nil];
+            [self.navigationController pushViewController:vc animated:YES];
+        }];
+        //单独修改一个按钮的颜色
+        exitAction.textColor = kColor(243, 186, 46);
+        [alert addAction:exitAction];
+        
+        [self.navigationController presentViewController:alert animated:YES completion:nil];
+        
+        return;
+    }
+    
     //标题滑动
     [self scrollTitle];
     
     //每页vc
     [self scrollContent];
+    
+    
     
     NSMutableArray* vcs = [NSMutableArray new];
     NSArray *titles = @[@"买入",@"卖出",@"挂单",@"历史"];
@@ -60,6 +85,8 @@
     
     WeakSelf(weakSelf)
     [_scrollTitle configParameter:horizontal viewArr:titles tabWidth:kScreenWidth/titles.count tabHeight:42 index:0 block:^(NSInteger index) {
+        
+        
         if(index==3){
             //历史记录
             PendingOrderHistoryViewController *vc = [PendingOrderHistoryViewController new];

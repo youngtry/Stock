@@ -94,6 +94,7 @@
     [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
+            [HUDUtil hideHudView];
             if([[data objectForKey:@"ret"] intValue] == 1){
                 NSDictionary* itemData = [data objectForKey:@"data"];
                 if(itemData.count>0){
@@ -115,7 +116,7 @@
                 }
             }else{
                 
-                [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
                 
             }
         }
@@ -252,10 +253,17 @@
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
     NSLog(@"searchText = %@",searchText);
+    [self search:searchBar];
 }
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar{
     NSLog(@"endSearch");
     
+    [self search:searchBar];
+    
+    
+}
+
+-(void)search:(UISearchBar *)searchBar{
     NSLog(@"当前是；%ld",_scrollTitle.tagIndex );
     
     if(_scrollTitle.tagIndex == 0 || ![_historyView isHidden]){
@@ -278,7 +286,7 @@
                             
                             for (int i=0; i<result.count; i++) {
                                 NSDictionary* info = result[i];
-//                                NSLog(@"i= %d,info = %@",i,info);
+                                //                                NSLog(@"i= %d,info = %@",i,info);
                                 [[SearchData getInstance].searchList addObject:info];
                                 
                             }
@@ -291,7 +299,7 @@
                     }
                 }else{
                     
-                    [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                    [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
                     
                 }
             }
@@ -316,7 +324,7 @@
                             
                             for (int i=0; i<result.count; i++) {
                                 NSDictionary* info = result[i];
-//                                NSLog(@"i= %d,info = %@",i,info);
+                                //                                NSLog(@"i= %d,info = %@",i,info);
                                 [[SearchData getInstance].searchList addObject:info];
                                 
                             }
@@ -328,14 +336,12 @@
                     }
                 }else{
                     
-                    [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                    [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
                     
                 }
             }
         }];
     }
-    
-    
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{

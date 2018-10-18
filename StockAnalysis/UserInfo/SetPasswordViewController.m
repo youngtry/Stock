@@ -166,7 +166,7 @@
                 [self.navigationController pushViewController:vc animated:YES];
             }else{
                 
-                [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
                 
             }
             
@@ -188,7 +188,7 @@
                 [self.navigationController popViewControllerAnimated:YES];
             }else{
                 
-                [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
                 
             }
             

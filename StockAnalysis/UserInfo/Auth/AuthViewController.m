@@ -50,7 +50,7 @@
                 self.authLevel = [[[[data objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"level"] intValue];
                 [self.table reloadData];
             }else{
-                [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
             }
         }
     }];

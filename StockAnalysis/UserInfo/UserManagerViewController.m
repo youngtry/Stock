@@ -103,6 +103,7 @@
         NSDictionary* info = [list objectAtIndex:[indexPath row]];
         NSString* username = [info objectForKey:@"account"];
         NSString* password = [info objectForKey:@"password"];
+        NSString* district = [info objectForKey:@"district"];
 //        NSLog(@"username = %@,password = %@",username,password);
         if([username containsString:@"@"]){
             //邮箱登录
@@ -119,7 +120,7 @@
 //                        [self autoLoginBack];
                         [GameData setUserAccount:username];
                         [GameData setUserPassword:password];
-                        [GameData setAccountList:username withPassword:password];
+                        [GameData setAccountList:username withPassword:password withDistrict:district];
                         NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
                         [defaultdata setBool:YES forKey:@"IsLogin"];
                         
@@ -139,7 +140,9 @@
         }else{
             //手机号登录
             NSDictionary *parameters = @{@"phone": [GameData getUserAccount],
-                                         @"password": [GameData getUserPassword]};
+                                         @"password": [GameData getUserPassword],
+                                         @"district": [GameData getDistrict]
+                                         };
             
             
             NSString* url = @"account/login/phone";
@@ -152,7 +155,7 @@
 //                        [self autoLoginBack];
                         [GameData setUserAccount:username];
                         [GameData setUserPassword:password];
-                        [GameData setAccountList:username withPassword:password];
+                        [GameData setAccountList:username withPassword:password withDistrict:district];
                         NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
                         [defaultdata setBool:YES forKey:@"IsLogin"];
                         

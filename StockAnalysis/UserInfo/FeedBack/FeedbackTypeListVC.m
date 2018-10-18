@@ -27,18 +27,49 @@
 //    NSArray *a = @[@"充值未到账问题"];
 //    [_data addObject:a]
     
-    _data = @[@[@"充值未到账问题",@"问题1",@"问题2",@"问题3"],
-              @[@"提现等待人工审核",@"未收到提现确认邮件",@"未收到提现确认短信",@"申请撤销提现",@"其他提现问题"],
-              @[@"账户与安全问题"],
-              @[@"身份认证问题"],
-              @[@"API问题"],
-              @[@"交易问题"],
-              @[@"活动问题"],
-              ];
+    _data = [NSMutableArray new];
     _switchs = [NSMutableArray new];
-    for (int i=0; i<_data.count; i++) {
-        [_switchs addObject:@(0)];
-    }
+    
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [_data removeAllObjects];
+    [_switchs removeAllObjects];
+    [self requestAllQuestions];
+}
+
+-(void)requestAllQuestions{
+    NSString* url = @"feedback/type";
+    NSDictionary* params = @{};
+    [[HttpRequest getInstance] getWithURL:url parma:params block:^(BOOL success, id data) {
+        if(success){
+            [HUDUtil hideHudView];
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                NSArray* allquestions = [[data objectForKey:@"data"] objectForKey:@"questions"];
+                
+                for(NSDictionary* qq in allquestions){
+                    NSMutableArray* info = [NSMutableArray new];
+                    NSString* title = [qq objectForKey:@"title"];
+                    [info addObject:title];
+                    NSArray* subquestions = [qq objectForKey:@"sub_questions"];
+                    for (NSDictionary* subq in subquestions) {
+                        NSString* subtitle = [subq objectForKey:@"title"];
+                        [info addObject:subtitle];
+                    }
+                    [_data addObject:info];
+                }
+                for (int i=0; i<_data.count; i++) {
+                    [_switchs addObject:@(0)];
+                }
+                [self.tableView reloadData];
+            }else{
+                
+                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                
+            }
+        }
+    }];
 }
 
 -(UITableView*)tableView{

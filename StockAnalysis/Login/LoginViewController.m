@@ -88,8 +88,9 @@
         
         [GameData setUserAccount:self.usernameInput.text];
         [GameData setUserPassword:self.passwordInput.text];
+        [GameData setDistrict:self.distrcLabel.text];
         
-        [GameData setAccountList:self.usernameInput.text withPassword:self.passwordInput.text];
+        [GameData setAccountList:self.usernameInput.text withPassword:self.passwordInput.text withDistrict:self.distrcLabel.text];
         
         NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
         [defaultdata setBool:YES forKey:@"IsLogin"];
@@ -141,7 +142,8 @@
                 
                 [GameData setUserAccount:self.usernameInput.text];
                 [GameData setUserPassword:self.passwordInput.text];
-                [GameData setAccountList:self.usernameInput.text withPassword:self.passwordInput.text];
+                [GameData setDistrict:self.distrcLabel.text];
+                [GameData setAccountList:self.usernameInput.text withPassword:self.passwordInput.text withDistrict:self.distrcLabel.text];
                 
                 NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
                 [defaultdata setBool:YES forKey:@"IsLogin"];

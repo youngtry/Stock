@@ -15,4 +15,5 @@
 -(void)reloadFrame:(CGRect)frame;
 
 -(void)setSelectIndex:(NSInteger) select;
+-(NSInteger)getSelectIndex;
 @end

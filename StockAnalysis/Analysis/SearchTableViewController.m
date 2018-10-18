@@ -194,7 +194,7 @@
             [[SearchData getInstance] addhistory:data];
             
             StockLittleViewController* vc = [[StockLittleViewController alloc] initWithNibName:@"StockLittleViewController" bundle:nil];
-            
+            vc.title = name;
             id temp = self.parentViewController.view.selfViewController.navigationController;
             [temp pushViewController:vc animated:YES];
         }

@@ -75,7 +75,8 @@
                                      @"bank":self.bankName.text,
                                      @"subbank":self.bankDetailNname.text,
                                      @"card":self.cardNum.text,
-                                     @"phone_captcha":self.verifyInput.text
+                                     @"phone_captcha":self.verifyInput.text,
+                                     @"asset_token":token
                                      };
             
             [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
@@ -88,6 +89,8 @@
                     }
                 }
             }];
+        }else{
+            [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"资金密码验证错误"];
         }
     };
     

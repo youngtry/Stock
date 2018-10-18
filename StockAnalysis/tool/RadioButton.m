@@ -80,7 +80,14 @@
 }
 
 -(void)setSelectIndex:(NSInteger)select{
-    [self selectButton:-1];
+    _selectIndex = select;
+    
+    [self selectButton:select];
+    [self onSelectChanged];
+}
+
+-(NSInteger)getSelectIndex{
+    return _selectIndex;
 }
 
 -(void)selectButton:(NSInteger)index{

@@ -92,8 +92,10 @@
     [super viewDidLoad];
 //    self.title = @"StockLittleViewController";
     // Do any additional setup after loading the view from its nib.
-    [[SocketInterface sharedManager] openWebSocket];
+    
     [SocketInterface sharedManager].delegate = self;
+    [[SocketInterface sharedManager] openWebSocket];
+    
 //    [[SocketInterface sharedManager] closeWebSocket];
     self.isFollow = NO;
     self.isTip = NO;
@@ -165,7 +167,7 @@
                 }
             }else{
                 
-                [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
                 
             }
         }
@@ -256,6 +258,7 @@
         [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
         [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
             if(success){
+                [HUDUtil hideHudView];
                 if([[data objectForKey:@"ret"] intValue] == 1){
                     self.isFollow = NO;
                     [self.navigationItem.rightBarButtonItems[1] setImage:[[UIImage imageNamed:@"addstar.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
@@ -267,7 +270,7 @@
                     }
                 }else{
                     
-                    [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                    [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
                     
                 }
             }
@@ -278,6 +281,7 @@
         [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
         [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
             if(success){
+                [HUDUtil hideHudView];
                 if([[data objectForKey:@"ret"] intValue] == 1){
                     self.isFollow = YES;
                     [self.navigationItem.rightBarButtonItems[1] setImage:[[UIImage imageNamed:@"star.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
@@ -290,7 +294,7 @@
                     
                 }else{
                     
-                    [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                    [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
                     
                 }
             }

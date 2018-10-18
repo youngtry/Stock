@@ -88,7 +88,7 @@
                 }
             }else{
                 
-                [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
                 
             }
         }
@@ -106,7 +106,7 @@
                 }
             }else{
                 
-                [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
                 
             }
         }
@@ -159,12 +159,14 @@
         }
     }else{
         
-        [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
         
     }
     
 }
 - (IBAction)clickGestureVerify:(id)sender {
+    UISwitch* btn = (UISwitch*)sender;
+    BOOL ison = [btn isOn];
     
     _verifyType = 4;
     [self.verifyView setHidden:NO];
@@ -243,8 +245,20 @@
     
 }
 - (IBAction)clickCancelVerifyBtn:(id)sender {
+    [self.view endEditing:YES];
     self.passwordInput.text = @"";
     [self.verifyView setHidden:YES];
+    
+    if(_verifyType == 1){
+        
+    }else if (_verifyType == 2){
+        
+    }else if (_verifyType == 3){
+        
+    }else if (_verifyType == 4){
+        BOOL ison = [_guestureSwitchbBtn isOn];
+        [_guestureSwitchbBtn setOn:!ison];
+    }
 }
 - (IBAction)clickSureVerifybtn:(id)sender {
     [self test];
@@ -257,7 +271,9 @@
 
                 [[AppData getInstance] setTempVerify:temp];
                 
-                [self clickCancelVerifyBtn:nil];
+                [self.view endEditing:YES];
+                self.passwordInput.text = @"";
+                [self.verifyView setHidden:YES];
                 
                 if(_verifyType == 1){
                     GuestrureTimeSetView* timeset = [[GuestrureTimeSetView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
@@ -283,7 +299,7 @@
                                 }
                             }else{
                                 
-                                [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
                                 
                             }
                         }
@@ -302,7 +318,7 @@
                                     [_guestureSwitchbBtn setOn:NO];
                                 }else{
                                     
-                                    [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                                    [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
                                     
                                 }
                             }

@@ -20,7 +20,7 @@
 #import "ChargeViewController.h"
 #import "ChargeAddressViewController.h"
 #import "LoginViewController.h"
-@interface TradePurchaseViewController ()<SocketDelegate,UITableViewDelegate,UITableViewDataSource,CancelDelegate>
+@interface TradePurchaseViewController ()<SocketDelegate,UITableViewDelegate,UITableViewDataSource,CancelDelegate,UIGestureRecognizerDelegate,UITextViewDelegate>
 @property (weak, nonatomic) IBOutlet UIView *editNumContainer;
 @property (weak, nonatomic) IBOutlet UIView *editPriceContainer;
 @property (weak, nonatomic) IBOutlet UIView *editPercentContainer;
@@ -67,6 +67,10 @@
 @property (nonatomic,strong)NSMutableDictionary* dealData;
 
 @property (nonatomic)BOOL firstOpen;
+@property(nonatomic,assign)NSInteger currentPage;
+@property(nonatomic,assign)BOOL isUpdate;
+
+@property (nonatomic,assign)NSInteger assetSelectIndex;
 @end
 
 
@@ -84,6 +88,9 @@
     self.dealArray = [NSMutableArray new];
     
     self.dealData = [NSMutableDictionary new];
+    self.isUpdate = YES;
+    self.currentPage = 0;
+    self.assetSelectIndex = 0;
     
     _tradeName = @"";
     
@@ -154,12 +161,79 @@
         }
     };
     
+    [self.radioBtn setSelectIndex:0];
+    
     if(kScreenWidth == 320){
 //        [self.marketNamelabel.titleLabel setFont:[UIFont systemFontOfSize:12]];
     }
     
     [self setSortListTitleView];
 //    [self setMoneyInfo];
+ 
+    UITapGestureRecognizer *f = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(test)];
+    f.delegate = self;
+    [self.view addGestureRecognizer:f];
+    self.view.userInteractionEnabled = YES;
+    
+    self.purchasePriceInput.delegate = self;
+    self.purchaseAmountInput.delegate = self;
+}
+
+
+#pragma mark - UIGestureRecognizerDelegate
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    // 输出点击的view的类名
+    NSLog(@"%@", NSStringFromClass([touch.view class]));
+    
+    // 若为UITableViewCellContentView（即点击了tableViewCell），则不截获Touch事件
+    if ([NSStringFromClass([touch.view class]) isEqualToString:@"UITableViewCellContentView"]) {
+        return NO;
+    }
+    return  YES;
+}
+
+
+-(void)test{
+    [self.view endEditing:YES];
+}
+
+#pragma mark UITextViewDelegate
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
+    if ([text isEqualToString:@"\n"]){
+        [self.view endEditing:YES];
+        return NO;
+    }
+    
+    return YES;
+}
+- (void)textViewDidEndEditing:(UITextView *)textView{
+    UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
+    if(nil == temp){
+        temp = self.navigationController;
+    }
+    if(textView == self.purchasePriceInput){
+        float price = [self.purchasePriceInput.text floatValue];
+        float available = [[self.avaliableMoney.text substringFromIndex:[self.avaliableMoney.text rangeOfString:@"可用 "].length] floatValue];
+        
+        if(price>available){
+            [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"购买总价不可高于总余额"];
+        }else{
+            self.purchasePriceInput.text = [NSString stringWithFormat:@"%.4f",price];
+            float amount = price/([[self.priceRMBLabel.text substringFromIndex:1] floatValue]);
+            self.purchaseAmountInput.text = [NSString stringWithFormat:@"%.8f",amount];
+        }
+    }else if (textView == self.purchaseAmountInput){
+        float amount = [self.purchaseAmountInput.text floatValue];
+        
+        if(amount<0){
+            [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"数目不可小于0"];
+        }else{
+            self.purchaseAmountInput.text = [NSString stringWithFormat:@"%.8f",amount];
+            float price = amount*([[self.priceRMBLabel.text substringFromIndex:1] floatValue]);
+            self.purchasePriceInput.text = [NSString stringWithFormat:@"%.4f",price];
+        }
+    }
 }
 
 -(void)setMoneyInfo{
@@ -188,12 +262,19 @@
                         money = [exchangeinfo objectForKey:keyinfo];
                     }
                 }
-
+                NSLog(@"money = %@",money);
                 float available = [[money objectForKey:@"available"] floatValue];
                 self.avaliableMoney.text = [NSString stringWithFormat:@"可用 %.4f",available];
                 if([[self.priceRMBLabel.text substringFromIndex:1] floatValue] > 0){
                     float canbuy = available/[[self.priceRMBLabel.text substringFromIndex:1] floatValue];
                     self.canButAmount.text = [NSString stringWithFormat:@"可买 %.8f",canbuy];
+                }
+                
+                if(_firstOpen){
+                    [self.radioBtn setSelectIndex:0];
+                    _firstOpen = NO;
+                }else{
+                    [self.radioBtn setSelectIndex:[self.radioBtn getSelectIndex]];
                 }
                 
             }else{
@@ -284,7 +365,7 @@
   
     
     
-    
+    _assetSelectIndex = 0;
     
      self.firstOpen = YES;
     NSLog(@"title = %@",self.title);
@@ -421,15 +502,14 @@
                     
                     [_stcokSelectView reloadData];
                     
-                    
-                    
-                    
+                    NSInteger selectedIndex = self.assetSelectIndex;
+                    NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:selectedIndex inSection:0];
+                    [self.stcokSelectView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+              
                     if(_firstOpen){
                         [self getSelectInfo];
                     }
-                    
-                    
-                    
+
                 }
             }else{
                 [HUDUtil showHudViewInSuperView:temp.view withMessage:[data objectForKey:@"msg"]];
@@ -483,18 +563,33 @@
                                 [self setStcokInfo:stockinfo];
                             }
                             [self.stcokInfoView reloadData];
-                            [self getPendingOrders];
+                            self.assetSelectIndex = 0;
+                            NSInteger selectedIndex = 0;
+                            NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:selectedIndex inSection:0];
+                            [self.stcokSelectView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+                            
+                            NSInteger selectedIndex1 = 0;
+                            NSIndexPath *selectedIndexPath1 = [NSIndexPath indexPathForRow:selectedIndex1 inSection:0];
+                            [self.stcokInfoView selectRowAtIndexPath:selectedIndexPath1 animated:NO scrollPosition:UITableViewScrollPositionNone];
+                            
+                            [self.radioBtn setSelectIndex:0];
+                            
+                            self.currentPage = 0;
+                            self.isUpdate = YES;
+                            [self getPendingOrders:1];
                         }else{
                             [self setOpenSelect];
                             
                         }
-                        _firstOpen = NO;
+                        
+                        
                     }else{
                         [self.infoArray removeAllObjects];
                         [self.infoArray addObjectsFromArray:items];
                         if(self.infoArray){
                             [self.stcokInfoView reloadData];
                         }
+                        self.assetSelectIndex = 0;
                     }
                     
                     
@@ -511,7 +606,7 @@
     }else{
         if(_firstOpen){
             [self setOpenSelect];
-            _firstOpen = NO;
+            
         }
     }
     
@@ -520,6 +615,7 @@
 
 -(void)setOpenSelect{
     NSInteger selectedIndex = 1;
+    self.assetSelectIndex = 1;
     NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:selectedIndex inSection:0];
     [self.stcokSelectView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
     
@@ -553,7 +649,11 @@
                     
                     [self.marketNamelabel setTitle:cell1.name.text forState:UIControlStateNormal];
                     
-                    [self getPendingOrders];
+                    self.currentPage = 0;
+                    self.isUpdate = YES;
+                    [self getPendingOrders:1];
+                    
+                    [self.radioBtn setSelectIndex:0];
                 }
             }else{
                 UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
@@ -570,12 +670,15 @@
 -(void)setStcokInfo:(NSDictionary*)info{
     
     [self.marketNamelabel setTitle:[info objectForKey:@"market"] forState:UIControlStateNormal];
-    self.priceRMBLabel.text = [NSString stringWithFormat:@"¥%@",[info objectForKey:@"price"]];
-    self.periodPrice.text = [NSString stringWithFormat:@"%d",[[info objectForKey:@"volume"] intValue]] ;
-    self.rateLabel.text = [NSString stringWithFormat:@"%.2f%%",[[info objectForKey:@"increase"] floatValue]*100];
+//    self.priceRMBLabel.text = [NSString stringWithFormat:@"¥%@",[info objectForKey:@"price"]];
+//    self.periodPrice.text = [NSString stringWithFormat:@"%d",[[info objectForKey:@"volume"] intValue]] ;
+//    self.rateLabel.text = [NSString stringWithFormat:@"%.2f%%",[[info objectForKey:@"increase"] floatValue]*100];
+//    self.marketPriceLabel.text = [NSString stringWithFormat:@"¥%@",[info objectForKey:@"price"]];
+    
+    [self requestSubscribe];
     
     [self getTradeInfo:[info objectForKey:@"market"]];
-    [self setMoneyInfo];
+    
 }
 
 -(void)viewDidLayoutSubviews{
@@ -702,11 +805,17 @@
         temp = self.navigationController;
     }
     NSString* url = @"exchange/trade/add";
+    int price = [self.purchasePriceInput.text intValue];
+    NSInteger limit = 1;
+    if(!self.marketPriceView.isHidden){
+        price = [self.marketPriceLabel.text intValue];
+        limit = 0;
+    }
     NSDictionary* parameters = @{@"market":self.marketNamelabel.titleLabel.text,
                                  @"num":@([self.purchaseAmountInput.text floatValue]),
-                                 @"price":@([self.purchasePriceInput.text floatValue]),
+                                 @"price":@(price),
                                  @"mode":@"buy",
-                                 @"is_limit":@(1),
+                                 @"is_limit":@(limit),
                                  @"asset_token":token
                                  };
     [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"请求中…"];
@@ -735,11 +844,13 @@
 //                [self.dealData setObject:real forKey:@"DealMoney"];
 
                 [self setMoneyInfo];
-                [self.radioBtn setSelectIndex:-1];
-                self.purchaseAmountInput.text = @"000.0000";
-                self.purchasePriceInput.text = @"000.000";
+//                [self.radioBtn setSelectIndex:-1];
+//                self.purchaseAmountInput.text = @"000.0000";
+//                self.purchasePriceInput.text = @"000.000";
                 
-                [self getPendingOrders];
+                self.currentPage = 0;
+                self.isUpdate = YES;
+                [self getPendingOrders:1];
                 
 //                [self.dealList reloadData];
             }else{
@@ -756,12 +867,20 @@
     if(nil == temp){
         temp = self.navigationController;
     }
+    
+    int price = [self.purchasePriceInput.text intValue];
+    NSInteger limit = 1;
+    if(!self.marketPriceView.isHidden){
+        price = [self.marketPriceLabel.text intValue];
+        limit = 0;
+    }
+    
     NSString* url = @"exchange/trade/add";
     NSDictionary* parameters = @{@"market":self.marketNamelabel.titleLabel.text,
                                  @"num":@([self.purchaseAmountInput.text floatValue]),
-                                 @"price":@([self.purchasePriceInput.text floatValue]),
+                                 @"price":@(price),
                                  @"mode":@"sell",
-                                 @"is_limit":@(1),
+                                 @"is_limit":@(limit),
                                  @"asset_token":token
                                  };
     [HUDUtil showHudViewInSuperView:temp.view withMessage:@"请求中…"];
@@ -790,11 +909,13 @@
 //                [self.dealData setObject:real forKey:@"DealMoney"];
                 
                 [self setMoneyInfo];
-                [self.radioBtn setSelectIndex:-1];
-                self.purchaseAmountInput.text = @"000.0000";
-                self.purchasePriceInput.text = @"000.000";
+//                [self.radioBtn setSelectIndex:-1];
+//                self.purchaseAmountInput.text = @"000.0000";
+//                self.purchasePriceInput.text = @"000.000";
                 
-                [self getPendingOrders];
+                self.currentPage = 0;
+                self.isUpdate = YES;
+                [self getPendingOrders:1];
 //                [self.dealList reloadData];
             }else{
                 
@@ -923,7 +1044,11 @@
     
 }
 
--(void)getPendingOrders{
+-(void)getPendingOrders:(NSInteger)page{
+    if(page == 1){
+        [self.dealArray removeAllObjects];
+    }
+    self.currentPage = page;
     UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
     if(nil == temp){
         temp = self.navigationController;
@@ -936,12 +1061,12 @@
     }
     NSString* url = @"exchange/trades";
     NSDictionary* params = @{@"market":self.marketNamelabel.titleLabel.text,
-                             @"page":@(1),
+                             @"page":@(page),
                              @"page_limit":@(5),
                              @"mode":mode,
                              @"state":@"pending"
                              };
-    [self.dealArray removeAllObjects];
+    
 //    [HUDUtil showHudViewInSuperView:self.view withMessage:@"数据加载中……"];
     [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
 //        [HUDUtil hideHudView];
@@ -949,8 +1074,14 @@
             if([[data objectForKey:@"ret"] intValue] == 1){
                 NSArray* trades = [[data objectForKey:@"data"] objectForKey:@"trades"];
 //                [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"已经全部加载完毕"];
-                [self.dealArray addObjectsFromArray:trades];
-                [self.dealList reloadData];
+                if(trades.count == 0){
+                    self.isUpdate = NO;
+                    [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"全部加载完毕"];
+                }else{
+                    [self.dealArray addObjectsFromArray:trades];
+                    [self.dealList reloadData];
+                }
+                
                 
             }else{
                 [HUDUtil showHudViewTipInSuperView:temp.view withMessage:[data objectForKey:@"msg"]];
@@ -958,7 +1089,19 @@
         }
     }];
 }
+-(void)requestSubscribe{
+    NSArray *dicParma = @[self.marketNamelabel.titleLabel.text
+                          ];
 
+    
+    NSDictionary *dicAll = @{@"method":@"state.subscribe",@"params":dicParma,@"id":@(PN_StateSubscribe)};
+    
+    NSString *strAll = [dicAll JSONString];
+    [[SocketInterface sharedManager] sendRequest:strAll withName:@"state.subscribe"];
+    
+ 
+    
+}
 #pragma mark ---------SocketDalegate------------
 -(void)getWebData:(id)message withName:(NSString *)name{
     NSString* str = message;
@@ -969,7 +1112,7 @@
     NSNull* err =[data objectForKey:@"error"];
     
     if(err){
-        NSLog(@"err = %@",err);
+//        NSLog(@"err = %@",err);
     }
 //    int requestID = [[data objectForKey:@"id"] intValue];
     if([name isEqualToString:@"depth.update"]){
@@ -996,6 +1139,29 @@
         }
         
         
+    }else if ([name isEqualToString:@"state.update"]){
+        NSArray* params = [data objectForKey:@"params"];
+        if(params.count == 2){
+            NSDictionary* info = params[1];
+            //            NSLog(@"info = %@",info);
+            self.priceRMBLabel.text = [NSString stringWithFormat:@"%.4f",[[info objectForKey:@"last"] floatValue]];
+            
+            float price = [[info objectForKey:@"open"] floatValue];
+            float nowprice = [[info objectForKey:@"last"] floatValue];
+            
+            float rate = (float)((float)(nowprice-price)/(float)price)*100;
+            NSLog(@"price = %f,nowprice = %f,rate = %f",price,nowprice,rate);
+            if(rate>0){
+                [self.rateLabel setTextColor:kSoldOutRed];
+            }else{
+                [self.rateLabel setTextColor:kColor(51, 147, 71)];
+            }
+            self.rateLabel.text = [NSString stringWithFormat:@"%.2f%%",rate];
+
+            self.periodPrice.text =[NSString stringWithFormat:@"%d",[[info objectForKey:@"volume"] intValue]];
+            self.marketPriceLabel.text = [NSString stringWithFormat:@"¥%@",[info objectForKey:@"last"]];
+            [self setMoneyInfo];
+        }
     }
 }
 #pragma mark - Cancel Delegate
@@ -1007,7 +1173,9 @@
     }
     if(success){
         [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"撤销成功"];
-        [self getPendingOrders];
+        self.isUpdate = YES;
+        self.currentPage = 0;
+        [self getPendingOrders:1];
         [self.dealList reloadData];
     }else{
         [HUDUtil showHudViewTipInSuperView:temp.view withMessage:msg];
@@ -1185,10 +1353,11 @@
         NSString* name = cell.name.text;
         
         if([name isEqualToString:@"自选"]){
+            self.assetSelectIndex = 0;
             [self getSelectInfo];
             return;
         }
-        
+        self.assetSelectIndex = indexPath.row;
         NSDictionary* parameters = @{@"order_by":@"price",
                                      @"order":@"desc",
                                      @"asset":name
@@ -1223,14 +1392,21 @@
         TradeStockInfoTableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
         
         [self.marketNamelabel setTitle:cell.name.text forState:UIControlStateNormal];
-//        self.marketNamelabel.titleLabel.text = cell.name.text;
         
-        [self getPendingOrders];
+        self.purchaseAmountInput.text = [NSString stringWithFormat:@"%.8f",0.0000000000];
+        self.purchasePriceInput.text = [NSString stringWithFormat:@"%.4f",0.0000000000];
+        
+        
+//        self.marketNamelabel.titleLabel.text = cell.name.text;
+        self.currentPage = 0;
+        self.isUpdate = YES;
+        [self getPendingOrders:1];
         
         [self.sortGuideView setHidden:YES];
         
         [self setStcokInfo:self.infoArray[indexPath.row]];
         
+        [self.radioBtn setSelectIndex:0];
         
     }
     
@@ -1242,6 +1418,18 @@
         
     }
     
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    // 下拉到最底部时显示更多数据
+    if(!self.isUpdate){
+        
+        return;
+    }
+    if(self.isUpdate && scrollView.contentOffset.y > ((scrollView.contentSize.height - scrollView.frame.size.height))){
+        [self getPendingOrders:self.currentPage+1];
+    }
 }
 
 /*

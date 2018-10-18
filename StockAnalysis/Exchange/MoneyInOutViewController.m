@@ -97,7 +97,7 @@
         }
     }else{
         
-        [HUDUtil showHudViewInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
         
     }
     

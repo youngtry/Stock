@@ -33,17 +33,35 @@
     [defaults synchronize];
 }
 
+
+
 +(NSString* )getUserPassword{
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
     NSString* username = [defaults stringForKey:@"LoginPassword"];
     return username;
 }
 
-+(void)setAccountList:(NSString *)account withPassword:(NSString *)pwd{
+
++(void)setDistrict:(NSString *)district{
+    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    
+    [defaults setObject:district forKey:@"LoginDistrict"];
+    
+    [defaults synchronize];
+}
+
++(NSString* )getDistrict{
+    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    NSString* username = [defaults stringForKey:@"LoginDistrict"];
+    return username;
+}
+
++(void)setAccountList:(NSString *)account withPassword:(NSString *)pwd withDistrict:(NSString*)district{
     
     NSMutableDictionary* acc = [NSMutableDictionary new];
     [acc setObject:pwd forKey:@"password"];
     [acc setObject:account forKey:@"account"];
+    [acc setObject:account forKey:@"district"];
     
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
     
@@ -57,12 +75,19 @@
     
     for (NSDictionary* info in acclist) {
         NSLog(@"所存储的账号:%@",info);
+        
+        
+        
         if([[info objectForKey:@"account"] isEqualToString:account]){
             if([[info objectForKey:@"password"] isEqualToString:pwd]){
-                NSLog(@"所存账号已存在");
-                return;
+                if([[info objectForKey:@"district"] isEqualToString:district]){
+                    NSLog(@"所存账号已存在");
+                    return;
+                }
             }else{
-                [temp removeObject:info];
+                if([[info objectForKey:@"district"] isEqualToString:district]){
+                    [temp removeObject:info];
+                }
             }
 
         }
