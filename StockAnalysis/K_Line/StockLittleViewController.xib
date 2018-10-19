@@ -325,7 +325,7 @@
                         <constraint firstAttribute="height" constant="63" id="fwV-kx-eSV"/>
                     </constraints>
                 </tableView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q42-s2-W2G" userLabel="timeSelectView">
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q42-s2-W2G" userLabel="timeSelectView">
                     <rect key="frame" x="0.0" y="141" width="375" height="126"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5JV-ee-x9E">
@@ -588,7 +588,7 @@
                         <constraint firstItem="WLP-CU-8Aq" firstAttribute="width" secondItem="5JV-ee-x9E" secondAttribute="width" id="xsW-bq-ysA"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="epr-4u-kks" userLabel="settingSelectView">
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="epr-4u-kks" userLabel="settingSelectView">
                     <rect key="frame" x="0.0" y="141" width="375" height="126"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gSs-Wn-c8a" userLabel="line2">
@@ -775,7 +775,7 @@
                         <constraint firstAttribute="bottom" secondItem="ucy-yI-Uru" secondAttribute="bottom" constant="7" id="ybT-xv-0qu"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CnR-Qi-ZAi" userLabel="maSelectView">
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CnR-Qi-ZAi" userLabel="maSelectView">
                     <rect key="frame" x="0.0" y="141" width="375" height="42"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Km-MW-cwU">

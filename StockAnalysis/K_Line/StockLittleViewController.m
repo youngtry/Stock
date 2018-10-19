@@ -106,21 +106,13 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    
-}
--(void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    self.tabBarController.tabBar.hidden = YES;
-    [self.navigationController.view setBackgroundColor:[UIColor blackColor]];
-    [self.navigationController setNavigationBarHidden:NO];
-    
     [SocketInterface sharedManager].delegate = self;
     [[SocketInterface sharedManager] openWebSocket];
     
     
     self.klineArray = [NSMutableArray new];
     self.currentIndex = -1;
-//    self.stockChartView.backgroundColor = [UIColor backgroundColor];
+    //    self.stockChartView.backgroundColor = [UIColor backgroundColor];
     self.updateDataView.delegate = self;
     self.updateDataView.dataSource = self;
     self.updateDataView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -185,7 +177,15 @@
     }];
     
     [self closeAllBtnView];
-    
+}
+
+
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.tabBarController.tabBar.hidden = YES;
+    [self.navigationController.view setBackgroundColor:[UIColor blackColor]];
+    [self.navigationController setNavigationBarHidden:NO];
 }
 
 
