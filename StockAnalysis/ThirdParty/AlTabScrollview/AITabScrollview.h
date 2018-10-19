@@ -56,6 +56,9 @@ typedef NS_ENUM(NSInteger, DirectionStyle) {
  tab下方标记线
  */
 @property (nonatomic,strong)TabClickBlock clickBlock ;
+
+@property (nonatomic,assign)NSInteger disableIndex;
+
 /**
  更新标记线位置
  

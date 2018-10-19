@@ -36,7 +36,7 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     
-    
+    [HUDUtil showHudViewInSuperView:self.view withMessage:@"数据请求中"];
     if([self.title isEqualToString:@"自选"]){
         [self getSelectInfo];
     }
@@ -53,7 +53,7 @@
         [self getGangmeiInfo];
     }
     
-    [HUDUtil showHudViewInSuperView:self.view withMessage:@"数据请求中"];
+    
     
     if([self.title containsString:@"china_"]){
         NSString* asset = [self.title substringFromIndex:6];
@@ -111,6 +111,13 @@
 
 -(void)getSelectInfo{
 
+    NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
+    
+    BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
+    if(!islogin){
+        [HUDUtil hideHudView];
+        return;
+    }
     NSDictionary* parameters = @{@"page":@(1),
                                  @"page_limit":@(10),
                                  @"order_by":@"price",
@@ -216,6 +223,7 @@
         
         WeakSelf(weakSelf)
         SortView *sort1 = [[SortView alloc] initWithFrame:CGRectMake(15, 0, 0, 15) title:@"股票"];
+        [sort1 setTitleWithFont:12 withColor:kColor(88, 88, 88)];
         sort1.block = ^(BOOL isUp){
           //TODO 数据排序，reload
             [weakSelf.tableView reloadData];
@@ -224,6 +232,7 @@
         [_rankContainer addSubview:sort1];
         
         SortView *sort2 = [[SortView alloc] initWithFrame:CGRectMake(15, 0, 0, 15) title:@"最新价"];
+        [sort2 setTitleWithFont:12 withColor:kColor(88, 88, 88)];
         sort2.block = ^(BOOL isUp){
             //TODO 数据排序，reload
             [weakSelf.tableView reloadData];
@@ -233,11 +242,12 @@
         [_rankContainer addSubview:sort2];
         
         SortView *sort3 = [[SortView alloc] initWithFrame:CGRectMake(15, 0, 0, 15) title:@"24H涨跌"];
+        [sort3 setTitleWithFont:12 withColor:kColor(88, 88, 88)];
         sort3.block = ^(BOOL isUp){
             //TODO 数据排序，reload
             [weakSelf.tableView reloadData];
         };
-        sort3.right = kScreenWidth-15;
+        sort3.right = kScreenWidth-10;
         sort3.centerY = _rankContainer.centerY;
         [_rankContainer addSubview:sort3];
     }
@@ -274,7 +284,7 @@
             }
             
             if (![self.title isEqualToString:@"指数"]){
-                cell.volLabel.text = [item objectForKey:@"volume"];
+                cell.volLabel.text = [NSString stringWithFormat:@"成交量:%@",[item objectForKey:@"volume"]] ;
             }
             
             

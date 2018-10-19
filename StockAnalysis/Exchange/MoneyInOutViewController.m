@@ -30,6 +30,15 @@
     self.view.userInteractionEnabled = YES;
     
     self.turnInput.keyboardType = UIKeyboardTypeAlphabet;
+    [self.turnBtn setEnabled:NO];
+    
+    if([self.title isEqualToString:@"0"]){
+        [self.turnBtn setTitle:@"转入" forState:UIControlStateNormal];
+        self.turnInput.placeholder = @"输入转入数量";
+    }else{
+        [self.turnBtn setTitle:@"转出" forState:UIControlStateNormal];
+        self.turnInput.placeholder = @"输入转出数量";
+    }
 }
 
 -(void)test{
@@ -116,7 +125,7 @@
         NSString* left = [self.leftMonetCount.text substringFromIndex:index];
         NSLog(@"left = %@",left);
         
-        if([left floatValue]>=[num floatValue]){
+        if([left floatValue]>=[num floatValue] && [num floatValue] > 0){
             [self.turnBtn setBackgroundColor:[UIColor colorWithRed:243.0/255.0 green:186.0/255.0 blue:46.0/255.0 alpha:1.0]];
             [self.turnBtn setEnabled:YES];
         }else{

@@ -93,8 +93,7 @@
 //    self.title = @"StockLittleViewController";
     // Do any additional setup after loading the view from its nib.
     
-    [SocketInterface sharedManager].delegate = self;
-    [[SocketInterface sharedManager] openWebSocket];
+    
     
 //    [[SocketInterface sharedManager] closeWebSocket];
     self.isFollow = NO;
@@ -104,11 +103,21 @@
     
 
 }
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    
+}
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.tabBarController.tabBar.hidden = YES;
     [self.navigationController.view setBackgroundColor:[UIColor blackColor]];
     [self.navigationController setNavigationBarHidden:NO];
+    
+    [SocketInterface sharedManager].delegate = self;
+    [[SocketInterface sharedManager] openWebSocket];
+    
+    
     self.klineArray = [NSMutableArray new];
     self.currentIndex = -1;
 //    self.stockChartView.backgroundColor = [UIColor backgroundColor];
@@ -496,16 +505,20 @@
     TradePurchaseViewController* vc = [[TradePurchaseViewController alloc] initWithNibName:@"TradePurchaseViewController" bundle:nil];
     vc.title = @"买入";
     [self.navigationController pushViewController:vc animated:YES];
-    [vc setTradeName:self.title];
-    
-    
+//
+    vc.block = ^{
+        [vc setTradeName:self.title];
+    };
     
 }
 - (IBAction)clickSell:(id)sender {
     TradePurchaseViewController* vc = [[TradePurchaseViewController alloc] initWithNibName:@"TradePurchaseViewController" bundle:nil];
     vc.title = @"卖出";
     [self.navigationController pushViewController:vc animated:YES];
-    [vc setTradeName:self.title];
+//
+    vc.block = ^{
+      [vc setTradeName:self.title];
+    };
 }
 
 -(void)requestSubscribe{

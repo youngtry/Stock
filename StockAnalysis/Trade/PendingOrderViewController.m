@@ -55,6 +55,16 @@
     
     self.automaticallyAdjustsScrollViewInsets = NO;
     //    [self getAllHistory:1 WithName:@""];
+    UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
+    if(nil == temp){
+        temp = self.navigationController;
+    }
+    NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
+    BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
+    if(!islogin){
+        [HUDUtil showSystemTipView:temp title:@"提示" withContent:@"未登录,请先登录"];
+        return;
+    }
     [self getAllStocks];
     
 }

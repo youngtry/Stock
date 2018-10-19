@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-
+typedef void(^loadFinish)(void);
 
 @interface TradePurchaseViewController : BaseViewController
 
 @property(nonatomic,strong)NSString* tradeName;
+
+@property (nonatomic,strong)loadFinish block;
 
 @end

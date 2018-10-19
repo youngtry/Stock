@@ -30,6 +30,15 @@
 @property (weak, nonatomic) IBOutlet UISwitch *switchBtn;
 @property (nonatomic, assign) NSInteger verifyType;
 @property (weak, nonatomic) IBOutlet UISwitch *guestureSwitchbBtn;
+
+@property (weak, nonatomic) IBOutlet UIView *guestureTimeView;
+@property (weak, nonatomic) IBOutlet UIView *changeGuestureView;
+@property (weak, nonatomic) IBOutlet UIView *bindPhoneView;
+@property (weak, nonatomic) IBOutlet UIView *bindMailView;
+@property (weak, nonatomic) IBOutlet UIView *mneyPasswordView;
+@property (weak, nonatomic) IBOutlet UIView *twiceVerifyView;
+@property (weak, nonatomic) IBOutlet UILabel *tipLabel;
+
 @end
 
 @implementation SafeViewController
@@ -101,8 +110,27 @@
             if([[data objectForKey:@"ret"] intValue] == 1){
                 if([[[data objectForKey:@"data"] objectForKey:@"has_gesture"] boolValue]){
                     [_guestureSwitchbBtn setOn:YES];
+                    
+                    if(_guestureTimeView.isHidden){
+                        [_guestureTimeView setHidden:NO];
+                        [_changeGuestureView setHidden:NO];
+                        
+                        [_bindPhoneView setCenterY:_bindPhoneView.centerY+90.0f];
+                        [_bindMailView setCenterY:_bindMailView.centerY+90.0f];
+                        [_mneyPasswordView setCenterY:_mneyPasswordView.centerY+90.0f];
+                        [_twiceVerifyView setCenterY:_twiceVerifyView.centerY+90.0f];
+                        [_tipLabel setCenterY:_tipLabel.centerY+90.0f];
+                    }
                 }else{
                     [_guestureSwitchbBtn setOn:NO];
+                    [_guestureTimeView setHidden:YES];
+                    [_changeGuestureView setHidden:YES];
+                    
+                    [_bindPhoneView setCenterY:_bindPhoneView.centerY-90.0f];
+                    [_bindMailView setCenterY:_bindMailView.centerY-90.0f];
+                    [_mneyPasswordView setCenterY:_mneyPasswordView.centerY-90.0f];
+                    [_twiceVerifyView setCenterY:_twiceVerifyView.centerY-90.0f];
+                    [_tipLabel setCenterY:_tipLabel.centerY-90.0f];
                 }
             }else{
                 
@@ -316,6 +344,16 @@
                             if(success){
                                 if([[data objectForKey:@"ret"] intValue] == 1){
                                     [_guestureSwitchbBtn setOn:NO];
+                                    
+                                    [_guestureTimeView setHidden:YES];
+                                    [_changeGuestureView setHidden:YES];
+                                    
+                                    [_bindPhoneView setCenterY:_bindPhoneView.centerY-90.0f];
+                                    [_bindMailView setCenterY:_bindMailView.centerY-90.0f];
+                                    [_mneyPasswordView setCenterY:_mneyPasswordView.centerY-90.0f];
+                                    [_twiceVerifyView setCenterY:_twiceVerifyView.centerY-90.0f];
+                                    [_tipLabel setCenterY:_tipLabel.centerY-90.0f];
+                                    
                                 }else{
                                     
                                     [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];

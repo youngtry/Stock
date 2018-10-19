@@ -38,6 +38,19 @@
     self.currentPage = 0;
     self.isUpdate = YES;
     [self.data removeAllObjects];
+    
+    UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
+    if(nil == temp){
+        temp = self.navigationController;
+    }
+    NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
+    BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
+    if(!islogin){
+//        [HUDUtil showSystemTipView:temp title:@"提示" withContent:@"未登录,请先登录"];
+        return;
+    }
+
+    
     [self getAllHistory:1];
     
 }
@@ -72,6 +85,7 @@
     NSString* url = @"exchange/trades";
     NSDictionary* params = @{@"page":@(page),
                              @"page_limit":@(10),
+                             @"state":@"done,cancel"
                              };
     [HUDUtil showHudViewInSuperView:self.view withMessage:@"数据加载中……"];
     [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {

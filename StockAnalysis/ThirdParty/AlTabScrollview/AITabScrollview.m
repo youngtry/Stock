@@ -35,6 +35,8 @@
     _clickBlock=clickBlock;
     
     _tagIndex=index;
+    
+    
     if(_direction==horizontal){
         
         [self updateTag:index];
@@ -305,7 +307,7 @@
  @param index tab位置下标
  */
 -(void)updateTagLine:(NSInteger)index{
-    if(_tagIndex==index){ //如果标记重复,为了节省消耗,直接中断
+    if(_tagIndex==index || _disableIndex == index){ //如果标记重复,为了节省消耗,直接中断
         return;
     }
     //点击了
@@ -320,6 +322,18 @@
         //标记线切换动画
         [UIView animateWithDuration:0.1 animations:^{
             _tagLine.frame=CGRectMake(index*_tabWidth, _tabHeight-tagLineheight-0.5, _tabWidth, tagLineheight);
+            
+            for (UILabel*lab in _viewArr) {
+                
+                if(lab.tag==index){
+                    if([lab.text isEqualToString:@"卖出"]){
+                        _tagLine.backgroundColor = kSoldOutRed;
+                    }else{
+                        _tagLine.backgroundColor = tagLineColor;
+                    }
+                }
+            }
+            
         } completion:^(BOOL finished) {
             _tagIndex=index;
 
@@ -345,13 +359,13 @@
  */
 -(void)initView{
     self.tagLine=[[UIView alloc]init];
-    self.tagLine.backgroundColor=tagLineColor;  //默认标记线为红色
+    self.tagLine.backgroundColor=tagLineColor;  //默认标记线颜色
     self.backgroundColor = [UIColor whiteColor];
     self.delegate = self;
     self.showsVerticalScrollIndicator = NO;
     self.showsHorizontalScrollIndicator = NO;
-    
-    
+    self.disableIndex = -1;
+
 }
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
@@ -367,9 +381,18 @@
 
 //add
 -(void)onSelectedIndexChanged:(NSInteger)index{
+    if(_disableIndex  == index){
+        return;
+    }
     for (UILabel*lab in _viewArr) {
+        
         if(lab.tag==index){
-            lab.textColor = textColorSelect;
+            if([lab.text isEqualToString:@"卖出"]){
+                lab.textColor = kSoldOutRed;
+            }else{
+                lab.textColor = textColorSelect;
+            }
+            
         }else{
             lab.textColor = textColorNormal;
         }

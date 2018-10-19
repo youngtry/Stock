@@ -61,7 +61,7 @@
     NSMutableDictionary* acc = [NSMutableDictionary new];
     [acc setObject:pwd forKey:@"password"];
     [acc setObject:account forKey:@"account"];
-    [acc setObject:account forKey:@"district"];
+    [acc setObject:district forKey:@"district"];
     
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
     

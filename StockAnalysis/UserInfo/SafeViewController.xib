@@ -12,14 +12,21 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SafeViewController">
             <connections>
+                <outlet property="bindMailView" destination="Ga7-4A-OQg" id="rvm-xm-B0i"/>
+                <outlet property="bindPhoneView" destination="xhC-WF-MaF" id="jfr-ay-NG3"/>
+                <outlet property="changeGuestureView" destination="s7H-k6-Ht2" id="YJi-yC-eWT"/>
                 <outlet property="guestureSwitchbBtn" destination="syG-ea-CHq" id="NYZ-DL-Zc1"/>
                 <outlet property="guestureTime" destination="qKD-cO-Agi" id="7Sw-oh-pHi"/>
+                <outlet property="guestureTimeView" destination="RU0-EU-ty7" id="n1N-lV-Ggz"/>
                 <outlet property="mailBindImage" destination="yWR-RI-Z3I" id="V2X-86-Ew7"/>
                 <outlet property="mailBindLabel" destination="4WU-JD-9Wd" id="daG-kv-I22"/>
+                <outlet property="mneyPasswordView" destination="FjQ-of-UBW" id="Q8w-HA-yBO"/>
                 <outlet property="passwordInput" destination="xzm-bG-LYA" id="zOf-Y3-kxm"/>
                 <outlet property="phoneBindImage" destination="7e1-dE-mNk" id="ebQ-v9-ywW"/>
                 <outlet property="phoneBindLabel" destination="PeL-qJ-YDu" id="Z84-ce-nRc"/>
                 <outlet property="switchBtn" destination="sdd-PC-QrN" id="fcQ-dk-Gy9"/>
+                <outlet property="tipLabel" destination="19e-4E-Y5H" id="u1I-gp-upl"/>
+                <outlet property="twiceVerifyView" destination="VPV-GK-Wns" id="9rL-b3-Mey"/>
                 <outlet property="verifyView" destination="70R-I8-6Z4" id="Imt-el-qQy"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>

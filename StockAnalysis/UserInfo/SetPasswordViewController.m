@@ -123,8 +123,8 @@
 -(UIButton*)forgetSetBtn{
     if(nil == _forgetSetBtn){
         _forgetSetBtn = [UIButton buttonWithType:UIButtonTypeSystem];
-        [_forgetSetBtn setTitle:@"忘记密码" forState:UIControlStateNormal];
-        [_forgetSetBtn setFrame:CGRectMake(kScreenWidth*0.6, kScreenHeight*0.9, kScreenWidth*0.2, 20)];
+        [_forgetSetBtn setTitle:@"忘记手势密码" forState:UIControlStateNormal];
+        [_forgetSetBtn setFrame:CGRectMake(kScreenWidth*0.6, kScreenHeight*0.9, kScreenWidth*0.3, 20)];
         [_forgetSetBtn setTintColor:kColorRGBA(0, 0, 0, 0.25)];
         [_forgetSetBtn addTarget:self action:@selector(getTempVerify) forControlEvents:UIControlEventTouchUpInside];
     }

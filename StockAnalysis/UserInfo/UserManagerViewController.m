@@ -85,7 +85,7 @@
             [cell.currentIcon setHidden:YES];
         }
         [cell.switchBtn setHidden:YES];
-        cell.account.text = [info objectForKey:@"account"];
+        cell.account.text = [NSString stringWithFormat:@"%@ %@", [info objectForKey:@"district"],[info objectForKey:@"account"]];
     }
  
     return cell;
