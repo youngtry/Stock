@@ -18,7 +18,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *verifyInput;
 @property (weak, nonatomic) IBOutlet UITextField *passwordInput;
 @property (weak, nonatomic) IBOutlet UIButton *lookPwBtn;
-
+@property (weak, nonatomic) IBOutlet UIButton *verifybtn;
+@property(nonatomic,strong)NSTimer* update1;
 @end
 
 @implementation MailRegistViewController
@@ -28,6 +29,7 @@
     // Do any additional setup after loading the view from its nib.
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mailRegisteBack) name:@"MailRegisteBack" object:nil];
     self.title =  @"注册";
+    self.update1 = nil;
     UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:@"已有账户?" style:UIBarButtonItemStylePlain target:self action:@selector(clickLogin)];
     self.navigationItem.rightBarButtonItem = right;
     
@@ -50,6 +52,11 @@
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     self.tabBarController.tabBar.hidden = NO;
+    
+    [self.update1 invalidate];
+    self.update1 = nil;
+    [_verifybtn setTitle:@"发送邀请码" forState:UIControlStateNormal];
+    [_verifybtn setEnabled:YES];
 }
 
 -(void)clickLogin{
@@ -151,6 +158,43 @@
         self.passwordInput.text = tempPwdStr;
         [_lookPwBtn setSelected:NO];
     }
+}
+- (IBAction)clickVerifybtn:(id)sender {
+    
+    if(![self.mailInput.text containsString:@"@"]){
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"请输入邮箱地址"];
+        return;
+    }
+    
+    [_verifybtn setTitle:@"60s" forState:UIControlStateNormal];
+    [_verifybtn setEnabled:NO];
+    if(_update1){
+        [_update1 invalidate];
+        _update1 = nil;
+    }
+    
+    _update1 = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(changeBtn1) userInfo:nil repeats:YES];
+    //    [_update1 fire];
+    
+    [[NSRunLoop mainRunLoop] addTimer:_update1 forMode:NSDefaultRunLoopMode];
+}
+-(void)changeBtn1{
+    NSString* title = _verifybtn.titleLabel.text;
+    if([title isEqualToString:@"发送邀请码"]){
+        return;
+    }
+    NSInteger sec = [[title substringToIndex:[title rangeOfString:@"s"].location] intValue];
+    sec--;
+    if(sec < 0){
+        [_verifybtn setTitle:@"发送验证码" forState:UIControlStateNormal];
+        //        [NSTimer ]
+        [_update1 invalidate];
+        _update1 = nil;
+        [_verifybtn setEnabled:YES];
+    }else{
+        [_verifybtn setTitle:[NSString stringWithFormat:@"%lds",(long)sec] forState:UIControlStateNormal];
+    }
+    
 }
 /*
 #pragma mark - Navigation

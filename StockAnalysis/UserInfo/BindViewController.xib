@@ -24,6 +24,8 @@
                 <outlet property="verify1Name" destination="tgi-0H-hoo" id="reg-3T-DhB"/>
                 <outlet property="verify2Input" destination="YRw-Qe-TZe" id="fKk-PD-fAc"/>
                 <outlet property="verify2name" destination="c8C-Ra-96e" id="lNi-Vd-7n1"/>
+                <outlet property="verifyBtn1" destination="4l3-Qb-J09" id="sRx-QS-9lK"/>
+                <outlet property="verifyBtn2" destination="POe-b1-vRd" id="obh-jZ-ZLe"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -122,6 +124,9 @@
                             <state key="normal" title="发送验证码">
                                 <color key="titleColor" red="0.95294117647058818" green="0.72941176470588232" blue="0.1803921568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
+                            <connections>
+                                <action selector="sendVerify1:" destination="-1" eventType="touchUpInside" id="aao-K8-YBi"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -164,6 +169,9 @@
                             <state key="normal" title="发送验证码">
                                 <color key="titleColor" red="0.95294117649999999" green="0.72941176470000002" blue="0.18039215689999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
+                            <connections>
+                                <action selector="sendVerify2:" destination="-1" eventType="touchUpInside" id="FtM-Mr-0cZ"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

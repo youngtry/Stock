@@ -71,6 +71,8 @@
 @property(nonatomic,assign)BOOL isUpdate;
 
 @property (nonatomic,assign)NSInteger assetSelectIndex;
+
+@property (nonatomic,assign)NSInteger numberDepth;
 @end
 
 
@@ -91,6 +93,7 @@
     self.isUpdate = YES;
     self.currentPage = 0;
     self.assetSelectIndex = 0;
+    self.numberDepth = 4;
     
     _tradeName = @"";
     
@@ -156,6 +159,7 @@
             
             float willbuy = available*0.25*(index+1)/[[self.priceRMBLabel.text substringFromIndex:1] floatValue];
             float willmoney = available*0.25*(index+1);
+           
             weakSelf.purchasePriceInput.text = [NSString stringWithFormat:@"%.4f",willmoney];
             weakSelf.purchaseAmountInput.text = [NSString stringWithFormat:@"%.8f",willbuy];
         }
@@ -790,12 +794,15 @@
 }
 - (IBAction)clickFour:(id)sender {
     [self.depthView setHidden:YES];
+    _numberDepth = 4;
 }
 - (IBAction)clickOne:(id)sender {
     [self.depthView setHidden:YES];
+    _numberDepth = 1;
 }
 - (IBAction)clickZero:(id)sender {
     [self.depthView setHidden:YES];
+    _numberDepth = 0;
 }
 - (IBAction)clickDepth:(id)sender {
     if(self.depthView.isHidden){
@@ -1024,6 +1031,7 @@
         [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"购买总价不可低于0"];
     }else{
         self.purchasePriceInput.text = [NSString stringWithFormat:@"%.4f",price];
+        
         float amount = price/([[self.priceRMBLabel.text substringFromIndex:1] floatValue]);
         self.purchaseAmountInput.text = [NSString stringWithFormat:@"%.8f",amount];
     }
@@ -1215,6 +1223,8 @@
             //            NSLog(@"info = %@",info);
             self.priceRMBLabel.text = [NSString stringWithFormat:@"%.4f",[[info objectForKey:@"last"] floatValue]];
             
+            
+            
             float price = [[info objectForKey:@"open"] floatValue];
             float nowprice = [[info objectForKey:@"last"] floatValue];
             
@@ -1348,7 +1358,14 @@
         
         
         NSDictionary* info = self.asksArray[indexPath.row];
-        cell.price.text = [NSString stringWithFormat:@"%.4f",[[info objectForKey:@"price"] floatValue]] ;
+        if(_numberDepth == 4){
+            cell.price.text = [NSString stringWithFormat:@"%.4f",[[info objectForKey:@"price"] floatValue]] ;
+        }else if (_numberDepth == 1){
+            cell.price.text = [NSString stringWithFormat:@"%.1f000",[[info objectForKey:@"price"] floatValue]] ;
+        }else if (_numberDepth == 0){
+            cell.price.text = [NSString stringWithFormat:@"%.0f0000",[[info objectForKey:@"price"] floatValue]] ;
+        }
+        
         cell.amount.text = [NSString stringWithFormat:@"%.3f",[[info objectForKey:@"amount"] floatValue]];
         cell.price.textColor = [UIColor colorWithRed:236/255.0 green:102/255.0 blue:95/255.0 alpha:1];
         return cell;
@@ -1361,7 +1378,14 @@
         }
         
         NSDictionary* info = self.bidsArray[indexPath.row];
-        cell.price.text = [NSString stringWithFormat:@"%.4f",[[info objectForKey:@"price"] floatValue]] ;
+        if(_numberDepth == 4){
+            cell.price.text = [NSString stringWithFormat:@"%.4f",[[info objectForKey:@"price"] floatValue]] ;
+        }else if (_numberDepth == 1){
+            cell.price.text = [NSString stringWithFormat:@"%.1f000",[[info objectForKey:@"price"] floatValue]] ;
+        }else if (_numberDepth == 0){
+            cell.price.text = [NSString stringWithFormat:@"%.0f0000",[[info objectForKey:@"price"] floatValue]] ;
+        }
+ 
         cell.amount.text = [NSString stringWithFormat:@"%.3f",[[info objectForKey:@"amount"] floatValue]];
         
         cell.price.textColor = [UIColor colorWithRed:51/255.0 green:143/255.0 blue:71/255.0 alpha:1];

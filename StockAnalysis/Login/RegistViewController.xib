@@ -18,6 +18,7 @@
                 <outlet property="passwordInput" destination="6PM-Tp-zUB" id="zrF-Aq-37n"/>
                 <outlet property="phoneInput" destination="jmV-dU-bPL" id="hTN-qT-0m5"/>
                 <outlet property="verifyInput" destination="jYf-P3-7NK" id="4mT-dO-yTi"/>
+                <outlet property="verifybtn" destination="DeD-Sd-7Hc" id="ATA-HX-KIC"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

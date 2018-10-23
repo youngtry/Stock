@@ -303,6 +303,14 @@
     
     
     
+    [self requestAllData];
+    
+}
+
+-(void)requestAllData{
+    
+    self.updateIndex = 0;
+    [self.stockName removeAllObjects];
     
     NSDictionary* parameters2 = @{@"market":@""};
     NSString* url2 = @"market/search";
@@ -321,8 +329,9 @@
                             
                             NSDictionary* info = result[i];
                             [self.stockName addObject:info];
-                        }
                         
+                        }
+                        [_randList reloadData];
                         [self requestStockInfo:self.updateIndex];
                     }
                 }
@@ -332,18 +341,24 @@
 }
 
 -(void)requestStockInfo:(NSInteger)index{
-    
+    NSLog(@"更新index = %ld,************%ld",index,self.stockName.count);
     if(index >= self.stockName.count){
+        NSLog(@"*********更新结束*********");
         NSDictionary *dicAll = @{@"method":@"state.unsubscribe",@"params":@[],@"id":@(PN_StateUnsubscribe)};
         //
         NSString *strAll = [dicAll JSONString];
         [[SocketInterface sharedManager] sendRequest:strAll withName:@"state.unsubscribe"];
         [_randList reloadData];
+      
+        [self performSelector:@selector(requestAllData) withObject:nil afterDelay:2.0];
+        
         return;
     }
     NSDictionary* info = self.stockName[index];
     NSString* name = [info objectForKey:@"market"];
+//    NSLog(@"更新name = %@",name);
     NSArray *dicParma = @[name];
+//    NSArray* dicParma = @[@"LDGFHUWEI"];
     NSDictionary *dicAll = @{@"method":@"state.subscribe",@"params":dicParma,@"id":@(PN_StateSubscribe)};
     
     NSString *strAll = [dicAll JSONString];
@@ -482,19 +497,22 @@
     NSDictionary* data = [NSJSONSerialization JSONObjectWithData:strdata options:NSJSONReadingMutableContainers error:nil];
     
 //    int requestID = [[data objectForKey:@"id"] intValue];
-    
+//    NSLog(@"应答消息:%@,消息体为:%@",name,data);
     if ([name isEqualToString:@"state.update"]){
         NSArray* params = [data objectForKey:@"params"];
+        
         if(params.count == 2){
+            
             NSDictionary* info = params[1];
+//            NSLog(@"获得数据:%ld************%@",params.count,info);
             NSString* open = [NSString stringWithFormat:@"%.4f",[[info objectForKey:@"open"] floatValue]];
             NSString* price =[NSString stringWithFormat:@"%.4f",[[info objectForKey:@"last"] floatValue]];
-            float rate = ([price floatValue])/([open floatValue])-1;
+            float rate = ([open floatValue] == 0)?0:([price floatValue])/([open floatValue])-1;
             
             NSString* name = params[0];
             NSLog(@"name = %@ 涨幅 = %f",name,rate);
             
-            [self addRateToArray:name withRate:[NSString stringWithFormat:@"%f",rate] withPrice:price];
+            [self addRateToArray:name withRate:[NSString stringWithFormat:@"%f",rate*100] withPrice:price];
             
             NSDictionary *dicAll = @{@"method":@"state.unsubscribe",@"params":@[],@"id":@(PN_StateUnsubscribe)};
             //
@@ -518,6 +536,7 @@
             break;
         }
     }
+    
     if(self.updateIndex < self.stockName.count-1){
         return;
     }

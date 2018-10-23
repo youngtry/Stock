@@ -19,7 +19,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *passwordInput;
 @property (weak, nonatomic) IBOutlet UIButton *lookPwBtn;
 @property (weak, nonatomic) IBOutlet UILabel *distrcLabel;
-
+@property (weak, nonatomic) IBOutlet UIButton *verifybtn;
+@property(nonatomic,strong)NSTimer* update1;
 @end
 
 @implementation RegistViewController
@@ -28,6 +29,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.title =  @"注册";
+    self.update1 = nil;
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registeBack) name:@"RegisteBack" object:nil];
     
     UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:@"已有账户?" style:UIBarButtonItemStylePlain target:self action:@selector(clickLogin)];
@@ -59,6 +61,11 @@
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     self.tabBarController.tabBar.hidden = NO;
+    
+    [self.update1 invalidate];
+    self.update1 = nil;
+    [_verifybtn setTitle:@"发送验证码" forState:UIControlStateNormal];
+    [_verifybtn setEnabled:YES];
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -116,20 +123,39 @@
     
 }
 - (IBAction)clickGetVerify:(id)sender {
-   
-    //测试用
- 
-//    NSDictionary *parameters = @{  @"phone": @"17751766215",
-//                                          @"captcha": @"8888",
-//                                          @"password": @"123456" ,
-//                                          @"district": @"+86"} ;
-////    NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithDictionary:para];
-//
-//    NSString* url = @"register/phone";
-//
-//    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
-//
-//    }];
+    if(self.phoneInput.text.length == 0){
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"请输入手机号"];
+        return;
+    }
+    [_verifybtn setTitle:@"60s" forState:UIControlStateNormal];
+    [_verifybtn setEnabled:NO];
+    if(_update1){
+        [_update1 invalidate];
+        _update1 = nil;
+    }
+    
+    _update1 = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(changeBtn1) userInfo:nil repeats:YES];
+    //    [_update1 fire];
+    
+    [[NSRunLoop mainRunLoop] addTimer:_update1 forMode:NSDefaultRunLoopMode];
+}
+-(void)changeBtn1{
+    NSString* title = _verifybtn.titleLabel.text;
+    if([title isEqualToString:@"发送验证码"]){
+        return;
+    }
+    NSInteger sec = [[title substringToIndex:[title rangeOfString:@"s"].location] intValue];
+    sec--;
+    if(sec < 0){
+        [_verifybtn setTitle:@"发送验证码" forState:UIControlStateNormal];
+        //        [NSTimer ]
+        [_update1 invalidate];
+        _update1 = nil;
+        [_verifybtn setEnabled:YES];
+    }else{
+        [_verifybtn setTitle:[NSString stringWithFormat:@"%lds",(long)sec] forState:UIControlStateNormal];
+    }
+    
 }
 - (IBAction)clickPhoneRegiste:(id)sender {
     
@@ -188,6 +214,8 @@
         }
     }
 }
+
+
 //1.代理传值
 #pragma mark - XWCountryCodeControllerDelegate
 -(void)returnCountryCode:(NSString *)countryCode{

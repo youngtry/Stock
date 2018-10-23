@@ -8,6 +8,7 @@
 
 #import "AdsViewController.h"
 #import "AdsTableViewCell.h"
+#import "AdContentViewController.h"
 @interface AdsViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *adList;
 
@@ -36,6 +37,7 @@
     [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] getWithURL:url parma:params block:^(BOOL success, id data) {
         if(success){
+            [HUDUtil hideHudView];
             if([[data objectForKey:@"ret"] intValue] == 1){
                 [self.adData removeAllObjects];
                 NSArray* ads = [[data objectForKey:@"data"] objectForKey:@"ads"];
@@ -87,6 +89,17 @@
     cell.adImageView.image = image;
     
     return cell;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSDictionary* info  = self.adData[indexPath.row];
+    NSString* link = [info objectForKey:@"link"];
+    AdContentViewController* vc = [[AdContentViewController alloc] init];
+    vc.title = [info objectForKey:@"title"];
+    [self.navigationController pushViewController:vc animated:YES];
+    vc.block = ^{
+        [vc starRequest:link];
+    };
 }
 
 

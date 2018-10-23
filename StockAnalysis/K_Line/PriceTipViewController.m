@@ -83,8 +83,8 @@
                 NSArray* items = [[data objectForKey:@"data"] objectForKey:@"items"];
                 for (NSDictionary* item in items) {
                     if([[item objectForKey:@"market"] isEqualToString:self.stockName.text]){
-                        self.topLimitInput.text = [item objectForKey:@"upper_limit"];
-                        self.lowLimitInput.text = [item objectForKey:@"lower_limit"];
+                        self.topLimitInput.text = [NSString stringWithFormat:@"%.4f", [[item objectForKey:@"upper_limit"] floatValue]];
+                        self.lowLimitInput.text =[NSString stringWithFormat:@"%.4f", [[item objectForKey:@"lower_limit"] floatValue]] ;
                         self.accountID = [[item objectForKey:@"id"] intValue];
                         self.state = [item objectForKey:@"state"];
                     }
@@ -139,8 +139,8 @@
         NSString* url = @"market/notice/update";
         NSDictionary* params = @{@"notice_id":@(self.accountID),
                                  @"state":self.state,
-                                 @"upper_limit":@([self.topLimitInput.text intValue]),
-                                 @"lower_limit":@([self.lowLimitInput.text intValue])
+                                 @"upper_limit":@([self.topLimitInput.text floatValue]),
+                                 @"lower_limit":@([self.lowLimitInput.text floatValue])
                                  };
         [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
         [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {

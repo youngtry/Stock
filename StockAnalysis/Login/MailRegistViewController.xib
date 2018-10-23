@@ -16,6 +16,7 @@
                 <outlet property="mailInput" destination="KEf-XZ-kbp" id="82E-Zg-SyP"/>
                 <outlet property="passwordInput" destination="vMm-57-yjB" id="RFA-b9-O18"/>
                 <outlet property="verifyInput" destination="PIQ-I0-FQS" id="3w1-Cs-CZu"/>
+                <outlet property="verifybtn" destination="Sf2-YG-R0i" id="rht-B0-dYi"/>
                 <outlet property="view" destination="c83-CC-c91" id="FUL-Xm-O8d"/>
             </connections>
         </placeholder>
@@ -125,6 +126,9 @@
                             <state key="normal" title="发送邀请码">
                                 <color key="titleColor" red="0.1960784314" green="0.20000000000000001" blue="0.20784313730000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
+                            <connections>
+                                <action selector="clickVerifybtn:" destination="-1" eventType="touchUpInside" id="YEv-77-V9F"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uOw-FR-Gc4">
                             <rect key="frame" x="310" y="149" width="42" height="24"/>

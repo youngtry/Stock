@@ -71,12 +71,12 @@
         [self.nameArray addObject:info];
     }
     [self.typeArray addObject:@"全部"];
-//    [self.typeArray addObject:@"充值"];
-//    [self.typeArray addObject:@"提现"];
+    [self.typeArray addObject:@"充值"];
+    [self.typeArray addObject:@"提现"];
     [self.typeArray addObject:@"买入"];
     [self.typeArray addObject:@"卖出"];
-//    [self.typeArray addObject:@"新手任务"];
-//    [self.typeArray addObject:@"邀请好友完成新手任务"];
+    [self.typeArray addObject:@"转入交易"];
+    [self.typeArray addObject:@"转入商户"];
 //    [self.typeArray addObject:@"扣除任务奖励"];
 }
 
@@ -90,14 +90,79 @@
 //    [self.typeArray removeAllObjects];
 //    [self.nameArray addObject:@"全部"];
 //    [self.typeArray addObject:@"全部"];
+    [self getName];
     [self getTrade:self.page];
 }
 
--(void)getTrade:(NSInteger)page{
-    self.page++;
-    NSString* url = @"exchange/trades";
-    NSDictionary* params = @{@"page":@(page),
+-(void)getName{
+    [self.nameArray removeAllObjects];
+    [self.nameArray addObject:@"全部"];
+    
+    NSString* url = @"assets";
+    NSDictionary* params = @{@"page":@(1),
                              @"page_limit":@(10)
+                             };
+    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+    [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
+        if(success){
+            [HUDUtil hideHudView];
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                NSArray* list = [[data objectForKey:@"data"] objectForKey:@"assets"];
+                if(list.count>0){
+                    
+                    for (NSDictionary* info in list) {
+                        [self.nameArray addObject:[info objectForKey:@"asset"]];
+                    }
+                    [self.nameList reloadData];
+                 
+                    
+                }else{
+                    [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"数据全部加载完毕"];
+                }
+                
+            }
+        }
+    }];
+}
+-(void)getTrade:(NSInteger)page{
+    NSString* mode = @"";
+    NSString* type = _allTypeBtn.titleLabel.text;
+    if([type isEqualToString:@"全部"]){
+        
+    }else if ([type isEqualToString:@"买入"]){
+        mode = @"buy";
+    }
+    else if ([type isEqualToString:@"卖出"]){
+        mode = @"sell";
+    }
+    else if ([type isEqualToString:@"充值"]){
+        mode = @"recharge";
+    }
+    else if ([type isEqualToString:@"提现"]){
+        mode = @"withdraw";
+    }
+    else if ([type isEqualToString:@"转入交易"]){
+        mode = @"toexchange";
+    }
+    else if ([type isEqualToString:@"转入商户"]){
+        mode = @"toshop";
+    }
+    
+    
+    NSString* asset = @"";
+    NSString* name = _allNameBtn.titleLabel.text;
+    if([type isEqualToString:@"全部"]){
+        
+    }else{
+        asset = name;
+    }
+    
+    self.page++;
+    NSString* url = @"exchange/accounts";
+    NSDictionary* params = @{@"page":@(page),
+                             @"page_limit":@(10),
+                             @"mode":mode,
+                             @"asset":asset
                              };
     [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {

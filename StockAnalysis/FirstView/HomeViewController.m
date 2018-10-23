@@ -41,8 +41,7 @@
     // Do any additional setup after loading the view from its nib.
     
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getTipsAndAdsBack) name:@"FirstTipAndAds" object:nil];
-//    [[SocketInterface sharedManager] openWebSocket];
-    [SocketInterface sharedManager].delegate = self;
+    
     self.stockName =  [NSMutableArray new];
     self.randList.delegate = self;
     self.randList.dataSource = self;
@@ -63,6 +62,8 @@
     
     [self.navigationController setNavigationBarHidden:YES];
     
+    [SocketInterface sharedManager].delegate = self;
+    [[SocketInterface sharedManager] openWebSocket];
     if(_marqueeView){
         [_marqueeView removeFromSuperview];
         _marqueeView = nil;
@@ -95,7 +96,7 @@
     [[HttpRequest getInstance] getWithURL:url1 parma:parameters1 block:^(BOOL success, id data) {
         if(success){
             if([[data objectForKey:@"ret"] intValue] == 1){
-                NSLog(@"股市数据:%@",data);
+//                NSLog(@"股市数据:%@",data);
                 NSDictionary* market = [data objectForKey:@"data"];
                 
                 if(market.count>0){
@@ -308,11 +309,11 @@
             //            NSLog(@"info = %@",info);
             NSString* open = [NSString stringWithFormat:@"%.4f",[[info objectForKey:@"open"] floatValue]];
             NSString* price =[NSString stringWithFormat:@"%.4f",[[info objectForKey:@"last"] floatValue]];
-            float rate = ([price floatValue])/([open floatValue])-1;
+            float rate = ([open floatValue] == 0)?0:([price floatValue])/([open floatValue])-1;
             
             NSString* name = params[0];
             NSLog(@"name = %@ 涨幅 = %f",name,rate);
-            [self addRateToArray:name withRate:[NSString stringWithFormat:@"%f",rate] withPrice:price];
+            [self addRateToArray:name withRate:[NSString stringWithFormat:@"%f",rate*100] withPrice:price];
             
             NSDictionary *dicAll = @{@"method":@"state.unsubscribe",@"params":@[],@"id":@(PN_StateUnsubscribe)};
             //

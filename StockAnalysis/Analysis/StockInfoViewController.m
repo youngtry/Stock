@@ -318,9 +318,10 @@
 //        NSDictionary* data = [self getShowDataWithName:name];
 //        if(data){
 //            [[SearchData getInstance] addhistory:data];
-//
-//
 //        }
+        if([self.title containsString:@"global_"]){
+            return;
+        }
         name = [NSString stringWithFormat:@"%@",name];
         StockLittleViewController* vc = [[StockLittleViewController alloc] initWithNibName:@"StockLittleViewController" bundle:nil];
         [vc setTitle:name];

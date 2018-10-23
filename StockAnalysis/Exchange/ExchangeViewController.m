@@ -20,8 +20,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *RMBLabel;
 @property (weak, nonatomic) IBOutlet UILabel *USDLabel;
 @property (weak, nonatomic) IBOutlet UITableView *moneyList;
+@property (weak, nonatomic) IBOutlet UIImageView *lookMoney;
 
 @property (nonatomic,strong) NSMutableDictionary* exchangeInfo;
+@property (nonatomic,assign) BOOL isCanLook;
 
 @end
 
@@ -33,10 +35,27 @@
     
     self.title = @"交易账户";
     self.exchangeInfo = [NSMutableDictionary new];
+    self.isCanLook = YES;
     
     self.moneyList.delegate = self;
     self.moneyList.dataSource = self;
+    
+    [self.lookMoney setUserInteractionEnabled:YES];
+    UITapGestureRecognizer *f = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickLook)];
+    [self.lookMoney addGestureRecognizer:f];
 
+}
+-(void)clickLook{
+    if(_isCanLook){
+        _isCanLook = NO;
+        [self.lookMoney setImage:[UIImage imageNamed:@"eye-c"]];
+        self.RMBLabel.text = [NSString stringWithFormat:@"¥%@",@"***"];
+        self.USDLabel.text = [NSString stringWithFormat:@"$≈%@",@"***"];;
+    }else{
+        _isCanLook = YES;
+        [self.lookMoney setImage:[UIImage imageNamed:@"eye-o"]];
+        [self requestExchangeList];
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated{

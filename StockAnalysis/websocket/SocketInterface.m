@@ -72,7 +72,7 @@ static SocketInterface* _instance = nil;
 }
 
 -(void)sendRequest:(NSString *)request withName:(NSString*)name{
-    NSLog(@"sendResuet : %@",name);
+//    NSLog(@"sendResuet : %@ ,%@",name,request);
     self.requestMethod = name;
 //    request = @"{\"method\":\"kline.query\",\"params\":[\"LDGFRMB\",1533571200,1533600000,600],\"id\":1}";
     [_webSocket send:request];

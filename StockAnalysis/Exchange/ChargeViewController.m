@@ -13,11 +13,13 @@
 #import "HttpRequest.h"
 #import "TurnMoneyViewController.h"
 
-@interface ChargeViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface ChargeViewController ()<UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *selectTable;
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (nonatomic)int index;
 
 @property (nonatomic,strong) NSMutableDictionary* exchangeInfo;
+@property (nonatomic,strong) NSMutableDictionary* allInfo;
 
 @end
 
@@ -28,10 +30,11 @@
     // Do any additional setup after loading the view from its nib.
     self.title = @"选择";
     self.exchangeInfo = [NSMutableDictionary new];
+    self.allInfo = [NSMutableDictionary new];
     _selectTable.delegate = self;
     _selectTable.dataSource = self;
     
-    
+    _searchBar.delegate = self;
     self.index = 0;//默认是点击的充值界面,1代表提现，2代表资金划转,3代表资金划转
     NSString* type = @"exchange";
     NSDictionary *parameters = @{ @"type": type};
@@ -57,6 +60,57 @@
     [super viewWillDisappear:animated];
     self.tabBarController.tabBar.hidden = NO;
 }
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar{
+    NSMutableArray* keys = [NSMutableArray new];
+    if([searchBar text].length>0){
+        for (NSString* key in [self.allInfo allKeys]) {
+            if([key containsString:[searchBar text]]){
+                [keys addObject:key];
+            }
+        }
+        [self.exchangeInfo removeAllObjects];
+        for (NSString* key in [self.allInfo allKeys]) {
+            for (NSString* deletekey in keys) {
+                if([deletekey isEqualToString:key]){
+                    [self.exchangeInfo setObject:[self.allInfo objectForKey:key] forKey:key];
+                }
+            }
+        }
+        [self.selectTable reloadData];
+    }else{
+        [self.exchangeInfo removeAllObjects];
+        for (NSString* key in [self.allInfo allKeys]) {
+            [self.exchangeInfo setObject:[self.allInfo objectForKey:key] forKey:key];
+        }
+        [self.selectTable reloadData];
+    }
+}
+-(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
+    NSMutableArray* keys = [NSMutableArray new];
+    if(searchText.length>0){
+        for (NSString* key in [self.allInfo allKeys]) {
+            if([key containsString:searchText]){
+                [keys addObject:key];
+            }
+        }
+        [self.exchangeInfo removeAllObjects];
+        for (NSString* key in [self.allInfo allKeys]) {
+            for (NSString* deletekey in keys) {
+                if([deletekey isEqualToString:key]){
+                    [self.exchangeInfo setObject:[self.allInfo objectForKey:key] forKey:key];
+                }
+            }
+        }
+        [self.selectTable reloadData];
+    }else{
+        [self.exchangeInfo removeAllObjects];
+        for (NSString* key in [self.allInfo allKeys]) {
+            [self.exchangeInfo setObject:[self.allInfo objectForKey:key] forKey:key];
+        }
+        [self.selectTable reloadData];
+    }
+    
+}
 
 -(void)getExchangeBack:(NSDictionary*)data{
     //    NSDictionary* data = [[HttpRequest getInstance] httpBack];
@@ -72,6 +126,9 @@
             [self.exchangeInfo removeAllObjects];
             
             self.exchangeInfo = [[NSMutableDictionary alloc] initWithDictionary:exchange];
+            [self.allInfo removeAllObjects];
+            
+            self.allInfo = [[NSMutableDictionary alloc] initWithDictionary:exchange];
             
             [self.selectTable reloadData];
             

@@ -22,7 +22,11 @@
 @property (weak, nonatomic) IBOutlet UILabel *distrcLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *arrowImage;
 @property (weak, nonatomic) IBOutlet UILabel *tipLabel;
+@property (weak, nonatomic) IBOutlet UIButton *verifyBtn1;
+@property (weak, nonatomic) IBOutlet UIButton *verifyBtn2;
 
+@property(nonatomic,strong)NSTimer* update1;
+@property(nonatomic,strong)NSTimer* update2;
 @end
 
 @implementation BindViewController
@@ -30,6 +34,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
+    _update1 = nil;
+    _update2 = nil;
     
     if([self.title isEqualToString:@"绑定邮箱"]){
         _bindName.text = @"邮箱地址";
@@ -78,6 +85,14 @@
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     self.tabBarController.tabBar.hidden = NO;
+    [self.update1 invalidate];
+    self.update1 = nil;
+    [self.update2 invalidate];
+    self.update2 = nil;
+    [_verifyBtn1 setTitle:@"发送验证码" forState:UIControlStateNormal];
+    [_verifyBtn2 setTitle:@"发送验证码" forState:UIControlStateNormal];
+    [_verifyBtn1 setEnabled:YES];
+    [_verifyBtn2 setEnabled:YES];
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -182,7 +197,81 @@
     
     [self.navigationController pushViewController:countrycodeVC animated:YES];
 }
+- (IBAction)sendVerify1:(id)sender {
+    if([self.title isEqualToString:@"绑定手机"]){
+        
+    }else if([self.title isEqualToString:@"绑定邮箱"]){
+        
+    }
+    [_verifyBtn1 setTitle:@"60s" forState:UIControlStateNormal];
+    [_verifyBtn1 setEnabled:NO];
+    if(_update1){
+        [_update1 invalidate];
+        _update1 = nil;
+    }
+    
+    _update1 = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(changeBtn1) userInfo:nil repeats:YES];
+//    [_update1 fire];
+    
+    [[NSRunLoop mainRunLoop] addTimer:_update1 forMode:NSDefaultRunLoopMode];
+}
 
+-(void)changeBtn1{
+    NSString* title = _verifyBtn1.titleLabel.text;
+    if([title isEqualToString:@"发送验证码"]){
+        return;
+    }
+    NSInteger sec = [[title substringToIndex:[title rangeOfString:@"s"].location] intValue];
+    sec--;
+    if(sec < 0){
+        [_verifyBtn1 setTitle:@"发送验证码" forState:UIControlStateNormal];
+//        [NSTimer ]
+        [_update1 invalidate];
+        _update1 = nil;
+        [_verifyBtn1 setEnabled:YES];
+    }else{
+        [_verifyBtn1 setTitle:[NSString stringWithFormat:@"%lds",(long)sec] forState:UIControlStateNormal];
+    }
+    
+}
+
+- (IBAction)sendVerify2:(id)sender {
+    if([self.title isEqualToString:@"绑定手机"]){
+        
+    }else if([self.title isEqualToString:@"绑定邮箱"]){
+        
+    }
+    [_verifyBtn2 setTitle:@"60s" forState:UIControlStateNormal];
+    [_verifyBtn2 setEnabled:NO];
+    if(_update2){
+        [_update2 invalidate];
+        _update2 = nil;
+    }
+    
+    _update2 = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(changeBtn1) userInfo:nil repeats:YES];
+    //    [_update1 fire];
+    
+    [[NSRunLoop mainRunLoop] addTimer:_update2 forMode:NSDefaultRunLoopMode];
+}
+
+-(void)changeBtn2{
+    NSString* title = _verifyBtn2.titleLabel.text;
+    if([title isEqualToString:@"发送验证码"]){
+        return;
+    }
+    NSInteger sec = [[title substringToIndex:[title rangeOfString:@"s"].location] intValue];
+    sec--;
+    if(sec < 0){
+        [_verifyBtn2 setTitle:@"发送验证码" forState:UIControlStateNormal];
+        //        [NSTimer ]
+        [_update2 invalidate];
+        _update2 = nil;
+        [_verifyBtn2 setEnabled:YES];
+    }else{
+        [_verifyBtn2 setTitle:[NSString stringWithFormat:@"%lds",(long)sec] forState:UIControlStateNormal];
+    }
+    
+}
 #pragma mark - XWCountryCodeControllerDelegate
 -(void)returnCountryCode:(NSString *)countryCode{
     

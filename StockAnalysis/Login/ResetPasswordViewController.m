@@ -23,7 +23,9 @@
 @property (weak, nonatomic) IBOutlet UITextField *verifyInput;
 @property (nonatomic,strong) WSAuthCode *authCode;
 
+@property (weak, nonatomic) IBOutlet UIButton *verifybtn;
 @property (nonatomic,strong) NSString *captcha_id;
+@property(nonatomic,strong)NSTimer* update1;
 @end
 
 @implementation ResetPasswordViewController
@@ -33,7 +35,7 @@
     // Do any additional setup after loading the view from its nib.
     
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetBack) name:@"ResetPwdBack" object:nil];
-    
+    self.update1 = nil;
     self.title = @"找回登录密码";
     
     self.secondContainer.hidden = YES;
@@ -44,6 +46,8 @@
 //    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reloadAuthCode:)];
 //    [self.authCodeContainer addGestureRecognizer:tap];
     self.authCodeContainer.userInteractionEnabled = YES;
+    UITapGestureRecognizer *update = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(updateImage)];
+    [self.authCodeContainer addGestureRecognizer:update];
     
     UIButton *leftBarButton = [UIButton buttonWithType:UIButtonTypeCustom];
     leftBarButton.frame = CGRectMake(0, 0, 50, 40);
@@ -65,6 +69,10 @@
     self.view.userInteractionEnabled = YES;
 }
 
+-(void)updateImage{
+    [self requestVerifyImage];
+}
+
 -(void)viewWillBack{
     if(_secondContainer.isHidden){
         [self.navigationController popViewControllerAnimated:YES];
@@ -74,6 +82,11 @@
         self.authCodeTextFiled.text = @"";
         [self requestVerifyImage];
     }
+    
+    [self.update1 invalidate];
+    self.update1 = nil;
+    [_verifybtn setTitle:@"发送验证码" forState:UIControlStateNormal];
+    [_verifybtn setEnabled:YES];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -84,6 +97,11 @@
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     self.tabBarController.tabBar.hidden = NO;
+    
+    [self.update1 invalidate];
+    self.update1 = nil;
+    [_verifybtn setTitle:@"发送验证码" forState:UIControlStateNormal];
+    [_verifybtn setEnabled:YES];
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -266,7 +284,38 @@
         [HUDUtil showHudViewTipInSuperView:self.view withMessage:msg];
     }
 }
-
+- (IBAction)clickVeriyBtn:(id)sender {
+    
+    [_verifybtn setTitle:@"60s" forState:UIControlStateNormal];
+    [_verifybtn setEnabled:NO];
+    if(_update1){
+        [_update1 invalidate];
+        _update1 = nil;
+    }
+    
+    _update1 = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(changeBtn1) userInfo:nil repeats:YES];
+    //    [_update1 fire];
+    
+    [[NSRunLoop mainRunLoop] addTimer:_update1 forMode:NSDefaultRunLoopMode];
+}
+-(void)changeBtn1{
+    NSString* title = _verifybtn.titleLabel.text;
+    if([title isEqualToString:@"发送验证码"]){
+        return;
+    }
+    NSInteger sec = [[title substringToIndex:[title rangeOfString:@"s"].location] intValue];
+    sec--;
+    if(sec < 0){
+        [_verifybtn setTitle:@"发送验证码" forState:UIControlStateNormal];
+        //        [NSTimer ]
+        [_update1 invalidate];
+        _update1 = nil;
+        [_verifybtn setEnabled:YES];
+    }else{
+        [_verifybtn setTitle:[NSString stringWithFormat:@"%lds",(long)sec] forState:UIControlStateNormal];
+    }
+    
+}
 /*
 #pragma mark - Navigation
 

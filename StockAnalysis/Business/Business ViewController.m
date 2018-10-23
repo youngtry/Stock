@@ -19,8 +19,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *usdMoney;
 @property (weak, nonatomic) IBOutlet UITableView *moneyList;
 
+@property (weak, nonatomic) IBOutlet UIImageView *lookMoney;
 @property (nonatomic,strong) NSMutableDictionary* businessInfo;
-
+@property (nonatomic,assign) BOOL isCanLook;
 @end
 
 @implementation Business_ViewController
@@ -34,7 +35,29 @@
     
     self.moneyList.delegate = self;
     self.moneyList.dataSource = self;
+    self.isCanLook = YES;
     
+    [self requestMoney];
+    
+    [self.lookMoney setUserInteractionEnabled:YES];
+    UITapGestureRecognizer *f = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickLook)];
+    [self.lookMoney addGestureRecognizer:f];
+    
+}
+-(void)clickLook{
+    if(_isCanLook){
+        _isCanLook = NO;
+        [self.lookMoney setImage:[UIImage imageNamed:@"eye-c"]];
+        self.cnyMoney.text = [NSString stringWithFormat:@"¥%@",@"***"];
+        self.usdMoney.text = [NSString stringWithFormat:@"$≈%@",@"***"];;
+    }else{
+        _isCanLook = YES;
+        [self.lookMoney setImage:[UIImage imageNamed:@"eye-o"]];
+        [self requestMoney];
+    }
+}
+
+-(void)requestMoney{
     NSDictionary *parameters = @{ @"type": @"shop"};
     
     NSString* url = @"wallet/balance";
@@ -45,7 +68,6 @@
             [self getBusinessBack:data];
         }
     }];
-    
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];

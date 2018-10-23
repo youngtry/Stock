@@ -299,7 +299,7 @@
 {
     NSString* gesture =  @"";
     for (UIButton *btn in self.selectorArr) {
-        NSInteger tag = [btn tag];
+        NSInteger tag = [btn tag]+1;
         NSLog(@"select tag = %ld",(long)tag);
         gesture = [NSString stringWithFormat:@"%@%ld",gesture,(long)tag];
     }
