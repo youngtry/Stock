@@ -116,8 +116,16 @@
     UILabel *titleLab = [cell.contentView viewWithTag:101];
     UIImageView *arrow  = [cell.contentView viewWithTag:102];
     
-    NSString* title = _data[indexPath.section][indexPath.row];
-    titleLab.text = title;
+    if(_data.count>indexPath.section) {
+        NSDictionary* a =_data[indexPath.section];
+        if(a.count>indexPath.row){
+            NSString* title = _data[indexPath.section][indexPath.row];
+            titleLab.text = title;
+        }
+        
+    }
+    
+    
     if(indexPath.row!=0){
         titleLab.left = 50;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

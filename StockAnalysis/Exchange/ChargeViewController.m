@@ -166,9 +166,12 @@
     }
     
     NSArray* keys = [self.exchangeInfo allKeys];
-    NSString* key = [keys objectAtIndex:[indexPath row]];
+    if(keys.count>indexPath.row){
+        NSString* key = [keys objectAtIndex:[indexPath row]];
+        
+        cell.textLabel.text = key;
+    }
     
-    cell.textLabel.text = key;
 
     return cell;
 }

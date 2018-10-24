@@ -153,9 +153,11 @@
         //初始化cell数据!
         NSInteger section = indexPath.section;
         NSInteger row = indexPath.row;
+        if(indexArray.count>section && sortedNameDict.count>row){
+            cell.textLabel.text = [[sortedNameDict objectForKey:[indexArray objectAtIndex:section]] objectAtIndex:row];
+            [cell.textLabel setFont:[UIFont systemFontOfSize:16]];
+        }
         
-        cell.textLabel.text = [[sortedNameDict objectForKey:[indexArray objectAtIndex:section]] objectAtIndex:row];
-        [cell.textLabel setFont:[UIFont systemFontOfSize:16]];
         return cell;
     }else{
         static NSString *ID2 = @"cellIdentifier2";
@@ -163,7 +165,7 @@
         if (!cell) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:ID2];
         }
-        if ([searchResultValuesArray count] > 0) {
+        if ([searchResultValuesArray count] > indexPath.row) {
             cell.textLabel.text = [searchResultValuesArray objectAtIndex:indexPath.row];
         }
         return cell;

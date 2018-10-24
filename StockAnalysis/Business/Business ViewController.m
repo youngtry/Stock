@@ -154,14 +154,17 @@
     }
     
     NSArray* keys = [self.businessInfo allKeys];
-    NSString* key = [keys objectAtIndex:[indexPath row]];
+    if(keys.count>indexPath.row){
+        NSString* key = [keys objectAtIndex:[indexPath row]];
+        
+        NSDictionary* info = [self.businessInfo objectForKey:key];
+        
+        cell.name.text = key;
+        cell.money.text = [NSString stringWithFormat:@"%.8f",[[info objectForKey:@"available"] floatValue]] ;
+        
+        cell.frizeeMoney.text = [NSString stringWithFormat:@"冻结%.8f",[[info objectForKey:@"freeze"] floatValue]] ;
+    }
     
-    NSDictionary* info = [self.businessInfo objectForKey:key];
-    
-    cell.name.text = key;
-    cell.money.text = [NSString stringWithFormat:@"%.8f",[[info objectForKey:@"available"] floatValue]] ;
-    
-    cell.frizeeMoney.text = [NSString stringWithFormat:@"冻结%.8f",[[info objectForKey:@"freeze"] floatValue]] ;
     
     
     return cell;

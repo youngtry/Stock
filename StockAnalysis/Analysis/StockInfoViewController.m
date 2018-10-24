@@ -269,8 +269,9 @@
     }
     //TODO 塞数据
     
-    if(self.items.count>0){
+    if(self.items.count>indexPath.row){
 //        NSLog(@"keys = %ld",self.items.allValues.count);
+        
         NSDictionary* item = self.items[indexPath.row];
         if(item){
             if([self.title isEqualToString:@"自选"] || [self.title isEqualToString:@"沪深"] || [self.title isEqualToString:@"港美"] ||[self.title isEqualToString:@"板块"]){

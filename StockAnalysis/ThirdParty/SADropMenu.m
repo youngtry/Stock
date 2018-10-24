@@ -95,7 +95,12 @@
         
     }
     UILabel *lab = [cell.contentView viewWithTag:100];
-    lab.text = self.titles[indexPath.row];
+    
+    if(self.titles.count>indexPath.row){
+         lab.text = self.titles[indexPath.row];
+    }
+    
+   
 
     if(indexPath.row == self.selectIndex){
         lab.textColor = kColor(243, 186, 46);

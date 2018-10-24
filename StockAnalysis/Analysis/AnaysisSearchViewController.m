@@ -372,21 +372,24 @@
         cell = [[[NSBundle mainBundle] loadNibNamed:@"SearchTableViewCell" owner:self options:nil] objectAtIndex:0];
     }
 //    NSLog(@"获取历史记录");
-    NSDictionary* data = showList[indexPath.row];
-
-    if([data objectForKey:@"asset"]){
-        [cell setName:[data objectForKey:@"name"]];
-        [cell setIfShop:YES];
-    }else{
-        [cell setName:[data objectForKey:@"market"]];
-        [cell setIfShop:NO];
-        if([self isCellLike:data]){
-            //关注
-            [cell setIfLike:YES];
+    if(showList.count>indexPath.row){
+        NSDictionary* data = showList[indexPath.row];
+        
+        if([data objectForKey:@"asset"]){
+            [cell setName:[data objectForKey:@"name"]];
+            [cell setIfShop:YES];
         }else{
-            [cell setIfLike:NO];
+            [cell setName:[data objectForKey:@"market"]];
+            [cell setIfShop:NO];
+            if([self isCellLike:data]){
+                //关注
+                [cell setIfLike:YES];
+            }else{
+                [cell setIfLike:NO];
+            }
         }
     }
+    
     
     return cell;
 }

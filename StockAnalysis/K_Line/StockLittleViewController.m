@@ -1090,7 +1090,7 @@
     
     UpdateDataTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     if(!cell){
-        cell = [[[NSBundle mainBundle] loadNibNamed:@"UpdateDataTableViewCell" owner:self options:nil] objectAtIndex:0];
+        cell = [[NSBundle mainBundle] loadNibNamed:@"UpdateDataTableViewCell" owner:self options:nil].firstObject ;
         
         [cell setBackgroundColor:[UIColor blackColor]];
 //        cell = [[[NSBundle mainBundle] loadNibNamed:@"SearchTableViewCell" owner:self options:nil] objectAtIndex:0];

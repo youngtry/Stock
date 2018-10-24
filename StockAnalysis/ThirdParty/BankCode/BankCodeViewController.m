@@ -89,8 +89,12 @@
     NSInteger section = indexPath.section;
     NSInteger row = indexPath.row;
     
-    cell.name.text = [[sortedNameDict objectForKey:[indexArray objectAtIndex:section]] objectAtIndex:row];
-    [cell.textLabel setFont:[UIFont systemFontOfSize:17]];
+    if(indexArray.count>section && sortedNameDict.count>row){
+        cell.name.text = [[sortedNameDict objectForKey:[indexArray objectAtIndex:section]] objectAtIndex:row];
+        [cell.textLabel setFont:[UIFont systemFontOfSize:17]];
+    }
+    
+    
     return cell;
 }
 //indexTitle

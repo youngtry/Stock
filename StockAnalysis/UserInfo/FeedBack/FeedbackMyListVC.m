@@ -137,14 +137,16 @@
 //    lab2.text = dic[@"b"];
 //    lab3.text = dic[@"c"];
 //    lab4.text = dic[@"d"];
+    if(_data.count>indexPath.row){
+        NSDictionary* info = _data[indexPath.row];
+        cell.titleLabel.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"title_id"]] ;
+        cell.contentLabel.text = [info objectForKey:@"content"];
+        cell.timeLabel.text = [info objectForKey:@"updated_at"];
+        cell.stateLabel.text = [info objectForKey:@"state"];
+        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    }
     
-    NSDictionary* info = _data[indexPath.row];
-    cell.titleLabel.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"title_id"]] ;
-    cell.contentLabel.text = [info objectForKey:@"content"];
-    cell.timeLabel.text = [info objectForKey:@"updated_at"];
-    cell.stateLabel.text = [info objectForKey:@"state"];
-    
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
 //    NSLog(@"加载cell %ld",indexPath.row);
     return cell;
 }

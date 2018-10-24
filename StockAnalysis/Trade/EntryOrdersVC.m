@@ -199,22 +199,26 @@
         cell = [[[NSBundle mainBundle] loadNibNamed:@"PendingOrderTableViewCell" owner:self options:nil] objectAtIndex:0];
     }
     cell.delegate = self;
-    NSDictionary* data = self.data[indexPath.row];
     
-    cell.stockName.text = [data objectForKey:@"market"];
-    cell.timeLabel.text = [data objectForKey:@"updated_at"];
-    NSString* type = [data objectForKey:@"mode"];
-    if([type isEqualToString:@"buy"]){
-        cell.typeLabel.text = @"买入";
-        cell.isBuyIn = YES;
-    }else if ([type isEqualToString:@"sell"]){
-        cell.typeLabel.text = @"卖出";
-        cell.isBuyIn = NO;
+    if(self.data.count>indexPath.row){
+        NSDictionary* data = self.data[indexPath.row];
+        
+        cell.stockName.text = [data objectForKey:@"market"];
+        cell.timeLabel.text = [data objectForKey:@"updated_at"];
+        NSString* type = [data objectForKey:@"mode"];
+        if([type isEqualToString:@"buy"]){
+            cell.typeLabel.text = @"买入";
+            cell.isBuyIn = YES;
+        }else if ([type isEqualToString:@"sell"]){
+            cell.typeLabel.text = @"卖出";
+            cell.isBuyIn = NO;
+        }
+        cell.priceLabel.text = [data objectForKey:@"price"];
+        cell.amountLabel.text = [data objectForKey:@"num"];
+        cell.realLabel.text = [data objectForKey:@"deal_money"];
+        cell.tradeID = [data objectForKey:@"id"];
     }
-    cell.priceLabel.text = [data objectForKey:@"price"];
-    cell.amountLabel.text = [data objectForKey:@"num"];
-    cell.realLabel.text = [data objectForKey:@"deal_money"];
-    cell.tradeID = [data objectForKey:@"id"];
+    
     return cell;
 }
 

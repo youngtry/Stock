@@ -153,10 +153,12 @@
         //        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"id"];
         cell = [[[NSBundle mainBundle] loadNibNamed:@"GetMoneyRecordTableViewCell" owner:self options:nil] objectAtIndex:0];
     }
+    if(self.addressInfo.count>indexPath.row){
+        NSDictionary* info = [self.addressInfo objectAtIndex:[indexPath row]];
+        
+        cell.addressName.text = [info objectForKey:@"address"];
+    }
     
-    NSDictionary* info = [self.addressInfo objectAtIndex:[indexPath row]];
-    
-    cell.addressName.text = [info objectForKey:@"address"];
     
     
     return cell;

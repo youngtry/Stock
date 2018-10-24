@@ -303,12 +303,14 @@
         if(!cell){
             cell =  [[[NSBundle mainBundle] loadNibNamed:@"TradeTableViewCell" owner:self options:nil] objectAtIndex:0];
         }
+        if(self.billArray.count>indexPath.row){
+            NSDictionary* info = self.billArray[indexPath.row];
+            cell.nameLabel.text = [info objectForKey:@"market"];
+            cell.dateLabel.text = [info objectForKey:@"updated_at"];
+            cell.stateLabel.text = [info objectForKey:@"state"];
+            cell.modeLabel.text = [info objectForKey:@"mode"];
+        }
         
-        NSDictionary* info = self.billArray[indexPath.row];
-        cell.nameLabel.text = [info objectForKey:@"market"];
-        cell.dateLabel.text = [info objectForKey:@"updated_at"];
-        cell.stateLabel.text = [info objectForKey:@"state"];
-        cell.modeLabel.text = [info objectForKey:@"mode"];
         
         return cell;
         
@@ -324,19 +326,25 @@
     [cell.name setTextColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:1.0]];
     [cell.currentIcon setHidden:YES];
     if(tableView == self.nameList){
-        cell.name.text = self.nameArray[[indexPath row]];
-        if([cell.name.text isEqualToString:self.allNameBtn.titleLabel.text]){
-            [cell.name setTextColor:[UIColor colorWithRed:251.0/255.0 green:173.0/255.0 blue:20.0/255.0 alpha:1.0]];
-            [cell.currentIcon setHidden:NO];
+        if(self.nameArray.count>indexPath.row){
+            cell.name.text = self.nameArray[[indexPath row]];
+            if([cell.name.text isEqualToString:self.allNameBtn.titleLabel.text]){
+                [cell.name setTextColor:[UIColor colorWithRed:251.0/255.0 green:173.0/255.0 blue:20.0/255.0 alpha:1.0]];
+                [cell.currentIcon setHidden:NO];
+            }
         }
+        
     }
     
     if(tableView == self.typeList){
-        cell.name.text = self.typeArray[[indexPath row]];
-        if([cell.name.text isEqualToString:self.allTypeBtn.titleLabel.text]){
-            [cell.name setTextColor:[UIColor colorWithRed:251.0/255.0 green:173.0/255.0 blue:20.0/255.0 alpha:1.0]];
-            [cell.currentIcon setHidden:NO];
+        if(self.typeArray.count>indexPath.row){
+            cell.name.text = self.typeArray[[indexPath row]];
+            if([cell.name.text isEqualToString:self.allTypeBtn.titleLabel.text]){
+                [cell.name setTextColor:[UIColor colorWithRed:251.0/255.0 green:173.0/255.0 blue:20.0/255.0 alpha:1.0]];
+                [cell.currentIcon setHidden:NO];
+            }
         }
+        
     }
     
     if(kScreenWidth == 320){

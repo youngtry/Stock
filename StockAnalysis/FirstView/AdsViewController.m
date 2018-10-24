@@ -81,12 +81,14 @@
     if(nil == cell){
         cell = [[[NSBundle mainBundle] loadNibNamed:@"AdsTableViewCell" owner:self options:nil] objectAtIndex:0];
     }
+    if(self.adData.count>indexPath.row){
+        NSDictionary* info  = self.adData[indexPath.row];
+        
+        NSURL *imageUrl = [NSURL URLWithString:[info objectForKey:@"img"]];
+        UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:imageUrl]];
+        cell.adImageView.image = image;
+    }
     
-    NSDictionary* info  = self.adData[indexPath.row];
-    
-    NSURL *imageUrl = [NSURL URLWithString:[info objectForKey:@"img"]];
-    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:imageUrl]];
-    cell.adImageView.image = image;
     
     return cell;
 }

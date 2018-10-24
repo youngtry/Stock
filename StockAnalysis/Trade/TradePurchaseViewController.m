@@ -143,7 +143,7 @@
         [self.purchaseBtn setTitle:@"买入" forState:UIControlStateNormal];
         [self.selectBuyTypeBtn setTitle:@"限价买入" forState:UIControlStateNormal];
         [self.buyTypeMarketBtn setTitle:@"市价快速买入" forState:UIControlStateNormal];
-        [self.buyTypeLimitBtn setTitle:@"限价卖出" forState:UIControlStateNormal];
+        [self.buyTypeLimitBtn setTitle:@"限价买入" forState:UIControlStateNormal];
     }
     
     //单选按钮
@@ -263,7 +263,16 @@
 //                    NSLog(@"keyinfo = %@",keyinfo);
 //                    NSLog(@"marketNamelabel = %@",self.marketNamelabel.titleLabel.text);
                     if([self.marketNamelabel.titleLabel.text containsString:keyinfo]){
-                        money = [exchangeinfo objectForKey:keyinfo];
+                        
+                        if([self.title isEqualToString:@"卖出"]){
+                            if([self.marketNamelabel.titleLabel.text rangeOfString:keyinfo].location == 0){
+                                money = [exchangeinfo objectForKey:keyinfo];
+                            }
+                        }else{
+                            if([self.marketNamelabel.titleLabel.text rangeOfString:keyinfo].location+[self.marketNamelabel.titleLabel.text rangeOfString:keyinfo].length == self.marketNamelabel.titleLabel.text.length){
+                                money = [exchangeinfo objectForKey:keyinfo];
+                            }
+                        }
                     }
                 }
 //                NSLog(@"money = %@",money);
@@ -433,7 +442,10 @@
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     self.tabBarController.tabBar.hidden = NO;
-    
+    NSDictionary *dicAll = @{@"method":@"state.unsubscribe",@"params":@[],@"id":@(PN_StateUnsubscribe)};
+    //
+    NSString *strAll = [dicAll JSONString];
+    [[SocketInterface sharedManager] sendRequest:strAll withName:@"state.unsubscribe"];
 //    [[SocketInterface sharedManager] closeWebSocket];
 }
 
@@ -620,7 +632,7 @@
                             NSInteger selectedIndex = 0;
                             NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:selectedIndex inSection:0];
                             [self.stcokSelectView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-                            
+
                             NSInteger selectedIndex1 = 0;
                             NSIndexPath *selectedIndexPath1 = [NSIndexPath indexPathForRow:selectedIndex1 inSection:0];
                             [self.stcokInfoView selectRowAtIndexPath:selectedIndexPath1 animated:NO scrollPosition:UITableViewScrollPositionNone];
@@ -846,6 +858,10 @@
                     };
                     
                 }else{
+                    
+                    [self.purchaseBtn setBackgroundColor:[UIColor grayColor]];
+                    [self.purchaseBtn setEnabled:NO];
+                    
                     if([self.title isEqualToString:@"买入"]){
                         [self buyStock:@""];
                     }else if ([self.title isEqualToString:@"卖出"]){
@@ -867,7 +883,7 @@
         temp = self.navigationController;
     }
     NSString* url = @"exchange/trade/add";
-    float price = [self.purchasePriceInput.text floatValue];
+    float price = [self.priceRMBLabel.text floatValue];
     NSInteger limit = 1;
     if(!self.marketPriceView.isHidden){
         price = [self.marketPriceLabel.text floatValue];
@@ -882,6 +898,15 @@
                                  };
     [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+        if([self.title isEqualToString:@"卖出"]){
+            
+            [self.purchaseBtn setBackgroundColor:[UIColor redColor]];
+            [self.purchaseBtn setEnabled:YES];
+        }else if([self.title isEqualToString:@"买入"]){
+            
+            [self.purchaseBtn setBackgroundColor:kColor(80, 184, 115)];
+            [self.purchaseBtn setEnabled:YES];
+        }
         if(success){
             [HUDUtil hideHudView];
             if([[data objectForKey:@"ret"] intValue] == 1){
@@ -930,7 +955,7 @@
         temp = self.navigationController;
     }
     
-    float price = [self.purchasePriceInput.text floatValue];
+    float price = [self.marketPriceLabel.text floatValue];
     NSInteger limit = 1;
     if(!self.marketPriceView.isHidden){
         price = [self.marketPriceLabel.text floatValue];
@@ -947,6 +972,15 @@
                                  };
     [HUDUtil showHudViewInSuperView:temp.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+        if([self.title isEqualToString:@"卖出"]){
+            
+            [self.purchaseBtn setBackgroundColor:[UIColor redColor]];
+            [self.purchaseBtn setEnabled:YES];
+        }else if([self.title isEqualToString:@"买入"]){
+            
+            [self.purchaseBtn setBackgroundColor:kColor(80, 184, 115)];
+            [self.purchaseBtn setEnabled:YES];
+        }
         if(success){
             [HUDUtil hideHudView];
             if([[data objectForKey:@"ret"] intValue] == 1){
@@ -1153,6 +1187,11 @@
     }];
 }
 -(void)requestSubscribe{
+    NSDictionary *dicAll1 = @{@"method":@"state.unsubscribe",@"params":@[],@"id":@(PN_StateUnsubscribe)};
+    //
+    NSString *strAll1 = [dicAll1 JSONString];
+    [[SocketInterface sharedManager] sendRequest:strAll1 withName:@"state.unsubscribe"];
+    
     NSArray *dicParma = @[self.marketNamelabel.titleLabel.text
                           ];
 
@@ -1222,9 +1261,7 @@
             NSDictionary* info = params[1];
             //            NSLog(@"info = %@",info);
             self.priceRMBLabel.text = [NSString stringWithFormat:@"%.4f",[[info objectForKey:@"last"] floatValue]];
-            
-            
-            
+
             float price = [[info objectForKey:@"open"] floatValue];
             float nowprice = [[info objectForKey:@"last"] floatValue];
             
@@ -1322,30 +1359,34 @@
     if(tableView == self.stcokSelectView){
         TradeStockSelectTableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
         if(!cell){
-            cell = [[[NSBundle mainBundle] loadNibNamed:@"TradeStockSelectTableViewCell" owner:self options:nil] objectAtIndex:0];
+            cell = [[NSBundle mainBundle] loadNibNamed:@"TradeStockSelectTableViewCell" owner:self options:nil].firstObject;
+        }
+        if(self.titleArray.count>indexPath.row){
+            NSString* titletext = self.titleArray[indexPath.row];
+            NSLog(@"titletext = %@",titletext);
+            cell.name.text = titletext;
         }
         
-        NSString* titletext = self.titleArray[indexPath.row];
-        NSLog(@"titletext = %@",titletext);
-        cell.name.text = titletext;
         return cell;
     }
     
     if(tableView == self.stcokInfoView){
         TradeStockInfoTableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
         if(!cell){
-            cell = [[[NSBundle mainBundle] loadNibNamed:@"TradeStockInfoTableViewCell" owner:self options:nil] objectAtIndex:0];
+            cell = [[NSBundle mainBundle] loadNibNamed:@"TradeStockInfoTableViewCell" owner:self options:nil].firstObject;
+        }
+        if(self.infoArray.count>indexPath.row){
+            NSDictionary* info = self.infoArray[indexPath.row];
+            
+            NSString* name = [info objectForKey:@"market"];
+            NSString* rate = [NSString stringWithFormat:@"%.2f%%",[[info objectForKey:@"increase"] floatValue]];
+            NSString* volume = [NSString stringWithFormat:@"%.0f",[[info objectForKey:@"volume"] floatValue]];
+            
+            cell.name.text = name;
+            cell.upRate.text = rate;
+            cell.volume.text = volume;
         }
         
-        NSDictionary* info = self.infoArray[indexPath.row];
-        
-        NSString* name = [info objectForKey:@"market"];
-        NSString* rate = [NSString stringWithFormat:@"%.2f%%",[[info objectForKey:@"increase"] floatValue]];
-        NSString* volume = [NSString stringWithFormat:@"%.0f",[[info objectForKey:@"volume"] floatValue]];
-        
-        cell.name.text = name;
-        cell.upRate.text = rate;
-        cell.volume.text = volume;
         
         return cell;
     }
@@ -1353,42 +1394,46 @@
     if(tableView == self.askList){
         askAndBidsTableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
         if(!cell){
-            cell = [[[NSBundle mainBundle] loadNibNamed:@"askAndBidsTableViewCell" owner:self options:nil] objectAtIndex:0];
+            cell = [[NSBundle mainBundle] loadNibNamed:@"askAndBidsTableViewCell" owner:self options:nil].firstObject;
         }
         
-        
-        NSDictionary* info = self.asksArray[indexPath.row];
-        if(_numberDepth == 4){
-            cell.price.text = [NSString stringWithFormat:@"%.4f",[[info objectForKey:@"price"] floatValue]] ;
-        }else if (_numberDepth == 1){
-            cell.price.text = [NSString stringWithFormat:@"%.1f000",[[info objectForKey:@"price"] floatValue]] ;
-        }else if (_numberDepth == 0){
-            cell.price.text = [NSString stringWithFormat:@"%.0f0000",[[info objectForKey:@"price"] floatValue]] ;
+        if(self.asksArray.count>indexPath.row){
+            NSDictionary* info = self.asksArray[indexPath.row];
+            if(_numberDepth == 4){
+                cell.price.text = [NSString stringWithFormat:@"%.4f",[[info objectForKey:@"price"] floatValue]] ;
+            }else if (_numberDepth == 1){
+                cell.price.text = [NSString stringWithFormat:@"%.1f000",[[info objectForKey:@"price"] floatValue]] ;
+            }else if (_numberDepth == 0){
+                cell.price.text = [NSString stringWithFormat:@"%.0f0000",[[info objectForKey:@"price"] floatValue]] ;
+            }
+            
+            cell.amount.text = [NSString stringWithFormat:@"%.3f",[[info objectForKey:@"amount"] floatValue]];
+            cell.price.textColor = [UIColor colorWithRed:236/255.0 green:102/255.0 blue:95/255.0 alpha:1];
         }
         
-        cell.amount.text = [NSString stringWithFormat:@"%.3f",[[info objectForKey:@"amount"] floatValue]];
-        cell.price.textColor = [UIColor colorWithRed:236/255.0 green:102/255.0 blue:95/255.0 alpha:1];
         return cell;
     }
     
     if(tableView == self.bidsList){
         askAndBidsTableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
         if(!cell){
-            cell = [[[NSBundle mainBundle] loadNibNamed:@"askAndBidsTableViewCell" owner:self options:nil] objectAtIndex:0];
+            cell = [[NSBundle mainBundle] loadNibNamed:@"askAndBidsTableViewCell" owner:self options:nil].firstObject;
+        }
+        if(self.bidsArray.count>indexPath.row){
+            NSDictionary* info = self.bidsArray[indexPath.row];
+            if(_numberDepth == 4){
+                cell.price.text = [NSString stringWithFormat:@"%.4f",[[info objectForKey:@"price"] floatValue]] ;
+            }else if (_numberDepth == 1){
+                cell.price.text = [NSString stringWithFormat:@"%.1f000",[[info objectForKey:@"price"] floatValue]] ;
+            }else if (_numberDepth == 0){
+                cell.price.text = [NSString stringWithFormat:@"%.0f0000",[[info objectForKey:@"price"] floatValue]] ;
+            }
+            
+            cell.amount.text = [NSString stringWithFormat:@"%.3f",[[info objectForKey:@"amount"] floatValue]];
+            
+            cell.price.textColor = [UIColor colorWithRed:51/255.0 green:143/255.0 blue:71/255.0 alpha:1];
         }
         
-        NSDictionary* info = self.bidsArray[indexPath.row];
-        if(_numberDepth == 4){
-            cell.price.text = [NSString stringWithFormat:@"%.4f",[[info objectForKey:@"price"] floatValue]] ;
-        }else if (_numberDepth == 1){
-            cell.price.text = [NSString stringWithFormat:@"%.1f000",[[info objectForKey:@"price"] floatValue]] ;
-        }else if (_numberDepth == 0){
-            cell.price.text = [NSString stringWithFormat:@"%.0f0000",[[info objectForKey:@"price"] floatValue]] ;
-        }
- 
-        cell.amount.text = [NSString stringWithFormat:@"%.3f",[[info objectForKey:@"amount"] floatValue]];
-        
-        cell.price.textColor = [UIColor colorWithRed:51/255.0 green:143/255.0 blue:71/255.0 alpha:1];
         
         return cell;
     }
@@ -1396,26 +1441,28 @@
     if(tableView == self.dealList){
         PendingOrderTableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
         if(!cell){
-            cell = [[[NSBundle mainBundle] loadNibNamed:@"PendingOrderTableViewCell" owner:self options:nil] objectAtIndex:0];
+            cell = [[NSBundle mainBundle] loadNibNamed:@"PendingOrderTableViewCell" owner:self options:nil].firstObject;
             
             cell.delegate = self;
         }
-        
-        NSDictionary* info = self.dealArray[indexPath.row];
-        cell.typeLabel.text = [info objectForKey:@"mode"];
-        cell.stockName.text = [info objectForKey:@"market"];
-        cell.timeLabel.text = [info objectForKey:@"updated_at"];
-        cell.priceLabel.text = [info objectForKey:@"price"];
-        cell.amountLabel.text = [info objectForKey:@"num"];
-        cell.realLabel.text = [info objectForKey:@"deal_money"];
-//        cell.typeLabel.text = [self.dealData objectForKey:@"DealType"];
-        cell.tradeID = [info objectForKey:@"id"];
-        
-        if([cell.typeLabel.text isEqualToString:@"buy"]){
-            cell.isBuyIn = YES;
-        }else if([cell.typeLabel.text isEqualToString:@"sell"]){
-            cell.isBuyIn = NO;
+        if(self.dealArray.count>indexPath.row){
+            NSDictionary* info = self.dealArray[indexPath.row];
+            cell.typeLabel.text = [info objectForKey:@"mode"];
+            cell.stockName.text = [info objectForKey:@"market"];
+            cell.timeLabel.text = [info objectForKey:@"updated_at"];
+            cell.priceLabel.text = [info objectForKey:@"price"];
+            cell.amountLabel.text = [info objectForKey:@"num"];
+            cell.realLabel.text = [info objectForKey:@"deal_money"];
+            //        cell.typeLabel.text = [self.dealData objectForKey:@"DealType"];
+            cell.tradeID = [info objectForKey:@"id"];
+            
+            if([cell.typeLabel.text isEqualToString:@"buy"]){
+                cell.isBuyIn = YES;
+            }else if([cell.typeLabel.text isEqualToString:@"sell"]){
+                cell.isBuyIn = NO;
+            }
         }
+        
         
 //        cell.stockName.text = [self.dealData objectForKey:@"StockName"];
 //        cell.timeLabel.text = [self.dealData objectForKey:@"DealTime"];
@@ -1489,13 +1536,16 @@
 //        self.marketNamelabel.titleLabel.text = cell.name.text;
         self.currentPage = 0;
         self.isUpdate = YES;
-        [self getPendingOrders:1];
+       
         
         [self.sortGuideView setHidden:YES];
         
         [self setStcokInfo:self.infoArray[indexPath.row]];
         
         [self.radioBtn setSelectIndex:0];
+        [self.dealArray removeAllObjects];
+        [self.dealList reloadData];
+         [self getPendingOrders:1];
         
     }
     

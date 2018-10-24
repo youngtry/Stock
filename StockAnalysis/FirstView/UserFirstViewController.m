@@ -131,6 +131,11 @@
     [_runLabel stopAnimation];
     [_runLabel removeFromSuperview];
     _runLabel = nil;
+    
+    NSDictionary *dicAll = @{@"method":@"state.unsubscribe",@"params":@[],@"id":@(PN_StateUnsubscribe)};
+    
+    NSString *strAll = [dicAll JSONString];
+    [[SocketInterface sharedManager] sendRequest:strAll withName:@"state.unsubscribe"];
 }
 
 #pragma mark TTAutoRunLabelDelegate
@@ -342,22 +347,27 @@
 
 -(void)requestStockInfo:(NSInteger)index{
     NSLog(@"更新index = %ld,************%ld",index,self.stockName.count);
-    if(index >= self.stockName.count){
-        NSLog(@"*********更新结束*********");
-        NSDictionary *dicAll = @{@"method":@"state.unsubscribe",@"params":@[],@"id":@(PN_StateUnsubscribe)};
-        //
-        NSString *strAll = [dicAll JSONString];
-        [[SocketInterface sharedManager] sendRequest:strAll withName:@"state.unsubscribe"];
-        [_randList reloadData];
-      
-        [self performSelector:@selector(requestAllData) withObject:nil afterDelay:2.0];
-        
-        return;
-    }
+//    if(index >= self.stockName.count){
+//        NSLog(@"*********更新结束*********");
+//        NSDictionary *dicAll = @{@"method":@"state.unsubscribe",@"params":@[],@"id":@(PN_StateUnsubscribe)};
+//        //
+//        NSString *strAll = [dicAll JSONString];
+//        [[SocketInterface sharedManager] sendRequest:strAll withName:@"state.unsubscribe"];
+//        [_randList reloadData];
+//
+//        [self performSelector:@selector(requestAllData) withObject:nil afterDelay:2.0];
+//
+//        return;
+//    }
     NSDictionary* info = self.stockName[index];
+    NSMutableArray* names = [NSMutableArray new];
+    for(NSDictionary* data in self.stockName){
+        [names addObject:[data objectForKey:@"market"]];
+        
+    }
     NSString* name = [info objectForKey:@"market"];
 //    NSLog(@"更新name = %@",name);
-    NSArray *dicParma = @[name];
+    NSArray *dicParma = names;
 //    NSArray* dicParma = @[@"LDGFHUWEI"];
     NSDictionary *dicAll = @{@"method":@"state.subscribe",@"params":dicParma,@"id":@(PN_StateSubscribe)};
     
@@ -510,17 +520,17 @@
             float rate = ([open floatValue] == 0)?0:([price floatValue])/([open floatValue])-1;
             
             NSString* name = params[0];
-            NSLog(@"name = %@ 涨幅 = %f",name,rate);
+//            NSLog(@"name = %@ 涨幅 = %f",name,rate);
             
             [self addRateToArray:name withRate:[NSString stringWithFormat:@"%f",rate*100] withPrice:price];
             
-            NSDictionary *dicAll = @{@"method":@"state.unsubscribe",@"params":@[],@"id":@(PN_StateUnsubscribe)};
-            //
-            NSString *strAll = [dicAll JSONString];
-            [[SocketInterface sharedManager] sendRequest:strAll withName:@"state.unsubscribe"];
+//            NSDictionary *dicAll = @{@"method":@"state.unsubscribe",@"params":@[],@"id":@(PN_StateUnsubscribe)};
+//
+//            NSString *strAll = [dicAll JSONString];
+//            [[SocketInterface sharedManager] sendRequest:strAll withName:@"state.unsubscribe"];
             
-            self.updateIndex++;
-            [self requestStockInfo:self.updateIndex];
+//            self.updateIndex++;
+//            [self requestStockInfo:self.updateIndex];
             
         }
         
@@ -537,38 +547,38 @@
         }
     }
     
-    if(self.updateIndex < self.stockName.count-1){
-        return;
-    }
+    
     
     NSMutableArray* temp = [NSMutableArray new];
-    for (NSMutableDictionary* info in self.stockName) {
-        float ratedata = [[info objectForKey:@"rate"] floatValue];
-        if(temp.count == 0){
-            [temp addObject:info];
-        }else{
-            int index = 0;
-            for (int i=0;i<temp.count;i++){
-                NSMutableDictionary* lastinfo =temp[i];
-                float lastrate = [[lastinfo objectForKey:@"rate"] floatValue];
-                if(ratedata>=lastrate){
-                    if(i == 0){
-                        index = 0;
-                    }else{
-                        index = i-1;
-                    }
-                }else{
-                    index = i+1;
-                }
-            }
-            [temp insertObject:info atIndex:index];
+    
+    while (self.stockName.count>0) {
+        NSInteger index = 0;
+        NSString* rate = [self.stockName[0] objectForKey:@"rate"];
+        float ratevalue = 0;
+        if(rate){
+            ratevalue = [rate floatValue];
         }
+        
+        for (int j=1; j<self.stockName.count; j++) {
+            NSString* rate1 = [self.stockName[j] objectForKey:@"rate"];
+            float ratevalue1 = 0;
+            if(rate1){
+                ratevalue1 = [rate1 floatValue];
+            }
+            
+            if(ratevalue1>ratevalue){
+                ratevalue = ratevalue1;
+                index = j;
+            }
+        }
+        
+        [temp addObject:self.stockName[index]];
+        [self.stockName removeObjectAtIndex:index];
     }
-
-    if(temp.count == self.stockName.count){
-        [self.stockName removeAllObjects];
-        self.stockName = temp;
-    }
+    
+    self.stockName = temp;
+    [_randList reloadData];
+    
     
 }
 
@@ -597,14 +607,17 @@
         cell = [[[NSBundle mainBundle] loadNibNamed:@"FirstListTableViewCell" owner:self options:nil] objectAtIndex:0];
     }
     
+//    NSLog(@"indexPath.row = %ld,self.stockName = %ld",indexPath.row,self.stockName.count);
+    if(self.stockName.count > indexPath.row){
+        NSMutableDictionary* info = self.stockName[indexPath.row];
+        
+        cell.nameLabel.text = [info objectForKey:@"market"];
+        float rate = [[info objectForKey:@"rate"] floatValue]*100;
+        NSString* ratetext = [NSString stringWithFormat:@"%.2f%%",rate];
+        cell.upOrDownRateLabel.text = ratetext;
+        cell.priceLabel.text = [NSString stringWithFormat:@"%.4f",[[info objectForKey:@"last"] floatValue]];
+    }
     
-    NSMutableDictionary* info = self.stockName[indexPath.row];
-    
-    cell.nameLabel.text = [info objectForKey:@"market"];
-    float rate = [[info objectForKey:@"rate"] floatValue]*100;
-    NSString* ratetext = [NSString stringWithFormat:@"%.2f%%",rate];
-    cell.upOrDownRateLabel.text = ratetext;
-    cell.priceLabel.text = [NSString stringWithFormat:@"%.4f",[[info objectForKey:@"last"] floatValue]];
     
     return cell;
 }

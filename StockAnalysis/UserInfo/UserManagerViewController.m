@@ -77,15 +77,18 @@
         [cell.account setHidden:YES];
         [cell.currentIcon setHidden:YES];
     }else{
-        NSDictionary* info = [list objectAtIndex:[indexPath row]];
-        
-        if([[info objectForKey:@"account"] isEqualToString:account]){
-            [cell.currentIcon setHidden:NO];
-        }else{
-            [cell.currentIcon setHidden:YES];
+        if(list.count>indexPath.row){
+            NSDictionary* info = [list objectAtIndex:[indexPath row]];
+            
+            if([[info objectForKey:@"account"] isEqualToString:account]){
+                [cell.currentIcon setHidden:NO];
+            }else{
+                [cell.currentIcon setHidden:YES];
+            }
+            [cell.switchBtn setHidden:YES];
+            cell.account.text = [NSString stringWithFormat:@"%@ %@", [info objectForKey:@"district"],[info objectForKey:@"account"]];
         }
-        [cell.switchBtn setHidden:YES];
-        cell.account.text = [NSString stringWithFormat:@"%@ %@", [info objectForKey:@"district"],[info objectForKey:@"account"]];
+        
     }
  
     return cell;

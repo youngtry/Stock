@@ -208,7 +208,7 @@
         
     } success:^(NSURLSessionDataTask *task, id responseObject){
         // 成功
-        DLog(@"xxxxsuccess!");
+        DLog(@"%@xxxxsuccess!",url);
         dispatch_async(dispatch_get_main_queue(), ^{
 //            [HUDUtil hideHudView];
         });
@@ -254,7 +254,7 @@
 //            [HUDUtil hideHudView];
         });
         
-        DLog(@"xxxxsuccess!");
+        DLog(@"%@xxxxsuccess!",url);
         NSData *data = responseObject;
 //        NSString *s = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         NSDictionary* info = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil ];
@@ -297,7 +297,7 @@
         
     } success:^(NSURLSessionDataTask *task, id responseObject){
         // 成功
-        DLog(@"xxxxsuccess!");
+        DLog(@"%@xxxxsuccess!",url);
 //        [HUDUtil hideHudView];
         NSData *data = responseObject;
         NSDictionary* info = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
