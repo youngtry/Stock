@@ -379,8 +379,8 @@
     NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
     BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
     if(!islogin){
-        [HUDUtil showSystemTipView:temp title:@"提示" withContent:@"未登录,请先登录"];
-        return;
+//        [HUDUtil showSystemTipView:temp title:@"提示" withContent:@"未登录,请先登录"];
+//        return;
     }
     
 //    UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
@@ -1276,7 +1276,12 @@
 
             self.periodPrice.text =[NSString stringWithFormat:@"%d",[[info objectForKey:@"volume"] intValue]];
             self.marketPriceLabel.text = [NSString stringWithFormat:@"¥%@",[info objectForKey:@"last"]];
-            [self setMoneyInfo];
+            NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
+            BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
+            if(islogin){
+                [self setMoneyInfo];
+            }
+            
         }
     }
 }
@@ -1379,7 +1384,7 @@
             NSDictionary* info = self.infoArray[indexPath.row];
             
             NSString* name = [info objectForKey:@"market"];
-            NSString* rate = [NSString stringWithFormat:@"%.2f%%",[[info objectForKey:@"increase"] floatValue]];
+            NSString* rate = [NSString stringWithFormat:@"%.2f%%",[[info objectForKey:@"increase"] floatValue]*100];
             NSString* volume = [NSString stringWithFormat:@"%.0f",[[info objectForKey:@"volume"] floatValue]];
             
             cell.name.text = name;
