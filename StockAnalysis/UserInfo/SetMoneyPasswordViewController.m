@@ -29,6 +29,9 @@
     [_lookPwdBtn setImage:[UIImage imageNamed:@"eye-c.png"] forState:UIControlStateNormal];
     [_lookPwdBtn setImage:[UIImage imageNamed:@"eye-o.png"] forState:UIControlStateSelected];
     
+    [_lookPwdAgainBtn setImage:[UIImage imageNamed:@"eye-c.png"] forState:UIControlStateNormal];
+    [_lookPwdAgainBtn setImage:[UIImage imageNamed:@"eye-o.png"] forState:UIControlStateSelected];
+    
     self.moneyPassword.secureTextEntry = YES;
 
     
@@ -78,21 +81,37 @@
 - (IBAction)clickVerify:(id)sender {
 }
 - (IBAction)clickMailVerify:(id)sender {
+    if (!_lookPwdAgainBtn.selected) { // 按下去了就是明文
+        
+        NSString *tempPwdStr = self.moneyAgainPassword.text;
+        self.moneyAgainPassword.text = @""; // 这句代码可以防止切换的时候光标偏移
+        self.moneyAgainPassword.secureTextEntry = NO;
+        self.moneyAgainPassword.text = tempPwdStr;
+        [_lookPwdAgainBtn setSelected:YES];
+        
+    } else { // 暗文
+        
+        NSString *tempPwdStr = self.moneyAgainPassword.text;
+        self.moneyAgainPassword.text = @"";
+        self.moneyAgainPassword.secureTextEntry = YES;
+        self.moneyAgainPassword.text = tempPwdStr;
+        [_lookPwdAgainBtn setSelected:NO];
+    }
 }
 - (IBAction)clickResetPassword:(id)sender {
     if(self.moneyPassword.text.length == 0){
         [HUDUtil showSystemTipView:self title:@"提示" withContent:@"请输入密码"];
         return;
     }
-    if(self.moneyAgainPassword.text.length == 0){
-        [HUDUtil showSystemTipView:self title:@"提示" withContent:@"请输入邮箱验证码"];
-        return;
-    }
-    
-//    if(![self.moneyAgainPassword.text isEqualToString:self.moneyPassword.text]){
-//        [HUDUtil showSystemTipView:self title:@"提示" withContent:@"两次输入不一致，请重新输入"];
+//    if(self.moneyAgainPassword.text.length == 0){
+//        [HUDUtil showSystemTipView:self title:@"提示" withContent:@"请输入邮箱验证码"];
 //        return;
 //    }
+    
+    if(![self.moneyAgainPassword.text isEqualToString:self.moneyPassword.text]){
+        [HUDUtil showSystemTipView:self title:@"提示" withContent:@"两次输入不一致，请重新输入"];
+        return;
+    }
     
     if(self.verifyInput.text.length == 0){
         [HUDUtil showSystemTipView:self title:@"提示" withContent:@"请输入验证码"];
@@ -101,7 +120,8 @@
     
     NSDictionary *parameters = @{@"asset_password": self.moneyPassword.text,
                                  @"phone_captcha": self.moneyAgainPassword.text,
-                                 @"email_captcha": self.verifyInput.text};
+//                                 @"email_captcha": self.verifyInput.text
+                                 };
     
     NSString* url = @"account/set_assetpwd";
     

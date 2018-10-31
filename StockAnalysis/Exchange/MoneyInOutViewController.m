@@ -187,6 +187,8 @@
                     }
                 }
             }];
+        }else{
+            [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"资金密码错误请重新输入"];
         }
     };
     

@@ -17,6 +17,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *sendVerifyBtn;
 @property (weak, nonatomic) IBOutlet UIButton *lookOriginPwbtn;
 @property (weak, nonatomic) IBOutlet UIButton *lookNewPwBtn;
+@property (weak, nonatomic) IBOutlet UIButton *lookNewPwdAgainBtn;
 
 @end
 
@@ -36,9 +37,16 @@
     [_lookOriginPwbtn setImage:[UIImage imageNamed:@"eye-c.png"] forState:UIControlStateNormal];
     [_lookOriginPwbtn setImage:[UIImage imageNamed:@"eye-o.png"] forState:UIControlStateSelected];
     
-    _lookNewPwBtn.imageEdgeInsets = UIEdgeInsetsMake(6, 10, 6, 10);
-    _lookOriginPwbtn.imageEdgeInsets = UIEdgeInsetsMake(6, 10, 6, 10);
+    [_lookNewPwdAgainBtn setImage:[UIImage imageNamed:@"eye-c.png"] forState:UIControlStateNormal];
+    [_lookNewPwdAgainBtn setImage:[UIImage imageNamed:@"eye-o.png"] forState:UIControlStateSelected];
     
+    [_lookNewPwBtn setHidden:YES];
+    [_lookOriginPwbtn setHidden:YES];
+    [_lookNewPwdAgainBtn setHidden:YES];
+    
+//    _lookNewPwBtn.imageEdgeInsets = UIEdgeInsetsMake(6, 10, 6, 10);
+//    _lookOriginPwbtn.imageEdgeInsets = UIEdgeInsetsMake(6, 10, 6, 10);
+//    _lookNewPwdAgainBtn.imageEdgeInsets = UIEdgeInsetsMake(6, 10, 6, 10);
 }
 
 -(void)test{
@@ -62,6 +70,22 @@
     
 }
 - (IBAction)sendMailVerify:(id)sender {
+    if (!_lookNewPwdAgainBtn.selected) { // 按下去了就是明文
+        
+        NSString *tempPwdStr = self.mailVerifyInput.text;
+        self.mailVerifyInput.text = @""; // 这句代码可以防止切换的时候光标偏移
+        self.mailVerifyInput.secureTextEntry = NO;
+        self.mailVerifyInput.text = tempPwdStr;
+        [_lookNewPwdAgainBtn setSelected:YES];
+        
+    } else { // 暗文
+        
+        NSString *tempPwdStr = self.mailVerifyInput.text;
+        self.mailVerifyInput.text = @"";
+        self.mailVerifyInput.secureTextEntry = YES;
+        self.mailVerifyInput.text = tempPwdStr;
+        [_lookNewPwdAgainBtn setSelected:NO];
+    }
 }
 - (IBAction)clickSureBtn:(id)sender {
     if(self.originPwInput.text.length == 0){
@@ -72,8 +96,8 @@
         [HUDUtil showSystemTipView:self title:@"提示" withContent:@"请输入新密码"];
         return;
     }
-    if(self.mailVerifyInput.text.length == 0){
-        [HUDUtil showSystemTipView:self title:@"提示" withContent:@"请输入邮箱验证码"];
+    if(![self.mailVerifyInput.text isEqualToString:self.anewPwInput.text]){
+        [HUDUtil showSystemTipView:self title:@"提示" withContent:@"密码输入不一致,请重新输入"];
         return;
     }
     
@@ -90,7 +114,8 @@
     NSDictionary *parameters = @{@"old_asset_password": self.originPwInput.text,
                                  @"new_asset_password": self.anewPwInput.text,
                                  @"phone_captcha": self.phoneVerifyInput.text,
-                                 @"email_captcha": self.mailVerifyInput.text};
+//                                 @"email_captcha": self.mailVerifyInput.text
+                                 };
     
     NSString* url = @"account/update_assetpwd";
     

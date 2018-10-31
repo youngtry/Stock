@@ -110,8 +110,8 @@
 //        NSLog(@"username = %@,password = %@",username,password);
         if([username containsString:@"@"]){
             //邮箱登录
-            NSDictionary *parameters = @{@"email": [GameData getUserAccount],
-                                         @"password": [GameData getUserPassword]};
+            NSDictionary *parameters = @{@"email": username,
+                                         @"password": password};
             
             NSString* url = @"account/login/email";
             [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
@@ -142,9 +142,9 @@
             }];
         }else{
             //手机号登录
-            NSDictionary *parameters = @{@"phone": [GameData getUserAccount],
-                                         @"password": [GameData getUserPassword],
-                                         @"district": [GameData getDistrict]
+            NSDictionary *parameters = @{@"phone": username,
+                                         @"password": password,
+                                         @"district": district
                                          };
             
             

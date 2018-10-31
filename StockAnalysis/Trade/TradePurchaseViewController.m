@@ -73,6 +73,9 @@
 @property (nonatomic,assign)NSInteger assetSelectIndex;
 
 @property (nonatomic,assign)NSInteger numberDepth;
+
+@property(nonatomic,assign)BOOL isGetPrice;
+
 @end
 
 
@@ -96,6 +99,7 @@
     self.numberDepth = 4;
     
     _tradeName = @"";
+    _isGetPrice = NO;
     
     self.stcokInfoView.delegate = self;
     self.stcokInfoView.dataSource = self;
@@ -329,21 +333,21 @@
 //    [_sortContantView addSubview:sort1];
     
     SortView *sort2 = [[SortView alloc] initWithFrame:CGRectMake(0, 0, 0, 15) title:@"涨跌幅"];
-    [sort2 setTitleWithFont:12 withColor:kColor(88, 88, 88)];
+    [sort2 setTitleWithFont:12 withColor:kColor(136, 136, 136)];
     sort2.block = ^(BOOL isUp){
         //TODO 数据排序，reload
     };
-    sort2.centerY = _sortContantView.centerY;
+    sort2.centerY = _sortContantView.centerY-5;
     sort2.centerX = _sortContantView.width/2;
     [_sortContantView addSubview:sort2];
     
     SortView *sort3 = [[SortView alloc] initWithFrame:CGRectMake(0, 0, 0, 15) title:@"成交量"];
-    [sort3 setTitleWithFont:12 withColor:kColor(88, 88, 88)];
+    [sort3 setTitleWithFont:12 withColor:kColor(136, 136, 136)];
     sort3.block = ^(BOOL isUp){
         //TODO 数据排序，reload
     };
     sort3.right = _sortContantView.width;
-    sort3.centerY = _sortContantView.centerY;
+    sort3.centerY = _sortContantView.centerY-5;
     [_sortContantView addSubview:sort3];
 }
 
@@ -407,7 +411,7 @@
     
   
     
-    
+    _isGetPrice = NO;
     _assetSelectIndex = 0;
     
      self.firstOpen = YES;
@@ -447,6 +451,7 @@
     NSString *strAll = [dicAll JSONString];
     [[SocketInterface sharedManager] sendRequest:strAll withName:@"state.unsubscribe"];
 //    [[SocketInterface sharedManager] closeWebSocket];
+    _isGetPrice = NO;
 }
 
 - (void)handleSingleTap:(UIGestureRecognizer *)gestureRecognizer {
@@ -911,16 +916,16 @@
             [HUDUtil hideHudView];
             if([[data objectForKey:@"ret"] intValue] == 1){
                 [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"挂单成功"];
-                
-                NSString* type = self.title;
-                NSString* stcokname = self.marketNamelabel.titleLabel.text;
-                NSDate *currentDate = [NSDate date];
-                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-                [dateFormatter setDateFormat:@"yyy-MM-dd HH:mm:ss"];
-                NSString *currentDateString = [dateFormatter stringFromDate:currentDate];
-                NSString* price = self.priceRMBLabel.text;
-                NSString* amount = self.purchaseAmountInput.text;
-                NSString* real = self.purchasePriceInput.text;
+    
+//                NSString* type = self.title;
+//                NSString* stcokname = self.marketNamelabel.titleLabel.text;
+//                NSDate *currentDate = [NSDate date];
+//                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//                [dateFormatter setDateFormat:@"yyy-MM-dd HH:mm:ss"];
+//                NSString *currentDateString = [dateFormatter stringFromDate:currentDate];
+//                NSString* price = self.priceRMBLabel.text;
+//                NSString* amount = self.purchaseAmountInput.text;
+//                NSString* real = self.purchasePriceInput.text;
                 
 //                [self.dealData removeAllObjects];
 //                [self.dealData setObject:type forKey:@"DealType"];
@@ -986,15 +991,15 @@
             if([[data objectForKey:@"ret"] intValue] == 1){
                 [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"挂单成功"];
                 
-                NSString* type = self.title;
-                NSString* stcokname = self.marketNamelabel.titleLabel.text;
-                NSDate *currentDate = [NSDate date];
-                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-                [dateFormatter setDateFormat:@"yyy-MM-dd HH:mm:ss"];
-                NSString *currentDateString = [dateFormatter stringFromDate:currentDate];
-                NSString* price = self.priceRMBLabel.text;
-                NSString* amount = self.purchaseAmountInput.text;
-                NSString* real = self.purchasePriceInput.text;
+//                NSString* type = self.title;
+//                NSString* stcokname = self.marketNamelabel.titleLabel.text;
+//                NSDate *currentDate = [NSDate date];
+//                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//                [dateFormatter setDateFormat:@"yyy-MM-dd HH:mm:ss"];
+//                NSString *currentDateString = [dateFormatter stringFromDate:currentDate];
+//                NSString* price = self.priceRMBLabel.text;
+//                NSString* amount = self.purchaseAmountInput.text;
+//                NSString* real = self.purchasePriceInput.text;
                 
 //                [self.dealData removeAllObjects];
 //                [self.dealData setObject:type forKey:@"DealType"];
@@ -1274,13 +1279,20 @@
             }
             self.rateLabel.text = [NSString stringWithFormat:@"%.2f%%",rate];
 
-            self.periodPrice.text =[NSString stringWithFormat:@"%d",[[info objectForKey:@"volume"] intValue]];
+            
             self.marketPriceLabel.text = [NSString stringWithFormat:@"¥%@",[info objectForKey:@"last"]];
-            NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
-            BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
-            if(islogin){
-                [self setMoneyInfo];
+            
+            if(!_isGetPrice){
+                _isGetPrice = YES;
+                self.periodPrice.text =[NSString stringWithFormat:@"%.4f",[[info objectForKey:@"open"] floatValue]];
+                NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
+                BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
+                if(islogin){
+                    [self setMoneyInfo];
+                }
             }
+            
+            
             
         }
     }
@@ -1409,7 +1421,7 @@
             }else if (_numberDepth == 1){
                 cell.price.text = [NSString stringWithFormat:@"%.1f000",[[info objectForKey:@"price"] floatValue]] ;
             }else if (_numberDepth == 0){
-                cell.price.text = [NSString stringWithFormat:@"%.0f0000",[[info objectForKey:@"price"] floatValue]] ;
+                cell.price.text = [NSString stringWithFormat:@"%.f0000",[[info objectForKey:@"price"] floatValue]] ;
             }
             
             cell.amount.text = [NSString stringWithFormat:@"%.3f",[[info objectForKey:@"amount"] floatValue]];
@@ -1431,7 +1443,7 @@
             }else if (_numberDepth == 1){
                 cell.price.text = [NSString stringWithFormat:@"%.1f000",[[info objectForKey:@"price"] floatValue]] ;
             }else if (_numberDepth == 0){
-                cell.price.text = [NSString stringWithFormat:@"%.0f0000",[[info objectForKey:@"price"] floatValue]] ;
+                cell.price.text = [NSString stringWithFormat:@"%.f0000",[[info objectForKey:@"price"] floatValue]] ;
             }
             
             cell.amount.text = [NSString stringWithFormat:@"%.3f",[[info objectForKey:@"amount"] floatValue]];
@@ -1541,7 +1553,7 @@
 //        self.marketNamelabel.titleLabel.text = cell.name.text;
         self.currentPage = 0;
         self.isUpdate = YES;
-       
+        self.isGetPrice = NO;
         
         [self.sortGuideView setHidden:YES];
         
@@ -1550,7 +1562,7 @@
         [self.radioBtn setSelectIndex:0];
         [self.dealArray removeAllObjects];
         [self.dealList reloadData];
-         [self getPendingOrders:1];
+        [self getPendingOrders:1];
         
     }
     

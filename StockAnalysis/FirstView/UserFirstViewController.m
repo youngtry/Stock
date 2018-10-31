@@ -212,7 +212,7 @@
                     [vc setTitle:@"输入手势密码"];
                     [self.navigationController pushViewController:vc animated:YES];
                 }else{
-                    [self getTempVerify];
+//                    [self getTempVerify];
                 }
             }
         }
@@ -286,6 +286,7 @@
 - (void)viewWillAppear:(BOOL)animated{
     //    NSLog(@"viewWillAppear");
     [self.navigationController setNavigationBarHidden:YES];
+    self.tabBarController.tabBar.hidden = NO;
     
     [SocketInterface sharedManager].delegate = self;
     [[SocketInterface sharedManager] openWebSocket];

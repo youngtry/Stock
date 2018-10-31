@@ -26,6 +26,10 @@
 
 @property (nonatomic,strong)UIButton* skipSetBtn;
 @property (nonatomic,strong)UIButton* forgetSetBtn;
+
+@property (nonatomic,assign)BOOL isChangePwd;
+
+@property (nonatomic,strong)NSString* oldGuesture;
 @end
 
 @implementation SetPasswordViewController
@@ -40,8 +44,8 @@
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setGestureBack) name:@"SetGestureBack" object:nil];
     
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(verifyGestureBack) name:@"VerifyGestureBack" object:nil];
-    
-    
+    self.isChangePwd = NO;
+    self.oldGuesture = @"";
     if (!_buttonArr) {
         _buttonArr = [[NSMutableArray alloc]initWithCapacity:9];
     }
@@ -91,7 +95,28 @@
         [self.forgetSetBtn setHidden:YES];
     }
     
+    [self showGuestureSettingView];
 
+}
+
+-(void)showGuestureSettingView{
+    NSString* url = @"account/has_gesture";
+    NSDictionary* params = @{};
+    [[HttpRequest getInstance] getWithURL:url parma:params block:^(BOOL success, id data) {
+        if(success){
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                if([[[data objectForKey:@"data"] objectForKey:@"has_gesture"] boolValue]){
+                    //已经设置过手势密码
+                    if([self.title isEqualToString:@"设置手势密码"]){
+                        self.settitle.text = @"请输入原手势密码";
+//                        [self.skipSetBtn setHidden:YES];
+                    }
+                }else{
+                   
+                }
+            }
+        }
+    }];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -177,6 +202,35 @@
 }
 
 -(void)clickSkipBtn{
+    
+    if([self.settitle.text isEqualToString:@"请绘制新手势密码"]|| [self.settitle.text isEqualToString:@"请输入原手势密码"]){
+        
+        [self.navigationController popViewControllerAnimated:YES];
+        return;
+    }
+    
+    if( [self.settitle.text isEqualToString:@"请再次绘制新手势密码"] ){
+        NSDictionary *parameters = @{  @"gesture": self.oldGuesture ,
+                                       @"verity_token":[[AppData getInstance] getTempVerify]
+                                       };
+        
+        NSString* url = @"account/set_gesture";
+        [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+            if(success){
+                if([[data objectForKey:@"ret"] intValue] == 1){
+                    [self.navigationController popViewControllerAnimated:YES];
+                }else{
+                    
+                    [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                    
+                }
+                
+            }
+        }];
+        
+        return;
+    }
+    
     NSDictionary *parameters = @{  @"gesture": @"" ,
                                    @"verity_token":[[AppData getInstance] getTempVerify]
                                    };
@@ -307,6 +361,10 @@
     if(self.selectorArr.count == 0){
         return;
     }
+    if ([self.settitle.text isEqualToString:@"请输入原手势密码"]){
+        self.oldGuesture = gesture;
+    }
+    
     NSDictionary *parameters = @{  @"gesture": gesture ,
                                    @"verity_token":[[AppData getInstance] getTempVerify]
                                    };
@@ -336,6 +394,31 @@
             }
         }];
         
+    }else if ([self.settitle.text isEqualToString:@"请输入原手势密码"]){
+        NSString* url = @"account/check_gesture";
+        [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+            if(success){
+                [HUDUtil hideHudView];
+                [self verifyOldGestureBack:data];
+            }
+        }];
+        
+    }else if([self.settitle.text isEqualToString:@"请绘制新手势密码"]){
+        NSString* url = @"account/set_gesture";
+        [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+            if(success){
+                [HUDUtil hideHudView];
+                [self setNewGestureBack:data];
+            }
+        }];
+    }else if([self.settitle.text isEqualToString:@"请再次绘制新手势密码"]){
+        NSString* url = @"account/check_gesture";
+        [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+            if(success){
+                [HUDUtil hideHudView];
+                [self verifyNewGestureBack:data];
+            }
+        }];
     }
     
     
@@ -375,6 +458,54 @@
         [HUDUtil showHudViewTipInSuperView:self.view withMessage:msg];
     }
 }
+
+-(void)verifyOldGestureBack:(NSDictionary*)data{
+    //    NSDictionary* data = [[HttpRequest getInstance] httpBack];
+    NSNumber* ret = [data objectForKey:@"ret"];
+    if([ret intValue] == 1){
+        //验证成功
+        self.settitle.text = @"请绘制新手势密码";
+        
+//        [self.skipSetBtn setHidden:NO];
+        
+    }else{
+        NSString* msg = [data objectForKey:@"msg"];
+        self.oldGuesture = @"";
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:msg];
+    }
+}
+
+-(void)setNewGestureBack:(NSDictionary*)data{
+    //    NSDictionary* data = [[HttpRequest getInstance] httpBack];
+    NSNumber* ret = [data objectForKey:@"ret"];
+    if([ret intValue] == 1){
+        //验证成功
+        self.settitle.text = @"请再次绘制新手势密码";
+        
+        
+        
+    }else{
+        NSString* msg = [data objectForKey:@"msg"];
+        
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:msg];
+    }
+}
+-(void)verifyNewGestureBack:(NSDictionary*)data{
+    //    NSDictionary* data = [[HttpRequest getInstance] httpBack];
+    NSNumber* ret = [data objectForKey:@"ret"];
+    if([ret intValue] == 1){
+        //验证成功
+        self.settitle.text = @"设置手势密码";
+        [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"修改成功"];
+        [self.navigationController popViewControllerAnimated:YES];
+        
+    }else{
+        NSString* msg = [data objectForKey:@"msg"];
+        
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:msg];
+    }
+}
+
 /*
 #pragma mark - Navigation
 

@@ -109,6 +109,7 @@
         if(success){
             if([[data objectForKey:@"ret"] intValue] == 1){
                 if([[[data objectForKey:@"data"] objectForKey:@"has_gesture"] boolValue]){
+                    
                     [_guestureSwitchbBtn setOn:YES];
                     
                     if(_guestureTimeView.isHidden){
@@ -145,6 +146,17 @@
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     self.tabBarController.tabBar.hidden = NO;
+    
+    if(_guestureTimeView.isHidden){
+        [_guestureTimeView setHidden:NO];
+        [_changeGuestureView setHidden:NO];
+        
+        [_bindPhoneView setCenterY:_bindPhoneView.centerY+90.0f];
+        [_bindMailView setCenterY:_bindMailView.centerY+90.0f];
+        [_mneyPasswordView setCenterY:_mneyPasswordView.centerY+90.0f];
+        [_twiceVerifyView setCenterY:_twiceVerifyView.centerY+90.0f];
+        [_tipLabel setCenterY:_tipLabel.centerY+90.0f];
+    }
 }
 
 -(void)test{
@@ -372,7 +384,7 @@
                 
                 
             }else{
-                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:[data objectForKey:@"msg"]];
             }
         }
     }];
