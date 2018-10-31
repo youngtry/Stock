@@ -1421,7 +1421,7 @@
             }else if (_numberDepth == 1){
                 cell.price.text = [NSString stringWithFormat:@"%.1f000",[[info objectForKey:@"price"] floatValue]] ;
             }else if (_numberDepth == 0){
-                cell.price.text = [NSString stringWithFormat:@"%.f0000",[[info objectForKey:@"price"] floatValue]] ;
+                cell.price.text = [NSString stringWithFormat:@"%.0f.0000",[[info objectForKey:@"price"] floatValue]] ;
             }
             
             cell.amount.text = [NSString stringWithFormat:@"%.3f",[[info objectForKey:@"amount"] floatValue]];
@@ -1443,7 +1443,7 @@
             }else if (_numberDepth == 1){
                 cell.price.text = [NSString stringWithFormat:@"%.1f000",[[info objectForKey:@"price"] floatValue]] ;
             }else if (_numberDepth == 0){
-                cell.price.text = [NSString stringWithFormat:@"%.f0000",[[info objectForKey:@"price"] floatValue]] ;
+                cell.price.text = [NSString stringWithFormat:@"%.0f.0000",[[info objectForKey:@"price"] floatValue]] ;
             }
             
             cell.amount.text = [NSString stringWithFormat:@"%.3f",[[info objectForKey:@"amount"] floatValue]];

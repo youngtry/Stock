@@ -90,6 +90,18 @@
             [weakSelf.navigationController pushViewController:vc animated:YES];
             return ;
         }
+        
+        if(index == 2){
+            NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
+            BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
+            if(!islogin){
+                [HUDUtil showSystemTipView:self title:@"提示" withContent:@"未登录,请先登录"];
+                return;
+            }
+        }
+        
+        
+        
         [_scrollContent updateTab:index];
     }];
     [_scrollContent configParam:vcs Index:0 block:^(NSInteger index) {
@@ -139,7 +151,12 @@
 
 -(void)clickAllTrade:(id)sender{
     DLog(@"clickAllTrade");
-    
+    NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
+    BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
+    if(!islogin){
+        [HUDUtil showSystemTipView:self title:@"提示" withContent:@"未登录,请先登录"];
+        return;
+    }
     AllEntryOrdersVC *vc = [AllEntryOrdersVC new];
     [self.navigationController pushViewController:vc animated:YES];
 }

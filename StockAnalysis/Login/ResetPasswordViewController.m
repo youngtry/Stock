@@ -115,7 +115,7 @@
     NSString* url = @"captcha/picture";
     NSDictionary* parameters = @{};
     
-    [HUDUtil showHudViewInSuperView:self.view withMessage:@"验证码请求中……"];
+//    [HUDUtil showHudViewInSuperView:self.view withMessage:@"验证码请求中……"];
     [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
         [HUDUtil hideHudView];
         if(success){
@@ -183,7 +183,7 @@
     
     NSString* url = @"captcha/picture/verify";
     NSLog(@"输入验证码为:%@",self.authCodeTextFiled.text);
-    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+//    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] postWithURL:url parma:paremeters block:^(BOOL success, id data) {
         if(success){
             [HUDUtil hideHudView];

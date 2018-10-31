@@ -80,7 +80,7 @@
 }
 // 当内容开始返回时调用
 - (void)webView:(WKWebView *)webView didCommitNavigation:(WKNavigation *)navigation{
-    [HUDUtil showHudViewInSuperView:self.view withMessage:@"内容加载中……"];
+//    [HUDUtil showHudViewInSuperView:self.view withMessage:@"内容加载中……"];
 }
 // 页面加载完成之后调用
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation{//这里修改导航栏的标题，动态改变
