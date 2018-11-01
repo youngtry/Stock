@@ -812,14 +812,20 @@
 - (IBAction)clickFour:(id)sender {
     [self.depthView setHidden:YES];
     _numberDepth = 4;
+    [self.askList reloadData];
+    [self.bidsList reloadData];
 }
 - (IBAction)clickOne:(id)sender {
     [self.depthView setHidden:YES];
     _numberDepth = 1;
+    [self.askList reloadData];
+    [self.bidsList reloadData];
 }
 - (IBAction)clickZero:(id)sender {
     [self.depthView setHidden:YES];
     _numberDepth = 0;
+    [self.askList reloadData];
+    [self.bidsList reloadData];
 }
 - (IBAction)clickDepth:(id)sender {
     if(self.depthView.isHidden){
@@ -1147,6 +1153,12 @@
 }
 
 -(void)getPendingOrders:(NSInteger)page{
+    
+    NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
+    BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
+    if(!islogin){
+        return;
+    }
     if(page == 1){
         [self.dealArray removeAllObjects];
     }
@@ -1563,6 +1575,12 @@
         [self.dealArray removeAllObjects];
         [self.dealList reloadData];
         [self getPendingOrders:1];
+        
+        
+        [self.asksArray removeAllObjects];
+        [self.askList reloadData];
+        [self.bidsArray removeAllObjects];
+        [self.bidsList reloadData];
         
     }
     

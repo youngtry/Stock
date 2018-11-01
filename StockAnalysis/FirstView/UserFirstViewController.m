@@ -212,7 +212,7 @@
                     [vc setTitle:@"输入手势密码"];
                     [self.navigationController pushViewController:vc animated:YES];
                 }else{
-//                    [self getTempVerify];
+                    [self getTempVerify];
                 }
             }
         }

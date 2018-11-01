@@ -62,7 +62,7 @@
     NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
     BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
     if(!islogin){
-//        [HUDUtil showSystemTipView:temp title:@"提示" withContent:@"未登录,请先登录"];
+        [HUDUtil showSystemTipView:temp title:@"提示" withContent:@"未登录,请先登录"];
         return;
     }
     [self getAllStocks];
