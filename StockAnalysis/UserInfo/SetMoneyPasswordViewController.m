@@ -119,7 +119,7 @@
     }
     
     NSDictionary *parameters = @{@"asset_password": self.moneyPassword.text,
-                                 @"phone_captcha": self.moneyAgainPassword.text,
+                                 @"phone_captcha": self.verifyInput.text,
 //                                 @"email_captcha": self.verifyInput.text
                                  };
     

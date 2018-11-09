@@ -894,10 +894,11 @@
         temp = self.navigationController;
     }
     NSString* url = @"exchange/trade/add";
-    float price = [self.priceRMBLabel.text floatValue];
+//    NSLog(@"self.marketPriceLabel.text  = %@",self.marketPriceLabel.text );
+    float price = [[self.marketPriceLabel.text substringFromIndex:[self.marketPriceLabel.text rangeOfString:@"¥"].location+[self.marketPriceLabel.text rangeOfString:@"¥"].length] floatValue];
     NSInteger limit = 1;
     if(!self.marketPriceView.isHidden){
-        price = [self.marketPriceLabel.text floatValue];
+        price = [[self.marketPriceLabel.text substringFromIndex:[self.marketPriceLabel.text rangeOfString:@"¥"].location+[self.marketPriceLabel.text rangeOfString:@"¥"].length] floatValue];
         limit = 0;
     }
     NSDictionary* parameters = @{@"market":self.marketNamelabel.titleLabel.text,
@@ -966,16 +967,18 @@
         temp = self.navigationController;
     }
     
-    float price = [self.marketPriceLabel.text floatValue];
+    float price = [[self.marketPriceLabel.text substringFromIndex:[self.marketPriceLabel.text rangeOfString:@"¥"].location+[self.marketPriceLabel.text rangeOfString:@"¥"].length] floatValue];
     NSInteger limit = 1;
     if(!self.marketPriceView.isHidden){
-        price = [self.marketPriceLabel.text floatValue];
+        price = [[self.marketPriceLabel.text substringFromIndex:[self.marketPriceLabel.text rangeOfString:@"¥"].location+[self.marketPriceLabel.text rangeOfString:@"¥"].length] floatValue];
         limit = 0;
     }
     
+    float num = [self.purchaseAmountInput.text floatValue];
+   
     NSString* url = @"exchange/trade/add";
     NSDictionary* parameters = @{@"market":self.marketNamelabel.titleLabel.text,
-                                 @"num":@([self.purchaseAmountInput.text floatValue]),
+                                 @"num":@(num),
                                  @"price":@(price),
                                  @"mode":@"sell",
                                  @"is_limit":@(limit),
@@ -1026,7 +1029,7 @@
 //                [self.dealList reloadData];
             }else{
                 
-                [HUDUtil showHudViewInSuperView:temp.view withMessage:[data objectForKey:@"msg"]];
+                [HUDUtil showHudViewTipInSuperView:temp.view withMessage:[data objectForKey:@"msg"]];
                 
             }
         }
@@ -1277,7 +1280,7 @@
         if(params.count == 2){
             NSDictionary* info = params[1];
             //            NSLog(@"info = %@",info);
-            self.priceRMBLabel.text = [NSString stringWithFormat:@"%.4f",[[info objectForKey:@"last"] floatValue]];
+            self.priceRMBLabel.text = [NSString stringWithFormat:@"¥%.4f",[[info objectForKey:@"last"] floatValue]];
 
             float price = [[info objectForKey:@"open"] floatValue];
             float nowprice = [[info objectForKey:@"last"] floatValue];

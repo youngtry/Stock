@@ -248,7 +248,7 @@
         _update2 = nil;
     }
     
-    _update2 = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(changeBtn1) userInfo:nil repeats:YES];
+    _update2 = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(changeBtn2) userInfo:nil repeats:YES];
     //    [_update1 fire];
     
     [[NSRunLoop mainRunLoop] addTimer:_update2 forMode:NSDefaultRunLoopMode];

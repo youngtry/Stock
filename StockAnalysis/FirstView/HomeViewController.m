@@ -408,7 +408,7 @@
         NSMutableDictionary* info = self.stockName[indexPath.row];
         
         cell.nameLabel.text = [info objectForKey:@"market"];
-        float rate = [[info objectForKey:@"rate"] floatValue]*100;
+        float rate = [[info objectForKey:@"rate"] floatValue];
         NSString* ratetext = [NSString stringWithFormat:@"%.2f%%",rate];
         cell.upOrDownRateLabel.text = ratetext;
         cell.priceLabel.text = [NSString stringWithFormat:@"%.4f",[[info objectForKey:@"last"] floatValue]];

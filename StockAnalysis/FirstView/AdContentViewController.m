@@ -76,7 +76,7 @@
 
 // 页面开始加载时调用
 -(void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation{
-    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中……"];
+//    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中……"];
 }
 // 当内容开始返回时调用
 - (void)webView:(WKWebView *)webView didCommitNavigation:(WKNavigation *)navigation{

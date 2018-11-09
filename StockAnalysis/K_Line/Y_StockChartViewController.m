@@ -39,6 +39,8 @@
 @property (nonatomic, copy) NSString *originTime;
 @property (nonatomic, assign) NSInteger preciseTime;
 
+@property (nonatomic,strong)NSMutableArray* klineArray;
+
 @end
 
 @implementation Y_StockChartViewController
@@ -49,6 +51,8 @@
     [super viewWillAppear:animated];
     [UIApplication sharedApplication].statusBarHidden = YES;
 //    self.tabBarController.tabBar.hidden = YES;
+    
+    
     
     NSDictionary* params = @{@"market":self.title};
     NSString* url  = @"market/info";
@@ -88,7 +92,7 @@
     _preciseTime = 0;
 
     
-  
+    self.klineArray = [NSMutableArray new];
     
 }
 
@@ -257,6 +261,20 @@
     [HUDUtil showHudViewInSuperView:self.view withMessage:@"数据请求中"];
 }
 
+-(void)requestSubscribe{
+//    NSArray *dicParma = @[self.title
+//                          ];
+    NSArray *dicParma1 = @[self.title,
+                           @(6)
+                           ];
+
+    NSDictionary *dicAll1 = @{@"method":@"kline.subscribe",@"params":dicParma1,@"id":@(PN_KlineSubscribe)};
+    
+    NSString *strAll1 = [dicAll1 JSONString];
+    [[SocketInterface sharedManager] sendRequest:strAll1 withName:@"kline.subscribe"];
+    
+}
+
 -(void)getWebData:(id)message withName:(NSString *)name{
     
     NSString* str = message;
@@ -266,10 +284,10 @@
     
     id err =[data objectForKey:@"error"];
     
-    if( err != [NSNull null]){
-        NSDictionary* errinfo = err;
-        [HUDUtil showHudViewTipInSuperView:self.view withMessage:[errinfo objectForKey:@"message"]];
-        return;
+    if(err){
+//        NSDictionary* errinfo = err;
+//        [HUDUtil showHudViewTipInSuperView:self.view withMessage:[errinfo objectForKey:@"message"]];
+//        return;
     }
     
     int requestID = 0;
@@ -279,13 +297,15 @@
         requestID = [[data objectForKey:@"id"] intValue];
     }
     
+    NSLog(@"name = %@",name);
+    
     if(requestID == PN_KlineQuery){
         [HUDUtil hideHudView];
-        
+        [self.klineArray removeAllObjects];
         NSArray* result = [data objectForKey:@"result"];
-        NSLog(@"收到数据:%ld",result.count);
+//        NSLog(@"收到数据:%ld",result.count);
 //        NSLog(@"data = %@,result = %@",data,result);
-        NSMutableArray* need = [[NSMutableArray alloc] initWithCapacity:result.count];
+//        NSMutableArray* need = [[NSMutableArray alloc] initWithCapacity:result.count];
         for(int i=0;i<result.count;i++){
             NSString* date = result[i][0];
             long long time = [date longLongValue];
@@ -300,18 +320,58 @@
             NSString* vol = result[i][5];
             //        NSLog(@"open = %@",open);
             NSArray* info = [[NSArray alloc] initWithObjects:date,open,close,high,low,vol, nil];
-            [need  setObject:info atIndexedSubscript:i];
+            [self.klineArray  setObject:info atIndexedSubscript:i];
         }
         
 //        NSLog(@"need = %@",need);
         if(result.count>0){
-            Y_KLineGroupModel *groupModel = [Y_KLineGroupModel objectWithArray:need];
+            Y_KLineGroupModel *groupModel = [Y_KLineGroupModel objectWithArray:self.klineArray];
             self.groupModel = groupModel;
             [self.modelsDict setObject:groupModel forKey:self.type];
             //        NSLog(@"groupModel = %@",groupModel);
             [self.stockChartView reloadData];
         }
-        
+        [self requestSubscribe];
+    }else if ([name isEqualToString:@"kline.update"]){
+        NSArray* params = [data objectForKey:@"params"];
+        //        NSLog(@"params = %@",params);
+        if(params.count > 0){
+            
+            //            [self.klineArray removeAllObjects];
+            //            NSLog(@"self.klineArray.count = %ld ",self.klineArray.count);
+            NSArray* info = params[0];
+            //            NSLog(@"info = %@",info);
+            NSString* timeStampString = info[0];
+            NSTimeInterval interval    =[timeStampString doubleValue];
+            NSDate *date               = [NSDate dateWithTimeIntervalSince1970:interval];
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+            NSString *dateString       = [formatter stringFromDate: date];
+            [info[1] floatValue];
+            NSString* stockinfostr = [NSString stringWithFormat:@"%@ 开 %.4f 高 %.4f 低 %.4f 收 %.4f",dateString,[info[1] floatValue],[info[3] floatValue],[info[4] floatValue],[info[2] floatValue]];
+//            self.stockInfoLabel.text = stockinfostr;
+            
+            NSString* date1 = info[0];
+            long long time = [date1 longLongValue];
+            time = time*1000;
+            date1 = [NSString stringWithFormat:@"%lld",time];
+            NSString* open = [NSString stringWithFormat:@"%.5f",[info[1] floatValue]] ;
+            
+            NSString* close = [NSString stringWithFormat:@"%.5f",[info[2] floatValue]];
+            NSString* high = [NSString stringWithFormat:@"%.5f",[info[3] floatValue]];
+            NSString* low = [NSString stringWithFormat:@"%.5f",[info[4] floatValue]];
+            NSString* vol = info[5];
+            //        NSLog(@"open = %@",open);
+            NSArray* info1 = [[NSArray alloc] initWithObjects:date1,open,close,high,low,vol, nil];
+            [self.klineArray  addObject:info1];
+            
+            Y_KLineGroupModel *groupModel = [Y_KLineGroupModel objectWithArray:self.klineArray];
+            self.groupModel = groupModel;
+            [self.modelsDict setObject:groupModel forKey:self.type];
+            //        NSLog(@"groupModel = %@",groupModel);
+            [self.stockChartView reloadData];
+            
+        }
     }
 }
 

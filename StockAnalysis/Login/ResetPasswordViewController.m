@@ -192,7 +192,9 @@
                 self.secondContainer.hidden = NO;
                 self.firstContainer.hidden = YES;
             }else if ([[data objectForKey:@"ret"] intValue]== -1){
-                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                self.authCodeTextFiled.text = @"";
+//                [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"验证码错误请重新输入"];
+                [HUDUtil showSystemTipView:self title:@"提示" withContent:@"验证码错误请重新输入"];
                 [self requestVerifyImage];
             }
         }

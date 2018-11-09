@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "MBProgressHUD.h"
-#define kTipDelay           2
+#define kTipDelay           1
 @interface HUDUtil : NSObject
 
 /**

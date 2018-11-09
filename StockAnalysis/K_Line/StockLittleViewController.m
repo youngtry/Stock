@@ -975,11 +975,11 @@
             NSArray* info1 = [[NSArray alloc] initWithObjects:date1,open,close,high,low,vol, nil];
             [self.klineArray  addObject:info1];
             
-//            Y_KLineGroupModel *groupModel = [Y_KLineGroupModel objectWithArray:self.klineArray];
-//            self.groupModel = groupModel;
-//            [self.modelsDict setObject:groupModel forKey:self.type];
-//            //        NSLog(@"groupModel = %@",groupModel);
-//            [self.stockChartView reloadData];
+            Y_KLineGroupModel *groupModel = [Y_KLineGroupModel objectWithArray:self.klineArray];
+            self.groupModel = groupModel;
+            [self.modelsDict setObject:groupModel forKey:self.type];
+            //        NSLog(@"groupModel = %@",groupModel);
+            [self.stockChartView reloadData];
 
         }
     }else if ([name isEqualToString:@"deals.update"]){
