@@ -91,42 +91,26 @@
 }
 
 -(void)getAllStocks{
-    NSDictionary* parameters = @{};
-    NSString* url = @"market/assortment";
+    NSDictionary* parameters = @{@"page":@(1),
+                                 @"page_limit":@(10)
+                                 };
+    NSString* url = @"assets";
     [self.allStocks removeAllObjects];
     [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
-    [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
+    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
             [HUDUtil hideHudView];
             if([[data objectForKey:@"ret"] intValue] == 1){
-                if([[data objectForKey:@"data"] objectForKey:@"tabs"]){
-                    NSArray* tabs = [[data objectForKey:@"data"] objectForKey:@"tabs"];
+                if([[data objectForKey:@"data"] objectForKey:@"assets"]){
+                    NSArray* tabs = [[data objectForKey:@"data"] objectForKey:@"assets"];
+                    
+                    [self.allStocks addObject:@"全部"];
                     for (NSDictionary* tab in tabs) {
-                        NSString* tabtitle = [tab objectForKey:@"asset"];
-                        NSDictionary* parameters1 = @{@"order_by":@"price",
-                                                     @"order":@"desc",
-                                                     @"asset":tabtitle
-                                                     };
-                        NSString* url1 = @"market/item";
-                        NSLog(@"*******************");
-                        [[HttpRequest getInstance] postWithURL:url1 parma:parameters1 block:^(BOOL success, id data1) {
-                            if(success){
-//                                NSLog(@"list = %@",data);
-                                if([[data1 objectForKey:@"ret"] intValue] == 1){
-                                    NSArray* stocks = [[data1 objectForKey:@"data"] objectForKey:@"items"];
-                                    [self.allStocks addObjectsFromArray:stocks];
-                                    if(self.allStocks && self.allStocks.count != 0){
-                                        NSLog(@"self.allStocks.count = %ld",self.allStocks.count);
-                                        NSDictionary* info = self.allStocks[0];
-                                        [self.stockNameBtn setTitle:[info objectForKey:@"market"] forState:UIControlStateNormal];
-                                        [self.data removeAllObjects];
-                                        [self getAllHistory:1 WithName:self.stockNameBtn.titleLabel.text];
-                                        [self.stockList reloadData];
-                                    }
-                                }
-                            }
-                        }];
+                        NSString* asset = [tab objectForKey:@"asset"];
+                        [self.allStocks addObject:asset];
                     }
+                    
+                    [self.stockList reloadData];
                 }
             }else{
                 [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
@@ -201,7 +185,7 @@
         lab.centerY = left.centerY;
         
         _stockNameBtn = [[UIButton alloc] initWithFrame:CGRectMake(lab.right+2, 0, 90, 20)];
-        [_stockNameBtn setTitle:@"双成药业" forState:UIControlStateNormal];
+        [_stockNameBtn setTitle:@"全部" forState:UIControlStateNormal];
         [_stockNameBtn setTitleColor:kColor(64,64,64) forState:UIControlStateNormal];
         [_stockNameBtn setImage:[UIImage imageNamed:@"arrow_down"] forState:UIControlStateNormal];
         [_stockNameBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, -_stockNameBtn.imageView.size.width, 0, _stockNameBtn.imageView.size.width)];
@@ -312,9 +296,9 @@
             cell = [[[NSBundle mainBundle] loadNibNamed:@"TradeStockSelectTableViewCell" owner:self options:nil] objectAtIndex:0];
         }
         
-        NSDictionary* data = self.allStocks[indexPath.row];
+        NSString* data = self.allStocks[indexPath.row];
         
-        NSString* name = [data objectForKey:@"market"];
+        NSString* name = data;
         
         cell.name.text = name;
         

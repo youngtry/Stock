@@ -76,8 +76,6 @@
     for (NSDictionary* info in acclist) {
         NSLog(@"所存储的账号:%@",info);
         
-        
-        
         if([[info objectForKey:@"account"] isEqualToString:account]){
             if([[info objectForKey:@"password"] isEqualToString:pwd]){
                 if([[info objectForKey:@"district"] isEqualToString:district]){

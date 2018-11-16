@@ -18,7 +18,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *lookOriginPwbtn;
 @property (weak, nonatomic) IBOutlet UIButton *lookNewPwBtn;
 @property (weak, nonatomic) IBOutlet UIButton *lookNewPwdAgainBtn;
-
+@property(nonatomic,strong)NSTimer* update1;
 @end
 
 @implementation ModifyMoneyPasswordViewController
@@ -27,6 +27,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.title = @"修改资金密码";
+    self.update1 = nil;
     UITapGestureRecognizer *f = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(test)];
     [self.view addGestureRecognizer:f];
     self.view.userInteractionEnabled = YES;
@@ -65,8 +66,48 @@
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     self.tabBarController.tabBar.hidden = NO;
+    
+    [self.update1 invalidate];
+    self.update1 = nil;
+    [_sendVerifyBtn setTitle:@"发送验证码" forState:UIControlStateNormal];
+    [_sendVerifyBtn setEnabled:YES];
 }
 - (IBAction)clickSendVerifyBtn:(id)sender {
+    
+//    if(self.phoneVerifyInput.text.length == 0){
+//        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"请输入手机号"];
+//        return;
+//    }
+    [_sendVerifyBtn setTitle:@"60s" forState:UIControlStateNormal];
+    [_sendVerifyBtn setEnabled:NO];
+    if(_update1){
+        [_update1 invalidate];
+        _update1 = nil;
+    }
+    
+    _update1 = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(changeBtn1) userInfo:nil repeats:YES];
+    //    [_update1 fire];
+    
+    [[NSRunLoop mainRunLoop] addTimer:_update1 forMode:NSDefaultRunLoopMode];
+    
+}
+
+-(void)changeBtn1{
+    NSString* title = _sendVerifyBtn.titleLabel.text;
+    if([title isEqualToString:@"发送验证码"]){
+        return;
+    }
+    NSInteger sec = [[title substringToIndex:[title rangeOfString:@"s"].location] intValue];
+    sec--;
+    if(sec < 0){
+        [_sendVerifyBtn setTitle:@"发送验证码" forState:UIControlStateNormal];
+        //        [NSTimer ]
+        [_update1 invalidate];
+        _update1 = nil;
+        [_sendVerifyBtn setEnabled:YES];
+    }else{
+        [_sendVerifyBtn setTitle:[NSString stringWithFormat:@"%lds",(long)sec] forState:UIControlStateNormal];
+    }
     
 }
 - (IBAction)sendMailVerify:(id)sender {

@@ -28,6 +28,28 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.tabBarController.tabBar.hidden = YES;
+    
+    NSString* url = @"wallet/payment";
+    NSDictionary* params = @{};
+    
+    [[HttpRequest getInstance] getWithURL:url parma:params block:^(BOOL success, id data) {
+        if(success){
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                NSDictionary* info = [data objectForKey:@"data"];
+                if([info objectForKey:@"bank"]){
+                    self.bankCard.text = @"已绑定";
+                }
+                
+                if([info objectForKey:@"wechat"]){
+                    self.wechatPay.text = @"已绑定";
+                }
+                
+                if([info objectForKey:@"alipay"]){
+                    self.zhifubaoPay.text = @"已绑定";
+                }
+            }
+        }
+    }];
 }
 
 -(void)viewWillDisappear:(BOOL)animated{

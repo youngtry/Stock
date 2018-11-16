@@ -17,6 +17,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *marketName;
 @property (weak, nonatomic) IBOutlet UITextField *turnInput;
 
+@property (nonatomic,assign) BOOL isBussiness;
+
 @end
 
 @implementation MoneyInOutViewController
@@ -31,6 +33,8 @@
     
     self.turnInput.keyboardType = UIKeyboardTypeAlphabet;
     [self.turnBtn setEnabled:NO];
+    
+    self.isBussiness = NO;
     
     if([self.title isEqualToString:@"0"]){
         [self.turnBtn setTitle:@"转入" forState:UIControlStateNormal];
@@ -62,6 +66,19 @@
     NSString* url = @"wallet/balance";
     
     //    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"GetExchangeBack"];
+    
+    UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
+    
+    for (UIViewController*vc in temp.childViewControllers) {
+        if([vc isKindOfClass:[ExchangeViewController class]]){
+            self.isBussiness = NO;
+        }
+        
+        if([vc isKindOfClass:[Business_ViewController class]]){
+            self.isBussiness = YES;
+        }
+    }
+    
     [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
@@ -78,30 +95,70 @@
         NSDictionary* info = [data objectForKey:@"data"];
 //        NSLog(@"当前页面title = %@",info);
         if([title isEqualToString:@"0"]){
-            self.turnOutName.text = @"交易账户";
-            self.turnInName.text = @"商户账户";
-            NSDictionary* exchange =[info objectForKey:@"exchange"];
-            if(exchange){
-                NSDictionary* left = [exchange objectForKey:self.marketName.text];
-                if(left){
-                    NSString* available = [left objectForKey:@"available"];
-                    self.leftMonetCount.text = [NSString stringWithFormat:@"可转%@",available];
+            if(self.isBussiness){
+               
+                self.turnOutName.text = @"交易账户";
+                self.turnInName.text = @"商户账户";
+                
+                NSDictionary* exchange =[info objectForKey:@"exchange"];
+                if(exchange){
+                    NSDictionary* left = [exchange objectForKey:self.marketName.text];
+                    if(left){
+                        NSString* available = [left objectForKey:@"available"];
+                        self.leftMonetCount.text = [NSString stringWithFormat:@"可转%@",available];
+                    }
+                }
+                
+            }else{
+                
+                self.turnInName.text = @"交易账户";
+                self.turnOutName.text = @"商户账户";
+                
+                NSDictionary* exchange =[info objectForKey:@"shop"];
+                if(exchange){
+                    NSDictionary* left = [exchange objectForKey:self.marketName.text];
+                    if(left){
+                        NSString* available = [left objectForKey:@"available"];
+                        self.leftMonetCount.text = [NSString stringWithFormat:@"可转%@",available];
+                    }
                 }
             }
+            
+            
             
             
         }else{
-            self.turnOutName.text = @"商户账户";
-            self.turnInName.text = @"交易账户";
             
-            NSDictionary* shop =[info objectForKey:@"shop"];
-            if(shop){
-                NSDictionary* left = [shop objectForKey:self.marketName.text];
-                if(left){
-                    NSString* available = [left objectForKey:@"available"];
-                    self.leftMonetCount.text = [NSString stringWithFormat:@"可转%@",available];
+            if(self.isBussiness){
+                self.turnOutName.text = @"商户账户";
+                self.turnInName.text = @"交易账户";
+                
+                NSDictionary* shop =[info objectForKey:@"shop"];
+                if(shop){
+                    NSDictionary* left = [shop objectForKey:self.marketName.text];
+                    if(left){
+                        NSString* available = [left objectForKey:@"available"];
+                        self.leftMonetCount.text = [NSString stringWithFormat:@"可转%@",available];
+                    }
+                }
+                
+            }else{
+                self.turnOutName.text = @"交易账户";
+                self.turnInName.text = @"商户账户";
+                
+                NSDictionary* shop =[info objectForKey:@"exchange"];
+                if(shop){
+                    NSDictionary* left = [shop objectForKey:self.marketName.text];
+                    if(left){
+                        NSString* available = [left objectForKey:@"available"];
+                        self.leftMonetCount.text = [NSString stringWithFormat:@"可转%@",available];
+                    }
                 }
             }
+            
+            
+            
+            
             
         }
     }else{
@@ -151,9 +208,18 @@
             NSString* mode = @"toexchange";
             NSString* url = @"wallet/transfer";
             if([self.title isEqualToString:@"0"]){
-                mode = @"toshop";
+                if(self.isBussiness){
+                    mode = @"toshop";
+                }else{
+                    mode = @"toexchange";
+                }
+                
             }else{
-                mode = @"toexchange";
+                if(self.isBussiness){
+                    mode = @"toexchange";
+                }else{
+                    mode = @"toshop";
+                }
             }
             NSDictionary* parameters = @{@"asset":self.marketName.text,
                                          @"num":@([self.turnInput.text floatValue]),
@@ -172,9 +238,17 @@
                                     [temp popToViewController:vc animated:YES];
                                     break;
                                 }
+                                if([vc isKindOfClass:[Business_ViewController class]]){
+                                    [temp popToViewController:vc animated:YES];
+                                    break;
+                                }
                             }
                         }else{
                             for (UIViewController*vc in temp.childViewControllers) {
+                                if([vc isKindOfClass:[ExchangeViewController class]]){
+                                    [temp popToViewController:vc animated:YES];
+                                    break;
+                                }
                                 if([vc isKindOfClass:[Business_ViewController class]]){
                                     [temp popToViewController:vc animated:YES];
                                     break;

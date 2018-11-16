@@ -19,6 +19,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *erweimaImage;
 @property (weak, nonatomic) IBOutlet UIButton *saveBtn;
 
+@property(nonatomic,strong)NSTimer* update1;
+
 @end
 
 @implementation ZhifubaoViewController
@@ -27,6 +29,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.title = @"设置支付宝";
+    self.update1 = nil;
+    
     UITapGestureRecognizer *f = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(test)];
     [self.view addGestureRecognizer:f];
     self.view.userInteractionEnabled = YES;
@@ -56,6 +60,11 @@
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     self.tabBarController.tabBar.hidden = NO;
+    
+    [self.update1 invalidate];
+    self.update1 = nil;
+    [_sendVerifyBtn setTitle:@"发送验证码" forState:UIControlStateNormal];
+    [_sendVerifyBtn setEnabled:YES];
 }
 -(void)viewDidDisappear:(BOOL)animated{
     [super viewDidDisappear:animated];
@@ -97,7 +106,38 @@
 }
 
 - (IBAction)clickSendVerifyBtn:(id)sender {
+    [_sendVerifyBtn setTitle:@"60s" forState:UIControlStateNormal];
+    [_sendVerifyBtn setEnabled:NO];
+    if(_update1){
+        [_update1 invalidate];
+        _update1 = nil;
+    }
+    
+    _update1 = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(changeBtn1) userInfo:nil repeats:YES];
+    //    [_update1 fire];
+    
+    [[NSRunLoop mainRunLoop] addTimer:_update1 forMode:NSDefaultRunLoopMode];
 }
+
+-(void)changeBtn1{
+    NSString* title = _sendVerifyBtn.titleLabel.text;
+    if([title isEqualToString:@"发送验证码"]){
+        return;
+    }
+    NSInteger sec = [[title substringToIndex:[title rangeOfString:@"s"].location] intValue];
+    sec--;
+    if(sec < 0){
+        [_sendVerifyBtn setTitle:@"发送验证码" forState:UIControlStateNormal];
+        //        [NSTimer ]
+        [_update1 invalidate];
+        _update1 = nil;
+        [_sendVerifyBtn setEnabled:YES];
+    }else{
+        [_sendVerifyBtn setTitle:[NSString stringWithFormat:@"%lds",(long)sec] forState:UIControlStateNormal];
+    }
+    
+}
+
 - (IBAction)clickUpbtn:(id)sender {
     UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"选择" delegate:self cancelButtonTitle:nil destructiveButtonTitle:@"取消" otherButtonTitles:@"拍照",@"从相册选择", nil];
     sheet.tag = 2550;
@@ -146,6 +186,8 @@
                     }
                 }
             }];
+        }else{
+            [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"资金密码验证错误"];
         }
     };
     

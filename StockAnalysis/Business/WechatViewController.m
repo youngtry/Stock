@@ -23,6 +23,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *erweimaImage;
 @property (weak, nonatomic) IBOutlet UIButton *saveBtn;
 
+@property(nonatomic,strong)NSTimer* update1;
+
 @end
 
 @implementation WechatViewController
@@ -31,6 +33,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.title = @"设置微信支付";
+    self.update1 = nil;
+    
     UITapGestureRecognizer *f = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(test)];
     [self.view addGestureRecognizer:f];
     self.view.userInteractionEnabled = YES;
@@ -54,6 +58,11 @@
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     self.tabBarController.tabBar.hidden = NO;
+    
+    [self.update1 invalidate];
+    self.update1 = nil;
+    [_sendVerfiyBtn setTitle:@"发送验证码" forState:UIControlStateNormal];
+    [_sendVerfiyBtn setEnabled:YES];
 }
 -(void)viewDidDisappear:(BOOL)animated{
     [super viewDidDisappear:animated];
@@ -106,6 +115,8 @@
                     }
                 }
             }];
+        }else{
+            [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"资金密码验证错误"];
         }
     };
     
@@ -149,6 +160,35 @@
     [sheet showInView:self.view];
 }
 - (IBAction)clickSendVerifyBtn:(id)sender {
+    [_sendVerfiyBtn setTitle:@"60s" forState:UIControlStateNormal];
+    [_sendVerfiyBtn setEnabled:NO];
+    if(_update1){
+        [_update1 invalidate];
+        _update1 = nil;
+    }
+    
+    _update1 = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(changeBtn1) userInfo:nil repeats:YES];
+    //    [_update1 fire];
+    
+    [[NSRunLoop mainRunLoop] addTimer:_update1 forMode:NSDefaultRunLoopMode];
+}
+
+-(void)changeBtn1{
+    NSString* title = _sendVerfiyBtn.titleLabel.text;
+    if([title isEqualToString:@"发送验证码"]){
+        return;
+    }
+    NSInteger sec = [[title substringToIndex:[title rangeOfString:@"s"].location] intValue];
+    sec--;
+    if(sec < 0){
+        [_sendVerfiyBtn setTitle:@"发送验证码" forState:UIControlStateNormal];
+        //        [NSTimer ]
+        [_update1 invalidate];
+        _update1 = nil;
+        [_sendVerfiyBtn setEnabled:YES];
+    }else{
+        [_sendVerfiyBtn setTitle:[NSString stringWithFormat:@"%lds",(long)sec] forState:UIControlStateNormal];
+    }
     
 }
 

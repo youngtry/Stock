@@ -936,11 +936,27 @@
         if(params.count == 2){
             NSDictionary* info = params[1];
 //            NSLog(@"info = %@",info);
+            float close = [[info objectForKey:@"close"] floatValue];
+            float open = [[info objectForKey:@"open"] floatValue];
             self.periodPrice.text = [NSString stringWithFormat:@"%.4f",[[info objectForKey:@"last"] floatValue]];
-            self.dealLabel.text =[NSString stringWithFormat:@"%d",[[info objectForKey:@"deal"] intValue]];
+            float deal = close-open;
+            if(deal>=0){
+                self.dealLabel.text =[NSString stringWithFormat:@"+%.4f",deal];
+            }else{
+                self.dealLabel.text =[NSString stringWithFormat:@"%.4f",deal];
+            }
+            
             self.highLabel.text =[NSString stringWithFormat:@"%.4f",[[info objectForKey:@"high"] floatValue]];
             self.lowLabel.text =[NSString stringWithFormat:@"%.4f",[[info objectForKey:@"low"] floatValue]];
             self.volumeLabel.text =[NSString stringWithFormat:@"%d",[[info objectForKey:@"volume"] intValue]];
+            self.volumeLabel.text = [self countNumAndChangeformat:self.volumeLabel.text];
+            float rate = (close-open)/open*100;
+            if(rate>=0){
+                self.dealRateLabel.text = [NSString stringWithFormat:@"+%.2f%%",rate];
+            }else{
+                self.dealRateLabel.text = [NSString stringWithFormat:@"%.2f%%",rate];
+            }
+            
         }
     }else if ([name isEqualToString:@"kline.update"]){
         NSArray* params = [data objectForKey:@"params"];
@@ -994,6 +1010,31 @@
         }
     }
 }
+
+-(NSString *)countNumAndChangeformat:(NSString *)num
+{
+    int count = 0;
+    long long int a = num.longLongValue;
+    while (a != 0)
+    {
+        count++;
+        a /= 10;
+    }
+    NSMutableString *string = [NSMutableString stringWithString:num];
+    NSMutableString *newstring = [NSMutableString string];
+    while (count > 3) {
+        count -= 3;
+        NSRange rang = NSMakeRange(string.length - 3, 3);
+        NSString *str = [string substringWithRange:rang];
+        [newstring insertString:str atIndex:0];
+        [newstring insertString:@"," atIndex:0];
+        [string deleteCharactersInRange:rang];
+    }
+    [newstring insertString:string atIndex:0];
+    return newstring;
+    
+}
+
 
 - (void)reloadData
 {

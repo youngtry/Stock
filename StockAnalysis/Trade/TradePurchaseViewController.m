@@ -75,6 +75,7 @@
 @property (nonatomic,assign)NSInteger numberDepth;
 
 @property(nonatomic,assign)BOOL isGetPrice;
+@property(nonatomic,assign)BOOL isLogin;
 
 @end
 
@@ -85,6 +86,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
+    NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
+    BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
+    self.isLogin = islogin;
+    
     self.titleArray = [NSMutableArray new];
     self.infoArray = [NSMutableArray new];
    
@@ -158,6 +164,10 @@
     WeakSelf(weakSelf);
     self.radioBtn.indexChangeBlock = ^(NSInteger index){
 //        DLog(@"index:%li",index);
+        
+        if(index == -1){
+            return ;
+        }
         float available = [[weakSelf.avaliableMoney.text substringFromIndex:[weakSelf.avaliableMoney.text rangeOfString:@"可用 "].length] floatValue];
         if([[weakSelf.priceRMBLabel.text substringFromIndex:1] floatValue] > 0){
             
@@ -169,7 +179,7 @@
         }
     };
     
-    [self.radioBtn setSelectIndex:0];
+//    [self.radioBtn setSelectIndex:0];
     
     if(kScreenWidth == 320){
 //        [self.marketNamelabel.titleLabel setFont:[UIFont systemFontOfSize:12]];
@@ -185,6 +195,39 @@
     
     self.purchasePriceInput.delegate = self;
     self.purchaseAmountInput.delegate = self;
+    
+    _isGetPrice = NO;
+    _assetSelectIndex = 0;
+    
+    self.firstOpen = YES;
+    NSLog(@"title = %@",self.title);
+    if([self.title isEqualToString:@"卖出"]){
+        [self.purchaseBtn setBackgroundColor:[UIColor redColor]];
+    }else if([self.title isEqualToString:@"买入"]){
+        [self.purchaseBtn setBackgroundColor:[UIColor colorWithRed:75.0/255.0 green:185.0/255.0 blue:112.0/255.0 alpha:1.0]];
+    }
+    
+    [SocketInterface sharedManager].delegate = self;
+    [[SocketInterface sharedManager] openWebSocket];
+    
+    self.askList.tableFooterView = [UIView new];
+    self.bidsList.tableFooterView = [UIView new];
+    
+    self.askList.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.bidsList.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    [self.dealArray removeAllObjects];
+    [self requestAnalysis];
+    
+    [self.enterKLine setUserInteractionEnabled:YES];
+    
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
+    [self.enterKLine addGestureRecognizer:singleTap];
+    
+    if(!self.isLogin){
+        [self.purchaseBtn setBackgroundColor:[UIColor grayColor]];
+        [self.purchaseBtn setEnabled:NO];
+    }
 }
 
 
@@ -308,7 +351,7 @@
                 }
                 
                 if(_firstOpen){
-                    [self.radioBtn setSelectIndex:0];
+//                    [self.radioBtn setSelectIndex:0];
                     _firstOpen = NO;
                 }else{
                     [self.radioBtn setSelectIndex:[self.radioBtn getSelectIndex]];
@@ -371,6 +414,8 @@
     
 //    self.depthView.layer.borderWidth = 1;
 //    self.depthView.layer.borderColor = [kColorRGBA(221, 221, 221, 1) CGColor];
+    
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -382,9 +427,15 @@
     }
     NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
     BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
+    self.isLogin = islogin;
     if(!islogin){
 //        [HUDUtil showSystemTipView:temp title:@"提示" withContent:@"未登录,请先登录"];
 //        return;
+    }
+    
+    if(!self.isLogin){
+        [self.purchaseBtn setBackgroundColor:[UIColor grayColor]];
+        [self.purchaseBtn setEnabled:NO];
     }
     
 //    UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
@@ -411,33 +462,7 @@
     
   
     
-    _isGetPrice = NO;
-    _assetSelectIndex = 0;
     
-     self.firstOpen = YES;
-    NSLog(@"title = %@",self.title);
-    if([self.title isEqualToString:@"卖出"]){
-        [self.purchaseBtn setBackgroundColor:[UIColor redColor]];
-    }else if([self.title isEqualToString:@"买入"]){
-        [self.purchaseBtn setBackgroundColor:[UIColor colorWithRed:75.0/255.0 green:185.0/255.0 blue:112.0/255.0 alpha:1.0]];
-    }
-    
-    [SocketInterface sharedManager].delegate = self;
-    [[SocketInterface sharedManager] openWebSocket];
-
-    self.askList.tableFooterView = [UIView new];
-    self.bidsList.tableFooterView = [UIView new];
-    
-    self.askList.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.bidsList.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
-    [self.dealArray removeAllObjects];
-    [self requestAnalysis];
-    
-    [self.enterKLine setUserInteractionEnabled:YES];
-    
-    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
-    [self.enterKLine addGestureRecognizer:singleTap];
     
     
     
@@ -642,7 +667,7 @@
                             NSIndexPath *selectedIndexPath1 = [NSIndexPath indexPathForRow:selectedIndex1 inSection:0];
                             [self.stcokInfoView selectRowAtIndexPath:selectedIndexPath1 animated:NO scrollPosition:UITableViewScrollPositionNone];
                             
-                            [self.radioBtn setSelectIndex:0];
+//                            [self.radioBtn setSelectIndex:0];
                             
                             self.currentPage = 0;
                             self.isUpdate = YES;
@@ -728,7 +753,7 @@
                     self.isUpdate = YES;
                     [self getPendingOrders:1];
                     
-                    [self.radioBtn setSelectIndex:0];
+//                    [self.radioBtn setSelectIndex:0];
                     
                     if(self.block){
                         self.block();
@@ -1574,7 +1599,7 @@
         
         [self setStcokInfo:self.infoArray[indexPath.row]];
         
-        [self.radioBtn setSelectIndex:0];
+//        [self.radioBtn setSelectIndex:0];
         [self.dealArray removeAllObjects];
         [self.dealList reloadData];
         [self getPendingOrders:1];
@@ -1590,8 +1615,8 @@
     if(tableView == self.askList || tableView == self.bidsList){
         askAndBidsTableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
         
-        self.purchasePriceLabel.text = cell.price.text;
-        self.purchaseAmountLabel.text = cell.amount.text;
+//        self.purchasePriceLabel.text = cell.price.text;
+//        self.purchaseAmountLabel.text = cell.amount.text;
         
     }
     

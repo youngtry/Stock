@@ -37,7 +37,7 @@
     self.moneyList.dataSource = self;
     self.isCanLook = YES;
     
-    [self requestMoney];
+    
     
     [self.lookMoney setUserInteractionEnabled:YES];
     UITapGestureRecognizer *f = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickLook)];
@@ -72,6 +72,8 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.tabBarController.tabBar.hidden = YES;
+    
+    [self requestMoney];
 }
 
 -(void)viewWillDisappear:(BOOL)animated{

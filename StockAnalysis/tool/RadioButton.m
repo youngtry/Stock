@@ -76,6 +76,10 @@
         
         [self selectButton:index];
         [self onSelectChanged];
+    }else{
+        _selectIndex = -1;
+        [self selectButton:-1];
+        [self onSelectChanged];
     }
 }
 
