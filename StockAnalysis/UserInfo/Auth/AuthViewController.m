@@ -42,7 +42,7 @@
     self.tabBarController.tabBar.hidden = YES;
     NSString* url = @"account/userinfo";
     NSDictionary *parameters = @{} ;
-    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+//    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
             [HUDUtil hideHudView];

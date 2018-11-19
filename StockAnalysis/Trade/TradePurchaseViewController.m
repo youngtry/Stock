@@ -174,7 +174,7 @@
             float willbuy = available*0.25*(index+1)/[[self.priceRMBLabel.text substringFromIndex:1] floatValue];
             float willmoney = available*0.25*(index+1);
            
-            weakSelf.purchasePriceInput.text = [NSString stringWithFormat:@"%.4f",willmoney];
+//            weakSelf.purchasePriceInput.text = [NSString stringWithFormat:@"%.4f",willmoney];
             weakSelf.purchaseAmountInput.text = [NSString stringWithFormat:@"%.8f",willbuy];
         }
     };
@@ -224,6 +224,8 @@
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
     [self.enterKLine addGestureRecognizer:singleTap];
     
+    self.purchasePriceInput.text = @"价格";
+    self.purchaseAmountInput.text = @"数量";
     if(!self.isLogin){
         [self.purchaseBtn setBackgroundColor:[UIColor grayColor]];
         [self.purchaseBtn setEnabled:NO];
@@ -264,16 +266,16 @@
         temp = self.navigationController;
     }
     if(textView == self.purchasePriceInput){
-        float price = [self.purchasePriceInput.text floatValue];
-        float available = [[self.avaliableMoney.text substringFromIndex:[self.avaliableMoney.text rangeOfString:@"可用 "].length] floatValue];
-        
-        if(price>available){
-            [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"购买总价不可高于总余额"];
-        }else{
-            self.purchasePriceInput.text = [NSString stringWithFormat:@"%.4f",price];
-            float amount = price/([[self.priceRMBLabel.text substringFromIndex:1] floatValue]);
-            self.purchaseAmountInput.text = [NSString stringWithFormat:@"%.8f",amount];
-        }
+//        float price = [self.purchasePriceInput.text floatValue];
+//        float available = [[self.avaliableMoney.text substringFromIndex:[self.avaliableMoney.text rangeOfString:@"可用 "].length] floatValue];
+//
+//        if(price>available){
+//            [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"购买总价不可高于总余额"];
+//        }else{
+//            self.purchasePriceInput.text = [NSString stringWithFormat:@"%.4f",price];
+//            float amount = price/([[self.priceRMBLabel.text substringFromIndex:1] floatValue]);
+//            self.purchaseAmountInput.text = [NSString stringWithFormat:@"%.8f",amount];
+//        }
     }else if (textView == self.purchaseAmountInput){
         float amount = [self.purchaseAmountInput.text floatValue];
         
@@ -281,8 +283,9 @@
             [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"数目不可小于0"];
         }else{
             self.purchaseAmountInput.text = [NSString stringWithFormat:@"%.8f",amount];
-            float price = amount*([[self.priceRMBLabel.text substringFromIndex:1] floatValue]);
-            self.purchasePriceInput.text = [NSString stringWithFormat:@"%.4f",price];
+//            float price = amount*([[self.priceRMBLabel.text substringFromIndex:1] floatValue]);
+            [self.radioBtn setSelectIndex:-1];
+//            self.purchasePriceInput.text = [NSString stringWithFormat:@"%.4f",price];
         }
     }
 }
@@ -579,7 +582,7 @@
     NSString* url = @"market/assortment";
     [self.titleArray removeAllObjects];
     [self.titleArray addObject:@"自选"];
-    [HUDUtil showHudViewInSuperView:temp.view withMessage:@"请求中…"];
+//    [HUDUtil showHudViewInSuperView:temp.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
             [HUDUtil hideHudView];
@@ -865,9 +868,23 @@
     if(nil == temp){
         temp = self.navigationController;
     }
+    
+    NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
+    BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
+    self.isLogin = islogin;
+    if(!islogin){
+        [HUDUtil showSystemTipView:temp title:@"提示" withContent:@"未登录,请先登录"];
+        return;
+    }
+    
+    if([self.purchaseAmountInput.text isEqualToString:@"数量"]){
+        [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"请输入数量"];
+        return;
+    }
+    
     NSString* url1 = @"account/getConfirmState";
     NSDictionary* params = @{};
-    [HUDUtil showHudViewInSuperView:temp.view withMessage:@"请求中…"];
+//    [HUDUtil showHudViewInSuperView:temp.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] getWithURL:url1 parma:params block:^(BOOL success, id data) {
         if(success){
             [HUDUtil hideHudView];
@@ -933,7 +950,7 @@
                                  @"is_limit":@(limit),
                                  @"asset_token":token
                                  };
-    [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"请求中…"];
+//    [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
         if([self.title isEqualToString:@"卖出"]){
             
@@ -1009,7 +1026,7 @@
                                  @"is_limit":@(limit),
                                  @"asset_token":token
                                  };
-    [HUDUtil showHudViewInSuperView:temp.view withMessage:@"请求中…"];
+//    [HUDUtil showHudViewInSuperView:temp.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
         if([self.title isEqualToString:@"卖出"]){
             
@@ -1065,6 +1082,11 @@
     if(nil == temp){
         temp = self.navigationController;
     }
+    
+    if([self.purchaseAmountInput.text isEqualToString:@"数量"]){
+        self.purchaseAmountInput.text = @"0.000000000";
+    }
+    
     float amount = [self.purchaseAmountInput.text floatValue];
     float available = [[self.canButAmount.text substringFromIndex:[self.canButAmount.text rangeOfString:@"可买 "].length] floatValue];
     amount++;
@@ -1072,8 +1094,8 @@
         [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"超出所能购买的最多数目了"];
     }else{
         self.purchaseAmountInput.text = [NSString stringWithFormat:@"%.8f",amount];
-        float price = amount*([[self.priceRMBLabel.text substringFromIndex:1] floatValue]);
-        self.purchasePriceInput.text = [NSString stringWithFormat:@"%.4f",price];
+//        float price = amount*([[self.priceRMBLabel.text substringFromIndex:1] floatValue]);
+//        self.purchasePriceInput.text = [NSString stringWithFormat:@"%.4f",price];
     }
     
 }
@@ -1082,6 +1104,10 @@
     if(nil == temp){
         temp = self.navigationController;
     }
+    if([self.purchaseAmountInput.text isEqualToString:@"数量"]){
+        [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"未输入数量"];
+        return;
+    }
     float amount = [self.purchaseAmountInput.text floatValue];
     amount--;
     if(amount<0){
@@ -1089,7 +1115,7 @@
     }else{
         self.purchaseAmountInput.text = [NSString stringWithFormat:@"%.8f",amount];
         float price = amount*([[self.priceRMBLabel.text substringFromIndex:1] floatValue]);
-        self.purchasePriceInput.text = [NSString stringWithFormat:@"%.4f",price];
+//        self.purchasePriceInput.text = [NSString stringWithFormat:@"%.4f",price];
     }
     
 }
@@ -1106,7 +1132,7 @@
         self.purchasePriceInput.text = [NSString stringWithFormat:@"%.4f",price];
         
         float amount = price/([[self.priceRMBLabel.text substringFromIndex:1] floatValue]);
-        self.purchaseAmountInput.text = [NSString stringWithFormat:@"%.8f",amount];
+//        self.purchaseAmountInput.text = [NSString stringWithFormat:@"%.8f",amount];
     }
     
 }
@@ -1123,7 +1149,7 @@
     }else{
         self.purchasePriceInput.text = [NSString stringWithFormat:@"%.4f",price];
         float amount = price/([[self.priceRMBLabel.text substringFromIndex:1] floatValue]);
-        self.purchaseAmountInput.text = [NSString stringWithFormat:@"%.8f",amount];
+//        self.purchaseAmountInput.text = [NSString stringWithFormat:@"%.8f",amount];
     }
     
 }
@@ -1218,7 +1244,7 @@
 //                [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"已经全部加载完毕"];
                 if(trades.count == 0){
                     self.isUpdate = NO;
-                    [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"全部加载完毕"];
+//                    [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"全部加载完毕"];
                 }else{
                     [self.dealArray addObjectsFromArray:trades];
                     [self.dealList reloadData];
@@ -1325,6 +1351,7 @@
             if(!_isGetPrice){
                 _isGetPrice = YES;
                 self.periodPrice.text =[NSString stringWithFormat:@"%.4f",[[info objectForKey:@"open"] floatValue]];
+                self.purchasePriceInput.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"last"]];
                 NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
                 BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
                 if(islogin){
@@ -1560,7 +1587,7 @@
         if(nil == temp){
             temp = self.navigationController;
         }
-        [HUDUtil showHudViewInSuperView:temp.view withMessage:@"请求中…"];
+//        [HUDUtil showHudViewInSuperView:temp.view withMessage:@"请求中…"];
         [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
             if(success){
                 [HUDUtil hideHudView];
@@ -1586,8 +1613,11 @@
         
         [self.marketNamelabel setTitle:cell.name.text forState:UIControlStateNormal];
         
-        self.purchaseAmountInput.text = [NSString stringWithFormat:@"%.8f",0.0000000000];
-        self.purchasePriceInput.text = [NSString stringWithFormat:@"%.4f",0.0000000000];
+//        self.purchaseAmountInput.text = [NSString stringWithFormat:@"%.8f",0.0000000000];
+        
+        self.purchaseAmountInput.text = @"数量";
+        self.purchasePriceInput.text = @"价格";
+//        self.purchasePriceInput.text = [NSString stringWithFormat:@"%.4f",0.0000000000];
         
         
 //        self.marketNamelabel.titleLabel.text = cell.name.text;

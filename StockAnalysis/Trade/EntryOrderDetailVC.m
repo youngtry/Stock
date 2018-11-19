@@ -46,7 +46,7 @@
 -(void)getDetail{
     NSString* url = @"exchange/trade/detail";
     NSDictionary* params = @{@"trade_id":self.stockId};
-    [HUDUtil showHudViewInSuperView:self.view withMessage:@"加载数据中"];
+//    [HUDUtil showHudViewInSuperView:self.view withMessage:@"加载数据中"];
     [[HttpRequest getInstance] getWithURL:url parma:params block:^(BOOL success, id data) {
         
         if(success){
@@ -82,9 +82,9 @@
     self.price2Label.text = [self.stockInfo objectForKey:@"price"];
     self.price3Label.text = [self.stockInfo objectForKey:@"price"];
     
-    self.dealAmount.text = [self.stockInfo objectForKey:@"num"];
-    self.dealAmount2Label.text = [self.stockInfo objectForKey:@"num"];
-    self.dealAmount3Label.text = [self.stockInfo objectForKey:@"num"];
+    self.dealAmount.text = [self.stockInfo objectForKey:@"deal_stock"];
+    self.dealAmount2Label.text = [self.stockInfo objectForKey:@"deal_stock"];
+    self.dealAmount3Label.text = [self.stockInfo objectForKey:@"deal_stock"];
     
     self.feeLabel.text = [self.stockInfo objectForKey:@"fee"];
     self.fee2Label.text = [self.stockInfo objectForKey:@"fee"];

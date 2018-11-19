@@ -61,7 +61,7 @@
 -(void)getAddress{
     NSString* url  = @"wallet/externalAddress";
     NSDictionary* parameters = @{};
-    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+//    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
             if([[data objectForKey:@"ret"] intValue] == 1){

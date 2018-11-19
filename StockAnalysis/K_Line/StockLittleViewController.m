@@ -254,17 +254,36 @@
 }
 
 -(void)priceTips{
-    
+    UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
+    if(nil == temp){
+        temp = self.navigationController;
+    }
+    NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
+    BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
+    if(!islogin){
+        [HUDUtil showSystemTipView:temp title:@"提示" withContent:@"未登录,请先登录"];
+        return;
+    }
     PriceTipViewController* vc = [[PriceTipViewController alloc] initWithNibName:@"PriceTipViewController" bundle:nil];
     [vc setTitle:[NSString stringWithFormat:@"%@_%d",self.title,self.isTip]];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 -(void)followBtn{
+    UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
+    if(nil == temp){
+        temp = self.navigationController;
+    }
+    NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
+    BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
+    if(!islogin){
+        [HUDUtil showSystemTipView:temp title:@"提示" withContent:@"未登录,请先登录"];
+        return;
+    }
     if(self.isFollow){
         NSDictionary* parameters = @{@"market":self.title};
         NSString* url = @"/market/unfollow";
-        [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+//        [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
         [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
             if(success){
                 [HUDUtil hideHudView];
@@ -287,7 +306,7 @@
     }else{
         NSDictionary* parameters = @{@"market":self.title};
         NSString* url = @"/market/follow";
-        [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+//        [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
         [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
             if(success){
                 [HUDUtil hideHudView];

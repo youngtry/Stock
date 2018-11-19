@@ -56,7 +56,7 @@
     NSDictionary* params =@{@"page":@(page),
                             @"page_limit":@(10)
                             };
-    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+//    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
         if(success){
             NSLog(@"请求成功");

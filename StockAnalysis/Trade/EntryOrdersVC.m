@@ -95,7 +95,7 @@
     NSDictionary* params = @{@"page":@(page),
                              @"page_limit":@(10),
                              };
-    [HUDUtil showHudViewInSuperView:self.view withMessage:@"数据加载中……"];
+//    [HUDUtil showHudViewInSuperView:self.view withMessage:@"数据加载中……"];
     [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
         
         if(success){
@@ -126,7 +126,7 @@
                              @"page_limit":@(10),
                              @"mode":@"buy"
                              };
-    [HUDUtil showHudViewInSuperView:self.view withMessage:@"数据加载中……"];
+//    [HUDUtil showHudViewInSuperView:self.view withMessage:@"数据加载中……"];
     [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
         
         if(success){
@@ -160,7 +160,7 @@
                              @"page_limit":@(10),
                              @"mode":@"sell"
                              };
-    [HUDUtil showHudViewInSuperView:self.view withMessage:@"数据加载中……"];
+//    [HUDUtil showHudViewInSuperView:self.view withMessage:@"数据加载中……"];
     [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
         
         if(success){

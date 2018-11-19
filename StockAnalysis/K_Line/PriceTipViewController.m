@@ -118,7 +118,7 @@
         NSDictionary* params = @{@"notice_id":@(self.accountID)
 //                                 @"state":self.state
                                  };
-        [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+//        [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
         [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
             if(success){
                 if([[data objectForKey:@"ret"] intValue] == 1){
@@ -142,7 +142,7 @@
                                  @"upper_limit":@([self.topLimitInput.text floatValue]),
                                  @"lower_limit":@([self.lowLimitInput.text floatValue])
                                  };
-        [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+//        [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
         [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
             if(success){
                 if([[data objectForKey:@"ret"] intValue] == 1){
@@ -159,7 +159,7 @@
                                  @"lower_limit":self.lowLimitInput.text,
                                  @"market":self.stockName.text
                                  };
-        [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+//        [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
         [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
             if(success){
                 if([[data objectForKey:@"ret"] intValue] == 1){

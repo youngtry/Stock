@@ -56,7 +56,7 @@
     
     NSDictionary* params = @{@"market":self.title};
     NSString* url  = @"market/info";
-    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+//    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
         if(success){
             if([[data objectForKey:@"ret"] intValue] == 1){

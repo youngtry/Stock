@@ -87,7 +87,7 @@
                              @"page_limit":@(10),
                              @"state":@"done,cancel"
                              };
-    [HUDUtil showHudViewInSuperView:self.view withMessage:@"数据加载中……"];
+//    [HUDUtil showHudViewInSuperView:self.view withMessage:@"数据加载中……"];
     [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
         
         if(success){
@@ -169,6 +169,14 @@
         cell.amountLabel.text = [data objectForKey:@"num"];
         cell.realLabel.text = [data objectForKey:@"deal_money"];
         cell.tradeID = [data objectForKey:@"id"];
+        [cell.cancelBtn setHidden:YES];
+        [cell.stateLabel setHidden:NO];
+        cell.stateLabel.text = [data objectForKey:@"state"];
+        if([cell.stateLabel.text isEqualToString:@"done"]){
+            cell.stateLabel.text = @"已完成";
+        }else if([cell.stateLabel.text isEqualToString:@"cancel"]){
+            cell.stateLabel.text = @"已取消";
+        }
     }
     
     return cell;

@@ -101,7 +101,7 @@
     NSDictionary *parameters = @{ @"type": @"exchange"};
     
     NSString* url = @"wallet/balance";
-    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+//    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
             [HUDUtil hideHudView];

@@ -19,6 +19,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *priceLabel;
 @property (weak, nonatomic) IBOutlet UILabel *amountLabel;
 @property (weak, nonatomic) IBOutlet UILabel *realLabel;
+@property (weak, nonatomic) IBOutlet UIButton *cancelBtn;
+
+@property (weak, nonatomic) IBOutlet UILabel *stateLabel;
+
 @property (nonatomic,strong) NSString* tradeID;
 @property(nonatomic,assign)BOOL isBuyIn;//买入/卖出
 @property (weak, nonatomic) id<CancelDelegate> delegate;

@@ -36,7 +36,7 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     
-    [HUDUtil showHudViewInSuperView:self.view withMessage:@"数据请求中"];
+//    [HUDUtil showHudViewInSuperView:self.view withMessage:@"数据请求中"];
     if([self.title isEqualToString:@"自选"]){
         [self getSelectInfo];
     }

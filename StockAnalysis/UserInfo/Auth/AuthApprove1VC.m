@@ -167,7 +167,7 @@
     NSDictionary* params = @{@"username":self.fieldName.text,
                              @"id_card":self.fieldNum.text
                              };
-    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+//    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
         if(success){
             if([[data objectForKey:@"ret"] intValue] == 1){

@@ -224,7 +224,7 @@
     
     NSString* url = @"account/setConfirmCheck";
     NSDictionary* params = @{@"state":state};
-    [HUDUtil showHudViewInSuperView:self.navigationController.view withMessage:@"请求中…"];
+//    [HUDUtil showHudViewInSuperView:self.navigationController.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
         if(success){
             if([[data objectForKey:@"ret"] intValue] == 1){

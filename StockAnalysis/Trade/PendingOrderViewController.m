@@ -18,7 +18,11 @@
 @property(nonatomic,assign)BOOL isUpdate;
 @property(nonatomic,strong)NSMutableArray* allStocks;
 @property(nonatomic,strong)UITableView* stockList;
+@property(nonatomic,strong)NSMutableArray* allDetailStocks;
+@property(nonatomic,strong)UITableView* stockDetailList;
 @property(nonatomic,strong)UIButton* stockNameBtn;
+@property(nonatomic,assign)NSInteger currentPage1;
+@property(nonatomic,assign)BOOL isUpdate1;
 @end
 
 @implementation PendingOrderViewController
@@ -27,26 +31,24 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    
-}
-
--(void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    
-}
-
--(void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:animated];
     self.data = [NSMutableArray new];
     self.allStocks = [NSMutableArray new];
+    self.allDetailStocks = [NSMutableArray new];
     self.currentPage = 0;
     self.isUpdate = YES;
     
+    self.currentPage1 = 0;
+    self.isUpdate1 = YES;
+    
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.stockList];
+    [self.view addSubview:self.stockDetailList];
     [self.stockList setHidden:YES];
+    [self.stockDetailList setHidden:YES];
     [self.data removeAllObjects];
     [self.allStocks removeAllObjects];
+    [self.allDetailStocks removeAllObjects];
+    
     
     [self.stockList reloadData];
     [self.tableView reloadData];
@@ -67,17 +69,31 @@
     }
     [self getAllStocks];
     
+    [self.stockNameBtn setTitle:@"全部" forState:UIControlStateNormal];
+    
+    [self getAll:1  withName:@""];
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    
+    
 }
 
 -(void)viewDidDisappear:(BOOL)animated{
     [super viewDidDisappear:animated];
-    self.isUpdate = YES;
-    self.currentPage = 0;
-    [self.data removeAllObjects];
-    [self.allStocks removeAllObjects];
-    
-    [self.stockList reloadData];
-    [self.tableView reloadData];
+//    self.isUpdate = YES;
+//    self.currentPage = 0;
+//    [self.data removeAllObjects];
+//    [self.allStocks removeAllObjects];
+//    
+//    [self.stockList reloadData];
+//    [self.tableView reloadData];
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -92,11 +108,11 @@
 
 -(void)getAllStocks{
     NSDictionary* parameters = @{@"page":@(1),
-                                 @"page_limit":@(10)
+                                 @"page_limit":@(50)
                                  };
     NSString* url = @"assets";
     [self.allStocks removeAllObjects];
-    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+//    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
             [HUDUtil hideHudView];
@@ -126,8 +142,9 @@
     NSDictionary* params = @{@"market":name,
                              @"page":@(page),
                              @"page_limit":@(10),
+                             @"state":@"pending"
                              };
-    [HUDUtil showHudViewInSuperView:self.view withMessage:@"数据加载中……"];
+//    [HUDUtil showHudViewInSuperView:self.view withMessage:@"数据加载中……"];
     [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
         
         if(success){
@@ -171,6 +188,16 @@
     return _stockList;
 }
 
+-(UITableView*)stockDetailList{
+    if(!_stockDetailList){
+        _stockDetailList = [[UITableView alloc] initWithFrame:CGRectMake(kScreenWidth*0.15+kScreenWidth*0.35, 50, kScreenWidth*0.4, (kScreenHeight-kNaviHeight-kTabBarHeight-kScrollTitleHeight)/2) style:UITableViewStylePlain];
+        _stockDetailList.delegate = self;
+        _stockDetailList.dataSource = self;
+        [_stockDetailList setBackgroundColor:kColor(245, 245, 249)];
+    }
+    return _stockDetailList;
+}
+
 -(void)addHeader{
     UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 58)];
     header.backgroundColor = kColor(200, 200, 200);
@@ -185,7 +212,7 @@
         lab.centerY = left.centerY;
         
         _stockNameBtn = [[UIButton alloc] initWithFrame:CGRectMake(lab.right+2, 0, 90, 20)];
-        [_stockNameBtn setTitle:@"全部" forState:UIControlStateNormal];
+        [_stockNameBtn setTitle:@"双成药业" forState:UIControlStateNormal];
         [_stockNameBtn setTitleColor:kColor(64,64,64) forState:UIControlStateNormal];
         [_stockNameBtn setImage:[UIImage imageNamed:@"arrow_down"] forState:UIControlStateNormal];
         [_stockNameBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, -_stockNameBtn.imageView.size.width, 0, _stockNameBtn.imageView.size.width)];
@@ -249,12 +276,64 @@
     }
 }
 
+-(void)getAll:(NSInteger)page withName:(NSString*)name{
+    self.currentPage1 = page;
+    NSString* url = @"exchange/trades";
+    NSDictionary* params = @{@"page":@(page),
+                             @"page_limit":@(10),
+                             @"state":@"pending",
+                             @"market":name
+                             };
+//    [HUDUtil showHudViewInSuperView:self.view withMessage:@"数据加载中……"];
+    [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
+        
+        if(success){
+            [HUDUtil hideHudView];
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                NSArray* trades = [[data objectForKey:@"data"] objectForKey:@"trades"];
+                if(trades.count == 0){
+                    self.isUpdate1 = NO;
+                    [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"已经全部加载完毕"];
+                }else{
+                    
+                    [self.data addObjectsFromArray:trades];
+                    [self.tableView reloadData];
+                }
+                
+                //                NSLog(@"data = %@",self.data);
+            }else{
+                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+            }
+        }
+    }];
+}
+
+-(void)getDetailMarket:(NSString*)name{
+    NSDictionary* parameters = @{@"order_by":@"price",
+                                 @"order":@"desc",
+                                 @"asset":name
+                                 };
+    NSString* url = @"market/item";
+    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+        if(success){
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                NSArray* item = [[data objectForKey:@"data"] objectForKey:@"items"];
+                [self.allDetailStocks removeAllObjects];
+                [self.allDetailStocks addObjectsFromArray:item];
+                [self.stockDetailList reloadData];
+            }
+        }
+    }];
+}
+
 #pragma mark - TableDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if(tableView == self.tableView){
         return self.data.count;
     }else if (tableView == self.stockList){
         return self.allStocks.count;
+    }else if (tableView == self.stockDetailList){
+        return self.allDetailStocks.count;
     }
     
     return 10;
@@ -303,6 +382,20 @@
         cell.name.text = name;
         
         return cell;
+    }else if (tableView == self.stockDetailList){
+        TradeStockSelectTableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
+        
+        if(!cell){
+            cell = [[[NSBundle mainBundle] loadNibNamed:@"TradeStockSelectTableViewCell" owner:self options:nil] objectAtIndex:0];
+        }
+        
+        NSDictionary* data = self.allDetailStocks[indexPath.row];
+        
+        NSString* name = [data objectForKey:@"market"];
+        
+        cell.name.text = name;
+        
+        return cell;
     }
     
     return nil;
@@ -312,6 +405,8 @@
     if(tableView == self.tableView){
         return 105.0f;
     }else if (tableView == self.stockList){
+        return 40.0f;
+    }else if (tableView == self.stockDetailList){
         return 40.0f;
     }
     return 105.0f;
@@ -328,12 +423,29 @@
         vc.title = [NSString stringWithFormat:@"%d",stockid];
         [nav pushViewController:vc animated:YES];
     }else if(tableView == self.stockList){
-        self.isUpdate = YES;
+        
         TradeStockSelectTableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
-        [_stockNameBtn setTitle:cell.name.text forState:UIControlStateNormal];
+        
+        [self.stockList setHidden:NO];
+        [self.stockDetailList setHidden:NO];
+//        [self.stockNameBtn setTitle:cell.name.text forState:UIControlStateNormal];
+        [self getDetailMarket:cell.name.text];
+        
+    }else if(tableView == self.stockDetailList){
+        self.isUpdate = YES;
         [self.stockList setHidden:YES];
+        [self.stockDetailList setHidden:YES];
+        
+        TradeStockSelectTableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
+        
+        [_stockNameBtn setTitle:cell.name.text forState:UIControlStateNormal];
         [self.data removeAllObjects];
-        [self getAllHistory:1 WithName:self.stockNameBtn.titleLabel.text];
+        if([self.stockNameBtn.titleLabel.text isEqualToString:@"全部"]){
+            self.isUpdate1 = YES;
+            [self getAll:1 withName:@""];
+        }else{
+            [self getAllHistory:1 WithName:cell.name.text];
+        }
     }
     
     
@@ -342,16 +454,29 @@
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     // 下拉到最底部时显示更多数据
-    if((UITableView*)scrollView == self.stockList){
+    if((UITableView*)scrollView == self.stockList || (UITableView*)scrollView == self.stockDetailList){
         return;
     }
-    if(!self.isUpdate){
-        
-        return;
+    
+    if([self.stockNameBtn.titleLabel.text isEqualToString:@"全部"]){
+        if(!self.isUpdate1){
+            
+            return;
+        }
+        if(self.isUpdate1 && scrollView.contentOffset.y > ((scrollView.contentSize.height - scrollView.frame.size.height))){
+            [self getAll:self.currentPage1+1  withName:@""];
+        }
+    
+    }else{
+        if(!self.isUpdate){
+            
+            return;
+        }
+        if(self.isUpdate && scrollView.contentOffset.y > ((scrollView.contentSize.height - scrollView.frame.size.height))){
+            [self getAllHistory:self.currentPage+1 WithName:self.stockNameBtn.titleLabel.text];
+        }
     }
-    if(self.isUpdate && scrollView.contentOffset.y > ((scrollView.contentSize.height - scrollView.frame.size.height))){
-        [self getAllHistory:self.currentPage+1 WithName:self.stockNameBtn.titleLabel.text];
-    }
+    
 }
 
 @end

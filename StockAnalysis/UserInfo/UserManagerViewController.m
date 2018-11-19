@@ -114,7 +114,7 @@
                                          @"password": password};
             
             NSString* url = @"account/login/email";
-            [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+//            [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
             [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
                 if(success){
                     [HUDUtil hideHudView];
@@ -149,7 +149,7 @@
             
             
             NSString* url = @"account/login/phone";
-            [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+//            [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
             [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
                 if(success){
                     [HUDUtil hideHudView];

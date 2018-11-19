@@ -173,7 +173,7 @@
                                      };
             
             NSDictionary* file = @{@"paycode":fullPath};
-            [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+//            [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
             [[HttpRequest getInstance] postWithURLWithFile:url parma:params file:file block:^(BOOL success, id data) {
                 if(success){
                     [HUDUtil hideHudView];

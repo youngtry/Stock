@@ -102,7 +102,7 @@
     NSDictionary* params = @{@"page":@(1),
                              @"page_limit":@(10)
                              };
-    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+//    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
         if(success){
             [HUDUtil hideHudView];
@@ -151,9 +151,13 @@
     
     NSString* asset = @"";
     NSString* name = _allNameBtn.titleLabel.text;
-    if([type isEqualToString:@"全部"]){
-        
-    }else{
+//    if([type isEqualToString:@"全部"]){
+//
+//    }else{
+//        mode = mode;
+//    }
+    
+    if(![name isEqualToString:@"全部"]){
         asset = name;
     }
     
@@ -164,12 +168,12 @@
                              @"mode":mode,
                              @"asset":asset
                              };
-    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+//    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
         if(success){
             [HUDUtil hideHudView];
             if([[data objectForKey:@"ret"] intValue] == 1){
-                NSArray* list = [[data objectForKey:@"data"] objectForKey:@"trades"];
+                NSArray* list = [[data objectForKey:@"data"] objectForKey:@"bills"];
                 if(list.count>0){
                     [self.billArray addObjectsFromArray:list];
                     [self.billList reloadData];
@@ -305,10 +309,24 @@
         }
         if(self.billArray.count>indexPath.row){
             NSDictionary* info = self.billArray[indexPath.row];
-            cell.nameLabel.text = [info objectForKey:@"market"];
+            cell.nameLabel.text = [info objectForKey:@"asset"];
             cell.dateLabel.text = [info objectForKey:@"updated_at"];
             cell.stateLabel.text = [info objectForKey:@"state"];
             cell.modeLabel.text = [info objectForKey:@"mode"];
+            
+            if([cell.modeLabel.text isEqualToString:@"sell"]){
+                cell.modeLabel.text = @"卖出";
+            }else if([cell.modeLabel.text isEqualToString:@"buy"]){
+                cell.modeLabel.text = @"买入";
+            }else if([cell.modeLabel.text isEqualToString:@"recharge"]){
+                cell.modeLabel.text = @"充值";
+            }else if([cell.modeLabel.text isEqualToString:@"withdraw"]){
+                cell.modeLabel.text = @"提现";
+            }else if([cell.modeLabel.text isEqualToString:@"toexchange"]){
+                cell.modeLabel.text = @"转入交易";
+            }else if([cell.modeLabel.text isEqualToString:@"toshop"]){
+                cell.modeLabel.text = @"转入商户";
+            }
         }
         
         
@@ -366,11 +384,23 @@
                 [self.allNameBtn setTitle:name forState:UIControlStateNormal];
                 [self.nameArrrow setHidden:YES];
                 
+                self.isUpdate = YES;
+                [self.billArray removeAllObjects];
+                [self.billList reloadData];
+                self.page = 1;
+                [self getTrade:1];
+                
             }
             
             if(tableView == self.typeList){
                 [self.allTypeBtn setTitle:name forState:UIControlStateNormal];
                 [self.typeArrow setHidden:YES];
+                
+                self.isUpdate = YES;
+                [self.billArray removeAllObjects];
+                [self.billList reloadData];
+                self.page = 1;
+                [self getTrade:1];
             }
             
             [tableView setHidden:YES];

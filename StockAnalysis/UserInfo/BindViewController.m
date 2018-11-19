@@ -151,7 +151,7 @@
                                  @"email_captcha":_verify2Input.text,
                                  @"district":self.distrcLabel.text
                                  };
-        [HUDUtil showHudViewInSuperView:self.navigationController.view withMessage:@"请求中…"];
+//        [HUDUtil showHudViewInSuperView:self.navigationController.view withMessage:@"请求中…"];
         [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
             if(success){
                 [HUDUtil hideHudView];
@@ -169,7 +169,7 @@
                                  @"phone_captcha":_verify2Input.text,
                                  @"email_captcha":_verify1Input.text
                                  };
-        [HUDUtil showHudViewInSuperView:self.navigationController.view withMessage:@"请求中…"];
+//        [HUDUtil showHudViewInSuperView:self.navigationController.view withMessage:@"请求中…"];
         [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
             if(success){
                 [HUDUtil hideHudView];

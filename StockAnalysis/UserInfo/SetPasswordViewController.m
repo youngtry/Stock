@@ -368,7 +368,7 @@
     NSDictionary *parameters = @{  @"gesture": gesture ,
                                    @"verity_token":[[AppData getInstance] getTempVerify]
                                    };
-    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+//    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
     if([self.settitle.text isEqualToString:@"设置手势密码"]){
         NSString* url = @"account/set_gesture";
         [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
