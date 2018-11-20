@@ -561,16 +561,16 @@
 }
 
 -(void)getTradeInfo:(NSString*)name{
-    NSArray *dicParma = @[name
-//                          @(10),
-//                          @"0.1"
+    NSArray *dicParma = @[name,
+                          @(100),
+                          @"0.0001"
                           ];
-    NSDictionary *dicAll = @{@"method":@"deals.subscribe",@"params":dicParma,@"id":@(PN_DepthSubscribe)};
+    NSDictionary *dicAll = @{@"method":@"depth.subscribe",@"params":dicParma,@"id":@(PN_DepthSubscribe)};
     
     NSString *strAll = [dicAll JSONString];
     
     
-    [[SocketInterface sharedManager] sendRequest:strAll withName:@"deals.subscribe"];
+    [[SocketInterface sharedManager] sendRequest:strAll withName:@"depth.subscribe"];
 }
 
 -(void)requestAnalysis{
@@ -828,6 +828,11 @@
     [self.marketPriceView setHidden:NO];
     
     [self.editPriceContainer setHidden:YES];
+    
+    self.purchaseAmountInput.text = @"数量";
+    if([self.title isEqualToString:@"买入"]){
+        self.purchaseAmountInput.text = @"金额";
+    }
 }
 
 - (IBAction)clickSelectBuyType:(id)sender {
@@ -937,7 +942,7 @@
     }
     NSString* url = @"exchange/trade/add";
 //    NSLog(@"self.marketPriceLabel.text  = %@",self.marketPriceLabel.text );
-    float price = [[self.marketPriceLabel.text substringFromIndex:[self.marketPriceLabel.text rangeOfString:@"¥"].location+[self.marketPriceLabel.text rangeOfString:@"¥"].length] floatValue];
+    float price = [self.purchasePriceInput.text floatValue];
     NSInteger limit = 1;
     if(!self.marketPriceView.isHidden){
         price = [[self.marketPriceLabel.text substringFromIndex:[self.marketPriceLabel.text rangeOfString:@"¥"].location+[self.marketPriceLabel.text rangeOfString:@"¥"].length] floatValue];
@@ -1289,39 +1294,122 @@
 //        NSLog(@"err = %@",err);
     }
 //    int requestID = [[data objectForKey:@"id"] intValue];
-    if([name isEqualToString:@"deals.update"]){
+    if([name isEqualToString:@"depth.update"]){
         
         NSArray* params = [data objectForKey:@"params"];
         
-        if(params.count == 2){
-            NSArray* result =params[1];
+        if(params.count > 2){
+            
+            NSInteger isadd = [params[0] integerValue];
+            
+            NSDictionary* result =params[1];
 //            NSLog(@"数据详情:%ld",result.count);
             
-            NSMutableArray* buy = [NSMutableArray new];
-            NSMutableArray* sell = [NSMutableArray new];
-            
-            for (NSDictionary* info in result) {
-                if([[info objectForKey:@"type"] isEqualToString:@"buy"]){
-                    [buy addObject:info];
-                }else if ([[info objectForKey:@"type"] isEqualToString:@"sell"]){
-                    [sell addObject:info];
-                }
-            }
-            
-            
-//            NSArray* ask = [result objectForKey:@"asks"];
-//            NSArray* bid = [result objectForKey:@"bids"];
+//            NSMutableArray* buy = [NSMutableArray new];
+//            NSMutableArray* sell = [NSMutableArray new];
 //
-            if(sell.count>0){
-                [self.asksArray removeAllObjects];
-                self.asksArray = [[NSMutableArray alloc] initWithArray:sell];
-                [self.askList reloadData];
+//            for (NSDictionary* info in result) {
+//                if([[info objectForKey:@"type"] isEqualToString:@"buy"]){
+//                    [buy addObject:info];
+//                }else if ([[info objectForKey:@"type"] isEqualToString:@"sell"]){
+//                    [sell addObject:info];
+//                }
+//            }
+            
+            
+            NSMutableArray* ask = [result objectForKey:@"asks"];
+            NSMutableArray* bid = [result objectForKey:@"bids"];
+
+//
+            if(ask.count>0){
+                NSMutableArray* temp = [NSMutableArray new];
+                for (NSArray* askdata in ask) {
+                    
+                    if([askdata[1] floatValue]>0){
+                        [temp addObject:askdata];
+                    }
+                }
+                
+                if(isadd == 1){
+                    [self.asksArray removeAllObjects];
+                    
+                    if(temp.count>5){
+                        [self.asksArray addObjectsFromArray:[temp subarrayWithRange:NSMakeRange(0, 5)]];
+                    }else{
+                        [self.asksArray addObjectsFromArray:temp];
+                    }
+                    
+                    [self.askList reloadData];
+                }else{
+                    NSMutableArray* temp1 = [NSMutableArray new];
+                    [temp1 addObjectsFromArray:self.asksArray];
+                    [temp1 addObjectsFromArray:temp];
+                    
+                    for (int i = 0; i < temp1.count; i ++) {
+                        for (int j = i + 1; j < temp1.count; j ++) {
+                            if ([temp1[i][0] floatValue] < [temp1[j][0] floatValue]) {
+                                NSArray* temp2 = temp1[i];
+                                temp1[i] = temp1[j];
+                                temp1[j] = temp2;
+                            }
+                        }
+                    }
+                    [self.asksArray removeAllObjects];
+                    if(temp1.count>5){
+                        [self.asksArray addObjectsFromArray:[temp1 subarrayWithRange:NSMakeRange(0, 5)]];
+                    }else{
+                        [self.asksArray addObjectsFromArray:temp1];
+                    }
+                    [self.askList reloadData];
+                }
+                
+                
+                
+                
             }
 
-            if(buy.count>0){
-                [self.bidsArray removeAllObjects];
-                self.bidsArray = [[NSMutableArray alloc] initWithArray:buy];
-                [self.bidsList reloadData];
+            if(bid.count>0){
+                
+                NSMutableArray* temp = [NSMutableArray new];
+                for (NSArray* askdata in bid) {
+                    
+                    if([askdata[1] floatValue]>0){
+                        [temp addObject:askdata];
+                    }
+                }
+                
+                if(isadd == 1){
+                    [self.bidsArray removeAllObjects];
+                    
+                    if(temp.count>5){
+                        [self.bidsArray addObjectsFromArray:[temp subarrayWithRange:NSMakeRange(0, 5)]];
+                    }else{
+                        [self.bidsArray addObjectsFromArray:temp];
+                    }
+                    
+                    [self.bidsList reloadData];
+                }else{
+                    NSMutableArray* temp1 = [NSMutableArray new];
+                    [temp1 addObjectsFromArray:self.bidsArray];
+                    [temp1 addObjectsFromArray:temp];
+                    
+                    for (int i = 0; i < temp1.count; i ++) {
+                        for (int j = i + 1; j < temp1.count; j ++) {
+                            if ([temp1[i][0] floatValue] < [temp1[j][0] floatValue]) {
+                                NSArray* temp2 = temp1[i];
+                                temp1[i] = temp1[j];
+                                temp1[j] = temp2;
+                            }
+                        }
+                    }
+                    [self.bidsArray removeAllObjects];
+                    if(temp1.count>5){
+                        [self.bidsArray addObjectsFromArray:[temp1 subarrayWithRange:NSMakeRange(0, 5)]];
+                    }else{
+                        [self.bidsArray addObjectsFromArray:temp1];
+                    }
+                    [self.bidsList reloadData];
+                }
             }
         }
         
@@ -1347,10 +1435,9 @@
 
             
             self.marketPriceLabel.text = [NSString stringWithFormat:@"¥%@",[info objectForKey:@"last"]];
-            
+            self.periodPrice.text =[NSString stringWithFormat:@"%.4f",[[info objectForKey:@"last"] floatValue]];
             if(!_isGetPrice){
                 _isGetPrice = YES;
-                self.periodPrice.text =[NSString stringWithFormat:@"%.4f",[[info objectForKey:@"open"] floatValue]];
                 self.purchasePriceInput.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"last"]];
                 NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
                 BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
@@ -1482,16 +1569,16 @@
         }
         
         if(self.asksArray.count>indexPath.row){
-            NSDictionary* info = self.asksArray[indexPath.row];
+            NSArray* info = self.asksArray[indexPath.row];
             if(_numberDepth == 4){
-                cell.price.text = [NSString stringWithFormat:@"%.4f",[[info objectForKey:@"price"] floatValue]] ;
+                cell.price.text = [NSString stringWithFormat:@"%.4f",[info[0] floatValue]] ;
             }else if (_numberDepth == 1){
-                cell.price.text = [NSString stringWithFormat:@"%.1f000",[[info objectForKey:@"price"] floatValue]] ;
+                cell.price.text = [NSString stringWithFormat:@"%.1f000",[info[0] floatValue]] ;
             }else if (_numberDepth == 0){
-                cell.price.text = [NSString stringWithFormat:@"%.0f.0000",[[info objectForKey:@"price"] floatValue]] ;
+                cell.price.text = [NSString stringWithFormat:@"%.0f.0000",[info[0] floatValue]] ;
             }
             
-            cell.amount.text = [NSString stringWithFormat:@"%.3f",[[info objectForKey:@"amount"] floatValue]];
+            cell.amount.text = [NSString stringWithFormat:@"%.3f",[info[1] floatValue]];
             cell.price.textColor = [UIColor colorWithRed:236/255.0 green:102/255.0 blue:95/255.0 alpha:1];
         }
         
@@ -1504,16 +1591,16 @@
             cell = [[NSBundle mainBundle] loadNibNamed:@"askAndBidsTableViewCell" owner:self options:nil].firstObject;
         }
         if(self.bidsArray.count>indexPath.row){
-            NSDictionary* info = self.bidsArray[indexPath.row];
+            NSArray* info = self.bidsArray[indexPath.row];
             if(_numberDepth == 4){
-                cell.price.text = [NSString stringWithFormat:@"%.4f",[[info objectForKey:@"price"] floatValue]] ;
+                cell.price.text = [NSString stringWithFormat:@"%.4f",[info[0] floatValue]] ;
             }else if (_numberDepth == 1){
-                cell.price.text = [NSString stringWithFormat:@"%.1f000",[[info objectForKey:@"price"] floatValue]] ;
+                cell.price.text = [NSString stringWithFormat:@"%.1f000",[info[0] floatValue]] ;
             }else if (_numberDepth == 0){
-                cell.price.text = [NSString stringWithFormat:@"%.0f.0000",[[info objectForKey:@"price"] floatValue]] ;
+                cell.price.text = [NSString stringWithFormat:@"%.0f.0000",[info[0] floatValue]] ;
             }
             
-            cell.amount.text = [NSString stringWithFormat:@"%.3f",[[info objectForKey:@"amount"] floatValue]];
+            cell.amount.text = [NSString stringWithFormat:@"%.3f",[info[0] floatValue]];
             
             cell.price.textColor = [UIColor colorWithRed:51/255.0 green:143/255.0 blue:71/255.0 alpha:1];
         }
@@ -1609,6 +1696,8 @@
         
     }
     if(tableView == self.stcokInfoView){
+        
+        [[SocketInterface sharedManager] openWebSocket];
         TradeStockInfoTableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
         
         [self.marketNamelabel setTitle:cell.name.text forState:UIControlStateNormal];

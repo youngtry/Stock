@@ -257,6 +257,7 @@
         [self.stockList setHidden:NO];
     }else{
         [self.stockList setHidden:YES];
+        [self.stockDetailList setHidden:YES];
     }
 }
 

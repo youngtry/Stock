@@ -140,6 +140,15 @@
         
     }];
     
+    
+    NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
+    BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
+    if(!islogin){
+//        [HUDUtil showSystemTipView:self.navigationController title:@"提示" withContent:@"未登录,请先登录"];
+        [self closeAllBtnView];
+        return;
+    }
+    
     NSDictionary* parameters = @{@"page":@"1",
                                  @"page_limit":@"10",
                                  @"order_by":@"price"
@@ -970,6 +979,9 @@
             self.volumeLabel.text =[NSString stringWithFormat:@"%d",[[info objectForKey:@"volume"] intValue]];
             self.volumeLabel.text = [self countNumAndChangeformat:self.volumeLabel.text];
             float rate = (close-open)/open*100;
+            if(open == 0){
+                rate = 0.00;
+            }
             if(rate>=0){
                 self.dealRateLabel.text = [NSString stringWithFormat:@"+%.2f%%",rate];
             }else{

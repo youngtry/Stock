@@ -16,7 +16,7 @@
 @property(nonatomic,strong)UITableView *tableView;
 @property(nonatomic,strong)NSMutableArray *data;
 @property(nonatomic,strong)UIView *rankContainer;
-@property(nonatomic,strong)NSArray* items;
+@property(nonatomic,strong)NSMutableArray* items;
 @end
 
 @implementation StockInfoViewController
@@ -31,7 +31,7 @@
     [self.view addSubview:self.tableView];
     self.tableView.tableHeaderView = self.rankContainer;
     
-    self.items = @[];
+    self.items = [NSMutableArray new];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -55,11 +55,17 @@
     
     
     
+    [self getStockWithSort:@"price" withRate:@"desc" withPage:1];
+    
+    
+}
+
+-(void)getStockWithSort:(NSString*)sort withRate:(NSString*)rate withPage:(NSInteger)page{
     if([self.title containsString:@"china_"]){
         NSString* asset = [self.title substringFromIndex:6];
         NSLog(@"asset = %@",asset);
-        NSDictionary* parameters = @{@"order_by":@"price",
-                                     @"order":@"desc",
+        NSDictionary* parameters = @{@"order_by":sort,
+                                     @"order":rate,
                                      @"asset":asset
                                      };
         NSString* url = @"market/item";
@@ -70,6 +76,7 @@
                 [HUDUtil hideHudView];
                 //            NSLog(@"list = %@",data);
                 if([[data objectForKey:@"ret"] intValue] == 1){
+                    [_items removeAllObjects];
                     _items = [[data objectForKey:@"data"] objectForKey:@"items"];
                     if(_items){
                         //                    NSLog(@"items = %@,数量为：%lu",_items,(unsigned long)_items.count);
@@ -92,7 +99,7 @@
             
             if(success){
                 [HUDUtil hideHudView];
-//                NSLog(@"list = %@",data);
+                //                NSLog(@"list = %@",data);
                 if([[data objectForKey:@"ret"] intValue] == 1){
                     _items = [[data objectForKey:@"data"] objectForKey:@"assets"];
                     if(_items){
@@ -105,8 +112,6 @@
             }
         }];
     }
-    
-    
 }
 
 -(void)getSelectInfo{
@@ -235,7 +240,13 @@
         [sort2 setTitleWithFont:12 withColor:kColor(88, 88, 88)];
         sort2.block = ^(BOOL isUp){
             //TODO 数据排序，reload
-            [weakSelf.tableView reloadData];
+            if(isUp){
+                [weakSelf getStockWithSort:@"price" withRate:@"desc" withPage:1];
+            }else{
+                [weakSelf getStockWithSort:@"price" withRate:@"asc" withPage:1];
+            }
+            
+//            [weakSelf.tableView reloadData];
         };
         sort2.centerY = _rankContainer.centerY;
         sort2.right = kScreenWidth-112;
@@ -245,7 +256,12 @@
         [sort3 setTitleWithFont:12 withColor:kColor(88, 88, 88)];
         sort3.block = ^(BOOL isUp){
             //TODO 数据排序，reload
-            [weakSelf.tableView reloadData];
+            if(isUp){
+                [weakSelf getStockWithSort:@"increase" withRate:@"desc" withPage:1];
+            }else{
+                [weakSelf getStockWithSort:@"increase" withRate:@"asc" withPage:1];
+            }
+//            [weakSelf.tableView reloadData];
         };
         sort3.right = kScreenWidth-10;
         sort3.centerY = _rankContainer.centerY;
