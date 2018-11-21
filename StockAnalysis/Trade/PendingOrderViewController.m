@@ -430,7 +430,11 @@
         [self.stockList setHidden:NO];
         [self.stockDetailList setHidden:NO];
 //        [self.stockNameBtn setTitle:cell.name.text forState:UIControlStateNormal];
-        [self getDetailMarket:cell.name.text];
+        if([cell.name.text isEqualToString:@"全部"]){
+            self.isUpdate1 = YES;
+            [self getAll:1 withName:@""];
+        }
+//        [self getDetailMarket:cell.name.text];
         
     }else if(tableView == self.stockDetailList){
         self.isUpdate = YES;

@@ -65,8 +65,7 @@
 //    NSLog(@"viewWillAppear");
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES];
-    
-    [self.navigationController setNavigationBarHidden:YES];
+    self.tabBarController.tabBar.hidden = NO;
     
     [SocketInterface sharedManager].delegate = self;
     [[SocketInterface sharedManager] openWebSocket];

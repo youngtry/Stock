@@ -90,8 +90,8 @@ static SocketInterface* _instance = nil;
 
 - (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error;
 {
-    NSLog(@":( Websocket Failed With Error %@", error);
-
+    NSLog(@":( Websocket Failed With Error %@ ", error);
+    
     _webSocket = nil;
 }
 

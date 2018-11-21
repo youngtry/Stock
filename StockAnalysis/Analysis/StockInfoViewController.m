@@ -17,6 +17,10 @@
 @property(nonatomic,strong)NSMutableArray *data;
 @property(nonatomic,strong)UIView *rankContainer;
 @property(nonatomic,strong)NSMutableArray* items;
+@property(nonatomic,assign)NSInteger currentPage;
+@property(nonatomic,assign)BOOL isUpdate;
+@property(nonatomic,strong)NSString* selectSort;
+@property(nonatomic,strong)NSString* selectOrder;
 @end
 
 @implementation StockInfoViewController
@@ -32,13 +36,18 @@
     self.tableView.tableHeaderView = self.rankContainer;
     
     self.items = [NSMutableArray new];
+    self.currentPage = 0;
+    self.isUpdate = YES;
+    
+    _selectSort = @"price";
+    _selectOrder = @"desc";
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     
 //    [HUDUtil showHudViewInSuperView:self.view withMessage:@"数据请求中"];
     if([self.title isEqualToString:@"自选"]){
-        [self getSelectInfo];
+        [self getSelectInfo:_selectSort withRate:_selectOrder withPage:1];
     }
     
     if([self.title isEqualToString:@"指数"]){
@@ -53,7 +62,8 @@
         [self getGangmeiInfo];
     }
     
-    
+    self.isUpdate = NO;
+    self.currentPage = 0;
     
     [self getStockWithSort:@"price" withRate:@"desc" withPage:1];
     
@@ -103,7 +113,6 @@
                 if([[data objectForKey:@"ret"] intValue] == 1){
                     _items = [[data objectForKey:@"data"] objectForKey:@"assets"];
                     if(_items){
-                        //                    NSLog(@"items = %@,数量为：%lu",_items,(unsigned long)_items.count);
                         [self.tableView reloadData];
                     }
                 }else{
@@ -114,7 +123,11 @@
     }
 }
 
--(void)getSelectInfo{
+-(void)getSelectInfo:(NSString*)sort withRate:(NSString*)rate withPage:(NSInteger)page{
+    
+    if(page == 1){
+        [_items removeAllObjects];
+    }
 
     NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
     
@@ -123,10 +136,10 @@
         [HUDUtil hideHudView];
         return;
     }
-    NSDictionary* parameters = @{@"page":@(1),
+    NSDictionary* parameters = @{@"page":@(page),
                                  @"page_limit":@(10),
-                                 @"order_by":@"price",
-                                 @"order":@"desc"
+                                 @"order_by":sort,
+                                 @"order":rate
                                  };
     NSString* url = @"market/follow/list";
     
@@ -136,11 +149,20 @@
             [HUDUtil hideHudView];
 //            NSLog(@"list = %@",data);
             if([[data objectForKey:@"ret"] intValue] == 1){
-                _items = [[data objectForKey:@"data"] objectForKey:@"items"];
-                if(_items){
-                    //                    NSLog(@"items = %@,数量为：%lu",_items,(unsigned long)_items.count);
-                    [self.tableView reloadData];
+//                _items
+                NSArray* items = [[data objectForKey:@"data"] objectForKey:@"items"];
+                if(items.count == 0){
+                    self.isUpdate = NO;
+                    self.currentPage = 0;
+                    
+                }else{
+                    [_items addObjectsFromArray:items];
+                    if(_items){
+                        //                    NSLog(@"items = %@,数量为：%lu",_items,(unsigned long)_items.count);
+                        [self.tableView reloadData];
+                    }
                 }
+                
             }else{
                 [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
             }
@@ -240,11 +262,28 @@
         [sort2 setTitleWithFont:12 withColor:kColor(88, 88, 88)];
         sort2.block = ^(BOOL isUp){
             //TODO 数据排序，reload
-            if(isUp){
-                [weakSelf getStockWithSort:@"price" withRate:@"desc" withPage:1];
+            if([weakSelf.title isEqualToString:@"自选"]){
+                _selectSort = @"price";
+                if(isUp){
+                    _selectOrder  = @"desc";
+                    
+                }else{
+                    _selectOrder  = @"asc";
+                    
+                }
+                
+                weakSelf.isUpdate = YES;
+                weakSelf.currentPage = 0;
+                
+                [weakSelf getSelectInfo:_selectSort withRate:_selectOrder withPage:1];
             }else{
-                [weakSelf getStockWithSort:@"price" withRate:@"asc" withPage:1];
+                if(isUp){
+                    [weakSelf getStockWithSort:@"price" withRate:@"desc" withPage:1];
+                }else{
+                    [weakSelf getStockWithSort:@"price" withRate:@"asc" withPage:1];
+                }
             }
+            
             
 //            [weakSelf.tableView reloadData];
         };
@@ -256,11 +295,28 @@
         [sort3 setTitleWithFont:12 withColor:kColor(88, 88, 88)];
         sort3.block = ^(BOOL isUp){
             //TODO 数据排序，reload
-            if(isUp){
-                [weakSelf getStockWithSort:@"increase" withRate:@"desc" withPage:1];
+            if([weakSelf.title isEqualToString:@"自选"]){
+                _selectSort = @"increase";
+                if(isUp){
+                    _selectOrder  = @"desc";
+                    
+                }else{
+                    _selectOrder  = @"asc";
+                    
+                }
+                
+                weakSelf.isUpdate = YES;
+                weakSelf.currentPage = 0;
+                
+                [weakSelf getSelectInfo:_selectSort withRate:_selectOrder withPage:1];
             }else{
-                [weakSelf getStockWithSort:@"increase" withRate:@"asc" withPage:1];
+                if(isUp){
+                    [weakSelf getStockWithSort:@"increase" withRate:@"desc" withPage:1];
+                }else{
+                    [weakSelf getStockWithSort:@"increase" withRate:@"asc" withPage:1];
+                }
             }
+            
 //            [weakSelf.tableView reloadData];
         };
         sort3.right = kScreenWidth-10;
@@ -350,6 +406,23 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 70;
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    // 下拉到最底部时显示更多数据
+    if(![self.title isEqualToString:@"自选"]){
+        return;
+    }
+    
+    if(!self.isUpdate){
+        
+        return;
+    }
+    if(self.isUpdate && scrollView.contentOffset.y > ((scrollView.contentSize.height - scrollView.frame.size.height))){
+        [self getSelectInfo:_selectSort withRate:_selectOrder withPage:self.currentPage+1];
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning {

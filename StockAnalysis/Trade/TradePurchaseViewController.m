@@ -206,7 +206,7 @@
     }else if([self.title isEqualToString:@"买入"]){
         [self.purchaseBtn setBackgroundColor:[UIColor colorWithRed:75.0/255.0 green:185.0/255.0 blue:112.0/255.0 alpha:1.0]];
     }
-    
+//    [[SocketInterface sharedManager] closeWebSocket];
     [SocketInterface sharedManager].delegate = self;
     [[SocketInterface sharedManager] openWebSocket];
     
@@ -217,7 +217,7 @@
     self.bidsList.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     [self.dealArray removeAllObjects];
-    [self requestAnalysis];
+    
     
     [self.enterKLine setUserInteractionEnabled:YES];
     
@@ -440,7 +440,12 @@
         [self.purchaseBtn setBackgroundColor:[UIColor grayColor]];
         [self.purchaseBtn setEnabled:NO];
     }
+//    [[SocketInterface sharedManager] closeWebSocket];
+    [SocketInterface sharedManager].delegate = self;
+    [[SocketInterface sharedManager] openWebSocket];
     
+    
+    [self requestAnalysis];
 //    UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
 //
 //    NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
@@ -461,13 +466,6 @@
 //
 //        [temp presentViewController:alert animated:YES completion:nil];
 //    }
-    
-    
-  
-    
-    
-    
-    
     
 }
 
@@ -775,6 +773,9 @@
 }
 
 -(void)setStcokInfo:(NSDictionary*)info{
+    
+    
+    
     
     [self.marketNamelabel setTitle:[info objectForKey:@"market"] forState:UIControlStateNormal];
     
@@ -1697,7 +1698,9 @@
     }
     if(tableView == self.stcokInfoView){
         
+        [SocketInterface sharedManager].delegate = self;
         [[SocketInterface sharedManager] openWebSocket];
+        
         TradeStockInfoTableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
         
         [self.marketNamelabel setTitle:cell.name.text forState:UIControlStateNormal];
