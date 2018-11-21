@@ -24,6 +24,7 @@
     _pageController.delegate = self;
     _pageController.dataSource = self;
     _pageController.view.frame=self.bounds;
+    _disableIndex = [NSMutableArray new];
     [self addSubview:_pageController.view];
 }
 
@@ -37,7 +38,7 @@
 }
 
 -(void)updateTab:(NSInteger)index{
-    NSLog(@"updateTab---%lu",index);
+    NSLog(@"updateTab---%ld",(long)index);
     //默认展示的第一个页面
     [_pageController setViewControllers:[NSArray arrayWithObject:[self pageControllerAtIndex:index]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
     
@@ -55,6 +56,9 @@
         return nil;
     }
     index++;
+    if( [_disableIndex containsObject:[NSNumber numberWithInteger:index]]){
+        return nil;
+    }
     return [self pageControllerAtIndex:index];
 }
 //返回前一个页面
@@ -62,10 +66,13 @@
     //判断当前这个页面是第几个页面
     NSInteger index=[_controllers indexOfObject:viewController];
     //如果是第一个页面
-    if(index==0){
+    if(index==0 ){
         return nil;
     }
     index--;
+    if( [_disableIndex containsObject:[NSNumber numberWithInteger:index]]){
+        return nil;
+    }
     return [self pageControllerAtIndex:index];
     
 }
@@ -80,7 +87,10 @@
 -(void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray<UIViewController *> *)previousViewControllers transitionCompleted:(BOOL)completed{
     NSLog(@"didFinishAnimating");
     NSInteger index=[_controllers indexOfObject:pageViewController.viewControllers[0]];
-    _tabSwitch(index);
+    if( ![_disableIndex containsObject:[NSNumber numberWithInteger:index]]){
+        _tabSwitch(index);
+    }
+    
 }
 //开始滑动的时候触发
 -(void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray<UIViewController *> *)pendingViewControllers{

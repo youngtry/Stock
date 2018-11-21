@@ -11,10 +11,12 @@
 #import "JSONKit.h"
 
 static SocketInterface* _instance = nil;
+static int _tryTime = 0;
 @interface SocketInterface()<SRWebSocketDelegate>
 {
     SRWebSocket *_webSocket;
     id response;
+    NSMutableArray* requestArray;
 }
 @end
 
@@ -32,6 +34,7 @@ static SocketInterface* _instance = nil;
     if(self){
         [self reconnect:nil];
         response = nil;
+        requestArray = [NSMutableArray new];
         self.requestMethod = @"";
     }
     return self;
@@ -72,10 +75,15 @@ static SocketInterface* _instance = nil;
 }
 
 -(void)sendRequest:(NSString *)request withName:(NSString*)name{
-//    NSLog(@"sendResuet : %@ ,%@",name,request);
+    NSLog(@"sendResuet : %@ ,%@",name,request);
     self.requestMethod = name;
 //    request = @"{\"method\":\"kline.query\",\"params\":[\"LDGFRMB\",1533571200,1533600000,600],\"id\":1}";
-    [_webSocket send:request];
+    if(_webSocket && _webSocket.readyState == SR_OPEN ){
+        [_webSocket send:request];
+    }else{
+        [requestArray addObject:request];
+    }
+    
 }
 
 ///--------------------------------------
@@ -85,7 +93,14 @@ static SocketInterface* _instance = nil;
 
 - (void)webSocketDidOpen:(SRWebSocket *)webSocket;
 {
-    NSLog(@":( Websocket open");
+    NSLog(@":( Websocket open %ld",(long)webSocket.readyState);
+    for (NSString* request in requestArray) {
+        [self sendRequest:request withName:@""];
+    }
+    
+    [requestArray removeAllObjects];
+    
+    _tryTime = 0;
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error;
@@ -93,6 +108,11 @@ static SocketInterface* _instance = nil;
     NSLog(@":( Websocket Failed With Error %@ ", error);
     
     _webSocket = nil;
+    
+    if(_tryTime<= 1){
+        _tryTime ++;
+        [self openWebSocket];
+    }
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessageWithString:(nonnull NSString *)string
@@ -104,7 +124,7 @@ static SocketInterface* _instance = nil;
 - (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean;
 {
     NSLog(@"WebSocket closed");
-
+    [requestArray removeAllObjects];
     _webSocket = nil;
 }
 

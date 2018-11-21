@@ -165,9 +165,9 @@
             cell.typeLabel.text = @"卖出";
             cell.isBuyIn = NO;
         }
-        cell.priceLabel.text = [data objectForKey:@"price"];
-        cell.amountLabel.text = [data objectForKey:@"num"];
-        cell.realLabel.text = [data objectForKey:@"deal_money"];
+        cell.priceLabel.text = [NSString stringWithFormat:@"%.8f",[[data objectForKey:@"price"] floatValue]] ;
+        cell.amountLabel.text = [NSString stringWithFormat:@"%.8f",[[data objectForKey:@"num"] floatValue]] ;
+        cell.realLabel.text = [NSString stringWithFormat:@"%.8f",[[data objectForKey:@"deal_money"] floatValue]] ;
         cell.tradeID = [data objectForKey:@"id"];
         [cell.cancelBtn setHidden:YES];
         [cell.stateLabel setHidden:NO];
@@ -175,7 +175,7 @@
         if([cell.stateLabel.text isEqualToString:@"done"]){
             cell.stateLabel.text = @"已完成";
         }else if([cell.stateLabel.text isEqualToString:@"cancel"]){
-            cell.stateLabel.text = @"已取消";
+            cell.stateLabel.text = @"已撤销";
         }
     }
     

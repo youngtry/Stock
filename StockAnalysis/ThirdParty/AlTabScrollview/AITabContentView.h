@@ -25,6 +25,8 @@ typedef void(^TabSwitchBlcok)(NSInteger index);
  */
 @property (nonatomic,strong)TabSwitchBlcok tabSwitch;
 
+@property (nonatomic,strong)NSMutableArray* disableIndex;
+
 
 -(void)updateTab:(NSInteger)index;
 

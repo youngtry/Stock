@@ -521,7 +521,17 @@
     
     [self requestSubscribe];
     
-    [self getTradeInfo:_tradeName];
+    NSString* depth = @"0.0001";
+    
+    if(_numberDepth == 4){
+        depth = @"0.0001";
+    }else if (_numberDepth == 1){
+        depth = @"0.1";
+    }else if(_numberDepth == 0){
+        depth = @"1";
+    }
+    
+    [self getTradeInfo:_tradeName withDepth:depth];
     
 //    NSDictionary* parameters = @{@"order_by":@"price",
 //                                 @"order":@"desc",
@@ -558,10 +568,10 @@
 //    }];
 }
 
--(void)getTradeInfo:(NSString*)name{
+-(void)getTradeInfo:(NSString*)name withDepth:(NSString*)depth{
     NSArray *dicParma = @[name,
                           @(100),
-                          @"0.0001"
+                          depth
                           ];
     NSDictionary *dicAll = @{@"method":@"depth.subscribe",@"params":dicParma,@"id":@(PN_DepthSubscribe)};
     
@@ -773,15 +783,22 @@
 }
 
 -(void)setStcokInfo:(NSDictionary*)info{
-    
-    
-    
-    
+ 
     [self.marketNamelabel setTitle:[info objectForKey:@"market"] forState:UIControlStateNormal];
     
     [self requestSubscribe];
     
-    [self getTradeInfo:[info objectForKey:@"market"]];
+    NSString* depth = @"0.0001";
+    
+    if(_numberDepth == 4){
+        depth = @"0.0001";
+    }else if (_numberDepth == 1){
+        depth = @"0.1";
+    }else if(_numberDepth == 0){
+        depth = @"1";
+    }
+    
+    [self getTradeInfo:[info objectForKey:@"market"] withDepth:depth];
     
 }
 
@@ -846,18 +863,21 @@
 - (IBAction)clickFour:(id)sender {
     [self.depthView setHidden:YES];
     _numberDepth = 4;
+    [self getTradeInfo:self.marketNamelabel.titleLabel.text withDepth:@"0.0001"];
     [self.askList reloadData];
     [self.bidsList reloadData];
 }
 - (IBAction)clickOne:(id)sender {
     [self.depthView setHidden:YES];
     _numberDepth = 1;
+    [self getTradeInfo:self.marketNamelabel.titleLabel.text withDepth:@"0.1"];
     [self.askList reloadData];
     [self.bidsList reloadData];
 }
 - (IBAction)clickZero:(id)sender {
     [self.depthView setHidden:YES];
     _numberDepth = 0;
+    [self getTradeInfo:self.marketNamelabel.titleLabel.text withDepth:@"1"];
     [self.askList reloadData];
     [self.bidsList reloadData];
 }
@@ -1240,7 +1260,7 @@
                              @"mode":mode,
                              @"state":@"pending"
                              };
-    
+    NSLog(@"获取pending挂单数据请求参数：%@",params);
 //    [HUDUtil showHudViewInSuperView:self.view withMessage:@"数据加载中……"];
     [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
 //        [HUDUtil hideHudView];
@@ -1252,6 +1272,9 @@
                     self.isUpdate = NO;
 //                    [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"全部加载完毕"];
                 }else{
+                    
+                    NSLog(@"挂单数据为：%@",trades);
+                    
                     [self.dealArray addObjectsFromArray:trades];
                     [self.dealList reloadData];
                 }
@@ -1622,9 +1645,9 @@
             cell.typeLabel.text = [info objectForKey:@"mode"];
             cell.stockName.text = [info objectForKey:@"market"];
             cell.timeLabel.text = [info objectForKey:@"updated_at"];
-            cell.priceLabel.text = [info objectForKey:@"price"];
-            cell.amountLabel.text = [info objectForKey:@"num"];
-            cell.realLabel.text = [info objectForKey:@"deal_money"];
+            cell.priceLabel.text = [NSString stringWithFormat:@"%.8f",[[info objectForKey:@"price"] floatValue]] ;
+            cell.amountLabel.text = [NSString stringWithFormat:@"%.8f",[[info objectForKey:@"num"] floatValue]] ;
+            cell.realLabel.text = [NSString stringWithFormat:@"%.8f",[[info objectForKey:@"deal_money"] floatValue]] ;
             //        cell.typeLabel.text = [self.dealData objectForKey:@"DealType"];
             cell.tradeID = [info objectForKey:@"id"];
             
@@ -1733,6 +1756,7 @@
         [self.bidsList reloadData];
         
     }
+    
     
     if(tableView == self.askList || tableView == self.bidsList){
         askAndBidsTableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];

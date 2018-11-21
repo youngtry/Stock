@@ -217,6 +217,21 @@
         cell.amountLabel.text = [data objectForKey:@"num"];
         cell.realLabel.text = [data objectForKey:@"deal_money"];
         cell.tradeID = [data objectForKey:@"id"];
+        [cell.cancelBtn setHidden:YES];
+        [cell.stateLabel setHidden:NO];
+        
+        if([[data objectForKey:@"state"] isEqualToString:@"pending"]){
+            [cell.cancelBtn setHidden:NO];
+            [cell.stateLabel setHidden:YES];
+        }
+        
+        if([[data objectForKey:@"state"] isEqualToString:@"done"]){
+            cell.stateLabel.text = @"已完成";
+        }
+        
+        if([[data objectForKey:@"state"] isEqualToString:@"cancel"]){
+            cell.stateLabel.text = @"已撤销";
+        }
     }
     
     return cell;

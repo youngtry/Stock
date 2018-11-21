@@ -70,25 +70,31 @@
         self.typeLabel.text = @"卖出";
         [self.typeLabel setTextColor:kSoldOutRed];
     }
-    
-    self.timeLabel.text = [self.stockInfo objectForKey:@"updated_at"];
+    float deal_money = [[self.stockInfo objectForKey:@"deal_money"] floatValue];
+    float deal_stock = [[self.stockInfo objectForKey:@"deal_stock"] floatValue];
+    float price = (float)deal_money/(float)deal_stock;
+    if(deal_stock == 0){
+        price = 0;
+    }
+    float fee = [[self.stockInfo objectForKey:@"fee"] floatValue];
+    self.timeLabel.text =  [self.stockInfo objectForKey:@"created_at"];
     self.time2Label.text = [self.stockInfo objectForKey:@"updated_at"];
     self.time3Label.text = [self.stockInfo objectForKey:@"updated_at"];
     
     self.nameLabel.text = [self.stockInfo objectForKey:@"market"];
-    self.dealMoney.text = [self.stockInfo objectForKey:@"deal_money"];
+    self.dealMoney.text = [NSString stringWithFormat:@"%.8f",deal_money];
     
-    self.priceLabel.text = [self.stockInfo objectForKey:@"price"];
-    self.price2Label.text = [self.stockInfo objectForKey:@"price"];
-    self.price3Label.text = [self.stockInfo objectForKey:@"price"];
+    self.priceLabel.text = [NSString stringWithFormat:@"%.8f",price];
+    self.price2Label.text = [NSString stringWithFormat:@"%.8f",price];
+    self.price3Label.text = [NSString stringWithFormat:@"%.8f",price];
     
-    self.dealAmount.text = [self.stockInfo objectForKey:@"deal_stock"];
-    self.dealAmount2Label.text = [self.stockInfo objectForKey:@"deal_stock"];
-    self.dealAmount3Label.text = [self.stockInfo objectForKey:@"deal_stock"];
+    self.dealAmount.text = [NSString stringWithFormat:@"%.8f",deal_stock];
+    self.dealAmount2Label.text = [NSString stringWithFormat:@"%.8f",deal_stock];
+    self.dealAmount3Label.text = [NSString stringWithFormat:@"%.8f",deal_stock];
     
-    self.feeLabel.text = [self.stockInfo objectForKey:@"fee"];
-    self.fee2Label.text = [self.stockInfo objectForKey:@"fee"];
-    self.fee3Label.text = [self.stockInfo objectForKey:@"fee"];
+    self.feeLabel.text = [NSString stringWithFormat:@"%.8f",fee];
+    self.fee2Label.text = [NSString stringWithFormat:@"%.8f",fee];
+    self.fee3Label.text = [NSString stringWithFormat:@"%.8f",fee];
     
 }
 /*

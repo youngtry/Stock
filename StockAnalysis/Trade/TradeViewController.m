@@ -56,12 +56,17 @@
     
     //标题滑动
     [self scrollTitle];
-    _scrollTitle.disableIndex = 3;
+//    [_scrollTitle.disableIndex addObject:[NSNumber numberWithInteger:3]];
     
     //每页vc
     [self scrollContent];
     
-    
+    NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
+    BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
+    if(!islogin){
+        [_scrollTitle.disableIndex addObject:[NSNumber numberWithInteger:2]];
+        [_scrollContent.disableIndex addObject:[NSNumber numberWithInteger:2]];
+    }
     
     NSMutableArray* vcs = [NSMutableArray new];
     NSArray *titles = @[@"买入",@"卖出",@"挂单",@"历史"];
@@ -79,6 +84,15 @@
         [vc3 setTitle:@"挂单"];
         [vcs addObject:vc3];
         
+        NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
+        BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
+        if(!islogin){
+            
+        }else{
+            
+        }
+        
+        
         //vc4 历史不能滑动 需求！
     }
     
@@ -91,21 +105,44 @@
             return ;
         }
         
-//        if(index == 2){
-//            NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
-//            BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
-//            if(!islogin){
-//                [HUDUtil showSystemTipView:self title:@"提示" withContent:@"未登录,请先登录"];
-//                return;
-//            }
-//        }
-        [_scrollContent updateTab:index];
+        NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
+        BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
+        if(!islogin){
+            if(index == 2){
+                [HUDUtil showSystemTipView:self title:@"提示" withContent:@"未登录,请先登录"];
+                return;
+            }else{
+                [_scrollContent updateTab:index];
+            }
+            
+        }else{
+            [_scrollContent updateTab:index];
+        }
+        
+        
+        
     }];
     [_scrollContent configParam:vcs Index:0 block:^(NSInteger index) {
+        NSLog(@"index = %ld",(long)index);
         if(index == 3){
             return ;
         }
-        [_scrollTitle updateTagLine:index];
+        NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
+        BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
+        if(!islogin){
+            if(index == 2){
+//                [HUDUtil showSystemTipView:self title:@"提示" withContent:@"未登录,请先登录"];
+                return;
+            }else{
+               [_scrollTitle updateTagLine:index];
+            }
+            
+        }else{
+            [_scrollTitle updateTagLine:index];
+        }
+        
+        
+        
     }];
 }
 

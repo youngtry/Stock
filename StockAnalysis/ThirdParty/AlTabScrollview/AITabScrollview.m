@@ -25,7 +25,7 @@
     //add
     [self removeAllSubviews];
     NSArray*viewArr = [self createLabs:titleArr];
-    
+//    _disableIndex = [NSMutableArray new];
     _viewArr=viewArr;
     _tabHeight=tabHeight;
     _tabWidth=tabWidth;
@@ -307,7 +307,7 @@
  @param index tab位置下标
  */
 -(void)updateTagLine:(NSInteger)index{
-    if(_tagIndex==index || _disableIndex == index){ //如果标记重复,为了节省消耗,直接中断
+    if(_tagIndex==index || [_disableIndex containsObject:[NSNumber numberWithInteger:index]]){ //如果标记重复,为了节省消耗,直接中断
         return;
     }
     //点击了
@@ -319,12 +319,12 @@
         
     }
     if(_direction==horizontal){
-        //标记线切换动画
+//        //标记线切换动画
         [UIView animateWithDuration:0.1 animations:^{
             _tagLine.frame=CGRectMake(index*_tabWidth, _tabHeight-tagLineheight-0.5, _tabWidth, tagLineheight);
-            
+
             for (UILabel*lab in _viewArr) {
-                
+
                 if(lab.tag==index){
                     if([lab.text isEqualToString:@"卖出"]){
                         _tagLine.backgroundColor = kSoldOutRed;
@@ -333,7 +333,7 @@
                     }
                 }
             }
-            
+
         } completion:^(BOOL finished) {
             _tagIndex=index;
 
@@ -364,7 +364,7 @@
     self.delegate = self;
     self.showsVerticalScrollIndicator = NO;
     self.showsHorizontalScrollIndicator = NO;
-    self.disableIndex = -1;
+    self.disableIndex = [NSMutableArray new];
 
 }
 
@@ -381,7 +381,7 @@
 
 //add
 -(void)onSelectedIndexChanged:(NSInteger)index{
-    if(_disableIndex  == index){
+    if([_disableIndex containsObject:[NSNumber numberWithInteger:index]]){
         return;
     }
     for (UILabel*lab in _viewArr) {

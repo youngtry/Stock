@@ -64,7 +64,7 @@
     NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
     BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
     if(!islogin){
-        [HUDUtil showSystemTipView:temp title:@"提示" withContent:@"未登录,请先登录"];
+//        [HUDUtil showSystemTipView:temp title:@"提示" withContent:@"未登录,请先登录"];
         return;
     }
     [self getAllStocks];
@@ -76,6 +76,7 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    [self getAllStocks];
     
 }
 
@@ -152,8 +153,13 @@
             if([[data objectForKey:@"ret"] intValue] == 1){
                 NSArray* trades = [[data objectForKey:@"data"] objectForKey:@"trades"];
                 if(trades.count == 0){
-                    self.isUpdate = NO;
-                    [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"已经全部加载完毕"];
+                    if(self.data.count == 0){
+                        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"无数据"];
+                    }else{
+                        self.isUpdate = NO;
+                        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"已经全部加载完毕"];
+                    }
+                    
                 }else{
                     [self.data addObjectsFromArray:trades];
                     [self.tableView reloadData];
@@ -293,8 +299,13 @@
             if([[data objectForKey:@"ret"] intValue] == 1){
                 NSArray* trades = [[data objectForKey:@"data"] objectForKey:@"trades"];
                 if(trades.count == 0){
-                    self.isUpdate1 = NO;
-                    [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"已经全部加载完毕"];
+                    if(self.data.count == 0){
+                        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"无数据"];
+                    }else{
+                        self.isUpdate1 = NO;
+                        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"已经全部加载完毕"];
+                    }
+                    
                 }else{
                     
                     [self.data addObjectsFromArray:trades];
@@ -361,9 +372,9 @@
                 cell.typeLabel.text = @"卖出";
                 cell.isBuyIn = NO;
             }
-            cell.priceLabel.text = [data objectForKey:@"price"];
-            cell.amountLabel.text = [data objectForKey:@"num"];
-            cell.realLabel.text = [data objectForKey:@"deal_money"];
+            cell.priceLabel.text = [NSString stringWithFormat:@"%.8f",[[data objectForKey:@"price"] floatValue]] ;
+            cell.amountLabel.text = [NSString stringWithFormat:@"%.8f",[[data objectForKey:@"num"] floatValue]] ;
+            cell.realLabel.text = [NSString stringWithFormat:@"%.8f",[[data objectForKey:@"deal_money"] floatValue]] ;
             cell.tradeID = [data objectForKey:@"id"];
         }
         
@@ -431,10 +442,18 @@
         [self.stockDetailList setHidden:NO];
 //        [self.stockNameBtn setTitle:cell.name.text forState:UIControlStateNormal];
         if([cell.name.text isEqualToString:@"全部"]){
+            [self.data removeAllObjects];
+            [self.tableView reloadData];
+            [self.stockNameBtn setTitle:cell.name.text forState:UIControlStateNormal];
+            self.isUpdate = YES;
+            [self.stockList setHidden:YES];
+            [self.stockDetailList setHidden:YES];
             self.isUpdate1 = YES;
             [self getAll:1 withName:@""];
+        }else{
+            [self getDetailMarket:cell.name.text];
         }
-//        [self getDetailMarket:cell.name.text];
+        
         
     }else if(tableView == self.stockDetailList){
         self.isUpdate = YES;
@@ -445,12 +464,8 @@
         
         [_stockNameBtn setTitle:cell.name.text forState:UIControlStateNormal];
         [self.data removeAllObjects];
-        if([self.stockNameBtn.titleLabel.text isEqualToString:@"全部"]){
-            self.isUpdate1 = YES;
-            [self getAll:1 withName:@""];
-        }else{
-            [self getAllHistory:1 WithName:cell.name.text];
-        }
+        [self.tableView reloadData];
+        [self getAllHistory:1 WithName:cell.name.text];
     }
     
     

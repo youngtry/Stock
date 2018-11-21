@@ -57,7 +57,7 @@ typedef NS_ENUM(NSInteger, DirectionStyle) {
  */
 @property (nonatomic,strong)TabClickBlock clickBlock ;
 
-@property (nonatomic,assign)NSInteger disableIndex;
+@property (nonatomic,strong)NSMutableArray* disableIndex;
 
 /**
  更新标记线位置
