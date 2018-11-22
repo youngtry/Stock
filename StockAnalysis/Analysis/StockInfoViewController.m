@@ -357,7 +357,9 @@
             }
             
             if (![self.title isEqualToString:@"指数"]){
-                cell.volLabel.text = [NSString stringWithFormat:@"成交量:%@",[item objectForKey:@"volume"]] ;
+                NSString* vol = [NSString stringWithFormat:@"%d",[[item objectForKey:@"volume"] intValue]];
+                vol = [Util countNumAndChangeformat:vol];
+                cell.volLabel.text = [NSString stringWithFormat:@"成交量:%@",vol] ;
             }
             
             

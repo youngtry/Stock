@@ -23,6 +23,7 @@
 @property(nonatomic,strong)UIButton* stockNameBtn;
 @property(nonatomic,assign)NSInteger currentPage1;
 @property(nonatomic,assign)BOOL isUpdate1;
+@property(nonatomic,strong)UILabel* noPendingLabel;
 @end
 
 @implementation PendingOrderViewController
@@ -41,6 +42,10 @@
     self.isUpdate1 = YES;
     
     [self.view addSubview:self.tableView];
+    
+    [self.view addSubview:self.noPendingLabel];
+    [self.noPendingLabel setHidden:YES];
+    
     [self.view addSubview:self.stockList];
     [self.view addSubview:self.stockDetailList];
     [self.stockList setHidden:YES];
@@ -48,10 +53,14 @@
     [self.data removeAllObjects];
     [self.allStocks removeAllObjects];
     [self.allDetailStocks removeAllObjects];
+    self.tableView.tableFooterView = [UIView new];
+    
+    
     
     
     [self.stockList reloadData];
     [self.tableView reloadData];
+    
     //header
     [self addHeader];
     
@@ -77,6 +86,12 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self getAllStocks];
+    if([self.stockNameBtn.titleLabel.text isEqualToString:@"全部"]){
+        [self getAll:self.currentPage1 withName:@""];
+    }else{
+        [self getAllHistory:self.currentPage WithName:self.stockNameBtn.titleLabel.text];
+    }
+    
     
 }
 
@@ -121,13 +136,18 @@
                 if([[data objectForKey:@"data"] objectForKey:@"assets"]){
                     NSArray* tabs = [[data objectForKey:@"data"] objectForKey:@"assets"];
                     
+                    
+                    
                     [self.allStocks addObject:@"全部"];
+                    
                     for (NSDictionary* tab in tabs) {
                         NSString* asset = [tab objectForKey:@"asset"];
                         [self.allStocks addObject:asset];
                     }
                     
                     [self.stockList reloadData];
+                    
+                    
                 }
             }else{
                 [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
@@ -154,13 +174,16 @@
                 NSArray* trades = [[data objectForKey:@"data"] objectForKey:@"trades"];
                 if(trades.count == 0){
                     if(self.data.count == 0){
-                        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"无数据"];
+//                        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"无数据"];
+                        [self.noPendingLabel setHidden:NO];
                     }else{
+                        [self.noPendingLabel setHidden:YES];
                         self.isUpdate = NO;
                         [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"已经全部加载完毕"];
                     }
                     
                 }else{
+                    [self.noPendingLabel setHidden:YES];
                     [self.data addObjectsFromArray:trades];
                     [self.tableView reloadData];
                 }
@@ -171,6 +194,18 @@
             }
         }
     }];
+}
+
+-(UILabel*)noPendingLabel{
+    if(nil == _noPendingLabel){
+        _noPendingLabel = [UILabel new];
+        [_noPendingLabel setFrame:CGRectMake(0, kScreenHeight*0.3, kScreenWidth, 90)];
+        [_noPendingLabel setFont:[UIFont systemFontOfSize:14]];
+        [_noPendingLabel setText:@"暂无限价单"];
+        [_noPendingLabel setTextAlignment:NSTextAlignmentCenter];
+    }
+    
+    return _noPendingLabel;
 }
 
 
@@ -277,7 +312,18 @@
         self.currentPage = 0;
         [self.data removeAllObjects];
         self.isUpdate = YES;
-        [self getAllHistory:1 WithName:self.stockNameBtn.titleLabel.text];
+        if([self.stockNameBtn.titleLabel.text isEqualToString:@"全部"]){
+            [self.data removeAllObjects];
+            [self.tableView reloadData];
+            self.isUpdate = YES;
+            self.isUpdate1 = YES;
+            [self getAll:1 withName:@""];
+        }else{
+            [self.data removeAllObjects];
+            [self.tableView reloadData];
+            [self getAllHistory:1 WithName:self.stockNameBtn.titleLabel.text];
+        }
+        
     }else{
         [HUDUtil showHudViewTipInSuperView:self.view withMessage:msg];
     }
@@ -300,14 +346,16 @@
                 NSArray* trades = [[data objectForKey:@"data"] objectForKey:@"trades"];
                 if(trades.count == 0){
                     if(self.data.count == 0){
-                        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"无数据"];
+//                        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"无数据"];
+                        [self.noPendingLabel setHidden:NO];
                     }else{
+                        [self.noPendingLabel setHidden:YES];
                         self.isUpdate1 = NO;
                         [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"已经全部加载完毕"];
                     }
                     
                 }else{
-                    
+                    [self.noPendingLabel setHidden:YES];
                     [self.data addObjectsFromArray:trades];
                     [self.tableView reloadData];
                 }

@@ -15,7 +15,7 @@
 #import "PendingOrderHistoryViewController.h"
 #import "AllEntryOrdersVC.h"
 #import "LoginViewController.h"
-@interface TradeViewController ()
+@interface TradeViewController ()<UIGestureRecognizerDelegate>
 @property(nonatomic,strong) AITabScrollview *scrollTitle;
 @property(nonatomic,strong) AITabContentView*scrollContent;
 @end
@@ -34,7 +34,6 @@
     
     UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:@"全部挂单" style:UIBarButtonItemStylePlain target:self action:@selector(clickAllTrade:)];
     self.navigationItem.rightBarButtonItem = right;
-    
     
 //        SCAlertController *alert = [SCAlertController alertControllerWithTitle:@"提示" message:@"请先登录" preferredStyle:  UIAlertControllerStyleAlert];
 //        alert.messageColor = kColor(136, 136, 136);
@@ -56,7 +55,7 @@
     
     //标题滑动
     [self scrollTitle];
-//    [_scrollTitle.disableIndex addObject:[NSNumber numberWithInteger:3]];
+    [_scrollTitle.disableIndex addObject:[NSNumber numberWithInteger:3]];
     
     //每页vc
     [self scrollContent];
@@ -65,7 +64,7 @@
     BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
     if(!islogin){
         [_scrollTitle.disableIndex addObject:[NSNumber numberWithInteger:2]];
-        [_scrollContent.disableIndex addObject:[NSNumber numberWithInteger:2]];
+//        [_scrollContent.disableIndex addObject:[NSNumber numberWithInteger:2]];
     }
     
     NSMutableArray* vcs = [NSMutableArray new];
@@ -80,16 +79,16 @@
         [vc2 setTitle:@"卖出"];
         [vcs addObject:vc2];
         
-        PendingOrderViewController*vc3 = [PendingOrderViewController new];
-        [vc3 setTitle:@"挂单"];
-        [vcs addObject:vc3];
+        
         
         NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
         BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
         if(!islogin){
             
         }else{
-            
+            PendingOrderViewController*vc3 = [PendingOrderViewController new];
+            [vc3 setTitle:@"挂单"];
+            [vcs addObject:vc3];
         }
         
         
@@ -98,15 +97,22 @@
     
     WeakSelf(weakSelf)
     [_scrollTitle configParameter:horizontal viewArr:titles tabWidth:kScreenWidth/titles.count tabHeight:42 index:0 block:^(NSInteger index) {
+        
+        NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
+        BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
+        
         if(index==3){
+            if(!islogin){
+               [HUDUtil showSystemTipView:self title:@"提示" withContent:@"未登录,请先登录"];
+                return ;
+            }
             //历史记录
             PendingOrderHistoryViewController *vc = [PendingOrderHistoryViewController new];
             [weakSelf.navigationController pushViewController:vc animated:YES];
             return ;
         }
         
-        NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
-        BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
+        
         if(!islogin){
             if(index == 2){
                 [HUDUtil showSystemTipView:self title:@"提示" withContent:@"未登录,请先登录"];
@@ -131,7 +137,7 @@
         BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
         if(!islogin){
             if(index == 2){
-//                [HUDUtil showSystemTipView:self title:@"提示" withContent:@"未登录,请先登录"];
+                [HUDUtil showSystemTipView:self title:@"提示" withContent:@"未登录,请先登录"];
                 return;
             }else{
                [_scrollTitle updateTagLine:index];
@@ -145,6 +151,7 @@
         
     }];
 }
+
 
 -(AITabScrollview*)scrollTitle{
     if(!_scrollTitle){

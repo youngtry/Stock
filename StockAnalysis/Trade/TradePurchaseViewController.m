@@ -64,6 +64,10 @@
 @property (weak, nonatomic) IBOutlet UITableView *dealList;
 
 @property (weak, nonatomic) IBOutlet UIImageView *enterKLine;
+
+@property (weak, nonatomic) IBOutlet UIButton *depthBtn;
+
+@property (weak, nonatomic) IBOutlet UILabel *noPendingLabel;
 @property (nonatomic,strong)NSMutableDictionary* dealData;
 
 @property (nonatomic)BOOL firstOpen;
@@ -439,6 +443,8 @@
     if(!self.isLogin){
         [self.purchaseBtn setBackgroundColor:[UIColor grayColor]];
         [self.purchaseBtn setEnabled:NO];
+        
+        [self.noPendingLabel setHidden:NO];
     }
 //    [[SocketInterface sharedManager] closeWebSocket];
     [SocketInterface sharedManager].delegate = self;
@@ -446,6 +452,9 @@
     
     
     [self requestAnalysis];
+    
+    
+    
 //    UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
 //
 //    NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
@@ -863,6 +872,7 @@
 - (IBAction)clickFour:(id)sender {
     [self.depthView setHidden:YES];
     _numberDepth = 4;
+    [self.depthBtn setTitle:@"4位小数" forState:UIControlStateNormal];
     [self getTradeInfo:self.marketNamelabel.titleLabel.text withDepth:@"0.0001"];
     [self.askList reloadData];
     [self.bidsList reloadData];
@@ -870,6 +880,7 @@
 - (IBAction)clickOne:(id)sender {
     [self.depthView setHidden:YES];
     _numberDepth = 1;
+    [self.depthBtn setTitle:@"1位小数" forState:UIControlStateNormal];
     [self getTradeInfo:self.marketNamelabel.titleLabel.text withDepth:@"0.1"];
     [self.askList reloadData];
     [self.bidsList reloadData];
@@ -877,6 +888,7 @@
 - (IBAction)clickZero:(id)sender {
     [self.depthView setHidden:YES];
     _numberDepth = 0;
+    [self.depthBtn setTitle:@"0位小数" forState:UIControlStateNormal];
     [self getTradeInfo:self.marketNamelabel.titleLabel.text withDepth:@"1"];
     [self.askList reloadData];
     [self.bidsList reloadData];
@@ -1011,7 +1023,7 @@
 //                [self.dealData setObject:real forKey:@"DealMoney"];
 
                 [self setMoneyInfo];
-//                [self.radioBtn setSelectIndex:-1];
+                [self.radioBtn setSelectIndex:-1];
 //                self.purchaseAmountInput.text = @"000.0000";
 //                self.purchasePriceInput.text = @"000.000";
                 
@@ -1269,12 +1281,19 @@
                 NSArray* trades = [[data objectForKey:@"data"] objectForKey:@"trades"];
 //                [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"已经全部加载完毕"];
                 if(trades.count == 0){
-                    self.isUpdate = NO;
+                    if(self.dealArray.count == 0){
+                        [self.noPendingLabel setHidden:NO];
+                    }else{
+                        [self.noPendingLabel setHidden:YES];
+                        self.isUpdate = NO;
+                    }
+                    
 //                    [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"全部加载完毕"];
+                    
                 }else{
                     
                     NSLog(@"挂单数据为：%@",trades);
-                    
+                    [self.noPendingLabel setHidden:YES];
                     [self.dealArray addObjectsFromArray:trades];
                     [self.dealList reloadData];
                 }
@@ -1450,6 +1469,9 @@
             
             float rate = (float)((float)(nowprice-price)/(float)price)*100;
 //            NSLog(@"price = %f,nowprice = %f,rate = %f",price,nowprice,rate);
+            if(price == 0){
+                rate = 0;
+            }
             if(rate>0){
                 [self.rateLabel setTextColor:kSoldOutRed];
             }else{
@@ -1580,6 +1602,7 @@
             cell.name.text = name;
             cell.upRate.text = rate;
             cell.volume.text = volume;
+            cell.volume.text = [Util countNumAndChangeformat:cell.volume.text];
         }
         
         
@@ -1739,6 +1762,8 @@
         self.currentPage = 0;
         self.isUpdate = YES;
         self.isGetPrice = NO;
+        
+        [self.depthBtn setTitle:@"深度" forState:UIControlStateNormal];
         
         [self.sortGuideView setHidden:YES];
         

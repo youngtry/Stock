@@ -8,6 +8,11 @@
 
 #import "AITabContentView.h"
 
+@interface AITabContentView()<UIScrollViewDelegate>
+
+
+@end
+
 @implementation AITabContentView
 - (instancetype)initWithFrame:(CGRect)frame{
     
@@ -19,6 +24,7 @@
 }
 
 
+
 -(void)initView{
     _pageController=[[UIPageViewController alloc]initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     _pageController.delegate = self;
@@ -27,6 +33,8 @@
     _disableIndex = [NSMutableArray new];
     [self addSubview:_pageController.view];
 }
+
+
 
 -(void)configParam:(NSMutableArray<UIViewController *> *)controllers Index:(NSInteger)index block:(TabSwitchBlcok)tabSwitch{
     
@@ -52,13 +60,15 @@
 //返回下一个页面
 -(UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController{
     NSInteger index= [_controllers indexOfObject:viewController];
+    
     if(index==(_controllers.count-1)){
         return nil;
     }
     index++;
-    if( [_disableIndex containsObject:[NSNumber numberWithInteger:index]]){
-        return nil;
-    }
+//    if( [_disableIndex containsObject:[NSNumber numberWithInteger:index]]){
+//        return nil;
+//    }
+
     return [self pageControllerAtIndex:index];
 }
 //返回前一个页面
@@ -70,9 +80,9 @@
         return nil;
     }
     index--;
-    if( [_disableIndex containsObject:[NSNumber numberWithInteger:index]]){
-        return nil;
-    }
+//    if( [_disableIndex containsObject:[NSNumber numberWithInteger:index]]){
+//        return nil;
+//    }
     return [self pageControllerAtIndex:index];
     
 }
@@ -87,15 +97,17 @@
 -(void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray<UIViewController *> *)previousViewControllers transitionCompleted:(BOOL)completed{
     NSLog(@"didFinishAnimating");
     NSInteger index=[_controllers indexOfObject:pageViewController.viewControllers[0]];
-    if( ![_disableIndex containsObject:[NSNumber numberWithInteger:index]]){
-        _tabSwitch(index);
-    }
+    _tabSwitch(index);
+    
+    
     
 }
 //开始滑动的时候触发
 -(void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray<UIViewController *> *)pendingViewControllers{
     NSLog(@"pageViewController");
-
+//    NSInteger index=[_controllers indexOfObject:pageViewController.viewControllers[0]];
+//
+//    NSLog(@"@@@@@@index = %ld",(long)index);
 }
 
 

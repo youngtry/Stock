@@ -322,7 +322,7 @@
             float rate = ([open floatValue] == 0)?0:([price floatValue])/([open floatValue])-1;
             
             NSString* name = params[0];
-            NSLog(@"name = %@ 涨幅 = %f",name,rate);
+//            NSLog(@"name = %@ 涨幅 = %f",name,rate);
             [self addRateToArray:name withRate:[NSString stringWithFormat:@"%f",rate*100] withPrice:price];
             
 //            NSDictionary *dicAll = @{@"method":@"state.unsubscribe",@"params":@[],@"id":@(PN_StateUnsubscribe)};
