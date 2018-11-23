@@ -146,12 +146,28 @@
         }else{
             [_scrollTitle updateTagLine:index];
         }
-        
-        
-        
     }];
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.tabBarController.tabBar.hidden = NO;
+    [self.tabBarController setSelectedIndex:2];
+    NSDictionary* info = [[AppData getInstance] getTradeInfo];
+    if(info.count>0){
+        NSInteger index = [[info objectForKey:@"index"] integerValue];
+        NSString* name = [info objectForKey:@"name"];
+        [self changeToPage:index withName:name];
+    }
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+}
+
+-(void)changeToPage:(NSInteger)index withName:(NSString*)tradename{
+    [_scrollTitle autoClick:index];
+}
 
 -(AITabScrollview*)scrollTitle{
     if(!_scrollTitle){

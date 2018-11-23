@@ -443,6 +443,11 @@
 //对Model数组进行排序，初始化每个Model的最新9Clock的最低价和最高价
 - (void)rangeLastNinePriceByArray:(NSArray<Y_KLineModel *> *)models condition:(NSComparisonResult)cond
 {
+//    NSLog(@"models.cout = %ld",(long)models.count);
+    if(models.count<8){
+        NSAssert(models.count>7, @"models.count不能小于7");
+        return;
+    }
     switch (cond) {
             //最高价
         case NSOrderedAscending:

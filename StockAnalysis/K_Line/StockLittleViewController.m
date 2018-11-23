@@ -20,6 +20,8 @@
 #import "PriceTipViewController.h"
 #import "SearchData.h"
 #import "TradePurchaseViewController.h"
+#import "TradeViewController.h"
+#import "TabViewController.h"
 #define IS_IPHONE (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
 #define SCREEN_MAX_LENGTH MAX(kScreenWidth,kScreenHeight)
 #define IS_IPHONE_X (IS_IPHONE && SCREEN_MAX_LENGTH == 812.0)
@@ -530,23 +532,75 @@
 
 
 - (IBAction)clickBuy:(id)sender {
-    TradePurchaseViewController* vc = [[TradePurchaseViewController alloc] initWithNibName:@"TradePurchaseViewController" bundle:nil];
-    vc.title = @"买入";
-    [self.navigationController pushViewController:vc animated:YES];
-//
-    vc.block = ^{
-        [vc setTradeName:self.title];
-    };
+    BOOL isfind = NO;
+    [[AppData getInstance] setTradeInfo:@{@"index":@(0),@"name":self.title,@"title":@"买入"}];
+    for (UIViewController*vc in self.navigationController.childViewControllers) {
+        if([vc isKindOfClass:[TradeViewController class]]){
+            [self.navigationController popToViewController:vc animated:YES];
+            isfind = YES;
+            
+            break;
+        }
+    }
+    
+    if(!isfind){
+        
+        [self.navigationController popViewControllerAnimated:NO];
+        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        
+        UITabBarController *tabViewController = (UITabBarController *) appDelegate.window.rootViewController;
+
+        [tabViewController setSelectedIndex:2];
+        
+        for (UIViewController*vc in self.navigationController.childViewControllers) {
+            if([vc isKindOfClass:[TradeViewController class]]){
+                TradeViewController* trade = (TradeViewController*)vc;
+                
+                [trade changeToPage:0 withName:self.title];
+                break;
+            }
+        }
+    }
+    
+//    TradePurchaseViewController* vc = [[TradePurchaseViewController alloc] initWithNibName:@"TradePurchaseViewController" bundle:nil];
+//    vc.title = @"买入";
+//    [self.navigationController pushViewController:vc animated:YES];
+////
+//    vc.block = ^{
+//        [vc setTradeName:self.title];
+//    };
     
 }
 - (IBAction)clickSell:(id)sender {
-    TradePurchaseViewController* vc = [[TradePurchaseViewController alloc] initWithNibName:@"TradePurchaseViewController" bundle:nil];
-    vc.title = @"卖出";
-    [self.navigationController pushViewController:vc animated:YES];
-//
-    vc.block = ^{
-      [vc setTradeName:self.title];
-    };
+    [[AppData getInstance] setTradeInfo:@{@"index":@(1),@"name":self.title,@"title":@"卖出"}];
+    BOOL isfind = NO;
+    for (UIViewController*vc in self.navigationController.childViewControllers) {
+        if([vc isKindOfClass:[TradeViewController class]]){
+            [self.navigationController popToViewController:vc animated:YES];
+            isfind = YES;
+            
+            break;
+        }
+    }
+    
+    if(!isfind){
+        [self.navigationController popViewControllerAnimated:NO];
+        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        
+        UITabBarController *tabViewController = (UITabBarController *) appDelegate.window.rootViewController;
+        
+        [tabViewController setSelectedIndex:2];
+        
+        
+    }
+    
+//    TradePurchaseViewController* vc = [[TradePurchaseViewController alloc] initWithNibName:@"TradePurchaseViewController" bundle:nil];
+//    vc.title = @"卖出";
+//    [self.navigationController pushViewController:vc animated:YES];
+////
+//    vc.block = ^{
+//      [vc setTradeName:self.title];
+//    };
 }
 
 -(void)requestSubscribe{
@@ -902,7 +956,7 @@
     
     NSString *strAll = [dicAll JSONString];
     [[SocketInterface sharedManager] sendRequest:strAll withName:@"kline.query"];
-    [HUDUtil showHudViewInSuperView:self.view withMessage:@"数据请求中"];
+//    [HUDUtil showHudViewInSuperView:self.view withMessage:@"数据请求中"];
 }
 
 -(void)getWebData:(id)message withName:(NSString *)name{

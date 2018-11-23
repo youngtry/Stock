@@ -13,6 +13,7 @@
 @property(nonatomic,strong)NSString* asset;
 @property(nonatomic,strong)NSString* tempVerifyToken;
 @property(nonatomic,strong)NSString* originTime;
+@property(nonatomic,strong)NSMutableDictionary* trade;
 @end
 
 @implementation AppData
@@ -37,6 +38,7 @@
         self.asset = @"";
         self.tempVerify = @"";
         self.originTime = @"";
+        self.trade = [NSMutableDictionary new];
     }
     return self;
 }
@@ -70,6 +72,15 @@
 
 -(NSString*)getOriginTime{
     return _originTime;
+}
+
+-(void)setTradeInfo:(NSDictionary *)info{
+    [_trade removeAllObjects];
+    _trade = info.mutableCopy;
+}
+
+-(NSDictionary*)getTradeInfo{
+    return _trade;
 }
 
 @end

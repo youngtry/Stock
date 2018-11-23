@@ -242,13 +242,17 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
     NSDictionary* data = self.data[indexPath.row];
-    EntryOrderDetailVC *vc = [[EntryOrderDetailVC alloc] initWithNibName:@"EntryOrderDetailVC" bundle:nil];
-    UINavigationController *nav = (UINavigationController*)[Util getParentVC:[UINavigationController class] fromView:self.view];
-    int stockid = [[data objectForKey:@"id"] intValue];
-    NSLog(@"stockid = %d",stockid);
-    vc.title = [NSString stringWithFormat:@"%d",stockid];
-    [nav pushViewController:vc animated:YES];
+    if(![[data objectForKey:@"state"] isEqualToString:@"pending"]){
+        EntryOrderDetailVC *vc = [[EntryOrderDetailVC alloc] initWithNibName:@"EntryOrderDetailVC" bundle:nil];
+        UINavigationController *nav = (UINavigationController*)[Util getParentVC:[UINavigationController class] fromView:self.view];
+        int stockid = [[data objectForKey:@"id"] intValue];
+        NSLog(@"stockid = %d",stockid);
+        vc.title = [NSString stringWithFormat:@"%d",stockid];
+        [nav pushViewController:vc animated:YES];
+    }
+    
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate

@@ -80,16 +80,22 @@
     
     [self.stockNameBtn setTitle:@"全部" forState:UIControlStateNormal];
     
-    [self getAll:1  withName:@""];
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    [self.allStocks removeAllObjects];
+    self.currentPage = 0;
+    self.isUpdate = YES;
+    
+    self.currentPage1 = 0;
+    self.isUpdate1 = YES;
     [self getAllStocks];
     if([self.stockNameBtn.titleLabel.text isEqualToString:@"全部"]){
-        [self getAll:self.currentPage1 withName:@""];
+        [self getAll:1  withName:@""];
     }else{
-        [self getAllHistory:self.currentPage WithName:self.stockNameBtn.titleLabel.text];
+        [self getAllHistory:1 WithName:self.stockNameBtn.titleLabel.text];
     }
     
     
@@ -123,21 +129,19 @@
 }
 
 -(void)getAllStocks{
-    NSDictionary* parameters = @{@"page":@(1),
-                                 @"page_limit":@(50)
-                                 };
-    NSString* url = @"assets";
+    NSDictionary* parameters = @{};
+    NSString* url = @"market/assortment";
+    
+    
     [self.allStocks removeAllObjects];
 //    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
-    [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
+    [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
             [HUDUtil hideHudView];
             if([[data objectForKey:@"ret"] intValue] == 1){
-                if([[data objectForKey:@"data"] objectForKey:@"assets"]){
-                    NSArray* tabs = [[data objectForKey:@"data"] objectForKey:@"assets"];
-                    
-                    
-                    
+                if([[data objectForKey:@"data"] objectForKey:@"tabs"]){
+                    NSArray* tabs = [[data objectForKey:@"data"] objectForKey:@"tabs"];
+                    [self.allStocks removeAllObjects];
                     [self.allStocks addObject:@"全部"];
                     
                     for (NSDictionary* tab in tabs) {
@@ -158,6 +162,9 @@
 
 -(void)getAllHistory:(NSInteger)page WithName:(NSString*)name{
     //    UINavigationController* temp = self.parentViewController.view.selfViewController.navigationController;
+    if(page == 1){
+        [self.data removeAllObjects];
+    }
     self.currentPage = page;
     NSString* url = @"exchange/trades";
     NSDictionary* params = @{@"market":name,
@@ -202,6 +209,7 @@
         [_noPendingLabel setFrame:CGRectMake(0, kScreenHeight*0.3, kScreenWidth, 90)];
         [_noPendingLabel setFont:[UIFont systemFontOfSize:14]];
         [_noPendingLabel setText:@"暂无限价单"];
+        [_noPendingLabel setTextColor:[UIColor grayColor]];
         [_noPendingLabel setTextAlignment:NSTextAlignmentCenter];
     }
     
@@ -330,6 +338,9 @@
 }
 
 -(void)getAll:(NSInteger)page withName:(NSString*)name{
+    if(page == 1){
+        [self.data removeAllObjects];
+    }
     self.currentPage1 = page;
     NSString* url = @"exchange/trades";
     NSDictionary* params = @{@"page":@(page),
@@ -475,13 +486,13 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     if(tableView == self.tableView){
-        NSDictionary* data = self.data[indexPath.row];
-        EntryOrderDetailVC *vc = [[EntryOrderDetailVC alloc] initWithNibName:@"EntryOrderDetailVC" bundle:nil];
-        UINavigationController *nav = (UINavigationController*)[Util getParentVC:[UINavigationController class] fromView:self.view];
-        int stockid = [[data objectForKey:@"id"] intValue];
-        NSLog(@"stockid = %d",stockid);
-        vc.title = [NSString stringWithFormat:@"%d",stockid];
-        [nav pushViewController:vc animated:YES];
+//        NSDictionary* data = self.data[indexPath.row];
+//        EntryOrderDetailVC *vc = [[EntryOrderDetailVC alloc] initWithNibName:@"EntryOrderDetailVC" bundle:nil];
+//        UINavigationController *nav = (UINavigationController*)[Util getParentVC:[UINavigationController class] fromView:self.view];
+//        int stockid = [[data objectForKey:@"id"] intValue];
+//        NSLog(@"stockid = %d",stockid);
+//        vc.title = [NSString stringWithFormat:@"%d",stockid];
+//        [nav pushViewController:vc animated:YES];
     }else if(tableView == self.stockList){
         
         TradeStockSelectTableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];

@@ -24,4 +24,7 @@
 
 -(void)setOriginTime:(NSString* )originTime;
 -(NSString* )getOriginTime;
+
+-(void)setTradeInfo:(NSDictionary*)info;
+-(NSDictionary*)getTradeInfo;
 @end

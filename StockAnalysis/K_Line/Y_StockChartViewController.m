@@ -258,7 +258,7 @@
     
     NSString *strAll = [dicAll JSONString];
     [[SocketInterface sharedManager] sendRequest:strAll withName:@"kline.query"];
-    [HUDUtil showHudViewInSuperView:self.view withMessage:@"数据请求中"];
+//    [HUDUtil showHudViewInSuperView:self.view withMessage:@"数据请求中"];
 }
 
 -(void)requestSubscribe{

@@ -91,6 +91,20 @@
     [self onSelectedIndexChanged:index];
 }
 
+-(void)autoClick:(NSInteger)tag{
+    NSUInteger index = tag;   //获取上面view设置的tag
+    
+    //更新标记
+    [self updateTagLine:index];
+    
+    if (_clickBlock){
+        _clickBlock(index);
+    }
+    
+    //add
+    [self onSelectedIndexChanged:index];
+}
+
 -(void)autoTabOffset:(NSInteger)index{
     //水平滚动的时候,计算偏移量
     if(_direction==horizontal){

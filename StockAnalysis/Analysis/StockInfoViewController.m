@@ -21,6 +21,7 @@
 @property(nonatomic,assign)BOOL isUpdate;
 @property(nonatomic,strong)NSString* selectSort;
 @property(nonatomic,strong)NSString* selectOrder;
+@property(nonatomic,strong)UILabel* noPendingLabel;
 @end
 
 @implementation StockInfoViewController
@@ -34,6 +35,11 @@
     
     [self.view addSubview:self.tableView];
     self.tableView.tableHeaderView = self.rankContainer;
+    
+    self.tableView.tableFooterView = [UIView new];
+    
+    [self.view addSubview:self.noPendingLabel];
+    [self.noPendingLabel setHidden:YES];
     
     self.items = [NSMutableArray new];
     self.currentPage = 0;
@@ -69,6 +75,18 @@
     
     
 }
+-(UILabel*)noPendingLabel{
+    if(nil == _noPendingLabel){
+        _noPendingLabel = [UILabel new];
+        [_noPendingLabel setFrame:CGRectMake(0, kScreenHeight*0.3, kScreenWidth, 90)];
+        [_noPendingLabel setFont:[UIFont systemFontOfSize:14]];
+        [_noPendingLabel setText:@"暂无数据"];
+        [_noPendingLabel setTextColor:[UIColor grayColor]];
+        [_noPendingLabel setTextAlignment:NSTextAlignmentCenter];
+    }
+    
+    return _noPendingLabel;
+}
 
 -(void)getStockWithSort:(NSString*)sort withRate:(NSString*)rate withPage:(NSInteger)page{
     if([self.title containsString:@"china_"]){
@@ -88,9 +106,14 @@
                 if([[data objectForKey:@"ret"] intValue] == 1){
                     [_items removeAllObjects];
                     _items = [[data objectForKey:@"data"] objectForKey:@"items"];
+                    
                     if(_items){
                         //                    NSLog(@"items = %@,数量为：%lu",_items,(unsigned long)_items.count);
+                        [self.noPendingLabel setHidden:YES];
                         [self.tableView reloadData];
+                    }else{
+                        [self.noPendingLabel setHidden:NO];
+                        
                     }
                 }else{
                     [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
@@ -134,8 +157,10 @@
     BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
     if(!islogin){
         [HUDUtil hideHudView];
+        [self.noPendingLabel setHidden:NO];
         return;
     }
+    [self.noPendingLabel setHidden:YES];
     NSDictionary* parameters = @{@"page":@(page),
                                  @"page_limit":@(10),
                                  @"order_by":sort,
@@ -152,13 +177,19 @@
 //                _items
                 NSArray* items = [[data objectForKey:@"data"] objectForKey:@"items"];
                 if(items.count == 0){
-                    self.isUpdate = NO;
-                    self.currentPage = 0;
                     
+                    if(_items.count == 0){
+                        [self.noPendingLabel setHidden:NO];
+                    }else{
+                        self.isUpdate = NO;
+                        self.currentPage = 0;
+                        [self.noPendingLabel setHidden:YES];
+                    }
                 }else{
                     [_items addObjectsFromArray:items];
                     if(_items){
                         //                    NSLog(@"items = %@,数量为：%lu",_items,(unsigned long)_items.count);
+                        [self.noPendingLabel setHidden:YES];
                         [self.tableView reloadData];
                     }
                 }

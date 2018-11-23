@@ -76,4 +76,6 @@ typedef NS_ENUM(NSInteger, DirectionStyle) {
   @param clickBlock 回调点击位置的block
  */
 -(void)configParameter:(DirectionStyle)directionStyle viewArr:(NSArray*)viewArr tabWidth:(NSInteger)tabWidth tabHeight:(NSInteger)tabHeight index:(NSInteger)index block:(TabClickBlock) clickBlock;
+
+-(void)autoClick:(NSInteger)tag;
 @end

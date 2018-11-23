@@ -34,6 +34,7 @@
     if(self){
         self.viewControllers = [self getControllers];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeAfterLogin) name:@"ChangeAfterLogin" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setTabIndex) name:@"ChangeTabIndex" object:nil];
 //        self.tabBarController;
         self.tabBar.barStyle = UIBarStyleBlack;
         self.tabBar.barTintColor = [UIColor colorWithRed:38.0/225.0 green:45.0/255.0 blue:53.0/255.0 alpha:1.0];
@@ -94,6 +95,10 @@
 -(void)changeAfterLogin{
     self.viewControllers = [self getControllers];
     
+}
+
+-(void)setTabIndex{
+    [self.tabBarController setSelectedIndex:2];
 }
 
 - (void)viewDidLoad {

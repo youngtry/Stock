@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface TradeViewController : BaseViewController
-
+-(void)changeToPage:(NSInteger)index withName:(NSString*)tradename;
 @end
