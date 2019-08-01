@@ -70,6 +70,12 @@ typedef NS_ENUM(NSInteger, Y_KLineType) {
 -(void)showTimeline;
 -(void) reloadData;
 -(void)setSelect:(NSInteger)index;
+
+/**
+ *  设置MACDView是否显示
+ */
+-(void)setMACDViewHide:(BOOL)ishide;
+
 @end
 
 /************************ItemModel类************************/

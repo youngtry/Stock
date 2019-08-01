@@ -1,0 +1,30 @@
+
+/* Class = "UILabel"; text = "数量"; ObjectID = "6NT-Hx-9RJ"; */
+"6NT-Hx-9RJ.text" = "数量";
+
+/* Class = "UILabel"; text = "2018-05-08 15:4"; ObjectID = "Pq2-2b-gTN"; */
+"Pq2-2b-gTN.text" = "2018-05-08 15:4";
+
+/* Class = "UILabel"; text = "股票期货名"; ObjectID = "RvG-IB-Mfg"; */
+"RvG-IB-Mfg.text" = "股票期货名";
+
+/* Class = "UILabel"; text = "CNY"; ObjectID = "bzi-cD-U3k"; */
+"bzi-cD-U3k.text" = "CNY";
+
+/* Class = "UILabel"; text = "400.03"; ObjectID = "cbo-nA-5Wj"; */
+"cbo-nA-5Wj.text" = "400.03";
+
+/* Class = "UILabel"; text = "实际成交"; ObjectID = "jDL-OK-BnS"; */
+"jDL-OK-BnS.text" = "实际成交";
+
+/* Class = "UILabel"; text = "已完成"; ObjectID = "jXn-47-cdz"; */
+"jXn-47-cdz.text" = "已完成";
+
+/* Class = "UILabel"; text = "买"; ObjectID = "mxF-kp-S2U"; */
+"mxF-kp-S2U.text" = "买";
+
+/* Class = "UILabel"; text = "2.00"; ObjectID = "qKy-Wa-0FI"; */
+"qKy-Wa-0FI.text" = "2.00";
+
+/* Class = "UILabel"; text = "0.00009328"; ObjectID = "uo6-DS-BFO"; */
+"uo6-DS-BFO.text" = "0.00009328";

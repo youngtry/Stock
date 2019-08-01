@@ -43,15 +43,25 @@
 @property (nonatomic, assign) CGFloat oldScale;
 
 /**
- *  MA7位置数组
+ *  MA5位置数组
  */
-@property (nonatomic, strong) NSMutableArray *MA7Positions;
+@property (nonatomic, strong) NSMutableArray *MA5Positions;
 
 
 /**
- *  MA30位置数组
+ *  MA10位置数组
  */
-@property (nonatomic, strong) NSMutableArray *MA30Positions;
+@property (nonatomic, strong) NSMutableArray *MA10Positions;
+
+/**
+ *  MA20位置数组
+ */
+@property (nonatomic, strong) NSMutableArray *MA20Positions;
+
+/**
+ *  MA60位置数组
+ */
+@property (nonatomic, strong) NSMutableArray *MA60Positions;
 
 
 
@@ -81,8 +91,10 @@
     if (self) {
         self.needDrawKLineModels = @[].mutableCopy;
         self.needDrawKLinePositionModels = @[].mutableCopy;
-        self.MA7Positions = @[].mutableCopy;
-        self.MA30Positions = @[].mutableCopy;
+        self.MA5Positions = @[].mutableCopy;
+        self.MA10Positions = @[].mutableCopy;
+        self.MA20Positions = @[].mutableCopy;
+        self.MA60Positions = @[].mutableCopy;
         
         self.BOLL_UPPositions = @[].mutableCopy;
         self.BOLL_DNPositions = @[].mutableCopy;
@@ -188,15 +200,29 @@
         
     } else if ( self.targetLineStatus != Y_StockChartTargetLineStatusCloseMA){
         
-        //画MA7线
-        MALine.MAType = Y_MA7Type;
-        MALine.MAPositions = self.MA7Positions;
+        //画MA5线
+        MALine.MAType = Y_MA5Type;
+        MALine.MAPositions = self.MA5Positions;
         [MALine draw];
         
-        //画MA30线
-        MALine.MAType = Y_MA30Type;
-        MALine.MAPositions = self.MA30Positions;
+        //画MA10线
+        MALine.MAType = Y_MA10Type;
+        MALine.MAPositions = self.MA10Positions;
         [MALine draw];
+        
+        //画MA20线
+        MALine.MAType = Y_MA20Type;
+        MALine.MAPositions = self.MA20Positions;
+        [MALine draw];
+        
+        //画MA60线
+        MALine.MAType = Y_MA60Type;
+        MALine.MAPositions = self.MA60Positions;
+        [MALine draw];
+        
+        
+        
+        
         
     }
     
@@ -391,22 +417,22 @@
         } else {
             
             
-            if(kLineModel.MA7)
+            if(kLineModel.MA5)
             {
-                if (minAssert > kLineModel.MA7.floatValue) {
-                    minAssert = kLineModel.MA7.floatValue;
+                if (minAssert > kLineModel.MA5.floatValue) {
+                    minAssert = kLineModel.MA5.floatValue;
                 }
-                if (maxAssert < kLineModel.MA7.floatValue) {
-                    maxAssert = kLineModel.MA7.floatValue;
+                if (maxAssert < kLineModel.MA5.floatValue) {
+                    maxAssert = kLineModel.MA5.floatValue;
                 }
             }
-            if(kLineModel.MA30)
+            if(kLineModel.MA10)
             {
-                if (minAssert > kLineModel.MA30.floatValue) {
-                    minAssert = kLineModel.MA30.floatValue;
+                if (minAssert > kLineModel.MA10.floatValue) {
+                    minAssert = kLineModel.MA10.floatValue;
                 }
-                if (maxAssert < kLineModel.MA30.floatValue) {
-                    maxAssert = kLineModel.MA30.floatValue;
+                if (maxAssert < kLineModel.MA10.floatValue) {
+                    maxAssert = kLineModel.MA10.floatValue;
                 }
             }
             
@@ -432,8 +458,10 @@
     
     
     [self.needDrawKLinePositionModels removeAllObjects];
-    [self.MA7Positions removeAllObjects];
-    [self.MA30Positions removeAllObjects];
+    [self.MA5Positions removeAllObjects];
+    [self.MA10Positions removeAllObjects];
+    [self.MA20Positions removeAllObjects];
+    [self.MA60Positions removeAllObjects];
     
     [self.BOLL_MBPositions removeAllObjects];
     [self.BOLL_UPPositions removeAllObjects];
@@ -489,38 +517,67 @@
         
         
         //MA坐标转换
-        CGFloat ma7Y = maxY;
-        CGFloat ma30Y = maxY;
+        CGFloat ma5Y = maxY;
+        CGFloat ma10Y = maxY;
+        CGFloat ma20Y = maxY;
+        CGFloat ma60Y = maxY;
         if(unitValue > 0.0000001)
         {
-            if(kLineModel.MA7)
+            if(kLineModel.MA5)
             {
-                ma7Y = maxY - (kLineModel.MA7.floatValue - minAssert)/unitValue;
+                ma5Y = maxY - (kLineModel.MA5.floatValue - minAssert)/unitValue;
             }
             
         }
         if(unitValue > 0.0000001)
         {
-            if(kLineModel.MA30)
+            if(kLineModel.MA10)
             {
-                ma30Y = maxY - (kLineModel.MA30.floatValue - minAssert)/unitValue;
+                ma10Y = maxY - (kLineModel.MA10.floatValue - minAssert)/unitValue;
             }
         }
         
-        NSAssert(!isnan(ma7Y) && !isnan(ma30Y), @"出现NAN值");
-        
-        CGPoint ma7Point = CGPointMake(xPosition, ma7Y);
-        CGPoint ma30Point = CGPointMake(xPosition, ma30Y);
-        
-        if(kLineModel.MA7)
+        if(unitValue > 0.0000001)
         {
-            [self.MA7Positions addObject: [NSValue valueWithCGPoint: ma7Point]];
-        }
-        if(kLineModel.MA30)
-        {
-            [self.MA30Positions addObject: [NSValue valueWithCGPoint: ma30Point]];
+            if(kLineModel.MA20)
+            {
+                ma20Y = maxY - (kLineModel.MA20.floatValue - minAssert)/unitValue;
+            }
         }
         
+        if(unitValue > 0.0000001)
+        {
+            if(kLineModel.MA60)
+            {
+                ma60Y = maxY - (kLineModel.MA60.floatValue - minAssert)/unitValue;
+            }
+        }
+        
+        NSAssert(!isnan(ma5Y) && !isnan(ma10Y) && !isnan(ma20Y) && !isnan(ma60Y), @"出现NAN值");
+        
+        CGPoint ma5Point = CGPointMake(xPosition, ma5Y);
+        CGPoint ma10Point = CGPointMake(xPosition, ma10Y);
+        CGPoint ma20Point = CGPointMake(xPosition, ma20Y);
+        CGPoint ma60Point = CGPointMake(xPosition, ma60Y);
+        
+        if(kLineModel.MA5)
+        {
+            [self.MA5Positions addObject: [NSValue valueWithCGPoint: ma5Point]];
+        }
+        if(kLineModel.MA10)
+        {
+            [self.MA10Positions addObject: [NSValue valueWithCGPoint: ma10Point]];
+        }
+        
+        if(kLineModel.MA20)
+        {
+            [self.MA20Positions addObject: [NSValue valueWithCGPoint: ma20Point]];
+        }
+        
+        if(kLineModel.MA60)
+        {
+            [self.MA60Positions addObject: [NSValue valueWithCGPoint: ma60Point]];
+        }
         
         if(_targetLineStatus == Y_StockChartTargetLineStatusBOLL){
             

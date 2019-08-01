@@ -1,0 +1,21 @@
+
+/* Class = "UIButton"; normalTitle = "忘记密码"; ObjectID = "7Mc-5O-pmn"; */
+"7Mc-5O-pmn.normalTitle" = "忘记密码";
+
+/* Class = "UIButton"; normalTitle = "密码"; ObjectID = "9qg-xg-RhT"; */
+"9qg-xg-RhT.normalTitle" = "密码";
+
+/* Class = "UIButton"; normalTitle = "登录"; ObjectID = "Nue-Ly-4Ex"; */
+"Nue-Ly-4Ex.normalTitle" = "登录";
+
+/* Class = "UIButton"; normalTitle = "手机号登录"; ObjectID = "Vyq-LR-qwK"; */
+"Vyq-LR-qwK.normalTitle" = "手机号登录";
+
+/* Class = "UIButton"; normalTitle = "邮箱"; ObjectID = "bgQ-Dr-gmS"; */
+"bgQ-Dr-gmS.normalTitle" = "邮箱";
+
+/* Class = "UITextField"; placeholder = "点击输入"; ObjectID = "gS1-ru-6ZD"; */
+"gS1-ru-6ZD.placeholder" = "点击输入";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "tfJ-Kh-Xfx"; */
+"tfJ-Kh-Xfx.normalTitle" = "Button";

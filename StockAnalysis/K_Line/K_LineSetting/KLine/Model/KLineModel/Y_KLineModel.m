@@ -45,6 +45,21 @@
     return _KDJ_J;
 }
 
+- (NSNumber *)MA5
+{
+    if (!_MA5) {
+        NSInteger index = [self.ParentGroupModel.models indexOfObject:self];
+        if (index >= 4) {
+            if (index > 4) {
+                _MA5 = @((self.SumOfLastClose.floatValue - self.ParentGroupModel.models[index - 5].SumOfLastClose.floatValue) / 5);
+            } else {
+                _MA5 = @(self.SumOfLastClose.floatValue / 5);
+            }
+        }
+    }
+    return _MA5;
+}
+
 - (NSNumber *)MA7
 {
     if([Y_StockChartGlobalVariable isEMALine] == Y_StockChartTargetLineStatusMA)
@@ -63,6 +78,36 @@
         return self.EMA7;
     }
     return _MA7;
+}
+
+- (NSNumber *)MA10
+{
+    if (!_MA10) {
+        NSInteger index = [self.ParentGroupModel.models indexOfObject:self];
+        if (index >= 9) {
+            if (index > 9) {
+                _MA10 = @((self.SumOfLastClose.floatValue - self.ParentGroupModel.models[index - 10].SumOfLastClose.floatValue) / 10);
+            } else {
+                _MA10 = @(self.SumOfLastClose.floatValue / 10);
+            }
+        }
+    }
+    return _MA10;
+}
+
+- (NSNumber *)MA60
+{
+    if (!_MA60) {
+        NSInteger index = [self.ParentGroupModel.models indexOfObject:self];
+        if (index >= 59) {
+            if (index > 59) {
+                _MA60 = @((self.SumOfLastClose.floatValue - self.ParentGroupModel.models[index - 60].SumOfLastClose.floatValue) / 60);
+            } else {
+                _MA60 = @(self.SumOfLastClose.floatValue / 60);
+            }
+        }
+    }
+    return _MA60;
 }
 
 - (NSNumber *)Volume_MA7
@@ -445,7 +490,8 @@
 {
 //    NSLog(@"models.cout = %ld",(long)models.count);
     if(models.count<8){
-        NSAssert(models.count>7, @"models.count不能小于7");
+        
+//        NSAssert(models.count>7, @"models.count不能小于7");
         return;
     }
     switch (cond) {

@@ -26,7 +26,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self.title = @"添加账户";
+    self.title = Localize(@"Add_Acc");
     
     UITapGestureRecognizer *f = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(test)];
     [self.view addGestureRecognizer:f];
@@ -48,7 +48,7 @@
     vc.deleagete = self;
     [vc toReturnCountryCode:^(NSString *bankCodeStr) {
         [self.selectBankBtn setTitle:bankCodeStr forState:UIControlStateNormal];
-        if([bankCodeStr isEqualToString:@"点击选择银行"]){
+        if([bankCodeStr isEqualToString:Localize(@"Select_Bank")]){
             [self.selectBankBtn setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
         }else{
             [self.selectBankBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
@@ -79,7 +79,7 @@
 -(BOOL)checkAllInput{
     BOOL isfinish = YES;
     
-    if([self.selectBankBtn.titleLabel.text isEqualToString:@"点击选择银行"]){
+    if([self.selectBankBtn.titleLabel.text isEqualToString:Localize(@"Select_Bank")]){
         return NO;
     }
     
@@ -116,7 +116,7 @@
 
 -(void)returnBankCode:(NSString *)bankCode{
     [self.selectBankBtn setTitle:bankCode forState:UIControlStateNormal];
-    if([self.selectBankBtn.titleLabel.text isEqualToString:@"点击选择银行"]){
+    if([self.selectBankBtn.titleLabel.text isEqualToString:Localize(@"Select_Bank")]){
         [self.selectBankBtn setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
     }else{
         [self.selectBankBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];

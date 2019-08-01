@@ -1,0 +1,15 @@
+
+/* Class = "UILabel"; text = "请上传您的身份证正面照"; ObjectID = "ROg-or-Hhk"; */
+"ROg-or-Hhk.text" = "请上传您的身份证正面照";
+
+/* Class = "UIButton"; normalTitle = "下一步"; ObjectID = "Z8h-BT-6h2"; */
+"Z8h-BT-6h2.normalTitle" = "下一步";
+
+/* Class = "UILabel"; text = "必须能看清楚证驾照和姓名，支持jpg/jpeg/png"; ObjectID = "hzb-hd-1Hd"; */
+"hzb-hd-1Hd.text" = "必须能看清楚证驾照和姓名，支持jpg/jpeg/png";
+
+/* Class = "UILabel"; text = "人像页照片"; ObjectID = "o1A-mZ-P28"; */
+"o1A-mZ-P28.text" = "人像页照片";
+
+/* Class = "UILabel"; text = "上传要求"; ObjectID = "wgm-CG-jmc"; */
+"wgm-CG-jmc.text" = "上传要求";

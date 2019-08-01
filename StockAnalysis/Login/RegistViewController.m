@@ -28,11 +28,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.title =  @"注册";
+    self.title =  Localize(@"Registe");
     self.update1 = nil;
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registeBack) name:@"RegisteBack" object:nil];
     
-    UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:@"已有账户?" style:UIBarButtonItemStylePlain target:self action:@selector(clickLogin)];
+    UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:Localize(@"Have_Acc") style:UIBarButtonItemStylePlain target:self action:@selector(clickLogin)];
     self.navigationItem.rightBarButtonItem = right;
     
     UITapGestureRecognizer *f = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(test)];
@@ -64,7 +64,7 @@
     
     [self.update1 invalidate];
     self.update1 = nil;
-    [_verifybtn setTitle:@"发送验证码" forState:UIControlStateNormal];
+    [_verifybtn setTitle:Localize(@"Send_Verify") forState:UIControlStateNormal];
     [_verifybtn setEnabled:YES];
 }
 
@@ -124,7 +124,7 @@
 }
 - (IBAction)clickGetVerify:(id)sender {
     if(self.phoneInput.text.length == 0){
-        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"请输入手机号"];
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:Localize(@"Input_Phone")];
         return;
     }
     [_verifybtn setTitle:@"60s" forState:UIControlStateNormal];
@@ -141,13 +141,13 @@
 }
 -(void)changeBtn1{
     NSString* title = _verifybtn.titleLabel.text;
-    if([title isEqualToString:@"发送验证码"]){
+    if([title isEqualToString:Localize(@"Send_Verify")]){
         return;
     }
     NSInteger sec = [[title substringToIndex:[title rangeOfString:@"s"].location] intValue];
     sec--;
     if(sec < 0){
-        [_verifybtn setTitle:@"发送验证码" forState:UIControlStateNormal];
+        [_verifybtn setTitle:Localize(@"Send_Verify") forState:UIControlStateNormal];
         //        [NSTimer ]
         [_update1 invalidate];
         _update1 = nil;
@@ -160,20 +160,20 @@
 - (IBAction)clickPhoneRegiste:(id)sender {
     
     if(![VerifyRules phoneNumberIsTure:self.phoneInput.text]){
-        [HUDUtil showSystemTipView:self title:@"提示" withContent:@"请输入正确的手机号"];
+        [HUDUtil showSystemTipView:self title:Localize(@"Menu_Title") withContent:Localize(@"Input_Correct_Phone")];
         return;
     }
     
     if(self.verifyInput.text.length == 0){
-        [HUDUtil showSystemTipView:self title:@"提示" withContent:@"请输入验证码"];
+        [HUDUtil showSystemTipView:self title:Localize(@"Menu_Title") withContent:Localize(@"Input_Verify")];
         return;
     }
     
     if(![VerifyRules passWordIsTure:self.passwordInput.text]){
-        [HUDUtil showSystemTipView:self title:@"密码格式错误" withContent:@"请输入8-16个字符,不能使用中文、空格,至少含数字/字母/符号2种组合,必须要同时包括大小写字母"];
+        [HUDUtil showSystemTipView:self title:Localize(@"Pwd_Error") withContent:Localize(@"Pwd_Error_Tip")];
         return;
     }
-    [HUDUtil showHudViewInSuperView:self.view withMessage:@"注册中……"];
+    [HUDUtil showHudViewInSuperView:self.view withMessage:Localize(@"Registing")];
     NSDictionary *parameters = @{ @"phone": self.phoneInput.text ,
                                   @"captcha": self.verifyInput.text ,
                                   @"password": self.passwordInput.text ,
@@ -181,17 +181,18 @@
 
     NSString* url = @"register/phone";
 
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
         [HUDUtil hideHudView];
         if(success){
             NSNumber* number = [data objectForKey:@"ret"];
             if([number intValue] == 1){
                 //注册成功
-                [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"注册成功"];
-                [self.navigationController popViewControllerAnimated:YES];
+                [HUDUtil showHudViewTipInSuperView:weakSelf.navigationController.view withMessage:@"注册成功"];
+                [weakSelf.navigationController popViewControllerAnimated:YES];
             }else{
                 //注册失败
-                [HUDUtil showSystemTipView:self title:@"提示" withContent:[data objectForKey:@"msg"]];
+                [HUDUtil showSystemTipView:weakSelf title:Localize(@"Menu_Title") withContent:[data objectForKey:@"msg"]];
             }
         }
     }];
@@ -203,7 +204,7 @@
     NSNumber* number = [data objectForKey:@"ret"];
     if([number intValue] == -1){
         //注册失败
-        [HUDUtil showSystemTipView:self title:@"提示" withContent:[data objectForKey:@"msg"]];
+        [HUDUtil showSystemTipView:self title:Localize(@"Menu_Title") withContent:[data objectForKey:@"msg"]];
     }else if([number intValue] == 1){
         //注册成功
         for (UIViewController*vc in self.navigationController.childViewControllers) {

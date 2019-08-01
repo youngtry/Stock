@@ -1,0 +1,33 @@
+
+/* Class = "UILabel"; text = "0"; ObjectID = "5ty-Gk-3gW"; */
+"5ty-Gk-3gW.text" = "0";
+
+/* Class = "UILabel"; text = "已完成"; ObjectID = "Ay4-Gr-eKs"; */
+"Ay4-Gr-eKs.text" = "已完成";
+
+/* Class = "UILabel"; text = "买入"; ObjectID = "BQ6-WW-G2X"; */
+"BQ6-WW-G2X.text" = "买入";
+
+/* Class = "UILabel"; text = "00:00 00/00"; ObjectID = "Hz9-7M-1xI"; */
+"Hz9-7M-1xI.text" = "00:00 00/00";
+
+/* Class = "UIButton"; normalTitle = "撤销"; ObjectID = "IcE-mN-W7W"; */
+"IcE-mN-W7W.normalTitle" = "撤销";
+
+/* Class = "UILabel"; text = "0.00"; ObjectID = "IkS-vI-9To"; */
+"IkS-vI-9To.text" = "0.00";
+
+/* Class = "UILabel"; text = "数量"; ObjectID = "YkZ-Gp-6Wa"; */
+"YkZ-Gp-6Wa.text" = "数量";
+
+/* Class = "UILabel"; text = "实际成交"; ObjectID = "b6X-Kl-0RB"; */
+"b6X-Kl-0RB.text" = "实际成交";
+
+/* Class = "UILabel"; text = "0.00000000"; ObjectID = "ssK-NL-5g2"; */
+"ssK-NL-5g2.text" = "0.00000000";
+
+/* Class = "UILabel"; text = "期货1"; ObjectID = "w5D-4r-dJ9"; */
+"w5D-4r-dJ9.text" = "期货1";
+
+/* Class = "UILabel"; text = "价格"; ObjectID = "xcL-Qq-tCC"; */
+"xcL-Qq-tCC.text" = "价格";

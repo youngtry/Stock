@@ -21,10 +21,10 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:@"充值记录" style:UIBarButtonItemStylePlain target:self action:@selector(clickRecord:)];
+    UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:Localize(@"Charge_Record") style:UIBarButtonItemStylePlain target:self action:@selector(clickRecord:)];
     self.navigationItem.rightBarButtonItem = right;
     
-    self.title = @"交易账户充值";
+    self.title = Localize(@"Trade_Acc_Charge");
     
     self.assetName.text = [[AppData getInstance] getAssetName];
     UITapGestureRecognizer *f = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(test)];
@@ -61,7 +61,7 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 - (IBAction)clickCopy:(id)sender {
-    [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"已复制到剪贴板"];
+    [HUDUtil showHudViewTipInSuperView:self.view withMessage:Localize(@"Copy")];
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     pasteboard.string = self.addressLabel.text;
     

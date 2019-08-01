@@ -9,8 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "Y_KLineModel.h"
 typedef NS_ENUM(NSInteger, Y_MAType){
-    Y_MA7Type = 0,
+    Y_MA5Type = 0,
+    Y_MA7Type,
     Y_MA30Type,
+    Y_MA10Type,
+    Y_MA20Type,
+    Y_MA60Type,
     Y_BOLL_MB,
     Y_BOLL_UP,
     Y_BOLL_DN

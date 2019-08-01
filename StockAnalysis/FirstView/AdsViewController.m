@@ -22,7 +22,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self.title = @"ZEDA 活动";
+    self.title = Localize(@"ZEDA_Act");
     
     _adList.delegate = self;
     _adList.dataSource = self;
@@ -35,17 +35,18 @@
                              @"page_limit":@(10)
                              };
 //    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] getWithURL:url parma:params block:^(BOOL success, id data) {
         if(success){
             [HUDUtil hideHudView];
             if([[data objectForKey:@"ret"] intValue] == 1){
-                [self.adData removeAllObjects];
+                [weakSelf.adData removeAllObjects];
                 NSArray* ads = [[data objectForKey:@"data"] objectForKey:@"ads"];
-                self.adData = [[NSMutableArray alloc] initWithArray:ads];
-                [self.adList reloadData];
+                weakSelf.adData = [[NSMutableArray alloc] initWithArray:ads];
+                [weakSelf.adList reloadData];
             }else{
                 
-                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:[data objectForKey:@"msg"]];
                 
             }
         }

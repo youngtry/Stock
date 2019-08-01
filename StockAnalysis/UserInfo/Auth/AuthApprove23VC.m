@@ -20,7 +20,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.title = @"级别2";
+    self.title = Localize(@"Level_2");
     self.nextBtn.layer.cornerRadius = 25;
     self.nextBtn.layer.masksToBounds = YES;
     self.nextBtn.enabled = NO;
@@ -40,7 +40,7 @@
     [self.authImage addGestureRecognizer:tap];
 }
 -(void)clickAutiImage{
-    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"选择" delegate:self cancelButtonTitle:nil destructiveButtonTitle:@"取消" otherButtonTitles:@"拍照",@"从相册选择", nil];
+    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:Localize(@"Select") delegate:self cancelButtonTitle:nil destructiveButtonTitle:Localize(@"Menu_Cancel") otherButtonTitles:Localize(@"Take_Photo"),Localize(@"Select_Photo"), nil];
     sheet.tag = 2550;
     //显示消息框
     [sheet showInView:self.view];
@@ -108,19 +108,20 @@
                            @"card_back":fullPath2,
                            @"card_hand_held":fullPath3
                            };
-    [HUDUtil showHudViewInSuperView:self.navigationController.view withMessage:@"认证中,请稍后"];
+    [HUDUtil showHudViewInSuperView:self.navigationController.view withMessage:Localize(@"ID_Verify_Hold")];
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] postWithURLWithFile:url parma:params file:file block:^(BOOL success, id data) {
         if(success){
             if([[data objectForKey:@"ret"] intValue] == 1){
-                [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"认证成功"];
-                for (UIViewController*vc in self.navigationController.childViewControllers) {
+                [HUDUtil showHudViewTipInSuperView:weakSelf.navigationController.view withMessage:Localize(@"ID_Verify_Succ")];
+                for (UIViewController*vc in weakSelf.navigationController.childViewControllers) {
                     if([vc isKindOfClass:[AuthViewController class]]){
-                        [self.navigationController popToViewController:vc animated:YES];
+                        [weakSelf.navigationController popToViewController:vc animated:YES];
                         break;
                     }
                 }
             }else{
-                [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:[data objectForKey:@"msg"]];
+                [HUDUtil showHudViewTipInSuperView:weakSelf.navigationController.view withMessage:[data objectForKey:@"msg"]];
             }
         }
     }];

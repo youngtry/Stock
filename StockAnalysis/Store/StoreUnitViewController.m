@@ -20,7 +20,7 @@
     [super viewDidLoad];
     self.currentUnit = self.title;
     
-    self.title = @"商城交易设置";
+    self.title = Localize(@"Store_Trade_Setting");
     // Do any additional setup after loading the view from its nib.
     
     [self setUnit:self.currentUnit];

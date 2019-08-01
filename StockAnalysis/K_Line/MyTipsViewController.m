@@ -23,7 +23,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self.title = @"我的提醒";
+    self.title = Localize(@"My_Tips");
     self.tipsList.delegate = self;
     self.tipsList.dataSource = self;
     self.tipsList.tableFooterView = [UIView new];
@@ -39,21 +39,22 @@
                              @"state":@""
                              };
 //    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] getWithURL:url parma:params block:^(BOOL success, id data) {
         if(success){
             [HUDUtil hideHudView];
             if([[data objectForKey:@"ret"] intValue] == 1){
-                [self.myTips removeAllObjects];
+                [weakSelf.myTips removeAllObjects];
                 NSArray* items = [[data objectForKey:@"data"] objectForKey:@"items"];
                 for (NSDictionary* item in items) {
                     if([[item objectForKey:@"state"] isEqualToString:@"enable"]){
-                        [self.myTips addObject:item];
+                        [weakSelf.myTips addObject:item];
                     }
                 }
                 
-                [self.tipsList reloadData];
+                [weakSelf.tipsList reloadData];
             }else{
-                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:[data objectForKey:@"msg"]];
             }
         }
     }];
@@ -97,8 +98,8 @@
     
     NSDictionary* item = self.myTips[indexPath.row];
     cell.name.text = [item objectForKey:@"market"];
-    cell.topLimit.text = [NSString stringWithFormat:@"价格上限:%@",[item objectForKey:@"upper_limit"]];
-    cell.lowLimit.text = [NSString stringWithFormat:@"价格上限:%@",[item objectForKey:@"lower_limit"]];
+    cell.topLimit.text = [NSString stringWithFormat:@"%@:%@",Localize(@"Price_Top_Limit"),[item objectForKey:@"upper_limit"]];
+    cell.lowLimit.text = [NSString stringWithFormat:@"%@:%@",Localize(@"Price_Top_Limit"),[item objectForKey:@"lower_limit"]];
     
     return cell;
 }

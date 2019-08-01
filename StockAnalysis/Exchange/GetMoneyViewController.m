@@ -19,9 +19,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.title = @"提现";
+    self.title = Localize(@"Cash");
 
-    UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:@"提现记录" style:UIBarButtonItemStylePlain target:self action:@selector(clickRecord:)];
+    UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:Localize(@"Cash_Record") style:UIBarButtonItemStylePlain target:self action:@selector(clickRecord:)];
     self.navigationItem.rightBarButtonItem = right;
     
     

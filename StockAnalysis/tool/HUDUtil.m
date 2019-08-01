@@ -88,7 +88,7 @@ static MBProgressHUD *hud;
 +(void)showSystemTipView:(UIViewController*)vc  title:(NSString *)title withContent:(NSString *)content{
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:content preferredStyle:  UIAlertControllerStyleAlert];
     
-    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+    [alert addAction:[UIAlertAction actionWithTitle:Localize(@"Menu_Sure") style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
         
     }]];
     

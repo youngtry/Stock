@@ -1,0 +1,30 @@
+
+/* Class = "UILabel"; text = "期货1"; ObjectID = "1qD-6C-TeW"; */
+"1qD-6C-TeW.text" = "期货1";
+
+/* Class = "UILabel"; text = "交易ID"; ObjectID = "3JF-vq-Xl9"; */
+"3JF-vq-Xl9.text" = "交易ID";
+
+/* Class = "UILabel"; text = "状态"; ObjectID = "6O2-Q5-eYn"; */
+"6O2-Q5-eYn.text" = "状态";
+
+/* Class = "UILabel"; text = "已完成"; ObjectID = "7FN-91-Bns"; */
+"7FN-91-Bns.text" = "已完成";
+
+/* Class = "UILabel"; text = "类型"; ObjectID = "LN7-Uj-olf"; */
+"LN7-Uj-olf.text" = "类型";
+
+/* Class = "UILabel"; text = "普通充值"; ObjectID = "Odm-1j-noP"; */
+"Odm-1j-noP.text" = "普通充值";
+
+/* Class = "UILabel"; text = "日期"; ObjectID = "QSl-fl-CrB"; */
+"QSl-fl-CrB.text" = "日期";
+
+/* Class = "UILabel"; text = "+1.00000000"; ObjectID = "UFu-cJ-dko"; */
+"UFu-cJ-dko.text" = "+1.00000000";
+
+/* Class = "UITextView"; text = "kkanlksnclaknslcknalksnclamscklnalkbsclkabslcblabsclbalsbclkabsc"; ObjectID = "b68-fj-dXr"; */
+"b68-fj-dXr.text" = "kkanlksnclaknslcknalksnclamscklnalkbsclkabslcblabsclbalsbclkabsc";
+
+/* Class = "UILabel"; text = "00:37:37 05/12/2018"; ObjectID = "gQP-h2-fJW"; */
+"gQP-h2-fJW.text" = "00:37:37 05/12/2018";

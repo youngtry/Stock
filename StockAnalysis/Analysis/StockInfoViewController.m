@@ -52,19 +52,19 @@
 -(void)viewWillAppear:(BOOL)animated{
     
 //    [HUDUtil showHudViewInSuperView:self.view withMessage:@"数据请求中"];
-    if([self.title isEqualToString:@"自选"]){
+    if([self.title isEqualToString:Localize(@"MySelect")]){
         [self getSelectInfo:_selectSort withRate:_selectOrder withPage:1];
     }
     
-    if([self.title isEqualToString:@"指数"]){
+    if([self.title isEqualToString:Localize(@"Index")]){
         [self getZhishuInfo];
     }
     
-    if([self.title isEqualToString:@"沪深"] || [self.title isEqualToString:@"板块"]){
+    if([self.title isEqualToString:Localize(@"Hu_Shen")] || [self.title isEqualToString:Localize(@"Plate")]){
         [self getHushenInfo];
     }
     
-    if([self.title isEqualToString:@"港美"]){
+    if([self.title isEqualToString:Localize(@"Gang_Mei")]){
         [self getGangmeiInfo];
     }
     
@@ -80,7 +80,7 @@
         _noPendingLabel = [UILabel new];
         [_noPendingLabel setFrame:CGRectMake(0, kScreenHeight*0.3, kScreenWidth, 90)];
         [_noPendingLabel setFont:[UIFont systemFontOfSize:14]];
-        [_noPendingLabel setText:@"暂无数据"];
+        [_noPendingLabel setText:Localize(@"No_Record")];
         [_noPendingLabel setTextColor:[UIColor grayColor]];
         [_noPendingLabel setTextAlignment:NSTextAlignmentCenter];
     }
@@ -89,6 +89,7 @@
 }
 
 -(void)getStockWithSort:(NSString*)sort withRate:(NSString*)rate withPage:(NSInteger)page{
+    WeakSelf(weakSelf);
     if([self.title containsString:@"china_"]){
         NSString* asset = [self.title substringFromIndex:6];
         NSLog(@"asset = %@",asset);
@@ -109,14 +110,14 @@
                     
                     if(_items){
                         //                    NSLog(@"items = %@,数量为：%lu",_items,(unsigned long)_items.count);
-                        [self.noPendingLabel setHidden:YES];
-                        [self.tableView reloadData];
+                        [weakSelf.noPendingLabel setHidden:YES];
+                        [weakSelf.tableView reloadData];
                     }else{
-                        [self.noPendingLabel setHidden:NO];
+                        [weakSelf.noPendingLabel setHidden:NO];
                         
                     }
                 }else{
-                    [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                    [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:[data objectForKey:@"msg"]];
                 }
             }
         }];
@@ -136,10 +137,10 @@
                 if([[data objectForKey:@"ret"] intValue] == 1){
                     _items = [[data objectForKey:@"data"] objectForKey:@"assets"];
                     if(_items){
-                        [self.tableView reloadData];
+                        [weakSelf.tableView reloadData];
                     }
                 }else{
-                    [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                    [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:[data objectForKey:@"msg"]];
                 }
             }
         }];
@@ -167,7 +168,7 @@
                                  @"order":rate
                                  };
     NSString* url = @"market/follow/list";
-    
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
 //        [HUDUtil hideHudView];
         if(success){
@@ -179,23 +180,23 @@
                 if(items.count == 0){
                     
                     if(_items.count == 0){
-                        [self.noPendingLabel setHidden:NO];
+                        [weakSelf.noPendingLabel setHidden:NO];
                     }else{
-                        self.isUpdate = NO;
-                        self.currentPage = 0;
-                        [self.noPendingLabel setHidden:YES];
+                        weakSelf.isUpdate = NO;
+                        weakSelf.currentPage = 0;
+                        [weakSelf.noPendingLabel setHidden:YES];
                     }
                 }else{
                     [_items addObjectsFromArray:items];
                     if(_items){
                         //                    NSLog(@"items = %@,数量为：%lu",_items,(unsigned long)_items.count);
-                        [self.noPendingLabel setHidden:YES];
-                        [self.tableView reloadData];
+                        [weakSelf.noPendingLabel setHidden:YES];
+                        [weakSelf.tableView reloadData];
                     }
                 }
                 
             }else{
-                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:[data objectForKey:@"msg"]];
             }
         }
     }];
@@ -204,7 +205,7 @@
 -(void)getZhishuInfo{
     NSDictionary* parameters = @{};
     NSString* url = @"market/asset/index/tickerAll";
-    
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
         [HUDUtil hideHudView];
         if(success){
@@ -213,7 +214,7 @@
                 _items = [[data objectForKey:@"data"] objectForKey:@"tickers"];
                 if(_items){
                     //                    NSLog(@"items = %@,数量为：%lu",_items,(unsigned long)_items.count);
-                    [self.tableView reloadData];
+                    [weakSelf.tableView reloadData];
                 }
             }
         }
@@ -226,7 +227,7 @@
                                  @"asset":@"RMB"
                                  };
     NSString* url = @"market/item";
-    
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
         [HUDUtil hideHudView];
         if(success){
@@ -235,7 +236,7 @@
                 _items = [[data objectForKey:@"data"] objectForKey:@"items"];
                 if(_items){
                     //                    NSLog(@"items = %@,数量为：%lu",_items,(unsigned long)_items.count);
-                    [self.tableView reloadData];
+                    [weakSelf.tableView reloadData];
                 }
             }
         }
@@ -248,7 +249,7 @@
                                  @"asset":@"USD"
                                  };
     NSString* url = @"market/item";
-    
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
         [HUDUtil hideHudView];
         if(success){
@@ -257,7 +258,7 @@
                 _items = [[data objectForKey:@"data"] objectForKey:@"items"];
                 if(_items){
                     //                    NSLog(@"items = %@,数量为：%lu",_items,(unsigned long)_items.count);
-                    [self.tableView reloadData];
+                    [weakSelf.tableView reloadData];
                 }
             }
         }
@@ -280,7 +281,7 @@
         _rankContainer.backgroundColor = kColor(245, 245, 245);
         
         WeakSelf(weakSelf)
-        SortView *sort1 = [[SortView alloc] initWithFrame:CGRectMake(15, 0, 0, 15) title:@"股票"];
+        SortView *sort1 = [[SortView alloc] initWithFrame:CGRectMake(15, 0, 0, 15) title:Localize(@"Share")];
         [sort1 setTitleWithFont:12 withColor:kColor(88, 88, 88)];
         sort1.block = ^(BOOL isUp){
           //TODO 数据排序，reload
@@ -289,11 +290,11 @@
         sort1.centerY = _rankContainer.centerY;
         [_rankContainer addSubview:sort1];
         
-        SortView *sort2 = [[SortView alloc] initWithFrame:CGRectMake(15, 0, 0, 15) title:@"最新价"];
+        SortView *sort2 = [[SortView alloc] initWithFrame:CGRectMake(15, 0, 0, 15) title:Localize(@"New_Price")];
         [sort2 setTitleWithFont:12 withColor:kColor(88, 88, 88)];
         sort2.block = ^(BOOL isUp){
             //TODO 数据排序，reload
-            if([weakSelf.title isEqualToString:@"自选"]){
+            if([weakSelf.title isEqualToString:Localize(@"MySelect")]){
                 _selectSort = @"price";
                 if(isUp){
                     _selectOrder  = @"desc";
@@ -322,11 +323,11 @@
         sort2.right = kScreenWidth-112;
         [_rankContainer addSubview:sort2];
         
-        SortView *sort3 = [[SortView alloc] initWithFrame:CGRectMake(15, 0, 0, 15) title:@"24H涨跌"];
+        SortView *sort3 = [[SortView alloc] initWithFrame:CGRectMake(15, 0, 0, 15) title:Localize(@"24Rate")];
         [sort3 setTitleWithFont:12 withColor:kColor(88, 88, 88)];
         sort3.block = ^(BOOL isUp){
             //TODO 数据排序，reload
-            if([weakSelf.title isEqualToString:@"自选"]){
+            if([weakSelf.title isEqualToString:Localize(@"MySelect")]){
                 _selectSort = @"increase";
                 if(isUp){
                     _selectOrder  = @"desc";
@@ -377,9 +378,9 @@
         
         NSDictionary* item = self.items[indexPath.row];
         if(item){
-            if([self.title isEqualToString:@"自选"] || [self.title isEqualToString:@"沪深"] || [self.title isEqualToString:@"港美"] ||[self.title isEqualToString:@"板块"]){
+            if([self.title isEqualToString:Localize(@"MySelect")] || [self.title isEqualToString:Localize(@"Hu_Shen")] || [self.title isEqualToString:Localize(@"Gang_Mei")] ||[self.title isEqualToString:Localize(@"Plate")]){
                 cell.titleLabel.text = [item objectForKey:@"market"];
-            }else if ([self.title isEqualToString:@"指数"]){
+            }else if ([self.title isEqualToString:Localize(@"Index")]){
                 cell.titleLabel.text = [item objectForKey:@"asset"];
             }else if ([self.title containsString:@"global_"]){
                 cell.titleLabel.text = [item objectForKey:@"store"];
@@ -387,20 +388,20 @@
                 cell.titleLabel.text = [item objectForKey:@"market"];
             }
             
-            if (![self.title isEqualToString:@"指数"]){
+            if (![self.title isEqualToString:Localize(@"Index")]){
                 NSString* vol = [NSString stringWithFormat:@"%d",[[item objectForKey:@"volume"] intValue]];
                 vol = [Util countNumAndChangeformat:vol];
-                cell.volLabel.text = [NSString stringWithFormat:@"成交量:%@",vol] ;
+                cell.volLabel.text = [NSString stringWithFormat:@"%@:%@",Localize(@"Deal_Num"),vol] ;
             }
             
             
-            if ([self.title isEqualToString:@"指数"]){
+            if ([self.title isEqualToString:Localize(@"Index")]){
                 cell.priceLabel.text = [item objectForKey:@"open"];
             }else{
                 cell.priceLabel.text = [item objectForKey:@"price"];
             }
             NSString* incre = @"";
-            if ([self.title isEqualToString:@"指数"]){
+            if ([self.title isEqualToString:Localize(@"Index")]){
                 incre = [item objectForKey:@"changePercent"];
             }else{
                 incre = [item objectForKey:@"increase"];
@@ -444,7 +445,7 @@
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     // 下拉到最底部时显示更多数据
-    if(![self.title isEqualToString:@"自选"]){
+    if(![self.title isEqualToString:Localize(@"MySelect")]){
         return;
     }
     
@@ -464,6 +465,6 @@
 }
 
 -(void)dealloc{
-    DLog(@"");
+    NSLog(@"");
 }
 @end

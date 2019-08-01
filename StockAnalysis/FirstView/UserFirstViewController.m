@@ -42,6 +42,7 @@
 @property (nonatomic, assign) NSInteger updateIndex;
 @property (weak, nonatomic) IBOutlet UIButton *userInfoBtn;
 
+
 @end
 
 @implementation UserFirstViewController
@@ -50,7 +51,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 
-    
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showGuestureSettingView) name:@"UnlockGuesture" object:nil];
     //
     self.stockName = [NSMutableArray new];
     self.randList.delegate = self;
@@ -58,13 +59,15 @@
     self.tipsTitle = [NSMutableArray new];
     self.tipsContent = [NSMutableArray new];
     self.updateIndex = 0;
-    _usernameLabel.text = @"用户名";
+    _usernameLabel.text = Localize(@"Username");
+
     
     NSString* username = [GameData getUserAccount];
     NSString* password = [GameData getUserPassword];
     
     NSLog(@"username = %@,password = %@",username,password);
-    [HUDUtil showHudViewInSuperView:self.view withMessage:@"登录中，请稍后"];
+    [HUDUtil showHudViewInSuperView:self.view withMessage:Localize(@"Login_Tip")];
+    WeakSelf(weakSelf);
     if([username containsString:@"@"]){
         //邮箱登录
         NSDictionary *parameters = @{@"email": [GameData getUserAccount],
@@ -78,16 +81,16 @@
                 [HUDUtil hideHudView];
                 //                NSLog(@"登录消息 = %@",data);
                 if([[data objectForKey:@"ret"] intValue] == 1){
-                    [self autoLoginBack];
+                    [weakSelf autoLoginBack];
                     [GameData setUserPassword:password];
                 }else{
                     NSString* msg = [data objectForKey:@"msg"];
-                    [HUDUtil showSystemTipView:self.navigationController title:@"登录失败" withContent:msg];
+                    [HUDUtil showSystemTipView:weakSelf.navigationController title:Localize(@"Login_Fail") withContent:msg];
                     
                     NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
                     [defaultdata setBool:NO forKey:@"IsLogin"];
                     
-                    [self.navigationController popViewControllerAnimated:YES];
+                    [weakSelf.navigationController popViewControllerAnimated:YES];
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"ChangeAfterLogin" object:nil];
                 }
             }
@@ -108,15 +111,15 @@
                 [HUDUtil hideHudView];
                 //                NSLog(@"登录消息1 = %@",data);
                 if([[data objectForKey:@"ret"] intValue] == 1){
-                    [self autoLoginBack];
+                    [weakSelf autoLoginBack];
                     [GameData setUserPassword:password];
                 }else{
                     NSString* msg = [data objectForKey:@"msg"];
-                    [HUDUtil showSystemTipView:self.navigationController title:@"登录失败" withContent:msg];
+                    [HUDUtil showSystemTipView:weakSelf.navigationController title:Localize(@"Login_Fail") withContent:msg];
                     NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
                     [defaultdata setBool:NO forKey:@"IsLogin"];
                     
-                    [self.navigationController popViewControllerAnimated:YES];
+                    [weakSelf.navigationController popViewControllerAnimated:YES];
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"ChangeAfterLogin" object:nil];
                 }
                 
@@ -124,6 +127,37 @@
             }
         }];
     }
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    //    NSLog(@"viewWillAppear");
+    [self.navigationController setNavigationBarHidden:YES];
+    self.tabBarController.tabBar.hidden = NO;
+    
+    [SocketInterface sharedManager].delegate = self;
+    [[SocketInterface sharedManager] openWebSocket];
+    
+    if(_marqueeView){
+        [_marqueeView removeFromSuperview];
+        _marqueeView = nil;
+    }
+    self.updateIndex = 0;
+    [self.stockName removeAllObjects];
+    
+    NSString* url1 = @"news/home";
+    NSDictionary* parameters1 = @{};
+    //    [[HttpRequest getInstance] getWithUrl:url notification:@"FirstTipAndAds"];
+    WeakSelf(weakSelf);
+    [[HttpRequest getInstance] getWithURL:url1 parma:parameters1 block:^(BOOL success, id data) {
+        if(success){
+            [weakSelf getTipsAndAdsBack:data];
+        }
+    }];
+    
+    
+    
+    [self requestAllData];
+    
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -182,18 +216,35 @@
 
 
 -(void)autoLoginBack{
+    
+    NSString* username = [GameData getUserAccount];
+    NSString* showname = @"";
+    if([username containsString:@"@"]){
+//        showname = username;
+        showname = [showname stringByAppendingString:[username substringWithRange:NSMakeRange(0, [username rangeOfString:@"@"].location+1)]];
+        showname = [showname stringByAppendingString:@"****"];
+        showname = [showname stringByAppendingString:[username substringFromIndex:[username rangeOfString:@"."].location]];
+    }else{
+        showname = [showname stringByAppendingString:[username substringWithRange:NSMakeRange(0, 3)]];
+        showname = [showname stringByAppendingString:@"****"];
+        showname = [showname stringByAppendingString:[username substringFromIndex:7]];
+    }
+    
+    _usernameLabel.text = showname;
+    
+    [self showGuestureSettingView];
     NSDictionary *parameters = @{};
     
     NSString* url = @"wallet/balance";
-    
+    WeakSelf(weakSelf);
 //    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"GetMoneyBack"];
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
             if([[data objectForKey:@"ret"] intValue] == 1){
-                [self setAccountInfo:data];
-                [self showGuestureSettingView];
+                [weakSelf setAccountInfo:data];
+                
             }else{
-                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:[data objectForKey:@"msg"]];
             }
             
         }
@@ -201,29 +252,74 @@
 }
 
 -(void)showGuestureSettingView{
+    
+    if(![GameData getNeedNoticeGuesture]){
+        return;
+    }
+    
+    
+    if(![self isNeedShowGuesture]){
+        return;
+    }
+    
+    
     NSString* url = @"account/has_gesture";
     NSDictionary* params = @{};
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] getWithURL:url parma:params block:^(BOOL success, id data) {
         if(success){
             if([[data objectForKey:@"ret"] intValue] == 1){
                 if([[[data objectForKey:@"data"] objectForKey:@"has_gesture"] boolValue]){
                     //已经设置过手势密码
                     SetPasswordViewController* vc = [[SetPasswordViewController alloc] initWithNibName:@"SetPasswordViewController" bundle:nil];
-                    [vc setTitle:@"输入手势密码"];
-                    [self.navigationController pushViewController:vc animated:YES];
+                    [vc setTitle:Localize(@"Input_Gesture")];
+                    [weakSelf.navigationController pushViewController:vc animated:YES];
                 }else{
-                    [self getTempVerify];
+                    [weakSelf getTempVerify];
                 }
             }
         }
     }];
 }
 
+-(BOOL)isNeedShowGuesture{
+    
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString* lastTimeStr = [userDefaults stringForKey:@"ShowGuestureTime"];
+    
+    if(nil == lastTimeStr){
+        return YES;
+    }
+    
+    NSString* needTime = [GameData getGuestureTime];
+    NSLog(@"needTime = %@",needTime);
+    if([needTime isEqualToString:Localize(@"Right_Now") ]){
+        return YES;
+    }else{
+        NSString* num = [needTime substringToIndex:[needTime rangeOfString:Localize(@"Minite")].location];
+        NSLog(@"num = %@",num);
+        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];// 创建一个时间格式化对象
+        [dateFormatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"]; //设定时间的格式
+        
+        NSDate *tempDate = [dateFormatter dateFromString:lastTimeStr];//将字符串转换为时间对象
+        
+        NSDate* curDate = [NSDate date];
+        NSTimeInterval delta = [curDate timeIntervalSinceDate:tempDate];
+        
+        if(delta < [num intValue]*60){
+            return NO;
+        }
+    }
+
+    return YES;
+}
 
 
 -(void)getTempVerify{
     NSString* url = @"account/veritypwd";
     NSDictionary* params = @{@"password":[GameData getUserPassword]};
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
         if(success){
             if([[data objectForKey:@"ret"] intValue] == 1){
@@ -232,11 +328,11 @@
                 [[AppData getInstance] setTempVerify:temp];
                 
                 SetPasswordViewController *vc = [[SetPasswordViewController alloc] init];
-                [vc setTitle:@"设置手势密码"];
-                [self.navigationController pushViewController:vc animated:YES];
+                [vc setTitle:Localize(@"Set_Guesture")];
+                [weakSelf.navigationController pushViewController:vc animated:YES];
                 
             }else{
-                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:[data objectForKey:@"msg"]];
             }
         }
     }];
@@ -247,17 +343,7 @@
     
 //    NSDictionary* data = [[HttpRequest getInstance] httpBack];
 
-    NSString* username = [GameData getUserAccount];
-    NSString* showname = @"";
-    if([username containsString:@"@"]){
-        showname = username;
-    }else{
-        showname = [showname stringByAppendingString:[username substringWithRange:NSMakeRange(0, 3)]];
-        showname = [showname stringByAppendingString:@"****"];
-        showname = [showname stringByAppendingString:[username substringFromIndex:7]];
-    }
-
-    _usernameLabel.text = showname;
+    
     
     NSNumber* rest = [data objectForKey:@"ret"];
     if([rest intValue] == 1){
@@ -283,35 +369,7 @@
 //    self.shopUSDLabel.text = [NSString stringWithFormat:@"$%@",shopUSD];
 }
 
-- (void)viewWillAppear:(BOOL)animated{
-    //    NSLog(@"viewWillAppear");
-    [self.navigationController setNavigationBarHidden:YES];
-    self.tabBarController.tabBar.hidden = NO;
-    
-    [SocketInterface sharedManager].delegate = self;
-    [[SocketInterface sharedManager] openWebSocket];
-    
-    if(_marqueeView){
-        [_marqueeView removeFromSuperview];
-        _marqueeView = nil;
-    }
-    self.updateIndex = 0;
-    [self.stockName removeAllObjects];
-    
-    NSString* url1 = @"news/home";
-    NSDictionary* parameters1 = @{};
-//    [[HttpRequest getInstance] getWithUrl:url notification:@"FirstTipAndAds"];
-    [[HttpRequest getInstance] getWithURL:url1 parma:parameters1 block:^(BOOL success, id data) {
-        if(success){
-            [self getTipsAndAdsBack:data];
-        }
-    }];
-    
-    
-    
-    [self requestAllData];
-    
-}
+
 
 -(void)requestAllData{
     
@@ -321,6 +379,7 @@
     NSDictionary* parameters2 = @{@"market":@""};
     NSString* url2 = @"market/search";
     //
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] getWithURL:url2 parma:parameters2 block:^(BOOL success, id data) {
         if(success){
             if([[data objectForKey:@"ret"] intValue] == 1){
@@ -330,15 +389,15 @@
                 if(market.count>0){
                     NSArray* result = [market objectForKey:@"market"];
                     if(result.count >0){
-                        [self.stockName removeAllObjects];
+                        [weakSelf.stockName removeAllObjects];
                         for (int i=0; i<result.count; i++) {
                             
                             NSDictionary* info = result[i];
-                            [self.stockName addObject:info];
+                            [weakSelf.stockName addObject:info];
                         
                         }
                         [_randList reloadData];
-                        [self requestStockInfo:self.updateIndex];
+                        [weakSelf requestStockInfo:weakSelf.updateIndex];
                     }
                 }
             }
@@ -347,7 +406,7 @@
 }
 
 -(void)requestStockInfo:(NSInteger)index{
-    NSLog(@"更新index = %ld,************%ld",index,self.stockName.count);
+//    NSLog(@"更新index = %ld,************%ld",index,self.stockName.count);
 //    if(index >= self.stockName.count){
 //        NSLog(@"*********更新结束*********");
 //        NSDictionary *dicAll = @{@"method":@"state.unsubscribe",@"params":@[],@"id":@(PN_StateUnsubscribe)};
@@ -360,6 +419,9 @@
 //
 //        return;
 //    }
+    if(index>=self.stockName.count){
+        return;
+    }
     NSDictionary* info = self.stockName[index];
     NSMutableArray* names = [NSMutableArray new];
     for(NSDictionary* data in self.stockName){
@@ -391,18 +453,24 @@
         NSDictionary* info = [data objectForKey:@"data"];
 //        NSLog(@"首页广告:%@",info);
         NSArray *ads = data[@"data"][@"ads"];
-        [self refreshAdView:ads];
-        NSArray* tips = data[@"data"][@"tips"];
-        
-        [self.tipsContent removeAllObjects];
-        [self.tipsTitle removeAllObjects];
-        for (NSDictionary* tip in tips) {
-            NSString* text = [tip objectForKey:@"content"];
-            NSString* title = [tip objectForKey:@"title"];
-//            NSLog(@"text = %@,  title = %@",text,title);
-            [self.tipsTitle addObject:title];
-            [self.tipsContent addObject:text];
+        if(ads.count>0){
+            [self refreshAdView:ads];
         }
+        
+        NSArray* tips = data[@"data"][@"tips"];
+        if(tips.count>0){
+            [self.tipsContent removeAllObjects];
+            [self.tipsTitle removeAllObjects];
+            for (NSDictionary* tip in tips) {
+                NSString* text = [tip objectForKey:@"content"];
+                NSString* title = [tip objectForKey:@"title"];
+                //            NSLog(@"text = %@,  title = %@",text,title);
+                [self.tipsTitle addObject:title];
+                [self.tipsContent addObject:text];
+            }
+        }
+        
+        
         if(self.tipsTitle.count>0){
 //            [self createAutoRunLabel:self.tipsContent[0] view:self.autoRunActivityView fontsize:14 withTag:0];
             if(_marqueeView){
@@ -502,11 +570,25 @@
 
 #pragma mark -SocketDelegates
 -(void)getWebData:(id)message withName:(NSString *)name{
+    
+    if(nil == message && [name isEqualToString:@"closed"]){
+        //断开链接了
+        [[SocketInterface sharedManager] openWebSocket];
+        [SocketInterface sharedManager].delegate = self;
+        
+        [self requestStockInfo:self.updateIndex];
+        return;
+    }
+    
     NSString* str = message;
     NSData* strdata = [str dataUsingEncoding:NSUTF8StringEncoding];
     
     NSDictionary* data = [NSJSONSerialization JSONObjectWithData:strdata options:NSJSONReadingMutableContainers error:nil];
+    NSObject* err =[data objectForKey:@"error"];
     
+    if(![err isKindOfClass:[NSNull class]]){
+        return;
+    }
 //    int requestID = [[data objectForKey:@"id"] intValue];
 //    NSLog(@"应答消息:%@,消息体为:%@",name,data);
     if ([name isEqualToString:@"state.update"]){
@@ -535,6 +617,9 @@
             
         }
         
+    }else if ([name isEqualToString:@"server.ping"]){
+        NSString* result = [data objectForKey:@"result"];
+//        NSLog(@"ping result:%@",result);
     }
 }
 

@@ -19,7 +19,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.title = @"身份认证";
+    self.title = Localize(@"ID_Verify");
     [self.view addSubview:self.table];
     
     
@@ -43,14 +43,15 @@
     NSString* url = @"account/userinfo";
     NSDictionary *parameters = @{} ;
 //    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
             [HUDUtil hideHudView];
             if([[data objectForKey:@"ret"] intValue] == 1){
-                self.authLevel = [[[[data objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"level"] intValue];
-                [self.table reloadData];
+                weakSelf.authLevel = [[[[data objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"level"] intValue];
+                [weakSelf.table reloadData];
             }else{
-                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:[data objectForKey:@"msg"]];
             }
         }
     }];
@@ -79,50 +80,50 @@
     if(row == 0)
     {
         cell.imageView.image = [UIImage imageNamed:@"level1.png"];
-        cell.textLabel.text = @"级别1";
+        cell.textLabel.text = Localize(@"Level_1");
         if(row>=_authLevel){
-            cell.detailTextLabel.text = @"去认证";
+            cell.detailTextLabel.text = Localize(@"Go_Verify");
             cell.detailTextLabel.textColor = kThemeYellow;
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }else{
-            cell.detailTextLabel.text = @"已完成";
+            cell.detailTextLabel.text = Localize(@"Finished");
             cell.accessoryType = UITableViewCellAccessoryNone;
         }
 
     }else if(row == 1){
         cell.imageView.image = [UIImage imageNamed:@"level2.png"];;
-        cell.textLabel.text = @"级别2";
+        cell.textLabel.text = Localize(@"Level_2");
         if(row>=_authLevel){
             
             if((row-1)>=_authLevel){
-                cell.detailTextLabel.text = @"请先完成上一层级别";
+                cell.detailTextLabel.text = Localize(@"Please_Finish_Last");
                 cell.accessoryType = UITableViewCellAccessoryNone;
             }else{
-                cell.detailTextLabel.text = @"去认证";
+                cell.detailTextLabel.text = Localize(@"Go_Verify");
                 cell.detailTextLabel.textColor = kThemeYellow;
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             }
             
         }else{
-            cell.detailTextLabel.text = @"已完成";
+            cell.detailTextLabel.text = Localize(@"Finished");
             cell.accessoryType = UITableViewCellAccessoryNone;
         }
     }else if (row == 2){
         cell.imageView.image = [UIImage imageNamed:@"level3.png"];;
-        cell.textLabel.text = @"级别3";
+        cell.textLabel.text = Localize(@"Level_3");
         if(row>=_authLevel){
             
             if((row-1)>=_authLevel){
-                cell.detailTextLabel.text = @"请先完成上一层级别";
+                cell.detailTextLabel.text = Localize(@"Please_Finish_Last");
                 cell.accessoryType = UITableViewCellAccessoryNone;
             }else{
-                cell.detailTextLabel.text = @"去认证";
+                cell.detailTextLabel.text = Localize(@"Go_Verify");
                 cell.detailTextLabel.textColor = kThemeYellow;
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             }
             
         }else{
-            cell.detailTextLabel.text = @"已完成";
+            cell.detailTextLabel.text = Localize(@"Finished");
             cell.accessoryType = UITableViewCellAccessoryNone;
         }
     }

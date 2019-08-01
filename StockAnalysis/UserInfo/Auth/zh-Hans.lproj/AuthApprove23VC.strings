@@ -1,0 +1,24 @@
+
+/* Class = "UILabel"; text = "上传要求"; ObjectID = "2J2-5B-WRi"; */
+"2J2-5B-WRi.text" = "上传要求";
+
+/* Class = "UILabel"; text = "1.照片需免冠，建议未化妆，手持证据人的五官清晰可见，完整露出双手手臂。"; ObjectID = "DFG-rX-YJo"; */
+"DFG-rX-YJo.text" = "1.照片需免冠，建议未化妆，手持证据人的五官清晰可见，完整露出双手手臂。";
+
+/* Class = "UILabel"; text = "手持身份证"; ObjectID = "Ieo-Ct-xtR"; */
+"Ieo-Ct-xtR.text" = "手持身份证";
+
+/* Class = "UIButton"; normalTitle = "上一步"; ObjectID = "eqF-hK-8qC"; */
+"eqF-hK-8qC.normalTitle" = "上一步";
+
+/* Class = "UILabel"; text = "3.支持jpg/jpeg/png格式，最大不超过5M。"; ObjectID = "kcE-bO-Q4U"; */
+"kcE-bO-Q4U.text" = "3.支持jpg/jpeg/png格式，最大不超过5M。";
+
+/* Class = "UILabel"; text = "2.照片内容真实有效，不得做任何修改。"; ObjectID = "lDc-im-dQ0"; */
+"lDc-im-dQ0.text" = "2.照片内容真实有效，不得做任何修改。";
+
+/* Class = "UIButton"; normalTitle = "提交"; ObjectID = "s1x-C3-4is"; */
+"s1x-C3-4is.normalTitle" = "提交";
+
+/* Class = "UILabel"; text = "请上传手持身份证照"; ObjectID = "wtu-lA-g5G"; */
+"wtu-lA-g5G.text" = "请上传手持身份证照";

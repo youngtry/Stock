@@ -143,13 +143,13 @@
     if(indexPath.row == 0){
         UILabel* title = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 45)];
         [title setTextAlignment:NSTextAlignmentCenter];
-        title.text = @"选择付款方式";
+        title.text = Localize(@"Select_Pay_way");
         [title setFont:[UIFont systemFontOfSize:14]];
         [cell.contentView addSubview:title];
         UIImage* icon = [UIImage imageNamed:@"closeChose.png"];
         cell.imageView.image = icon;
     }else{
-        NSArray* titles = @[@"银行卡支付",@"微信支付",@"支付宝支付"];
+        NSArray* titles = @[Localize(@"Band_Pay"),Localize(@"Wechat_Pay"),Localize(@"AliPay")];
         NSArray* pics = @[@"card.png",@"weixin.png",@"zhifubao.png"];
         cell.textLabel.text = titles[indexPath.row-1];
         [cell.textLabel setFont:[UIFont systemFontOfSize:14]];

@@ -38,7 +38,7 @@
     globalTitles = [[NSMutableArray alloc] init];
 
     //国内外切换
-    _segment = [[UISegmentedControl alloc] initWithItems:@[@"国内",@"全球"]];
+    _segment = [[UISegmentedControl alloc] initWithItems:@[Localize(@"Inside"),Localize(@"Global")]];
     _segment.frame = CGRectMake(0, 0, 200, 28);
     _segment.tintColor = kThemeYellow;
     _segment.selectedSegmentIndex = 0;
@@ -72,8 +72,8 @@
     
     NSDictionary* parameters = @{};
     NSString* url = @"market/assortment";
-    [chinaTitles addObject:@"自选"];
-    
+    [chinaTitles addObject:Localize(@"MySelect")];
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
             
@@ -86,11 +86,11 @@
                     }
                     
                     //默认国内
-                    [self changeToInternal];
+                    [weakSelf changeToInternal];
                 }
             }else{
                 
-                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:[data objectForKey:@"msg"]];
                 
             }
         }
@@ -105,7 +105,7 @@
                 }
             }else{
                 
-                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:[data objectForKey:@"msg"]];
                 
             }
             
@@ -136,7 +136,7 @@
 
 -(void)changeToInternal{
     NSMutableArray* vcs = [NSMutableArray new];
-    NSArray *titles = @[@"自选"];
+    NSArray *titles = @[Localize(@"MySelect")];
     
     
     

@@ -1,0 +1,15 @@
+
+/* Class = "UILabel"; text = "0000.0000"; ObjectID = "68m-ER-KnT"; */
+"68m-ER-KnT.text" = "0000.0000";
+
+/* Class = "UILabel"; text = "股票名称"; ObjectID = "LId-L8-jbB"; */
+"LId-L8-jbB.text" = "股票名称";
+
+/* Class = "UILabel"; text = "￥0000"; ObjectID = "X5R-Gf-ctk"; */
+"X5R-Gf-ctk.text" = "￥0000";
+
+/* Class = "UILabel"; text = "成交量0,000,000"; ObjectID = "qe1-MS-ipm"; */
+"qe1-MS-ipm.text" = "成交量0,000,000";
+
+/* Class = "UILabel"; text = "00.00%"; ObjectID = "uiM-4j-Pus"; */
+"uiM-4j-Pus.text" = "00.00%";

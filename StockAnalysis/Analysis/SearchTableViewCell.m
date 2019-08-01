@@ -34,6 +34,7 @@
 }
 - (IBAction)clickLike:(id)sender {
     NSLog(@"我要关注或取消这个交易");
+    WeakSelf(weakSelf);
     if(_isLike){
         NSDictionary* parameters = @{@"market":_nameLabel.text};
         NSString* url = @"/market/unfollow";
@@ -41,7 +42,7 @@
             if(success){
                 [HUDUtil hideHudView];
                 if([[data objectForKey:@"ret"] intValue] == 1){
-                    [self setIfLike:NO];
+                    [weakSelf setIfLike:NO];
                     for (NSDictionary* info in [SearchData getInstance].specialList) {
                         if([[info objectForKey:@"market"] isEqualToString:_nameLabel.text]){
                             [[SearchData getInstance].specialList removeObject:info];
@@ -58,7 +59,7 @@
             if(success){
                 [HUDUtil hideHudView];
                 if([[data objectForKey:@"ret"] intValue] == 1){
-                    [self setIfLike:YES];
+                    [weakSelf setIfLike:YES];
                     for (NSDictionary* info in [SearchData getInstance].searchList) {
                         if([[info objectForKey:@"market"] isEqualToString:_nameLabel.text]){
                             [[SearchData getInstance].specialList addObject:info];

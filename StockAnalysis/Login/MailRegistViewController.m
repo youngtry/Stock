@@ -28,9 +28,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mailRegisteBack) name:@"MailRegisteBack" object:nil];
-    self.title =  @"注册";
+    self.title =  Localize(@"Registe");
     self.update1 = nil;
-    UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:@"已有账户?" style:UIBarButtonItemStylePlain target:self action:@selector(clickLogin)];
+    UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:Localize(@"Have_Acc") style:UIBarButtonItemStylePlain target:self action:@selector(clickLogin)];
     self.navigationItem.rightBarButtonItem = right;
     
     UITapGestureRecognizer *f = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(test)];
@@ -55,7 +55,7 @@
     
     [self.update1 invalidate];
     self.update1 = nil;
-    [_verifybtn setTitle:@"发送邀请码" forState:UIControlStateNormal];
+    [_verifybtn setTitle:Localize(@"Send_Invition") forState:UIControlStateNormal];
     [_verifybtn setEnabled:YES];
 }
 
@@ -82,20 +82,20 @@
 }
 - (IBAction)clickMailRegist:(id)sender {
     if(self.mailInput.text.length == 0){
-        [HUDUtil showSystemTipView:self title:@"提示" withContent:@"请输入邮箱"];
+        [HUDUtil showSystemTipView:self title:Localize(@"Menu_Title") withContent:Localize(@"Input_Mail_Addr")];
         return;
     }
     
     if(self.verifyInput.text.length == 0){
-        [HUDUtil showSystemTipView:self title:@"提示" withContent:@"请输入验证码"];
+        [HUDUtil showSystemTipView:self title:Localize(@"Menu_Title") withContent:Localize(@"Input_Verify")];
         return;
     }
     
     if(![VerifyRules passWordIsTure:self.passwordInput.text]){
-        [HUDUtil showSystemTipView:self title:@"密码格式错误" withContent:@"请输入8-16个字符,不能使用中文、空格,至少含数字/字母/符号2种组合,必须要同时包括大小写字母"];
+        [HUDUtil showSystemTipView:self title:Localize(@"Pwd_Error") withContent:Localize(@"Pwd_Error_Tip")];
         return;
     }
-    [HUDUtil showHudViewInSuperView:self.view withMessage:@"注册中……"];
+    [HUDUtil showHudViewInSuperView:self.view withMessage:Localize(@"Registing")];
     NSDictionary *parameters = @{ @"email": self.mailInput.text,
                                   @"captcha": self.verifyInput.text,
                                   @"password": self.passwordInput.text};
@@ -104,10 +104,11 @@
     NSString* url = @"register/email";
     
 //    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"MailRegisteBack"];
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
         [HUDUtil hideHudView];
         if(success){
-            [self mailRegisteBack:data];
+            [weakSelf mailRegisteBack:data];
         }
     }];
 }
@@ -118,7 +119,7 @@
     NSNumber* number = [data objectForKey:@"ret"];
     if([number intValue] == -1){
         //注册失败
-        [HUDUtil showSystemTipView:self title:@"提示" withContent:[data objectForKey:@"msg"]];
+        [HUDUtil showSystemTipView:self title:Localize(@"Menu_Title") withContent:[data objectForKey:@"msg"]];
     }else if([number intValue] == 1){
         //注册成功
         BOOL ishavemailLogin = NO;
@@ -162,7 +163,7 @@
 - (IBAction)clickVerifybtn:(id)sender {
     
     if(![self.mailInput.text containsString:@"@"]){
-        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"请输入邮箱地址"];
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:Localize(@"Input_Mail_Addr")];
         return;
     }
     
@@ -180,13 +181,13 @@
 }
 -(void)changeBtn1{
     NSString* title = _verifybtn.titleLabel.text;
-    if([title isEqualToString:@"发送邀请码"]){
+    if([title isEqualToString:Localize(@"Send_Invition")]){
         return;
     }
     NSInteger sec = [[title substringToIndex:[title rangeOfString:@"s"].location] intValue];
     sec--;
     if(sec < 0){
-        [_verifybtn setTitle:@"发送验证码" forState:UIControlStateNormal];
+        [_verifybtn setTitle:Localize(@"Send_Verify") forState:UIControlStateNormal];
         //        [NSTimer ]
         [_update1 invalidate];
         _update1 = nil;

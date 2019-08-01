@@ -39,24 +39,24 @@
     
     NSString* url = @"account/check_assetpwd";
     NSDictionary* params = @{@"asset_password":self.passwordInput.text};
-    
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
         if(success){
             if([[data objectForKey:@"ret"] intValue] == 1){
                 NSString* token = [[data objectForKey:@"data"] objectForKey:@"asset_token"];
-                if(self.block){
-                    self.block(token);
+                if(weakSelf.block){
+                    weakSelf.block(token);
                 }
                 
                 
             }else{
-                if(self.block){
-                    self.block(@"");
+                if(weakSelf.block){
+                    weakSelf.block(@"");
                 }
             }
         }
         
-        [self dismissViewControllerAnimated:YES completion:nil];
+        [weakSelf dismissViewControllerAnimated:YES completion:nil];
     }];
     
     

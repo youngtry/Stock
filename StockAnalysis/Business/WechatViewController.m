@@ -32,7 +32,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.title = @"设置微信支付";
+    self.title = Localize(@"Set_Wechat_Pay");
     self.update1 = nil;
     
     UITapGestureRecognizer *f = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(test)];
@@ -61,7 +61,7 @@
     
     [self.update1 invalidate];
     self.update1 = nil;
-    [_sendVerfiyBtn setTitle:@"发送验证码" forState:UIControlStateNormal];
+    [_sendVerfiyBtn setTitle:Localize(@"Send_Verify") forState:UIControlStateNormal];
     [_sendVerfiyBtn setEnabled:YES];
 }
 -(void)viewDidDisappear:(BOOL)animated{
@@ -79,7 +79,7 @@
     vc.modalPresentationStyle = UIModalPresentationOverFullScreen;
     self.definesPresentationContext = YES;
     [self.navigationController presentViewController:vc animated:YES completion:nil];
-    
+    WeakSelf(weakSelf);
     vc.block = ^(NSString* token) {
         if(token.length>0){
             NSString *fullPath = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"] stringByAppendingPathComponent:@"wechat_pay.jpg"];
@@ -89,14 +89,14 @@
             
             if(!result){
                 fullPath = @"";
-                [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"收款码未上传,请重新上传"];
+                [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:Localize(@"Upload_Tip")];
                 return;
             }
             
             NSString* url = @"wallet/set_wechat_pay";
-            NSDictionary* params = @{@"name":self.wechatNickname.text,
-                                     @"wechat_id":self.wechatID.text,
-                                     @"phone_captcha":self.verifyInput.text,
+            NSDictionary* params = @{@"name":weakSelf.wechatNickname.text,
+                                     @"wechat_id":weakSelf.wechatID.text,
+                                     @"phone_captcha":weakSelf.verifyInput.text,
                                      @"asset_token":token
                                      };
             
@@ -106,17 +106,17 @@
                 if(success){
                     [HUDUtil hideHudView];
                     if([[data objectForKey:@"ret"] intValue] == 1){
-                        [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"设置成功"];
+                        [HUDUtil showHudViewTipInSuperView:weakSelf.navigationController.view withMessage:Localize(@"Set_Success")];
                         [fileManager removeItemAtPath:fullPath error:nil];
-                        [self.navigationController popViewControllerAnimated:YES];
+                        [weakSelf.navigationController popViewControllerAnimated:YES];
                         
                     }else{
-                        [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:[data objectForKey:@"msg"]];
+                        [HUDUtil showHudViewTipInSuperView:weakSelf.navigationController.view withMessage:[data objectForKey:@"msg"]];
                     }
                 }
             }];
         }else{
-            [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"资金密码验证错误"];
+            [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:Localize(@"Money_Pwd_Verify_Tip")];
         }
     };
     
@@ -154,7 +154,7 @@
     return result;
 }
 - (IBAction)clickUpBtn:(id)sender {
-    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"选择" delegate:self cancelButtonTitle:nil destructiveButtonTitle:@"取消" otherButtonTitles:@"拍照",@"从相册选择", nil];
+    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:Localize(@"Select") delegate:self cancelButtonTitle:nil destructiveButtonTitle:Localize(@"Menu_Cancel") otherButtonTitles:Localize(@"Take_Photo"),Localize(@"Select_Photo"), nil];
     sheet.tag = 2550;
     //显示消息框
     [sheet showInView:self.view];
@@ -175,13 +175,13 @@
 
 -(void)changeBtn1{
     NSString* title = _sendVerfiyBtn.titleLabel.text;
-    if([title isEqualToString:@"发送验证码"]){
+    if([title isEqualToString:Localize(@"Send_Verify")]){
         return;
     }
     NSInteger sec = [[title substringToIndex:[title rangeOfString:@"s"].location] intValue];
     sec--;
     if(sec < 0){
-        [_sendVerfiyBtn setTitle:@"发送验证码" forState:UIControlStateNormal];
+        [_sendVerfiyBtn setTitle:Localize(@"Send_Verify") forState:UIControlStateNormal];
         //        [NSTimer ]
         [_update1 invalidate];
         _update1 = nil;

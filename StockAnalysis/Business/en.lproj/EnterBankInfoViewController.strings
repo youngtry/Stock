@@ -1,0 +1,36 @@
+
+/* Class = "UITextField"; placeholder = "请输入短信验证码"; ObjectID = "EPh-5F-Qwc"; */
+"EPh-5F-Qwc.placeholder" = "请输入短信验证码";
+
+/* Class = "UITextField"; placeholder = "请输入银行卡号"; ObjectID = "Eat-pu-iQa"; */
+"Eat-pu-iQa.placeholder" = "请输入银行卡号";
+
+/* Class = "UITextField"; placeholder = "请输入真实姓名"; ObjectID = "PsF-4F-R7l"; */
+"PsF-4F-R7l.placeholder" = "请输入真实姓名";
+
+/* Class = "UILabel"; text = "姓名"; ObjectID = "UBk-Aw-BI1"; */
+"UBk-Aw-BI1.text" = "姓名";
+
+/* Class = "UILabel"; text = "开户支行"; ObjectID = "YEU-Ne-jCL"; */
+"YEU-Ne-jCL.text" = "开户支行";
+
+/* Class = "UILabel"; text = "银行卡号"; ObjectID = "a2w-Cg-A9I"; */
+"a2w-Cg-A9I.text" = "银行卡号";
+
+/* Class = "UILabel"; text = "请选择"; ObjectID = "c0F-fq-etl"; */
+"c0F-fq-etl.text" = "请选择";
+
+/* Class = "UITextField"; placeholder = "请输入支行名称"; ObjectID = "ejd-xV-ecf"; */
+"ejd-xV-ecf.placeholder" = "请输入支行名称";
+
+/* Class = "UILabel"; text = "短信验证"; ObjectID = "hUD-Qb-COj"; */
+"hUD-Qb-COj.text" = "短信验证";
+
+/* Class = "UIButton"; normalTitle = "发送验证码"; ObjectID = "iEM-na-iQd"; */
+"iEM-na-iQd.normalTitle" = "发送验证码";
+
+/* Class = "UILabel"; text = "开户银行"; ObjectID = "klo-wQ-nRq"; */
+"klo-wQ-nRq.text" = "开户银行";
+
+/* Class = "UIButton"; normalTitle = "绑定"; ObjectID = "r3T-Db-Otn"; */
+"r3T-Db-Otn.normalTitle" = "绑定";

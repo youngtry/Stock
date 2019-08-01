@@ -1,0 +1,27 @@
+
+/* Class = "UILabel"; text = "交易账户"; ObjectID = "4fy-lY-5ea"; */
+"4fy-lY-5ea.text" = "交易账户";
+
+/* Class = "UILabel"; text = "转入数量"; ObjectID = "8at-aL-PJV"; */
+"8at-aL-PJV.text" = "转入数量";
+
+/* Class = "UILabel"; text = "选择"; ObjectID = "CNK-0f-7lo"; */
+"CNK-0f-7lo.text" = "选择";
+
+/* Class = "UITextField"; placeholder = "输入转入数量"; ObjectID = "UwK-p7-7Df"; */
+"UwK-p7-7Df.placeholder" = "输入转入数量";
+
+/* Class = "UIButton"; normalTitle = "转入"; ObjectID = "Vjk-eU-cXK"; */
+"Vjk-eU-cXK.normalTitle" = "转入";
+
+/* Class = "UILabel"; text = "转至"; ObjectID = "Ztj-ZS-CIU"; */
+"Ztj-ZS-CIU.text" = "转至";
+
+/* Class = "UILabel"; text = "可转0"; ObjectID = "mgn-sb-NIY"; */
+"mgn-sb-NIY.text" = "可转0";
+
+/* Class = "UILabel"; text = "商户账户"; ObjectID = "wLu-3u-k3K"; */
+"wLu-3u-k3K.text" = "商户账户";
+
+/* Class = "UILabel"; text = "期货1"; ObjectID = "zwZ-X3-vvK"; */
+"zwZ-X3-vvK.text" = "期货1";

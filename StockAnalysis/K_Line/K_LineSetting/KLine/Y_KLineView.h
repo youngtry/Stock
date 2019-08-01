@@ -31,6 +31,11 @@
  */
 - (void)reDraw;
 
+/**
+ *  设置MACDView是否显示
+ */
+-(void)setMACDViewHide:(BOOL)ishide;
+
 
 /**
  *  K线类型

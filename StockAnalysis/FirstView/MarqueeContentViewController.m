@@ -17,7 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:@"关闭" style:UIBarButtonItemStylePlain target:self action:@selector(close)];
+    UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:Localize(@"Close") style:UIBarButtonItemStylePlain target:self action:@selector(close)];
     self.navigationItem.rightBarButtonItem = right;
 //    self.contentTextView.text = @"aaaaaaa";
 }

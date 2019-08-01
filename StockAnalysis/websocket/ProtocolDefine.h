@@ -43,7 +43,8 @@ typedef NS_ENUM(NSInteger, ProtocolNumber) {
     PN_AssetHistory,
     PN_AssetSubscribe,
     PN_AssetUnsubscribe,
-    PN_AssetUpdate
+    PN_AssetUpdate,
+    PN_ServerPing
 };
 
 #endif /* ProtocolDefine_h */

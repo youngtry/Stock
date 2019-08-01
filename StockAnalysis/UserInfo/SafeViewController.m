@@ -46,14 +46,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.title = @"安全中心";
+    self.title = Localize(@"Safe_Center");
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setGuestureTimeLabel:) name:@"GuestureTimeSetting" object:nil];
     
     if([GameData getGuestureTime]){
         self.guestureTime.text = [GameData getGuestureTime];
     }else{
-        self.guestureTime.text = @"2分钟";
+        self.guestureTime.text = Localize(@"Right_Now") ;
     }
     
     _verifyType = 0;
@@ -77,27 +77,28 @@
     
     
     NSString* url = @"account/bindInfo";
-    
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
-            [self getBindBack:data];
+            [weakSelf getBindBack:data];
         }
     }];
     
     NSString* url1 = @"account/getConfirmState";
     NSDictionary* params = @{};
+   
     [[HttpRequest getInstance] getWithURL:url1 parma:params block:^(BOOL success, id data) {
         if(success){
             if([[data objectForKey:@"ret"] intValue] == 1){
                 NSString* state = [[data objectForKey:@"data"] objectForKey:@"state"];
                 if([state isEqualToString:@"on"]){
-                    [self.switchBtn setOn:YES];
+                    [weakSelf.switchBtn setOn:YES];
                 }else{
-                    [self.switchBtn setOn:NO];
+                    [weakSelf.switchBtn setOn:NO];
                 }
             }else{
                 
-                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:[data objectForKey:@"msg"]];
                 
             }
         }
@@ -135,7 +136,7 @@
                 }
             }else{
                 
-                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:[data objectForKey:@"msg"]];
                 
             }
         }
@@ -208,6 +209,8 @@
     UISwitch* btn = (UISwitch*)sender;
     BOOL ison = [btn isOn];
     
+    
+    
     _verifyType = 4;
     [self.verifyView setHidden:NO];
 }
@@ -224,12 +227,13 @@
     
     NSString* url = @"account/setConfirmCheck";
     NSDictionary* params = @{@"state":state};
+    WeakSelf(weakSelf);
 //    [HUDUtil showHudViewInSuperView:self.navigationController.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
         if(success){
             if([[data objectForKey:@"ret"] intValue] == 1){
                 
-                [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"设置成功"];
+                [HUDUtil showHudViewTipInSuperView:weakSelf.navigationController.view withMessage:Localize(@"Set_Success")];
                
             }else{
                 
@@ -239,7 +243,7 @@
                     [btn setOn:YES];
                 }
                 
-                [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:[data objectForKey:@"msg"]];
+                [HUDUtil showHudViewTipInSuperView:weakSelf.navigationController.view withMessage:[data objectForKey:@"msg"]];
             }
         }
     }];
@@ -274,14 +278,14 @@
 - (IBAction)clickBindMail:(id)sender {
     BindViewController* vc = [[BindViewController alloc] initWithNibName:@"BindViewController" bundle:nil];
     [self.navigationController pushViewController:vc animated:YES];
-    vc.title = @"绑定邮箱";
+    vc.title = Localize(@"Bind_Mail");
     
 }
 - (IBAction)clickBindPhone:(id)sender {
     
     BindViewController* vc = [[BindViewController alloc] initWithNibName:@"BindViewController" bundle:nil];
     [self.navigationController pushViewController:vc animated:YES];
-    vc.title = @"绑定手机";
+    vc.title = Localize(@"Bind_Phone");
     
 }
 - (IBAction)clickCancelVerifyBtn:(id)sender {
@@ -304,6 +308,7 @@
     [self test];
     NSString* url = @"account/veritypwd";
     NSDictionary* params = @{@"password":self.passwordInput.text};
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
         if(success){
             if([[data objectForKey:@"ret"] intValue] == 1){
@@ -311,17 +316,17 @@
 
                 [[AppData getInstance] setTempVerify:temp];
                 
-                [self.view endEditing:YES];
-                self.passwordInput.text = @"";
-                [self.verifyView setHidden:YES];
+                [weakSelf.view endEditing:YES];
+                weakSelf.passwordInput.text = @"";
+                [weakSelf.verifyView setHidden:YES];
                 
                 if(_verifyType == 1){
                     GuestrureTimeSetView* timeset = [[GuestrureTimeSetView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
-                    [self.view addSubview:timeset];
+                    [weakSelf.view addSubview:timeset];
                 }else if (_verifyType == 2){
                     SetPasswordViewController *vc = [[SetPasswordViewController alloc] init];
-                    [vc setTitle:@"设置手势密码"];
-                    [self.navigationController pushViewController:vc animated:YES];
+                    [vc setTitle:Localize(@"Set_Guesture")];
+                    [weakSelf.navigationController pushViewController:vc animated:YES];
                 }else if (_verifyType == 3){
                     NSString* url1 = @"account/has_assetpwd";
                     NSDictionary* params1 = @{};
@@ -332,14 +337,14 @@
                                 BOOL isSet = [[[data objectForKey:@"data"] objectForKey:@"has_assetpwd"] boolValue];
                                 if(!isSet){
                                     SetMoneyPasswordViewController* vc = [[SetMoneyPasswordViewController alloc] initWithNibName:@"SetMoneyPasswordViewController" bundle:nil];
-                                    [self.navigationController pushViewController:vc animated:YES];
+                                    [weakSelf.navigationController pushViewController:vc animated:YES];
                                 }else{
                                     ModifyMoneyPasswordViewController* vc = [[ModifyMoneyPasswordViewController alloc] initWithNibName:@"ModifyMoneyPasswordViewController" bundle:nil];
-                                    [self.navigationController pushViewController:vc animated:YES];
+                                    [weakSelf.navigationController pushViewController:vc animated:YES];
                                 }
                             }else{
                                 
-                                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                                [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:[data objectForKey:@"msg"]];
                                 
                             }
                         }
@@ -356,6 +361,7 @@
                             if(success){
                                 if([[data objectForKey:@"ret"] intValue] == 1){
                                     [_guestureSwitchbBtn setOn:NO];
+                                    [GameData setNeedNoticeGuesture:NO];
                                     
                                     [_guestureTimeView setHidden:YES];
                                     [_changeGuestureView setHidden:YES];
@@ -368,14 +374,14 @@
                                     
                                 }else{
                                     
-                                    [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                                    [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:[data objectForKey:@"msg"]];
                                     
                                 }
                             }
                         }];
                     }else{
                         SetPasswordViewController *vc = [[SetPasswordViewController alloc] init];
-                        [vc setTitle:@"设置手势密码"];
+                        [vc setTitle:Localize(@"Set_Guesture")];
                         [self.navigationController pushViewController:vc animated:YES];
                     }
                     

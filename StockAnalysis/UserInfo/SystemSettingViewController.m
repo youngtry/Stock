@@ -23,7 +23,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.title = @"系统设置";
+    self.title = Localize(@"System_Setting");
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickUnitView)];
     [self.unitView addGestureRecognizer:tap];
@@ -47,18 +47,18 @@
 -(void)clickUnitView{
     StoreUnitViewController* vc = [[StoreUnitViewController alloc] initWithNibName:@"StoreUnitViewController" bundle:nil];
     NSString* currUnit = self.unitName.text;
-    if([currUnit isEqualToString:@"人民币"]){
+    if([currUnit isEqualToString:Localize(@"CNY")]){
         [vc setTitle:@"CNY"];
-    }else if([currUnit isEqualToString:@"美元"]){
+    }else if([currUnit isEqualToString:Localize(@"USD")]){
         [vc setTitle:@"USD"];
     }
     
     
     [vc toReturnUnit:^(NSString *unit) {
         if([unit isEqualToString:@"CNY"]){
-            self.unitName.text = @"人民币";
+            self.unitName.text = Localize(@"CNY");
         }else if([unit isEqualToString:@"USD"]){
-            self.unitName.text = @"美元";
+            self.unitName.text = Localize(@"USD");
         }
     }];
     

@@ -1,0 +1,120 @@
+
+/* Class = "UILabel"; text = "银行卡"; ObjectID = "0Ik-A7-JkO"; */
+"0Ik-A7-JkO.text" = "银行卡";
+
+/* Class = "UILabel"; text = "名字"; ObjectID = "1Pm-Vz-ob5"; */
+"1Pm-Vz-ob5.text" = "名字";
+
+/* Class = "UILabel"; text = "价格"; ObjectID = "4EB-nB-fF7"; */
+"4EB-nB-fF7.text" = "价格";
+
+/* Class = "UILabel"; text = "2018-05-20 20:15:21"; ObjectID = "6AC-Pu-LCQ"; */
+"6AC-Pu-LCQ.text" = "2018-05-20 20:15:21";
+
+/* Class = "UILabel"; text = "收款人"; ObjectID = "6Up-jp-FHo"; */
+"6Up-jp-FHo.text" = "收款人";
+
+/* Class = "UILabel"; text = "¥2,041,000"; ObjectID = "6ZW-bd-4z0"; */
+"6ZW-bd-4z0.text" = "¥2,041,000";
+
+/* Class = "UITextView"; text = "大于5W以上汇款，请分批支付保证及时到账，1小时未到账订单， 卖家有权退回款项并取消订单。"; ObjectID = "7ES-kJ-kzA"; */
+"7ES-kJ-kzA.text" = "大于5W以上汇款，请分批支付保证及时到账，1小时未到账订单， 卖家有权退回款项并取消订单。";
+
+/* Class = "UILabel"; text = "切换方式"; ObjectID = "7iY-4c-nyb"; */
+"7iY-4c-nyb.text" = "切换方式";
+
+/* Class = "UILabel"; text = "总金额"; ObjectID = "889-6c-TYq"; */
+"889-6c-TYq.text" = "总金额";
+
+/* Class = "UILabel"; text = "剩余29min59s"; ObjectID = "8TZ-CS-TGf"; */
+"8TZ-CS-TGf.text" = "剩余29min59s";
+
+/* Class = "UILabel"; text = "股票期货名"; ObjectID = "9JT-AG-Hda"; */
+"9JT-AG-Hda.text" = "股票期货名";
+
+/* Class = "UIButton"; normalTitle = "等待确认收款"; ObjectID = "Bhk-KE-CRn"; */
+"Bhk-KE-CRn.normalTitle" = "等待确认收款";
+
+/* Class = "UILabel"; text = "¥400.03"; ObjectID = "Crc-7I-mqp"; */
+"Crc-7I-mqp.text" = "¥400.03";
+
+/* Class = "UILabel"; text = "银行卡转账"; ObjectID = "EKD-pO-5x7"; */
+"EKD-pO-5x7.text" = "银行卡转账";
+
+/* Class = "UILabel"; text = "已支付"; ObjectID = "G9Z-SQ-DpH"; */
+"G9Z-SQ-DpH.text" = "已支付";
+
+/* Class = "UILabel"; text = "19090909090"; ObjectID = "I8r-Za-Kat"; */
+"I8r-Za-Kat.text" = "19090909090";
+
+/* Class = "UILabel"; text = "请支付"; ObjectID = "MO1-dU-es5"; */
+"MO1-dU-es5.text" = "请支付";
+
+/* Class = "UILabel"; text = "实名认证"; ObjectID = "PyP-nd-ZCo"; */
+"PyP-nd-ZCo.text" = "实名认证";
+
+/* Class = "UILabel"; text = "银行卡卡号"; ObjectID = "RGH-VQ-fsT"; */
+"RGH-VQ-fsT.text" = "银行卡卡号";
+
+/* Class = "UILabel"; text = "取消"; ObjectID = "RoN-3G-9TX"; */
+"RoN-3G-9TX.text" = "取消";
+
+/* Class = "UITextView"; text = "亲爱的用户 1.如果您已完成线下支付，请点击下方「已 支付」，卖家确认收款后会及时为您放钱； 2.对于未支付完成，却点击「已支付」的用户将会降低信用权重，甚至冻结账户使用权限，请您知晓；"; ObjectID = "TV1-QN-hTr"; */
+"TV1-QN-hTr.text" = "亲爱的用户 1.如果您已完成线下支付，请点击下方「已 支付」，卖家确认收款后会及时为您放钱； 2.对于未支付完成，却点击「已支付」的用户将会降低信用权重，甚至冻结账户使用权限，请您知晓；";
+
+/* Class = "UILabel"; text = "下单时间"; ObjectID = "UH7-f5-wEv"; */
+"UH7-f5-wEv.text" = "下单时间";
+
+/* Class = "UIButton"; normalTitle = "我已收款"; ObjectID = "V6n-sn-SQy"; */
+"V6n-sn-SQy.normalTitle" = "我已收款";
+
+/* Class = "UILabel"; text = "卖家"; ObjectID = "Wth-IH-PbL"; */
+"Wth-IH-PbL.text" = "卖家";
+
+/* Class = "UILabel"; text = "银行卡信息"; ObjectID = "XEu-hD-n4E"; */
+"XEu-hD-n4E.text" = "银行卡信息";
+
+/* Class = "UILabel"; text = "李老五"; ObjectID = "Zd9-x8-r90"; */
+"Zd9-x8-r90.text" = "李老五";
+
+/* Class = "UILabel"; text = "¥2,041,000"; ObjectID = "jqQ-pS-stX"; */
+"jqQ-pS-stX.text" = "¥2,041,000";
+
+/* Class = "UILabel"; text = "623883984324324343"; ObjectID = "ktD-Ad-7Xb"; */
+"ktD-Ad-7Xb.text" = "623883984324324343";
+
+/* Class = "UILabel"; text = "给以下账户"; ObjectID = "lIW-fa-gov"; */
+"lIW-fa-gov.text" = "给以下账户";
+
+/* Class = "UILabel"; text = "1000.0000"; ObjectID = "leQ-7b-Fti"; */
+"leQ-7b-Fti.text" = "1000.0000";
+
+/* Class = "UILabel"; text = "订单号"; ObjectID = "nPq-yk-QKX"; */
+"nPq-yk-QKX.text" = "订单号";
+
+/* Class = "UILabel"; text = "数量"; ObjectID = "pBB-c7-HSa"; */
+"pBB-c7-HSa.text" = "数量";
+
+/* Class = "UILabel"; text = "1000.0000"; ObjectID = "qdC-GD-WVD"; */
+"qdC-GD-WVD.text" = "1000.0000";
+
+/* Class = "UILabel"; text = "确认完成线下支付"; ObjectID = "uQc-lS-IjR"; */
+"uQc-lS-IjR.text" = "确认完成线下支付";
+
+/* Class = "UILabel"; text = "切换方式"; ObjectID = "wdJ-nm-3ho"; */
+"wdJ-nm-3ho.text" = "切换方式";
+
+/* Class = "UILabel"; text = "总金额"; ObjectID = "xWZ-Kp-BKz"; */
+"xWZ-Kp-BKz.text" = "总金额";
+
+/* Class = "UILabel"; text = "招商银行清华园支行 "; ObjectID = "zb0-eO-22u"; */
+"zb0-eO-22u.text" = "招商银行清华园支行 ";
+
+/* Class = "UILabel"; text = "有质押金"; ObjectID = "zlL-U3-SAf"; */
+"zlL-U3-SAf.text" = "有质押金";
+
+/* Class = "UILabel"; text = "买"; ObjectID = "zlb-Am-bZD"; */
+"zlb-Am-bZD.text" = "买";
+
+/* Class = "UILabel"; text = "已完成"; ObjectID = "zo0-fX-z5H"; */
+"zo0-fX-z5H.text" = "已完成";

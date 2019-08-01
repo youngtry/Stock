@@ -66,7 +66,7 @@
     
     CGSize size  = alert.frame.size;
     UILabel* tip = [[UILabel alloc] initWithFrame:CGRectMake(0, alert.frame.size.height*0.05, alert.frame.size.width, alert.frame.size.height*0.2)];
-    [tip setText:@"应用退出多久后需要手势密码解锁"];
+    [tip setText:Localize(@"Unlock_Time_Tip")];
     [tip setTextAlignment:NSTextAlignmentCenter];
     [tip setFont:[UIFont systemFontOfSize:13]];
     [tip setTextColor:[UIColor lightGrayColor]];
@@ -77,19 +77,22 @@
     [alert addSubview:btn1];
     [btn1 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     btn1.titleLabel.font = [UIFont systemFontOfSize:12];
+    [btn1 setBackgroundColor:[UIColor colorWithRed:244.0/255.0 green:185.0/255.0 blue:66.0/255.0 alpha:1.0]];
     btn1.layer.borderWidth = 0.5;
     btn1.layer.borderColor =[ [UIColor grayColor] CGColor];
-    [btn1 setTitle:@"立即" forState:UIControlStateNormal];
+    [btn1 setTitle:Localize(@"Right_Now") forState:UIControlStateNormal];
     [btn1 addTarget:self action:@selector(selectBtn:) forControlEvents:UIControlEventTouchUpInside];
     
     
     btn2 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [btn2 setFrame:CGRectMake(size.width*0.23, size.height*0.3, size.width*0.18, size.height*0.2)];
     [alert addSubview:btn2];
-    [btn2 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [btn2 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     btn2.titleLabel.font = [UIFont systemFontOfSize:12];
-    [btn2 setBackgroundColor:[UIColor colorWithRed:244.0/255.0 green:185.0/255.0 blue:66.0/255.0 alpha:1.0]];
-    [btn2 setTitle:@"2分钟" forState:UIControlStateNormal];
+//    [btn2 setBackgroundColor:[UIColor colorWithRed:244.0/255.0 green:185.0/255.0 blue:66.0/255.0 alpha:1.0]];
+    btn2.layer.borderWidth = 0.5;
+    btn2.layer.borderColor =[ [UIColor grayColor] CGColor];
+    [btn2 setTitle:[NSString stringWithFormat:@"2%@",Localize(@"Minite")] forState:UIControlStateNormal];
     [btn2 addTarget:self action:@selector(selectBtn:) forControlEvents:UIControlEventTouchUpInside];
 
     
@@ -100,7 +103,7 @@
     btn3.titleLabel.font = [UIFont systemFontOfSize:12];
     btn3.layer.borderWidth = 0.5;
     btn3.layer.borderColor =[ [UIColor grayColor] CGColor];
-    [btn3 setTitle:@"5分钟" forState:UIControlStateNormal];
+    [btn3 setTitle:[NSString stringWithFormat:@"5%@",Localize(@"Minite")] forState:UIControlStateNormal];
     [btn3 addTarget:self action:@selector(selectBtn:) forControlEvents:UIControlEventTouchUpInside];
     
     btn4 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -110,7 +113,7 @@
     btn4.titleLabel.font = [UIFont systemFontOfSize:12];
     btn4.layer.borderWidth = 0.5;
     btn4.layer.borderColor =[ [UIColor grayColor] CGColor];
-    [btn4 setTitle:@"10分钟" forState:UIControlStateNormal];
+    [btn4 setTitle:[NSString stringWithFormat:@"10%@",Localize(@"Minite")] forState:UIControlStateNormal];
     [btn4 addTarget:self action:@selector(selectBtn:) forControlEvents:UIControlEventTouchUpInside];
 
     
@@ -121,7 +124,7 @@
     btn5.titleLabel.font = [UIFont systemFontOfSize:12];
     btn5.layer.borderWidth = 0.5;
     btn5.layer.borderColor =[ [UIColor grayColor] CGColor];
-    [btn5 setTitle:@"30分钟" forState:UIControlStateNormal];
+    [btn5 setTitle:[NSString stringWithFormat:@"30%@",Localize(@"Minite")] forState:UIControlStateNormal];
     [btn5 addTarget:self action:@selector(selectBtn:) forControlEvents:UIControlEventTouchUpInside];
 
     
@@ -139,7 +142,7 @@
     [cancel setFrame:CGRectMake(size.width*0.0, size.height*0.65, size.width*0.5, size.height*0.35)];
     [alert addSubview:cancel];
     cancel.titleLabel.font = [UIFont systemFontOfSize:18];
-    [cancel setTitle:@"取消" forState:UIControlStateNormal];
+    [cancel setTitle:Localize(@"Menu_Cancel") forState:UIControlStateNormal];
     [cancel addTarget:self action:@selector(cancelCallback) forControlEvents:UIControlEventTouchUpInside];
     
     UIButton* sure = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -147,7 +150,7 @@
     [alert addSubview:sure];
     sure.titleLabel.font = [UIFont systemFontOfSize:18];
     [sure setTitleColor:[UIColor colorWithRed:243.0/255.0 green:186.0/255.0 blue:46.0/255.0 alpha:1.0] forState:UIControlStateNormal];
-    [sure setTitle:@"确定" forState:UIControlStateNormal];
+    [sure setTitle:Localize(@"Menu_Sure") forState:UIControlStateNormal];
     [sure addTarget:self action:@selector(sureCallback) forControlEvents:UIControlEventTouchUpInside];
 }
 

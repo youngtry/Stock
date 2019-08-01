@@ -12,7 +12,7 @@
 #include <arpa/inet.h>
 #import <net/if.h>
 
-#define ServerURL @"https://exchange-test.oneitfarm.com/server/"
+#define ServerURL @"https://exchange-test2.oneitfarm.com/server/"
 
 @interface HttpRequest()
 @property(nonatomic,strong)NSDictionary* dataDictionary;
@@ -104,7 +104,7 @@
                                                         _dataDictionary =[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil ];
                                                         NSLog(@"post返回数据为：%@",_dataDictionary);
                                                         
-                                                        if([url isEqualToString:@"http://exchange-test.oneitfarm.com/server/account/login/phone"] || [url isEqualToString:@"http://exchange-test.oneitfarm.com/server/account/login/email"]){
+                                                        if([url isEqualToString:@"http://exchange-test2.oneitfarm.com/server/account/login/phone"] || [url isEqualToString:@"http://exchange-test2.oneitfarm.com/server/account/login/email"]){
                                                             //登陆请求应答，保存新的account_token
                                                             NSNumber* number = [_dataDictionary objectForKey:@"ret"];
                                                             if([number intValue] == 1){
@@ -208,15 +208,16 @@
         
     } success:^(NSURLSessionDataTask *task, id responseObject){
         // 成功
-        DLog(@"%@xxxxsuccess!",url);
+        NSLog(@"%@xxxxsuccess!",url);
         dispatch_async(dispatch_get_main_queue(), ^{
 //            [HUDUtil hideHudView];
         });
         NSData *data = responseObject;
         NSDictionary* info = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
 //        NSString *s = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        
-        if([url isEqualToString:@"https://exchange-test.oneitfarm.com/server/account/login/phone"] || [url isEqualToString:@"https://exchange-test.oneitfarm.com/server/account/login/email"]){
+        NSString* phoneloginurl = [NSString stringWithFormat:@"%@account/login/phone",ServerURL];
+        NSString* mailloginurl = [NSString stringWithFormat:@"%@account/login/email",ServerURL];
+        if([url isEqualToString:phoneloginurl] || [url isEqualToString:mailloginurl]){
             //登陆请求应答，保存新的account_token
             NSDictionary* datainfo = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil ];
             NSNumber* number = [datainfo objectForKey:@"ret"];
@@ -231,7 +232,7 @@
  
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         // 失败
-        DLog(@"%@xxxxxfailed! error = %@",url,error);
+        NSLog(@"%@xxxxxfailed! error = %@",url,error);
         dispatch_async(dispatch_get_main_queue(), ^{
             [HUDUtil hideHudViewWithFailureMessage:[error localizedDescription]];
         });
@@ -254,13 +255,13 @@
 //            [HUDUtil hideHudView];
         });
         
-        DLog(@"%@xxxxsuccess!",url);
+        NSLog(@"%@xxxxsuccess!",url);
         NSData *data = responseObject;
 //        NSString *s = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         NSDictionary* info = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil ];
         block(1,info);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        DLog(@"%@xxxxxfailed!",url);
+        NSLog(@"%@xxxxxfailed!",url);
         dispatch_async(dispatch_get_main_queue(), ^{
 //            [HUDUtil hideHudView];
         });
@@ -281,29 +282,38 @@
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     [self formatAFNetwork:manager];
+    
     [manager POST:url parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData){
         for(NSString* key in file){
             NSURL *url=[NSURL fileURLWithPath:[file objectForKey:key]];
             NSString* allName = [file objectForKey:key];
-            NSString* homeDic = NSHomeDirectory();
-            homeDic = [homeDic stringByAppendingString:@"/Documents/"];
-            NSString* pic = [allName substringFromIndex:[allName rangeOfString:homeDic].location+homeDic.length];
-            NSLog(@"pic = %@",pic);
-            [formData appendPartWithFileURL:url name:key fileName:pic mimeType:@"image/jpg" error:nil];
+            if(allName.length > 0){
+                NSString* homeDic = NSHomeDirectory();
+                homeDic = [homeDic stringByAppendingString:@"/Documents/"];
+                NSString* pic = [allName substringFromIndex:[allName rangeOfString:homeDic].location+homeDic.length];
+                NSLog(@" pic = %@",pic);
+                NSString* name = key;
+                if([key isEqualToString:@"imgs1"]){
+                    name = @"imgs";
+                }
+                [formData appendPartWithFileURL:url name:name fileName:pic mimeType:@"image/jpg" error:nil];
+            }
+            
         }
         
     } progress:^(NSProgress * _Nonnull uploadProgress){
-        NSLog(@"%f",uploadProgress.fractionCompleted);
+        NSLog(@"进度为 %f",uploadProgress.fractionCompleted);
         
     } success:^(NSURLSessionDataTask *task, id responseObject){
         // 成功
-        DLog(@"%@xxxxsuccess!",url);
+        NSLog(@"%@xxxxsuccess!",url);
 //        [HUDUtil hideHudView];
         NSData *data = responseObject;
         NSDictionary* info = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         //        NSString *s = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        
-        if([url isEqualToString:@"https://exchange-test.oneitfarm.com/server/account/login/phone"] || [url isEqualToString:@"https://exchange-test.oneitfarm.com/server/account/login/email"]){
+        NSString* phoneloginurl = [NSString stringWithFormat:@"%@account/login/phone",ServerURL];
+        NSString* mailloginurl = [NSString stringWithFormat:@"%@account/login/email",ServerURL];
+        if([url isEqualToString:phoneloginurl] || [url isEqualToString:mailloginurl]){
             //登陆请求应答，保存新的account_token
             NSDictionary* datainfo = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil ];
             NSNumber* number = [datainfo objectForKey:@"ret"];
@@ -320,7 +330,7 @@
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         // 失败
-        DLog(@"%@xxxxxfailed! error = %@",url,error);
+        NSLog(@"%@xxxxxfailed! error = %@",url,error);
         dispatch_async(dispatch_get_main_queue(), ^{
             [HUDUtil hideHudViewWithFailureMessage:[error localizedDescription]];
         });

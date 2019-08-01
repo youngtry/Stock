@@ -1,0 +1,18 @@
+
+/* Class = "UIButton"; normalTitle = "下一步"; ObjectID = "G4n-ib-7se"; */
+"G4n-ib-7se.normalTitle" = "下一步";
+
+/* Class = "UILabel"; text = "请上传您的身份证背面照"; ObjectID = "cc3-cv-swF"; */
+"cc3-cv-swF.text" = "请上传您的身份证背面照";
+
+/* Class = "UILabel"; text = "必须能看清楚证驾照和姓名，支持jpg/jpeg/png"; ObjectID = "l0B-it-08Q"; */
+"l0B-it-08Q.text" = "必须能看清楚证驾照和姓名，支持jpg/jpeg/png";
+
+/* Class = "UIButton"; normalTitle = "上一步"; ObjectID = "nNS-fO-30h"; */
+"nNS-fO-30h.normalTitle" = "上一步";
+
+/* Class = "UILabel"; text = "国徽页照片"; ObjectID = "rpK-d8-fow"; */
+"rpK-d8-fow.text" = "国徽页照片";
+
+/* Class = "UILabel"; text = "上传要求"; ObjectID = "uaH-yn-QuF"; */
+"uaH-yn-QuF.text" = "上传要求";

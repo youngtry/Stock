@@ -1,0 +1,33 @@
+
+/* Class = "UILabel"; text = "邮箱或手机号"; ObjectID = "8QR-fs-dmi"; */
+"8QR-fs-dmi.text" = "邮箱或手机号";
+
+/* Class = "UIButton"; normalTitle = "发送"; ObjectID = "AHy-9c-1T4"; */
+"AHy-9c-1T4.normalTitle" = "发送";
+
+/* Class = "UILabel"; text = "备注"; ObjectID = "Bfe-oa-wg9"; */
+"Bfe-oa-wg9.text" = "备注";
+
+/* Class = "UIButton"; normalTitle = "点击选择银行"; ObjectID = "FHx-vE-f42"; */
+"FHx-vE-f42.normalTitle" = "点击选择银行";
+
+/* Class = "UILabel"; text = "向认证账户提现将不再输入资金密码、短信验"; ObjectID = "Tdy-ZH-46Z"; */
+"Tdy-ZH-46Z.text" = "向认证账户提现将不再输入资金密码、短信验";
+
+/* Class = "UITextField"; placeholder = "请输入短信验证码"; ObjectID = "ajE-Bs-sLm"; */
+"ajE-Bs-sLm.placeholder" = "请输入短信验证码";
+
+/* Class = "UILabel"; text = "添加卡号"; ObjectID = "fe8-Qp-wyC"; */
+"fe8-Qp-wyC.text" = "添加卡号";
+
+/* Class = "UILabel"; text = "短信验证码"; ObjectID = "hef-qa-woQ"; */
+"hef-qa-woQ.text" = "短信验证码";
+
+/* Class = "UIButton"; normalTitle = "确定"; ObjectID = "pSW-LH-241"; */
+"pSW-LH-241.normalTitle" = "确定";
+
+/* Class = "UILabel"; text = "将该账户设置为认证账户"; ObjectID = "txs-Rs-E0B"; */
+"txs-Rs-E0B.text" = "将该账户设置为认证账户";
+
+/* Class = "UILabel"; text = "银行"; ObjectID = "yr4-lM-GaB"; */
+"yr4-lM-GaB.text" = "银行";

@@ -46,11 +46,25 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    
+    [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:nil];
+    
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    NSDate *date = [NSDate date];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSString *strDate = [dateFormatter stringFromDate:date];
+    [userDefaults setObject:strDate forKey:@"ShowGuestureTime"];
+    [userDefaults synchronize];
+    
 }
 
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"UnlockGuesture" object:nil];
+    
 }
 
 
@@ -63,6 +77,16 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    
+    
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    NSDate *date = [NSDate date];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSString *strDate = [dateFormatter stringFromDate:date];
+    [userDefaults setObject:strDate forKey:@"ShowGuestureTime"];
+    [userDefaults synchronize];
+    
 }
 
 -(void)customeNavTabView{

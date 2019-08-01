@@ -37,11 +37,11 @@
     self.isBussiness = NO;
     
     if([self.title isEqualToString:@"0"]){
-        [self.turnBtn setTitle:@"转入" forState:UIControlStateNormal];
-        self.turnInput.placeholder = @"输入转入数量";
+        [self.turnBtn setTitle:Localize(@"Turn_In") forState:UIControlStateNormal];
+        self.turnInput.placeholder = Localize(@"Turn_In_Num");
     }else{
-        [self.turnBtn setTitle:@"转出" forState:UIControlStateNormal];
-        self.turnInput.placeholder = @"输入转出数量";
+        [self.turnBtn setTitle:Localize(@"Turn_Out") forState:UIControlStateNormal];
+        self.turnInput.placeholder = Localize(@"Turn_Out_Num");
     }
 }
 
@@ -78,12 +78,12 @@
             self.isBussiness = YES;
         }
     }
-    
+    WeakSelf(weakSelf);
 //    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
             [HUDUtil hideHudView];
-            [self showLeftMoney:data];
+            [weakSelf showLeftMoney:data];
         }
     }];
 }
@@ -97,29 +97,29 @@
         if([title isEqualToString:@"0"]){
             if(self.isBussiness){
                
-                self.turnOutName.text = @"交易账户";
-                self.turnInName.text = @"商户账户";
+                self.turnOutName.text = Localize(@"Trade_Acc");
+                self.turnInName.text = Localize(@"Buss_Acc");
                 
                 NSDictionary* exchange =[info objectForKey:@"exchange"];
                 if(exchange){
                     NSDictionary* left = [exchange objectForKey:self.marketName.text];
                     if(left){
                         NSString* available = [left objectForKey:@"available"];
-                        self.leftMonetCount.text = [NSString stringWithFormat:@"可转%@",available];
+                        self.leftMonetCount.text = [NSString stringWithFormat:@"%@%@",Localize(@"Can_Turn"),available];
                     }
                 }
                 
             }else{
                 
-                self.turnInName.text = @"交易账户";
-                self.turnOutName.text = @"商户账户";
+                self.turnInName.text = Localize(@"Trade_Acc");
+                self.turnOutName.text = Localize(@"Buss_Acc");
                 
                 NSDictionary* exchange =[info objectForKey:@"shop"];
                 if(exchange){
                     NSDictionary* left = [exchange objectForKey:self.marketName.text];
                     if(left){
                         NSString* available = [left objectForKey:@"available"];
-                        self.leftMonetCount.text = [NSString stringWithFormat:@"可转%@",available];
+                        self.leftMonetCount.text = [NSString stringWithFormat:@"%@%@",Localize(@"Can_Turn"),available];
                     }
                 }
             }
@@ -130,28 +130,28 @@
         }else{
             
             if(self.isBussiness){
-                self.turnOutName.text = @"商户账户";
-                self.turnInName.text = @"交易账户";
+                self.turnOutName.text = Localize(@"Buss_Acc");
+                self.turnInName.text = Localize(@"Trade_Acc");
                 
                 NSDictionary* shop =[info objectForKey:@"shop"];
                 if(shop){
                     NSDictionary* left = [shop objectForKey:self.marketName.text];
                     if(left){
                         NSString* available = [left objectForKey:@"available"];
-                        self.leftMonetCount.text = [NSString stringWithFormat:@"可转%@",available];
+                        self.leftMonetCount.text = [NSString stringWithFormat:@"%@%@",Localize(@"Can_Turn"),available];
                     }
                 }
                 
             }else{
-                self.turnOutName.text = @"交易账户";
-                self.turnInName.text = @"商户账户";
+                self.turnOutName.text = Localize(@"Trade_Acc");
+                self.turnInName.text = Localize(@"Buss_Acc");
                 
                 NSDictionary* shop =[info objectForKey:@"exchange"];
                 if(shop){
                     NSDictionary* left = [shop objectForKey:self.marketName.text];
                     if(left){
                         NSString* available = [left objectForKey:@"available"];
-                        self.leftMonetCount.text = [NSString stringWithFormat:@"可转%@",available];
+                        self.leftMonetCount.text = [NSString stringWithFormat:@"%@%@",Localize(@"Can_Turn"),available];
                     }
                 }
             }
@@ -178,7 +178,7 @@
     NSString* num = input.text;
     
     if(num.length>0){
-        NSInteger index = [self.leftMonetCount.text rangeOfString:@"可转"].location+[@"可转" length];
+        NSInteger index = [self.leftMonetCount.text rangeOfString:Localize(@"Can_Turn")].location+[Localize(@"Can_Turn") length];
         NSString* left = [self.leftMonetCount.text substringFromIndex:index];
         NSLog(@"left = %@",left);
         
@@ -201,28 +201,28 @@
     vc.modalPresentationStyle = UIModalPresentationOverFullScreen;
     temp.definesPresentationContext = YES;
     [temp presentViewController:vc animated:YES completion:nil];
-    
+    WeakSelf(weakSelf);
     vc.block = ^(NSString* token) {
         if(token.length>0){
             
             NSString* mode = @"toexchange";
             NSString* url = @"wallet/transfer";
-            if([self.title isEqualToString:@"0"]){
-                if(self.isBussiness){
+            if([weakSelf.title isEqualToString:@"0"]){
+                if(weakSelf.isBussiness){
                     mode = @"toshop";
                 }else{
                     mode = @"toexchange";
                 }
                 
             }else{
-                if(self.isBussiness){
+                if(weakSelf.isBussiness){
                     mode = @"toexchange";
                 }else{
                     mode = @"toshop";
                 }
             }
-            NSDictionary* parameters = @{@"asset":self.marketName.text,
-                                         @"num":@([self.turnInput.text floatValue]),
+            NSDictionary* parameters = @{@"asset":weakSelf.marketName.text,
+                                         @"num":@([weakSelf.turnInput.text floatValue]),
                                          @"mode":mode,
                                          @"asset_token":token
                                          };
@@ -230,9 +230,9 @@
             [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
                 if(success){
                     if([[data objectForKey:@"ret"] intValue] == 1){
-                        [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"转入成功"];
+                        [HUDUtil showHudViewTipInSuperView:temp.view withMessage:Localize(@"Turn_In_Succ")];
                         
-                        if([self.title isEqualToString:@"0"]){
+                        if([weakSelf.title isEqualToString:@"0"]){
                             for (UIViewController*vc in temp.childViewControllers) {
                                 if([vc isKindOfClass:[ExchangeViewController class]]){
                                     [temp popToViewController:vc animated:YES];
@@ -262,7 +262,7 @@
                 }
             }];
         }else{
-            [HUDUtil showHudViewTipInSuperView:temp.view withMessage:@"资金密码错误请重新输入"];
+            [HUDUtil showHudViewTipInSuperView:temp.view withMessage:Localize(@"Money_Pwd_Error")];
         }
     };
     

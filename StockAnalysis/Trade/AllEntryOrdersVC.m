@@ -24,16 +24,16 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     //导航栏
-    self.title = @"全部挂单";
+    self.title = Localize(@"All_Pendings");
     
-    UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:@"历史记录" style:UIBarButtonItemStylePlain target:self action:@selector(clickRight:)];
+    UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:Localize(@"History_Record") style:UIBarButtonItemStylePlain target:self action:@selector(clickRight:)];
     self.navigationItem.rightBarButtonItem = right;
     //标题滑动
     [self scrollTitle];
     
     //每页vc
     [self scrollContent];
-    NSArray *titles = @[@"全部",@"买入",@"卖出"];
+    NSArray *titles = @[Localize(@"All"),Localize(@"Buy"),Localize(@"Sell")];
     NSMutableArray* vcs = [NSMutableArray new];
     {
         EntryOrdersVC *vc1 = [[EntryOrdersVC alloc] init];

@@ -1,0 +1,30 @@
+
+/* Class = "UIButton"; normalTitle = "ZEDA网络服务条款"; ObjectID = "AsB-Dw-CQi"; */
+"AsB-Dw-CQi.normalTitle" = "ZEDA网络服务条款";
+
+/* Class = "UITextField"; placeholder = "点击输入"; ObjectID = "KEf-XZ-kbp"; */
+"KEf-XZ-kbp.placeholder" = "点击输入";
+
+/* Class = "UIButton"; normalTitle = "邮箱地址"; ObjectID = "KMe-Oa-fqG"; */
+"KMe-Oa-fqG.normalTitle" = "邮箱地址";
+
+/* Class = "UIButton"; normalTitle = "手机号注册"; ObjectID = "LF2-Vo-9q5"; */
+"LF2-Vo-9q5.normalTitle" = "手机号注册";
+
+/* Class = "UITextField"; placeholder = "邮箱邀请码"; ObjectID = "PIQ-I0-FQS"; */
+"PIQ-I0-FQS.placeholder" = "邮箱邀请码";
+
+/* Class = "UIButton"; normalTitle = "发送邀请码"; ObjectID = "Sf2-YG-R0i"; */
+"Sf2-YG-R0i.normalTitle" = "发送邀请码";
+
+/* Class = "UIButton"; normalTitle = "密码"; ObjectID = "iee-5d-Qvd"; */
+"iee-5d-Qvd.normalTitle" = "密码";
+
+/* Class = "UIButton"; normalTitle = "注册"; ObjectID = "lQZ-m7-sZA"; */
+"lQZ-m7-sZA.normalTitle" = "注册";
+
+/* Class = "UIButton"; normalTitle = "点击“注册”按钮，即表示您同意"; ObjectID = "rzC-s0-t4n"; */
+"rzC-s0-t4n.normalTitle" = "点击“注册”按钮，即表示您同意";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "uOw-FR-Gc4"; */
+"uOw-FR-Gc4.normalTitle" = "Button";

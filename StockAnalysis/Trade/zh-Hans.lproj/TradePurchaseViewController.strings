@@ -1,0 +1,123 @@
+
+/* Class = "UIButton"; normalTitle = "4位小数"; ObjectID = "1d1-n6-mOy"; */
+"1d1-n6-mOy.normalTitle" = "4位小数";
+
+/* Class = "UIButton"; normalTitle = "-"; ObjectID = "1hC-dK-E6N"; */
+"1hC-dK-E6N.normalTitle" = "-";
+
+/* Class = "UIButton"; normalTitle = "LDGFUSD"; ObjectID = "3fE-YV-80o"; */
+"3fE-YV-80o.normalTitle" = "LDGFUSD";
+
+/* Class = "UILabel"; text = "参考市场价格"; ObjectID = "4CH-94-x7c"; */
+"4CH-94-x7c.text" = "参考市场价格";
+
+/* Class = "UILabel"; text = "可买 0.00000000"; ObjectID = "6e3-CK-L0t"; */
+"6e3-CK-L0t.text" = "可买 0.00000000";
+
+/* Class = "UILabel"; text = "以市场成交价为准"; ObjectID = "6vd-gE-tKM"; */
+"6vd-gE-tKM.text" = "以市场成交价为准";
+
+/* Class = "UILabel"; text = "股票"; ObjectID = "7LI-xy-jOH"; */
+"7LI-xy-jOH.text" = "股票";
+
+/* Class = "UILabel"; text = "¥000.00"; ObjectID = "Api-32-3IS"; */
+"Api-32-3IS.text" = "¥000.00";
+
+/* Class = "UILabel"; text = "8239.6550"; ObjectID = "Arp-M6-wjK"; */
+"Arp-M6-wjK.text" = "8239.6550";
+
+/* Class = "UILabel"; text = "15:40 05/19"; ObjectID = "BGO-Fq-vVn"; */
+"BGO-Fq-vVn.text" = "15:40 05/19";
+
+/* Class = "UILabel"; text = "暂无限价单"; ObjectID = "DbP-0c-It5"; */
+"DbP-0c-It5.text" = "暂无限价单";
+
+/* Class = "UILabel"; text = "700.0000"; ObjectID = "DmS-OP-JhZ"; */
+"DmS-OP-JhZ.text" = "700.0000";
+
+/* Class = "UIButton"; normalTitle = "1位小数"; ObjectID = "EjA-0W-2pZ"; */
+"EjA-0W-2pZ.normalTitle" = "1位小数";
+
+/* Class = "UITextView"; text = "0.0000"; ObjectID = "ICy-Vc-iKJ"; */
+"ICy-Vc-iKJ.text" = "0.0000";
+
+/* Class = "UIButton"; normalTitle = "限价买入"; ObjectID = "Ifr-rz-iwy"; */
+"Ifr-rz-iwy.normalTitle" = "限价买入";
+
+/* Class = "UIButton"; normalTitle = "4位小数"; ObjectID = "Jvs-Rs-ogc"; */
+"Jvs-Rs-ogc.normalTitle" = "4位小数";
+
+/* Class = "UIButton"; normalTitle = "限价买入"; ObjectID = "NYL-da-xeJ"; */
+"NYL-da-xeJ.normalTitle" = "限价买入";
+
+/* Class = "UIButton"; normalTitle = "买入"; ObjectID = "Oby-3v-lPa"; */
+"Oby-3v-lPa.normalTitle" = "买入";
+
+/* Class = "UILabel"; text = "限价单"; ObjectID = "PLg-6Z-xku"; */
+"PLg-6Z-xku.text" = "限价单";
+
+/* Class = "UILabel"; text = "0"; ObjectID = "POM-RT-9QR"; */
+"POM-RT-9QR.text" = "0";
+
+/* Class = "UILabel"; text = "价格"; ObjectID = "RgG-VL-Fae"; */
+"RgG-VL-Fae.text" = "价格";
+
+/* Class = "UIButton"; normalTitle = "市价快速买入"; ObjectID = "Txz-n3-xKF"; */
+"Txz-n3-xKF.normalTitle" = "市价快速买入";
+
+/* Class = "UILabel"; text = "2.00"; ObjectID = "V4T-ur-VWS"; */
+"V4T-ur-VWS.text" = "2.00";
+
+/* Class = "UITextView"; text = "0.00000000"; ObjectID = "WOu-dA-cYQ"; */
+"WOu-dA-cYQ.text" = "0.00000000";
+
+/* Class = "UILabel"; text = "数量"; ObjectID = "YXT-e6-yoT"; */
+"YXT-e6-yoT.text" = "数量";
+
+/* Class = "UILabel"; text = "700.0000"; ObjectID = "Zyj-dk-Uzt"; */
+"Zyj-dk-Uzt.text" = "700.0000";
+
+/* Class = "UIButton"; normalTitle = "-"; ObjectID = "aEb-jc-oBs"; */
+"aEb-jc-oBs.normalTitle" = "-";
+
+/* Class = "UIButton"; normalTitle = "+"; ObjectID = "eep-SK-Gnd"; */
+"eep-SK-Gnd.normalTitle" = "+";
+
+/* Class = "UILabel"; text = "-0.00%"; ObjectID = "f4y-KC-MYS"; */
+"f4y-KC-MYS.text" = "-0.00%";
+
+/* Class = "UIButton"; normalTitle = "+"; ObjectID = "fPQ-xP-odx"; */
+"fPQ-xP-odx.normalTitle" = "+";
+
+/* Class = "UILabel"; text = "000.0000"; ObjectID = "fwQ-YU-aSk"; */
+"fwQ-YU-aSk.text" = "000.0000";
+
+/* Class = "UILabel"; text = "0.00009328"; ObjectID = "hL0-tM-khR"; */
+"hL0-tM-khR.text" = "0.00009328";
+
+/* Class = "UIButton"; normalTitle = "充值"; ObjectID = "k0A-UQ-z6S"; */
+"k0A-UQ-z6S.normalTitle" = "充值";
+
+/* Class = "UILabel"; text = "买入"; ObjectID = "msj-1v-a45"; */
+"msj-1v-a45.text" = "买入";
+
+/* Class = "UILabel"; text = "实际成交"; ObjectID = "n03-Ra-L4S"; */
+"n03-Ra-L4S.text" = "实际成交";
+
+/* Class = "UILabel"; text = "数量(股)"; ObjectID = "nZp-eN-vWr"; */
+"nZp-eN-vWr.text" = "数量(股)";
+
+/* Class = "UIButton"; normalTitle = "0位小数"; ObjectID = "rzK-go-GnO"; */
+"rzK-go-GnO.normalTitle" = "0位小数";
+
+/* Class = "UIButton"; normalTitle = "撤销"; ObjectID = "sDp-7u-kpL"; */
+"sDp-7u-kpL.normalTitle" = "撤销";
+
+/* Class = "UILabel"; text = "价格(元)"; ObjectID = "shP-B8-RcW"; */
+"shP-B8-RcW.text" = "价格(元)";
+
+/* Class = "UILabel"; text = "计价期货"; ObjectID = "wKN-cR-8nI"; */
+"wKN-cR-8nI.text" = "计价期货";
+
+/* Class = "UILabel"; text = "可用 0.0000"; ObjectID = "zQm-gG-Qse"; */
+"zQm-gG-Qse.text" = "可用 0.0000";

@@ -1,0 +1,48 @@
+
+/* Class = "UILabel"; text = "开启后每次下单需要二次确认"; ObjectID = "19e-4E-Y5H"; */
+"19e-4E-Y5H.text" = "开启后每次下单需要二次确认";
+
+/* Class = "UILabel"; text = "资金密码"; ObjectID = "45h-I5-8S4"; */
+"45h-I5-8S4.text" = "资金密码";
+
+/* Class = "UILabel"; text = "已绑定"; ObjectID = "4WU-JD-9Wd"; */
+"4WU-JD-9Wd.text" = "已绑定";
+
+/* Class = "UIButton"; normalTitle = "取消"; ObjectID = "DIv-cg-BBa"; */
+"DIv-cg-BBa.normalTitle" = "取消";
+
+/* Class = "UILabel"; text = "绑定手机"; ObjectID = "H1a-7t-0xH"; */
+"H1a-7t-0xH.text" = "绑定手机";
+
+/* Class = "UILabel"; text = "绑定邮箱"; ObjectID = "HGY-sj-HmV"; */
+"HGY-sj-HmV.text" = "绑定邮箱";
+
+/* Class = "UILabel"; text = "请输入登录密码"; ObjectID = "I5N-6b-7SA"; */
+"I5N-6b-7SA.text" = "请输入登录密码";
+
+/* Class = "UILabel"; text = "下单二次确认"; ObjectID = "MMS-Av-xSV"; */
+"MMS-Av-xSV.text" = "下单二次确认";
+
+/* Class = "UILabel"; text = "修改手势密码"; ObjectID = "OLa-Oq-ar6"; */
+"OLa-Oq-ar6.text" = "修改手势密码";
+
+/* Class = "UILabel"; text = "已绑定"; ObjectID = "PeL-qJ-YDu"; */
+"PeL-qJ-YDu.text" = "已绑定";
+
+/* Class = "UILabel"; text = "手势密码"; ObjectID = "abN-Rd-B3W"; */
+"abN-Rd-B3W.text" = "手势密码";
+
+/* Class = "UIButton"; normalTitle = "确定"; ObjectID = "cK4-Dt-hx3"; */
+"cK4-Dt-hx3.normalTitle" = "确定";
+
+/* Class = "UILabel"; text = "需要手势密码"; ObjectID = "keW-6L-Fx5"; */
+"keW-6L-Fx5.text" = "需要手势密码";
+
+/* Class = "UILabel"; text = "2分钟"; ObjectID = "qKD-cO-Agi"; */
+"qKD-cO-Agi.text" = "2分钟";
+
+/* Class = "UILabel"; text = "安全验证"; ObjectID = "xQ2-kb-fKe"; */
+"xQ2-kb-fKe.text" = "安全验证";
+
+/* Class = "UITextField"; placeholder = "密码"; ObjectID = "xzm-bG-LYA"; */
+"xzm-bG-LYA.placeholder" = "密码";

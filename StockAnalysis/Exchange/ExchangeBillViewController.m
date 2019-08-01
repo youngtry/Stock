@@ -65,18 +65,18 @@
     
     
     
-    [self.nameArray addObject:@"全部"];
+    [self.nameArray addObject:Localize(@"All")];
     for (int i=0;i<8; i++) {
-        NSString* info = [NSString stringWithFormat:@"期货%d",i];
+        NSString* info = [NSString stringWithFormat:@"%@%d",Localize(@"Forword"),i];
         [self.nameArray addObject:info];
     }
-    [self.typeArray addObject:@"全部"];
-    [self.typeArray addObject:@"充值"];
-    [self.typeArray addObject:@"提现"];
-    [self.typeArray addObject:@"买入"];
-    [self.typeArray addObject:@"卖出"];
-    [self.typeArray addObject:@"转入交易"];
-    [self.typeArray addObject:@"转入商户"];
+    [self.typeArray addObject:Localize(@"All")];
+    [self.typeArray addObject:Localize(@"Charge")];
+    [self.typeArray addObject:Localize(@"Cash")];
+    [self.typeArray addObject:Localize(@"Buy")];
+    [self.typeArray addObject:Localize(@"Sell")];
+    [self.typeArray addObject:Localize(@"Turn_Trade")];
+    [self.typeArray addObject:Localize(@"Turn_Buss")];
 //    [self.typeArray addObject:@"扣除任务奖励"];
 }
 
@@ -88,21 +88,22 @@
     self.isUpdate = YES;
 //    [self.nameArray removeAllObjects];
 //    [self.typeArray removeAllObjects];
-//    [self.nameArray addObject:@"全部"];
-//    [self.typeArray addObject:@"全部"];
+//    [self.nameArray addObject:Localize(@"All")];
+//    [self.typeArray addObject:Localize(@"All")];
     [self getName];
     [self getTrade:self.page];
 }
 
 -(void)getName{
     [self.nameArray removeAllObjects];
-    [self.nameArray addObject:@"全部"];
+    [self.nameArray addObject:Localize(@"All")];
     
     NSString* url = @"assets";
     NSDictionary* params = @{@"page":@(1),
                              @"page_limit":@(10)
                              };
 //    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
         if(success){
             [HUDUtil hideHudView];
@@ -111,13 +112,13 @@
                 if(list.count>0){
                     
                     for (NSDictionary* info in list) {
-                        [self.nameArray addObject:[info objectForKey:@"asset"]];
+                        [weakSelf.nameArray addObject:[info objectForKey:@"asset"]];
                     }
-                    [self.nameList reloadData];
+                    [weakSelf.nameList reloadData];
                  
                     
                 }else{
-                    [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"数据全部加载完毕"];
+                    [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:Localize(@"Load_Finish")];
                 }
                 
             }
@@ -127,37 +128,37 @@
 -(void)getTrade:(NSInteger)page{
     NSString* mode = @"";
     NSString* type = _allTypeBtn.titleLabel.text;
-    if([type isEqualToString:@"全部"]){
+    if([type isEqualToString:Localize(@"All")]){
         
-    }else if ([type isEqualToString:@"买入"]){
+    }else if ([type isEqualToString:Localize(@"Buy")]){
         mode = @"buy";
     }
-    else if ([type isEqualToString:@"卖出"]){
+    else if ([type isEqualToString:Localize(@"Sell")]){
         mode = @"sell";
     }
-    else if ([type isEqualToString:@"充值"]){
+    else if ([type isEqualToString:Localize(@"Charge")]){
         mode = @"recharge";
     }
-    else if ([type isEqualToString:@"提现"]){
+    else if ([type isEqualToString:Localize(@"Cash")]){
         mode = @"withdraw";
     }
-    else if ([type isEqualToString:@"转入交易"]){
+    else if ([type isEqualToString:Localize(@"Turn_Trade")]){
         mode = @"toexchange";
     }
-    else if ([type isEqualToString:@"转入商户"]){
+    else if ([type isEqualToString:Localize(@"Turn_Buss")]){
         mode = @"toshop";
     }
     
     
     NSString* asset = @"";
     NSString* name = _allNameBtn.titleLabel.text;
-//    if([type isEqualToString:@"全部"]){
+//    if([type isEqualToString:Localize(@"All")]){
 //
 //    }else{
 //        mode = mode;
 //    }
     
-    if(![name isEqualToString:@"全部"]){
+    if(![name isEqualToString:Localize(@"All")]){
         asset = name;
     }
     
@@ -169,14 +170,15 @@
                              @"asset":asset
                              };
 //    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
         if(success){
             [HUDUtil hideHudView];
             if([[data objectForKey:@"ret"] intValue] == 1){
                 NSArray* list = [[data objectForKey:@"data"] objectForKey:@"bills"];
                 if(list.count>0){
-                    [self.billArray addObjectsFromArray:list];
-                    [self.billList reloadData];
+                    [weakSelf.billArray addObjectsFromArray:list];
+                    [weakSelf.billList reloadData];
                     
 //                    for(NSDictionary* info in list){
 //                        NSString* name = [info objectForKey:@"market"];
@@ -188,8 +190,8 @@
 //                    }
                     
                 }else{
-                    self.isUpdate = NO;
-                    [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"数据全部加载完毕"];
+                    weakSelf.isUpdate = NO;
+                    [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:Localize(@"Load_Finish")];
                 }
                 
             }
@@ -311,21 +313,42 @@
             NSDictionary* info = self.billArray[indexPath.row];
             cell.nameLabel.text = [info objectForKey:@"asset"];
             cell.dateLabel.text = [info objectForKey:@"updated_at"];
+            
+            NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+            [formatter setDateFormat:@"yyyy-MM-dd HH:mm:sss"];
+
+            NSDate *data = [formatter dateFromString:cell.dateLabel.text];
+            
+            NSDateFormatter *formatter1 = [[NSDateFormatter alloc]init];
+            [formatter1 setDateFormat:@"HH:mm MM-dd"];
+            
+            NSString* datestr = [formatter1 stringFromDate:data];
+            cell.dateLabel.text = datestr;
+            
             cell.stateLabel.text = [info objectForKey:@"state"];
             cell.modeLabel.text = [info objectForKey:@"mode"];
+            cell.numLabel.text = [info objectForKey:@"num"];
+            
+            
+            if([cell.stateLabel.text isEqualToString:@"done"]){
+                cell.stateLabel.text = Localize(@"Finished");
+            }else if([cell.stateLabel.text isEqualToString:@"cancel"]){
+                cell.stateLabel.text = Localize(@"Canceled");
+            }
+            
             
             if([cell.modeLabel.text isEqualToString:@"sell"]){
-                cell.modeLabel.text = @"卖出";
+                cell.modeLabel.text = Localize(@"Sell");
             }else if([cell.modeLabel.text isEqualToString:@"buy"]){
-                cell.modeLabel.text = @"买入";
+                cell.modeLabel.text = Localize(@"Buy");
             }else if([cell.modeLabel.text isEqualToString:@"recharge"]){
-                cell.modeLabel.text = @"充值";
+                cell.modeLabel.text = Localize(@"Charge");
             }else if([cell.modeLabel.text isEqualToString:@"withdraw"]){
-                cell.modeLabel.text = @"提现";
+                cell.modeLabel.text = Localize(@"Cash");
             }else if([cell.modeLabel.text isEqualToString:@"toexchange"]){
-                cell.modeLabel.text = @"转入交易";
+                cell.modeLabel.text = Localize(@"Turn_Trade");
             }else if([cell.modeLabel.text isEqualToString:@"toshop"]){
-                cell.modeLabel.text = @"转入商户";
+                cell.modeLabel.text = Localize(@"Turn_Buss");
             }
         }
         

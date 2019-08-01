@@ -88,7 +88,7 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
         _indicatorView = [UIView new];
         _indicatorView.backgroundColor = [UIColor assistBackgroundColor];
         
-        NSArray *titleArr = @[@"MACD",@"KDJ",@"关闭",@"MA",@"EMA",@"BOLL",@"关闭"];
+        NSArray *titleArr = @[@"MACD",@"KDJ",Localize(@"Close"),@"MA",@"EMA",@"BOLL",Localize(@"Close")];
         __block UIButton *preBtn;
         [titleArr enumerateObjectsUsingBlock:^(NSString*  _Nonnull title, NSUInteger idx, BOOL * _Nonnull stop) {
             UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -189,8 +189,11 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
 {
     _selectedIndex = selectedIndex;
     UIButton *btn = (UIButton *)[self viewWithTag:Y_StockChartSegmentStartTag + selectedIndex];
-    NSAssert(btn, @"按钮初始化出错");
-    [self event_segmentButtonClicked:btn];
+//    NSAssert(btn, @"按钮初始化出错");
+    if(btn){
+        [self event_segmentButtonClicked:btn];
+    }
+    
 }
 
 - (void)setSelectedBtn:(UIButton *)selectedBtn

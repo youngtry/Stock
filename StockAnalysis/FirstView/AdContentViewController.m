@@ -57,7 +57,7 @@
 - (void)loadString:(NSString *)str  {
     // 1. URL 定位资源,需要资源的地址
     if(str.length==0){
-        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"无地址输入"];
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:Localize(@"NO_Url")];
         return;
     }
     NSString *urlStr = str;
@@ -89,7 +89,7 @@
 }
 // 页面加载失败时调用
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation{
-    [HUDUtil hideHudViewWithFailureMessage:@"加载失败"];
+    [HUDUtil hideHudViewWithFailureMessage:Localize(@"Load_Fail")];
 }
 
 /*

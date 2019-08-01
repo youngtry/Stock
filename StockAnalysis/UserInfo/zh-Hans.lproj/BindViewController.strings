@@ -1,0 +1,36 @@
+
+/* Class = "UIButton"; normalTitle = "发送验证码"; ObjectID = "4l3-Qb-J09"; */
+"4l3-Qb-J09.normalTitle" = "发送验证码";
+
+/* Class = "UITextField"; placeholder = "请输入验证码"; ObjectID = "6d0-gq-n6t"; */
+"6d0-gq-n6t.placeholder" = "请输入验证码";
+
+/* Class = "UITextField"; placeholder = "请输入邮箱地址"; ObjectID = "9Hx-pj-HcP"; */
+"9Hx-pj-HcP.placeholder" = "请输入邮箱地址";
+
+/* Class = "UIButton"; normalTitle = "发送验证码"; ObjectID = "POe-b1-vRd"; */
+"POe-b1-vRd.normalTitle" = "发送验证码";
+
+/* Class = "UIButton"; normalTitle = "确认"; ObjectID = "UEC-S8-dsW"; */
+"UEC-S8-dsW.normalTitle" = "确认";
+
+/* Class = "UITextField"; placeholder = "请输入邮箱验证码"; ObjectID = "YRw-Qe-TZe"; */
+"YRw-Qe-TZe.placeholder" = "请输入邮箱验证码";
+
+/* Class = "UITextField"; placeholder = "请输入手机号码"; ObjectID = "bgC-1e-VaE"; */
+"bgC-1e-VaE.placeholder" = "请输入手机号码";
+
+/* Class = "UILabel"; text = "邮箱验证码"; ObjectID = "c8C-Ra-96e"; */
+"c8C-Ra-96e.text" = "邮箱验证码";
+
+/* Class = "UILabel"; text = "注意：一经绑定，无法修改，请填写真实有效手机号"; ObjectID = "kM4-Fx-CJa"; */
+"kM4-Fx-CJa.text" = "注意：一经绑定，无法修改，请填写真实有效手机号";
+
+/* Class = "UILabel"; text = "+12345"; ObjectID = "qbP-0y-nQy"; */
+"qbP-0y-nQy.text" = "+12345";
+
+/* Class = "UILabel"; text = "短信验证码"; ObjectID = "tgi-0H-hoo"; */
+"tgi-0H-hoo.text" = "短信验证码";
+
+/* Class = "UILabel"; text = "手机号码"; ObjectID = "zXp-ET-2lU"; */
+"zXp-ET-2lU.text" = "手机号码";

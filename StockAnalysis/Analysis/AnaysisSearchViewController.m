@@ -15,6 +15,9 @@
 #import "SearchData.h"
 #import "HttpRequest.h"
 #import "StockLittleViewController.h"
+#import "TradeViewController.h"
+#import "TradePurchaseViewController.h"
+#import "AITabContentView.h"
 
 @interface AnaysisSearchViewController ()<UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate>{
     //搜索
@@ -26,6 +29,8 @@
     NSArray *indexArray;
     
     NSMutableArray* showList;
+    
+    BOOL isChange;
 }
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet UIView *historyView;
@@ -45,17 +50,22 @@
 
     [self.searchBar removeFromSuperview];
     self.navigationItem.titleView = self.searchBar;
+    _scrollTitle = nil;
+    _scrollContent = nil;
 //    self.searchBar.enablesReturnKeyAutomatically = YES;
-    self.view.top = kNaviHeight;
+//    self.view.top = kNaviHeight;
 //    self.view.backgroundColor = [UIColor redColor];
     
     showList = [[NSMutableArray alloc] init];
+    isChange = NO;
     
-    if([SearchData getInstance].searchHistoryList.count>0){
-        [self changeToSearchHistroy];
-    }else{
-        [self changeToTrade];
-    }
+//    if([SearchData getInstance].searchHistoryList.count>0){
+//        [self changeToSearchHistroy];
+//    }else{
+//        [self changeToTrade];
+//    }
+
+    [self changeToTrade];
     
 //    [self changeToTrade];
 //    [self changeToSearchHistroy];
@@ -86,12 +96,20 @@
     [[SearchData getInstance].searchList removeAllObjects];
     [[SearchData getInstance].specialList removeAllObjects];
     
+    NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
+    BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
+    if(!islogin){
+        return;
+    }
+    
+    
     NSDictionary* parameters = @{@"page":@"1",
                                  @"page_limit":@"10",
                                  @"order_by":@"price"
                                  };
     NSString* url = @"market/follow/list";
-//    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+    //    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
             [HUDUtil hideHudView];
@@ -102,25 +120,25 @@
                     if(item.count>0){
                         for (int i=0; i<item.count; i++) {
                             NSDictionary* info = item[i];
-//                            NSLog(@"i= %d,info = %@",i,info);
+                            //                            NSLog(@"i= %d,info = %@",i,info);
                             [[SearchData getInstance] addSpecail:info];
                         }
                         if([_historyView isHidden]){
                             [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowSearchList" object:nil];
                         }else{
-                            [self addDataToShowList];
+                            [weakSelf addDataToShowList];
                         }
-                        //                        [[SearchData getInstance] addData];
-                        
                     }
                 }
             }else{
                 
-                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:[data objectForKey:@"msg"]];
                 
             }
         }
     }];
+    
+    
 }
 
 -(BOOL)prefersStatusBarHidden{
@@ -128,6 +146,7 @@
 }
 - (IBAction)clickClearHistroy:(id)sender {
     [[SearchData getInstance] clearHistory];
+    isChange = YES;
     [self changeToTrade];
 }
 
@@ -188,7 +207,12 @@
 -(void)changeToSearchHistroy{
     _historyView.hidden = NO;
     
+    
+    _scrollContent.hidden = YES;
+    _scrollTitle.hidden= YES;
     [self addDataToShowList];
+    
+    
     
     _histroyList.dataSource = self;
     _histroyList.delegate = self;
@@ -200,6 +224,13 @@
 -(void)changeToTrade{
     
     _historyView.hidden = YES;
+    [self.searchBar resignFirstResponder];
+    isChange = NO;
+    if(_scrollContent && _scrollTitle){
+        _scrollContent.hidden = NO;
+        _scrollTitle.hidden= NO;
+        return;
+    }
     
     //标题滑动
     _scrollTitle=[[AITabScrollview alloc]initWithFrame:CGRectZero];
@@ -233,7 +264,7 @@
     }]];
     
     NSMutableArray* vcs = [NSMutableArray new];
-    NSArray *titles = @[@"期货交易",@"商户交易"];
+    NSArray *titles = @[Localize(@"Forword_Trade"),Localize(@"Buss_Trade")];
     
     for (int i=0; i<titles.count; i++) {
         SearchTableViewController *vc = [[SearchTableViewController alloc] init];
@@ -250,26 +281,40 @@
     }];
 }
 
+-(BOOL )searchBarShouldBeginEditing:(UISearchBar *)searchBar{
+    NSLog(@"startSearch");
+    //如果有，显示历史界面
+    
+    
+    
+    [self changeToSearchHistroy];
+    return YES;
+}
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
     NSLog(@"searchText = %@",searchText);
     [self search:searchBar];
 }
-- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar{
-    NSLog(@"endSearch");
-    
-    [self search:searchBar];
+
+-(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
     
     
 }
 
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar{
+    NSLog(@"endSearch");
+    if(!isChange){
+        [self search:searchBar];
+    }
+}
+
 -(void)search:(UISearchBar *)searchBar{
     NSLog(@"当前是；%ld",_scrollTitle.tagIndex );
-    
+    WeakSelf(weakSelf);
     if(_scrollTitle.tagIndex == 0 || ![_historyView isHidden]){
         NSDictionary* parameters = @{@"market":searchBar.text};
         NSString* url = @"market/search";
-        [HUDUtil showHudViewInSuperView:self.view withMessage:@"正在搜索"];
+        [HUDUtil showHudViewInSuperView:self.view withMessage:Localize(@"Searching")];
         [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
             
             if(success){
@@ -294,18 +339,18 @@
                         if([_historyView isHidden]){
                             [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowSearchList" object:nil];
                         }else{
-                            [self addDataToShowList];
+                            [weakSelf addDataToShowList];
                         }
                     }
                 }else{
                     
-                    [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                    [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:[data objectForKey:@"msg"]];
                     
                 }
             }
         }];
     }else{
-        [HUDUtil showHudViewInSuperView:self.view withMessage:@"正在搜索"];
+        [HUDUtil showHudViewInSuperView:weakSelf.view withMessage:Localize(@"Searching")];
         NSDictionary* parameters = @{@"asset":searchBar.text};
         NSString* url = @"market/shop/search";
         [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
@@ -336,7 +381,7 @@
                     }
                 }else{
                     
-                    [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                    [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:[data objectForKey:@"msg"]];
                     
                 }
             }
@@ -402,6 +447,30 @@
         if(data){
             [[SearchData getInstance] addhistory:data];
 //            [self.navigationController setBackgroundColor:[UIColor blackColor]];
+            
+            
+            for (UIViewController*vc in self.navigationController.childViewControllers) {
+                if([vc isKindOfClass:[TradeViewController class]]){
+                    
+                    TradeViewController* trade = (TradeViewController*)vc;
+                    int titleindex = trade.pageIndex;
+                    if(titleindex == 0){
+                        [[AppData getInstance] setTradeInfo:@{@"index":@(0),@"name":name,@"title":Localize(@"Buy")}];
+                        [self.navigationController popViewControllerAnimated:YES];
+                        return;
+                    }else if (titleindex == 1){
+                        [[AppData getInstance] setTradeInfo:@{@"index":@(1),@"name":name,@"title":Localize(@"Sell")}];
+                        [self.navigationController popViewControllerAnimated:YES];
+                        return;
+                    }
+                    
+                    
+                    
+                    
+                }
+            }
+            
+                    
             
             StockLittleViewController* vc = [[StockLittleViewController alloc] initWithNibName:@"StockLittleViewController" bundle:nil];
             [self.navigationController pushViewController:vc animated:YES];

@@ -10,7 +10,7 @@
 /**
  *  K线图的宽度，默认20
  */
-static CGFloat Y_StockChartKLineWidth = 2;
+static CGFloat Y_StockChartKLineWidth = 3;
 
 /**
  *  K线图的间隔，默认1
@@ -47,6 +47,7 @@ static Y_StockChartTargetLineStatus Y_StockChartKLineIsBOLLLine = Y_StockChartTa
  */
 +(CGFloat)kLineWidth
 {
+    return (kScreenWidth-5-Y_StockChartKLineGap*75)/76.0f;
     return Y_StockChartKLineWidth;
 }
 +(void)setkLineWith:(CGFloat)kLineWidth
@@ -65,6 +66,7 @@ static Y_StockChartTargetLineStatus Y_StockChartKLineIsBOLLLine = Y_StockChartTa
  */
 +(CGFloat)kLineGap
 {
+//    return kScreenWidth/76.0;
     return Y_StockChartKLineGap;
 }
 

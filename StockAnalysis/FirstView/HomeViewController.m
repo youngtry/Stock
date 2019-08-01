@@ -26,6 +26,7 @@
 
 @property (nonatomic,strong) NSMutableArray* stockName;
 @property (nonatomic,strong) TTAutoRunLabel* runLabel;
+@property (nonatomic,strong) NSMutableArray* tipsTitle;
 @property (nonatomic,strong) NSMutableArray* tipsContent;
 
 @property (nonatomic, strong) MarqueeView *marqueeView;
@@ -45,6 +46,7 @@
     self.stockName =  [NSMutableArray new];
     self.randList.delegate = self;
     self.randList.dataSource = self;
+    self.tipsTitle = [NSMutableArray new];
     self.tipsContent = [NSMutableArray new];
     self.updateIndex = 0;
 }
@@ -80,9 +82,10 @@
 //    NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithDictionary:para];
     
 //    [[HttpRequest getInstance] getWithUrl:url notification:@"FirstTipAndAds"];
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
-            [self getTipsAndAdsBack:data];
+            [weakSelf getTipsAndAdsBack:data];
         }
     }];
     
@@ -97,7 +100,7 @@
     
     NSDictionary* parameters1 = @{@"market":@""};
     NSString* url1 = @"market/search";
-    
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] getWithURL:url1 parma:parameters1 block:^(BOOL success, id data) {
         if(success){
             if([[data objectForKey:@"ret"] intValue] == 1){
@@ -107,14 +110,14 @@
                 if(market.count>0){
                     NSArray* result = [market objectForKey:@"market"];
                     if(result.count >0){
-                        [self.stockName removeAllObjects];
+                        [weakSelf.stockName removeAllObjects];
                         for (int i=0; i<result.count; i++) {
                             
                             NSDictionary* info = result[i];
-                            [self.stockName addObject:info];
+                            [weakSelf.stockName addObject:info];
                         }
-                        
-                        [self requestStockInfo:self.updateIndex];
+                        [_randList reloadData];
+                        [weakSelf requestStockInfo:weakSelf.updateIndex];
                     }
                 }
             }
@@ -159,18 +162,25 @@
         NSDictionary* info = [data objectForKey:@"data"];
         //        NSLog(@"首页广告:%@",info);
         NSArray *ads = data[@"data"][@"ads"];
-        [self refreshAdView:ads];
-        NSArray* tips = data[@"data"][@"tips"];
-        
-        [self.tipsContent removeAllObjects];
-        for (NSDictionary* tip in tips) {
-            NSString* text = [tip objectForKey:@"content"];
-            NSString* title = [tip objectForKey:@"title"];
-//            NSLog(@"text = %@,  title = %@",text,title);
-            [self.tipsContent addObject:title];
+        if(ads.count>0){
+            [self refreshAdView:ads];
         }
-        if(self.tipsContent.count>0){
-//            [self createAutoRunLabel:self.tipsContent[0] view:self.activityContainer fontsize:14 withTag:0];
+        
+        NSArray* tips = data[@"data"][@"tips"];
+        if(tips.count>0){
+            [self.tipsContent removeAllObjects];
+            [self.tipsTitle removeAllObjects];
+            for (NSDictionary* tip in tips) {
+                NSString* text = [tip objectForKey:@"content"];
+                NSString* title = [tip objectForKey:@"title"];
+                //            NSLog(@"text = %@,  title = %@",text,title);
+                [self.tipsTitle addObject:title];
+                [self.tipsContent addObject:text];
+            }
+        }
+        
+        if(self.tipsTitle.count>0){
+            //            [self createAutoRunLabel:self.tipsContent[0] view:self.autoRunActivityView fontsize:14 withTag:0];
             if(_marqueeView){
                 [_marqueeView removeFromSuperview];
                 _marqueeView = nil;
@@ -187,7 +197,7 @@
 
 - (MarqueeView *)marqueeView{
     if (!_marqueeView) {
-        MarqueeView *marqueeView =[[MarqueeView alloc]initWithFrame:CGRectMake(10, 0, self.activityContainer.width-15, self.activityContainer.height) withTitle:self.tipsContent];
+        MarqueeView *marqueeView =[[MarqueeView alloc]initWithFrame:CGRectMake(10, 0, self.activityContainer.width-15, self.activityContainer.height) withTitle:self.tipsTitle];
         marqueeView.titleColor = kColor(102, 102, 102);
         marqueeView.titleFont = [UIFont systemFontOfSize:14];
         marqueeView.backgroundColor = [UIColor clearColor];
@@ -218,9 +228,9 @@
 //    NSLog(@"autoLabel = %ld",autoLabel.contentTag);
     [autoLabel stopAnimation];
     if(autoLabel.contentTag<self.tipsContent.count-1){
-        [self createAutoRunLabel:self.tipsContent[autoLabel.contentTag+1] view:self.activityContainer fontsize:14 withTag:autoLabel.contentTag+1];
+        [self createAutoRunLabel:self.tipsTitle[autoLabel.contentTag+1] view:self.activityContainer fontsize:14 withTag:autoLabel.contentTag+1];
     }else{
-        [self createAutoRunLabel:self.tipsContent[0] view:self.activityContainer fontsize:14 withTag:0];
+        [self createAutoRunLabel:self.tipsTitle[0] view:self.activityContainer fontsize:14 withTag:0];
     }
 }
 - (void)viewDidAppear:(BOOL)animated{
@@ -302,6 +312,14 @@
 }
 #pragma mark -SocketDelegates
 -(void)getWebData:(id)message withName:(NSString *)name{
+    if(nil == message && [name isEqualToString:@"closed"]){
+        //断开链接了
+        [[SocketInterface sharedManager] openWebSocket];
+        [SocketInterface sharedManager].delegate = self;
+        
+        [self requestStockInfo:self.updateIndex];
+        return;
+    }
     NSString* str = message;
     NSData* strdata = [str dataUsingEncoding:NSUTF8StringEncoding];
     

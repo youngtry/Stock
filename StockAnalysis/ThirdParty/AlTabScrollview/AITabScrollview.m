@@ -340,7 +340,7 @@
             for (UILabel*lab in _viewArr) {
 
                 if(lab.tag==index){
-                    if([lab.text isEqualToString:@"卖出"]){
+                    if([lab.text isEqualToString:Localize(@"Sell")]){
                         _tagLine.backgroundColor = kSoldOutRed;
                     }else{
                         _tagLine.backgroundColor = tagLineColor;
@@ -401,7 +401,7 @@
     for (UILabel*lab in _viewArr) {
         
         if(lab.tag==index){
-            if([lab.text isEqualToString:@"卖出"]){
+            if([lab.text isEqualToString:Localize(@"Sell")]){
                 lab.textColor = kSoldOutRed;
             }else{
                 lab.textColor = textColorSelect;

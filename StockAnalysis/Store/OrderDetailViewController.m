@@ -46,20 +46,20 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if([self.title isEqualToString:@"未完成"]){
+    if([self.title isEqualToString:Localize(@"Undone")]){
         return 150;
     }
     return 105;
 }
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if([self.title isEqualToString:@"未完成"]){
+    if([self.title isEqualToString:Localize(@"Undone")]){
         UnpayTableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
         if(nil == cell){
             cell = [[[NSBundle mainBundle] loadNibNamed:@"UnpayTableViewCell" owner:self options:nil] objectAtIndex:0];
         }
         
-        cell.stateLabel.text = @"待支付";
+        cell.stateLabel.text = Localize(@"Wait_To_Pay");
         
         return cell;
     }
@@ -68,12 +68,12 @@
         cell = [[[NSBundle mainBundle] loadNibNamed:@"CommonOrderTableViewCell" owner:self options:nil] objectAtIndex:0];
     }
     
-    if([self.title isEqualToString:@"已完成"]){
-        cell.stateLabel.text = @"已完成";
+    if([self.title isEqualToString:Localize(@"Finished")]){
+        cell.stateLabel.text = Localize(@"Finished");
     }else{
-        cell.stateLabel.text = @"超时未支付,已取消";
+        cell.stateLabel.text = Localize(@"Unpay_Error");
         if(kScreenWidth == 320){
-            cell.stateLabel.text = @"已取消";
+            cell.stateLabel.text = Localize(@"Already_Cancel");
         }
         
     }

@@ -28,7 +28,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.title = @"绑定实名银行卡";
+    self.title = Localize(@"Bind_Card");
     self.update1 = nil;
     UITapGestureRecognizer *f = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(test)];
     [self.view addGestureRecognizer:f];
@@ -50,7 +50,7 @@
     
     [self.update1 invalidate];
     self.update1 = nil;
-    [_sendVerifyBtn setTitle:@"发送验证码" forState:UIControlStateNormal];
+    [_sendVerifyBtn setTitle:Localize(@"Send_Verify") forState:UIControlStateNormal];
     [_sendVerifyBtn setEnabled:YES];
 }
 - (void)didReceiveMemoryWarning {
@@ -81,13 +81,13 @@
 }
 -(void)changeBtn1{
     NSString* title = _sendVerifyBtn.titleLabel.text;
-    if([title isEqualToString:@"发送验证码"]){
+    if([title isEqualToString:Localize(@"Send_Verify")]){
         return;
     }
     NSInteger sec = [[title substringToIndex:[title rangeOfString:@"s"].location] intValue];
     sec--;
     if(sec < 0){
-        [_sendVerifyBtn setTitle:@"发送验证码" forState:UIControlStateNormal];
+        [_sendVerifyBtn setTitle:Localize(@"Send_Verify") forState:UIControlStateNormal];
         //        [NSTimer ]
         [_update1 invalidate];
         _update1 = nil;
@@ -104,30 +104,30 @@
     vc.modalPresentationStyle = UIModalPresentationOverFullScreen;
     self.definesPresentationContext = YES;
     [self.navigationController presentViewController:vc animated:YES completion:nil];
-    
+    WeakSelf(weakSelf);
     vc.block = ^(NSString* token) {
         if(token.length>0){
             NSString* url = @"wallet/set_bank_card";
-            NSDictionary* params = @{@"name":self.nameInput.text,
-                                     @"bank":self.bankName.text,
-                                     @"subbank":self.bankDetailNname.text,
-                                     @"card":self.cardNum.text,
-                                     @"phone_captcha":self.verifyInput.text,
+            NSDictionary* params = @{@"name":weakSelf.nameInput.text,
+                                     @"bank":weakSelf.bankName.text,
+                                     @"subbank":weakSelf.bankDetailNname.text,
+                                     @"card":weakSelf.cardNum.text,
+                                     @"phone_captcha":weakSelf.verifyInput.text,
                                      @"asset_token":token
                                      };
             
             [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
                 if(success){
                     if([[data objectForKey:@"ret"] intValue] == 1){
-                        [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"设置成功"];
-                        [self.navigationController popViewControllerAnimated:YES];
+                        [HUDUtil showHudViewTipInSuperView:weakSelf.navigationController.view withMessage:Localize(@"Set_Success")];
+                        [weakSelf.navigationController popViewControllerAnimated:YES];
                     }else{
-                        [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:[data objectForKey:@"msg"]];
+                        [HUDUtil showHudViewTipInSuperView:weakSelf.navigationController.view withMessage:[data objectForKey:@"msg"]];
                     }
                 }
             }];
         }else{
-            [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"资金密码验证错误"];
+            [HUDUtil showHudViewTipInSuperView:weakSelf.navigationController.view withMessage:Localize(@"Money_Pwd_Verify_Tip")];
         }
     };
     
@@ -146,7 +146,7 @@
     if(self.nameInput.text.length==0){
         return NO;
     }
-    if([self.bankName.text isEqualToString:@"请选择"]){
+    if([self.bankName.text isEqualToString:Localize(@"Please_Select")]){
         return NO;
     }
     if(self.bankDetailNname.text.length==0){

@@ -1,0 +1,30 @@
+
+/* Class = "UILabel"; text = "内部转账,无需手续费,快速到账"; ObjectID = "0vI-57-kuZ"; */
+"0vI-57-kuZ.text" = "内部转账,无需手续费,快速到账";
+
+/* Class = "UILabel"; text = "提现额度：每日最高可提现100万，单笔最高可提现100万"; ObjectID = "BuH-Dw-TRI"; */
+"BuH-Dw-TRI.text" = "提现额度：每日最高可提现100万，单笔最高可提现100万";
+
+/* Class = "UILabel"; text = "支持金额：最低提现金额为0.01元"; ObjectID = "F0s-7X-2ca"; */
+"F0s-7X-2ca.text" = "支持金额：最低提现金额为0.01元";
+
+/* Class = "UIButton"; normalTitle = "提现"; ObjectID = "JO7-r2-C85"; */
+"JO7-r2-C85.normalTitle" = "提现";
+
+/* Class = "UILabel"; text = "提现须知："; ObjectID = "Ptz-gq-eAb"; */
+"Ptz-gq-eAb.text" = "提现须知：";
+
+/* Class = "UILabel"; text = "提现手续费：2-10元"; ObjectID = "RQ5-mB-60O"; */
+"RQ5-mB-60O.text" = "提现手续费：2-10元";
+
+/* Class = "UILabel"; text = "期货"; ObjectID = "Tfj-eY-oug"; */
+"Tfj-eY-oug.text" = "期货";
+
+/* Class = "UITextField"; placeholder = "您当前无提现地址"; ObjectID = "gcs-oW-fZg"; */
+"gcs-oW-fZg.placeholder" = "您当前无提现地址";
+
+/* Class = "UILabel"; text = "提现地址或账户"; ObjectID = "iXe-zr-z2B"; */
+"iXe-zr-z2B.text" = "提现地址或账户";
+
+/* Class = "UILabel"; text = "选择"; ObjectID = "yIT-ta-spQ"; */
+"yIT-ta-spQ.text" = "选择";

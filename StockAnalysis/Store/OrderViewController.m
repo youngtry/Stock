@@ -30,18 +30,18 @@
     [self scrollContent];
     
     NSMutableArray* vcs = [NSMutableArray new];
-    NSArray *titles = @[@"未完成",@"已完成",@"已取消"];
+    NSArray *titles = @[Localize(@"Undone"),Localize(@"Finished"),Localize(@"Already_Cancel")];
     {
         OrderDetailViewController *vc1 = [[OrderDetailViewController alloc] initWithNibName:@"OrderDetailViewController" bundle:nil];
-        vc1.title = @"未完成";
+        vc1.title = Localize(@"Undone");
         [vcs addObject:vc1];
         
         OrderDetailViewController *vc2 = [[OrderDetailViewController alloc] initWithNibName:@"OrderDetailViewController" bundle:nil];
-        vc2.title = @"已完成";
+        vc2.title = Localize(@"Finished");
         [vcs addObject:vc2];
         
         OrderDetailViewController *vc3 = [[OrderDetailViewController alloc] initWithNibName:@"OrderDetailViewController" bundle:nil];
-        vc3.title = @"已取消";
+        vc3.title = Localize(@"Already_Cancel");
         [vcs addObject:vc3];
         //
         //        StorePurchaseViewController*vc3 = [StorePurchaseViewController new];

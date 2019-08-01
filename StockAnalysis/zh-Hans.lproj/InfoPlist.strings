@@ -1,0 +1,462 @@
+/* 
+  InfoPlist.strings
+  StockAnalysis
+
+  Created by Macbook on 2019/7/22.
+  Copyright © 2019 try. All rights reserved.
+*/
+CFBundleDisplayName = "Utilityex";
+//tab栏菜单
+"TabTitle_1" = "ZEDA";
+
+"TabTitle_2" = "行情";
+
+"TabTitle_3" = "交易";
+
+"TabTitle_4" = "商城";
+
+"Login_Tip" = "未登录，请先登录";
+
+"Network_Tip" = "当前无网络连接";
+
+"Set_Guesture" = "设置手势密码";
+
+"Input_Origin_Pwd" = "请输入原手势密码";
+
+"Set_New_Guesture" = "请绘制新手势密码";
+
+"Set_New_Guesture_Again" = "请再次绘制新手势密码";
+
+"Verify_Gesture" = "验证手势密码";
+
+"Input_Gesture" = "输入手势密码";
+
+"Right_Now" = "立即";
+
+"Set_Success" = "设置成功";
+
+"Bind_Mail" = "绑定邮箱";
+
+"Bind_Phone" = "绑定手机";
+
+"Input_Error" = "输入不正确,请重新输入";
+
+"Bind_Success" = "绑定成功";
+
+"Send_Verify" = "发送验证码";
+
+"Mail_Addr" = "邮箱地址";
+
+"Phone_Num" = "手机号码";
+
+"Mail_Verify" = "邮箱验证码";
+
+"Input_Mail_Verify" = "请输入邮箱验证码";
+
+"Phone_Verify" = "手机验证码";
+
+"Input_Phone_Verfiy" = "请输入手机验证码";
+
+"Mail_Bind_Tip" = "注意：一经绑定，无法修改，请填写真实有效邮箱";
+
+"Phone_Bind_Tip" = "注意：一经绑定，无法修改，请填写真实有效手机号";
+
+"Pwd_Error" = "密码格式错误";
+
+"Pwd_Error_Tip" = "请输入8-16个字符,不能使用中文、空格,至少含数字/字母/符号2种组合,必须要同时包括大小写字母";
+
+"Registing"  = "注册中……";
+
+"Input_Mail_Addr" = "请输入邮箱地址";
+
+"Send_Invition" = "发送邀请码";
+
+"Input_Verify" = "请输入验证码";
+
+"Input_Dif" = "两次输入不一致，请重新输入";
+
+"Reset" = "重置中……";
+
+"Input_Username" = "请输入用户名";
+
+"Find_Login_Pwd" = "找回登录密码";
+
+"Registe" =  "注册";
+
+"Login" =  "登录";
+
+"Have_Acc" = "已有账户？";
+
+"Input_Phone" = "输入手机号";
+
+"Input_Correct_Phone" = "请输入正确的手机号";
+
+"Logining" = "登录中……";
+
+"Login_Succ" = "登录成功";
+
+"Login_Fail" = "登录失败";
+
+"Input_Correct_Mail" = "请输入正确的邮箱";
+
+"Registe_Acc" = "注册账户";
+
+"NO_Url" = "无地址输入";
+
+"Load_Fail" = "加载失败";
+
+"Close" = "关闭";
+
+ "ZEDA_Act" = "ZEDA 活动";
+
+"Username" = "用户名";
+
+"Login_Tip" = "登录中，请稍后";
+
+"Forword_Trade" = "期货交易";
+
+"Buss_Trade" = "商户交易";
+
+"Searching" = "正在搜索";
+
+"Buy" = "买入";
+
+"Sell" =  "卖出";
+
+"MySelect" = "自选";
+
+"Index" = "指数";
+
+"Hu_Shen" = "沪深";
+
+"Plate" = "板块";
+
+"Gang_Mei" = "港美";
+
+"No_Record" = "暂无记录";
+
+"Share" = "股票";
+
+"New_Price" = "最新价";
+
+"24Rate" = "24H涨跌";
+
+"Deal_Num" = "成交量";
+
+"Inside" = "国内";
+
+"Global" = "全球";
+
+"All" =  "全部";
+
+"Forword" = "期货";
+
+"Charge" = "充值";
+
+"Cash" = "提现";
+
+"Turn_Trade" = "转入交易";
+
+"Turn_Buss" = "转入商户";
+
+"Load_Finish" = "数据全部加载完毕";
+
+"Finished" = "已完成";
+
+"Canceled" = "已撤销";
+
+"Money_Turn" = "资金划转";
+
+"Turn_In" = "转入";
+
+"Turn_Out" = "转出";
+
+"Cash_Record" = "提现记录";
+
+"Cash_Fail_Tip" = "提现失败，请填写正确的提现账号";
+
+"Cash_History" = "历史提现账号";
+
+"Charge_Record" = "充值记录";
+
+"Trade_Acc_Charge" = "交易帐户充值";
+
+"Copy" = "已复制到剪贴板";
+
+"Last_History" = "最近十天充值记录";
+
+"Select" = "选择";
+
+"Turn_In_Num" = "输入转入数量";
+
+"Turn_Out_Num" = "输入转出数量";
+
+"Trade_Acc" = "交易帐户";
+
+"Buss_Acc" = "商户帐户";
+
+"Can_Turn" = "可转";
+
+"Turn_In_Succ" = "转入成功";
+
+"Money_Pwd_Error" = "资金密码错误请重新输入";
+
+"Bind_Mail_Tip" = "您还未绑定邮箱，请先绑定邮箱";
+
+"Bind_Phone_Tip" = "您还未绑定手机号，请先绑定手机号";
+
+"Set_Moeny_Pwd_Tip" = "您还未设置资金密码,请先设置资金密码";
+
+"Freeze" = "冻结";
+
+"Set_Pay" = "首付款设置";
+
+"Binded"  = "已绑定";
+
+"Bind_Card" = "绑定实名银行卡";
+
+"Money_Pwd_Verify_Tip" = "资金密码验证错误";
+
+"Please_Select" = "请选择";
+
+"Set_Wechat_Pay" = "设置微信支付";
+
+"Set_Ali_Pay" = "设置支付宝支付";
+
+"Upload_Tip" = "收款码未上传,请重新上传";
+
+"Take_Photo" =  "拍照";
+
+"Select_Photo" = "从相册选择";
+
+"System_Setting" = "系统设置";
+
+"CNY" = "人民币";
+
+"USD" = "美元";
+
+"Unlock_Time_Tip" = "应用退出多久后需要手势密码解锁";
+
+"Minite" = "分钟";
+
+"Feed_Back" = "问题反馈";
+
+"Feed_List" = "问题列表";
+
+"Feed_Succ" = "反馈成功";
+
+"ID_Verify" = "身份认证";
+
+"Level_1" = "级别1";
+
+"Level_2" = "级别2";
+
+"Level_3" = "级别3";
+
+"Go_Verify" = "去认证";
+
+"Please_Finish_Last" = "请先完成上一层级别";
+
+"Level1_Tip" = "为了您的资金安全，需验证您的身份才可进行其他操作；认证信 息一经验证不能修改，请务必如实填写";
+
+"Right" = "权益";
+
+"China" = "中国";
+
+"Input_ID_Num" = "请输入身份证号码";
+
+"Input_Real_Name" = "请输入真实姓名";
+
+"Up" = "提交";
+
+"National" = "国籍";
+
+"Name" = "姓名";
+
+"ID_Num" = "身份证号码";
+
+"ID_Verify_Succ" = "认证成功";
+
+"ID_Verify_Hold" = "认证中,请稍后";
+
+"No_Set" = "暂不设置";
+
+"Forget_Guesture_Pwd" = "忘记手势密码";
+
+"Set_Fail_Tip" = "设置失败，请重新设置";
+
+"Reset_Succ" = "修改成功";
+
+"Mine" = "我的";
+
+"Exit_Acc" = "是否退出账户";
+
+"Safe_Center" = "安全中心";
+
+"Set_Money_Pwd" = "设置资金密码";
+
+"Please_Input_Pwd" = "请输入密码";
+
+"User_Manager" = "用户管理";
+
+"Add_Acc" = "添加账户";
+
+"Select_Bank" = "点击选择银行";
+
+"Modify_Money_Pwd" = "修改资金密码";
+
+"Input_Old_Pwd" = "请输入旧密码";
+
+"Input_New_Pwd" = "请输入新密码";
+
+"All_Pendings" = "全部挂单";
+
+"History_Record" = "历史记录";
+
+"Deal_Detail" = "成交明细";
+
+"Cancel_Succ" = "撤销成功";
+
+"State" = "状态";
+
+"All_Menu" = "全部 ▼";
+
+"Time" = "时间";
+
+"To" = "至";
+
+"History_Pendings" = "历史挂单";
+
+"ShaiXuan" = "筛选";
+
+"Done_Menu"= "已完成 ▼";
+
+"Cancel_Menu"="已撤销 ▼";
+
+"Select_Date"="选择日期";
+
+"Cancel_Pending_Tip" = "您将撤销改挂单";
+
+"NO_Price"="暂无限价单";
+
+"Entrust"="委托：";
+
+"Normal_Entrust"="普通委托";
+
+"Limit_Sell" = "限价卖出";
+
+"Quick_Sell" = "市价快速卖出";
+
+"Limit_Buy" = "限价买入";
+
+"Quick_Buy" = "市价快速买入";
+
+"Price_Label" = "价格";
+
+"Number_Label" = "数量";
+
+"Price_Number" = "金额";
+
+"Number_Tip" = "数目不可小于0";
+
+"Can_Use" = "可用 ";
+
+"Can_Use_1" = "可用";
+
+"Can_Buy" = "可买 ";
+
+"Rise_Down_Rate"="涨跌幅";
+
+"Point_Num" = "位小数";
+
+"Input_Number" = "请输入数量";
+
+"Pending_Succ"="挂单成功";
+
+"Over_Num"="超出所能购买的最多数目了";
+
+"NO_Imput_Num"="未输入数量";
+
+"Trade" = "交易";
+
+"Pendings" = "挂单";
+
+"History" = "历史";
+
+"Server_Error"="服务器错误，请稍后再试！";
+
+"Store"="商城";
+
+"Distribute_Trade"="发布交易单";
+
+"Undone"="未完成";
+
+"Wait_To_Pay"="待支付";
+
+"Unpay_Error"="超时未支付,已取消";
+
+"Already_Cancel"="已取消";
+
+"Select_Pay_way"="选择付款方式";
+
+"AliPay" = "支付宝支付";
+
+"Band_Pay" = "银行卡支付";
+
+"Wechat_Pay" = "微信支付";
+
+"Store_Trade_Setting"="商城交易设置";
+
+"Greate_Store"="  优选商家";
+
+"All_Money"="所有金额";
+
+"All_Way"="所有方式";
+
+"Select_Money_Label"="万以上";
+
+"Band_Way"="银行转账";
+
+"Ali_Way"="支付宝";
+
+"Wechat_Way"="微信";
+
+"My_Tips"="我的提醒";
+
+"Price_Top_Limit"="价格上限";
+
+"Price_Remind"="价格提醒";
+
+"Price_Delete_Tip"="价格提醒删除成功";
+
+"Price_Update_Succ"="价格更新成功";
+
+"Data_Error"="数据出错";
+
+"Default"="默认";
+
+"Save"="保存";
+
+"Purpose"="指标";
+
+"Open" = "开";
+"High" = "高";
+"Low" = "低";
+"Closing"="收";
+
+"Immediate"="分时";
+"Min"="分";
+"Hour"="小时";
+
+"Day_Line"="日线";
+
+"Week_Line"="周线";
+
+"Kline_Settings"="设置";
+
+"Kline_Switch"="切换";
+//菜单：
+"Menu_Title" = "提示";
+"Menu_Sure" = "确定";
+"Menu_Cancel" = "取消";
+"Menu_Exit" = "退出";

@@ -88,16 +88,17 @@ typedef NS_ENUM(NSInteger, YCoinType) {
 //移动平均数分为MA（简单移动平均数）和EMA（指数移动平均数），其计算公式如下：［C为收盘价，N为周期数］：
 //MA（N）=（C1+C2+……CN）/N
 
-
+@property (nonatomic, copy) NSNumber *MA5;
 //MA（7）=（C1+C2+……CN）/7
 @property (nonatomic, copy) NSNumber *MA7;
-
+@property (nonatomic, copy) NSNumber *MA10;
 //MA（30）=（C1+C2+……CN）/30
 @property (nonatomic, copy) NSNumber *MA30;
 
 @property (nonatomic, copy) NSNumber *MA12;
 
 @property (nonatomic, copy) NSNumber *MA26;
+@property (nonatomic, copy) NSNumber *MA60;
 
 @property (nonatomic, copy) NSNumber *Volume_MA7;
 

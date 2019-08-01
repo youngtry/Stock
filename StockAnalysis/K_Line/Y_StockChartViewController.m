@@ -41,6 +41,11 @@
 
 @property (nonatomic,strong)NSMutableArray* klineArray;
 
+@property(nonatomic,strong)NSString* klineUpdateTimeStr;
+@property(nonatomic,strong)NSMutableArray* klineUpdateData;
+
+@property(nonatomic,strong)NSTimer* update1;
+
 @end
 
 @implementation Y_StockChartViewController
@@ -51,24 +56,45 @@
     [super viewWillAppear:animated];
     [UIApplication sharedApplication].statusBarHidden = YES;
 //    self.tabBarController.tabBar.hidden = YES;
+    self.type = [NSString stringWithFormat:@"15%@",Localize(@"Min")];
+    self.currentIndex = -1;
+    _preciseTime = 0;
+    
+    self.klineArray = [NSMutableArray new];
+    self.klineUpdateTimeStr = @"0";
+    self.klineUpdateData = [NSMutableArray new];
+    
+    [[SocketInterface sharedManager] openWebSocket];
+    [SocketInterface sharedManager].delegate = self;
+    
+    
+//    if(_update1){
+//        [_update1 invalidate];
+//        _update1 = nil;
+//    }
+//
+//    _update1 = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(sendPing) userInfo:nil repeats:YES];
+//    //    [_update1 fire];
+//
+//    [[NSRunLoop mainRunLoop] addTimer:_update1 forMode:NSDefaultRunLoopMode];
     
     
     
     NSDictionary* params = @{@"market":self.title};
     NSString* url  = @"market/info";
 //    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
         if(success){
             if([[data objectForKey:@"ret"] intValue] == 1){
                 [[AppData getInstance] setOriginTime:[[data objectForKey:@"data"] objectForKey:@"created_at"]];
             }else{
                 [[AppData getInstance] setOriginTime:@""];
-                [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"数据出错"];
+                [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:Localize(@"Data_Error")];
             }
             
         }
-        _originTime = [[AppData getInstance] getOriginTime];
-        self.stockChartView.backgroundColor = [UIColor backgroundColor];
+        weakSelf.stockChartView.backgroundColor = [UIColor backgroundColor];
         
     }];
 }
@@ -84,18 +110,19 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.currentIndex = -1;
-    [[SocketInterface sharedManager] openWebSocket];
-    [SocketInterface sharedManager].delegate = self;
     
-    
-    _preciseTime = 0;
-
-    
-    self.klineArray = [NSMutableArray new];
     
 }
-
+-(void)sendPing{
+    NSArray *dicParma = @[];
+    
+    //    NSLog(@"Websocket Connected");
+    
+    NSDictionary *dicAll = @{@"method":@"server.ping",@"params":dicParma,@"id":@(PN_ServerPing)};
+    
+    NSString *strAll = [dicAll JSONString];
+    [[SocketInterface sharedManager] sendRequest:strAll withName:@"server.ping"];
+}
 
 - (NSMutableDictionary<NSString *,Y_KLineGroupModel *> *)modelsDict
 {
@@ -117,67 +144,67 @@
     switch (index) {
         case 0:
         {
-            type = @"分时";
+            type = Localize(@"Immediate");
             precise = 60;
         }
             break;
         case 1:
         {
-            type = @"1分";
+            type = [NSString stringWithFormat:@"1%@",Localize(@"Min")];
             precise = 60;
         }
             break;
         case 2:
         {
-            type = @"3分";
+            type = [NSString stringWithFormat:@"3%@",Localize(@"Min")];
             precise = 180;
         }
             break;
         case 3:
         {
-            type = @"5分";
+            type = [NSString stringWithFormat:@"5%@",Localize(@"Min")];
             precise = 300;
         }
             break;
         case 4:
         {
-            type = @"15分";
+            type = [NSString stringWithFormat:@"15%@",Localize(@"Min")];
             precise = 900;
         }
             break;
         case 5:
         {
-            type = @"30分";
+            type = [NSString stringWithFormat:@"30%@",Localize(@"Min")];
             precise = 1800;
         }
             break;
         case 6:
         {
-            type = @"1小时";
+            type = [NSString stringWithFormat:@"1%@",Localize(@"Hour")];
             precise = 3600;
         }
             break;
         case 7:
         {
-            type = @"2小时";
+            type = [NSString stringWithFormat:@"2%@",Localize(@"Hour")];
             precise = 7200;
         }
             break;
         case 8:
         {
-            type = @"4小时";
+            type = [NSString stringWithFormat:@"4%@",Localize(@"Hour")];
             precise = 14400;
         }
             break;
         case 9:
         {
-            type = @"6小时";
+            type = [NSString stringWithFormat:@"6%@",Localize(@"Hour")];
             precise = 21600;
         }
             break;
         case 10:
         {
-            type = @"12小时";
+            type = [NSString stringWithFormat:@"12%@",Localize(@"Hour")];
             precise = 43200;
         }
             break;
@@ -220,6 +247,23 @@
 
 -(void)sendKlineRequest:(NSInteger)index{
     
+    NSDictionary *dicAll3 = @{@"method":@"state.unsubscribe",@"params":@[],@"id":@(PN_StateUnsubscribe)};
+    
+    NSString *strAll3 = [dicAll3 JSONString];
+    [[SocketInterface sharedManager] sendRequest:strAll3 withName:@"state.unsubscribe"];
+    
+    NSDictionary *dicAll1 = @{@"method":@"kline.unsubscribe",@"params":@[],@"id":@(PN_KlineUnsubscribe)};
+    
+    NSString *strAll1 = [dicAll1 JSONString];
+    [[SocketInterface sharedManager] sendRequest:strAll1 withName:@"kline.unsubscribe"];
+    
+    NSDictionary *dicAll2 = @{@"method":@"deals.unsubscribe",@"params":@[],@"id":@(PN_DealsUnsubscribe)};
+    
+    NSString *strAll2 = [dicAll2 JSONString];
+    [[SocketInterface sharedManager] sendRequest:strAll2 withName:@"deals.unsubscribe"];
+    
+    self.klineUpdateTimeStr = @"0";
+    
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     NSTimeZone* timeZone = [NSTimeZone timeZoneWithName:@"BeiJing"];
     [formatter setTimeZone:timeZone];
@@ -233,7 +277,7 @@
     }
 //    _preciseTime = 6;
     
-    NSDate* expecttime = [NSDate dateWithTimeIntervalSinceNow:-_preciseTime*500];
+    NSDate* expecttime = [NSDate dateWithTimeIntervalSinceNow:-_preciseTime*76*3];
 
     lastdate =  [origindate laterDate:expecttime];
 
@@ -265,7 +309,7 @@
 //    NSArray *dicParma = @[self.title
 //                          ];
     NSArray *dicParma1 = @[self.title,
-                           @(6)
+                           @(_preciseTime)
                            ];
 
     NSDictionary *dicAll1 = @{@"method":@"kline.subscribe",@"params":dicParma1,@"id":@(PN_KlineSubscribe)};
@@ -276,7 +320,16 @@
 }
 
 -(void)getWebData:(id)message withName:(NSString *)name{
-    
+    if(nil == message){
+        //断线了，需要重连
+        [[SocketInterface sharedManager] openWebSocket];
+        [SocketInterface sharedManager].delegate = self;
+        
+        [self sendKlineRequest:0];
+        [self requestSubscribe];
+        
+        return;
+    }
     NSString* str = message;
     NSData* strdata = [str dataUsingEncoding:NSUTF8StringEncoding];
     
@@ -297,12 +350,20 @@
         requestID = [[data objectForKey:@"id"] intValue];
     }
     
-    NSLog(@"name = %@",name);
+//    NSLog(@"name = %@",name);
     
     if(requestID == PN_KlineQuery){
         [HUDUtil hideHudView];
         [self.klineArray removeAllObjects];
+        
+        if([data objectForKey:@"result"] == [NSNull null]){
+            return;
+        }
+        
         NSArray* result = [data objectForKey:@"result"];
+        if(result.count==0){
+            return;
+        }
 //        NSLog(@"收到数据:%ld",result.count);
 //        NSLog(@"data = %@,result = %@",data,result);
 //        NSMutableArray* need = [[NSMutableArray alloc] initWithCapacity:result.count];
@@ -319,7 +380,7 @@
             NSString* low = [NSString stringWithFormat:@"%.5f",[result[i][4] floatValue]];
             NSString* vol = result[i][5];
             //        NSLog(@"open = %@",open);
-            NSArray* info = [[NSArray alloc] initWithObjects:date,open,close,high,low,vol, nil];
+            NSArray* info = [[NSArray alloc] initWithObjects:date,open,high,low,close,vol, nil];
             [self.klineArray  setObject:info atIndexedSubscript:i];
         }
         
@@ -348,7 +409,7 @@
             [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
             NSString *dateString       = [formatter stringFromDate: date];
             [info[1] floatValue];
-            NSString* stockinfostr = [NSString stringWithFormat:@"%@ 开 %.4f 高 %.4f 低 %.4f 收 %.4f",dateString,[info[1] floatValue],[info[3] floatValue],[info[4] floatValue],[info[2] floatValue]];
+            NSString* stockinfostr = [NSString stringWithFormat:@"%@ %@ %.4f %@ %.4f %@ %.4f %@ %.4f",dateString,Localize(@"Open"),[info[1] floatValue],Localize(@"Hign"),[info[3] floatValue],Localize(@"Low"),[info[4] floatValue],Localize(@"Closing"),[info[2] floatValue]];
 //            self.stockInfoLabel.text = stockinfostr;
             
             NSString* date1 = info[0];
@@ -362,16 +423,48 @@
             NSString* low = [NSString stringWithFormat:@"%.5f",[info[4] floatValue]];
             NSString* vol = info[5];
             //        NSLog(@"open = %@",open);
-            NSArray* info1 = [[NSArray alloc] initWithObjects:date1,open,close,high,low,vol, nil];
-            [self.klineArray  addObject:info1];
+//            NSArray* info1 = [[NSArray alloc] initWithObjects:date1,open,high,low,close,vol, nil];
             
-            Y_KLineGroupModel *groupModel = [Y_KLineGroupModel objectWithArray:self.klineArray];
-            self.groupModel = groupModel;
-            [self.modelsDict setObject:groupModel forKey:self.type];
-            //        NSLog(@"groupModel = %@",groupModel);
-            [self.stockChartView reloadData];
+            if([self.klineUpdateTimeStr isEqualToString:@"0"]){
+                //数据第一次来
+                self.klineUpdateTimeStr = date1;
+            }else{
+                if(![self.klineUpdateTimeStr isEqualToString:date1]){
+                    NSArray* updateArray = [NSArray arrayWithArray:self.klineUpdateData];
+                    [self.klineArray  addObject:updateArray];
+                    if(self.klineArray.count>7){
+                        Y_KLineGroupModel *groupModel = [Y_KLineGroupModel objectWithArray:self.klineArray];
+                        self.groupModel = groupModel;
+                        [self.modelsDict setObject:groupModel forKey:self.type];
+                        //        NSLog(@"groupModel = %@",groupModel);
+                        [self.stockChartView reloadData];
+                        
+                    }
+                    
+                    self.klineUpdateTimeStr = date1;
+                }
+            }
+            
+            [_klineUpdateData removeAllObjects];
+            NSArray* info1 = [[NSArray alloc] initWithObjects:date1,open,high,low,close,vol, nil];
+            [_klineUpdateData addObjectsFromArray:info1];
+        
+//            [self.klineArray  addObject:info1];
+            
+//            if(self.klineArray.count>7){
+//                Y_KLineGroupModel *groupModel = [Y_KLineGroupModel objectWithArray:self.klineArray];
+//                self.groupModel = groupModel;
+//                [self.modelsDict setObject:groupModel forKey:self.type];
+//                //        NSLog(@"groupModel = %@",groupModel);
+//                [self.stockChartView reloadData];
+//            }
+            
+           
             
         }
+    }else if ([name isEqualToString:@"server.ping"]){
+        NSString* result = [data objectForKey:@"result"];
+        //        NSLog(@"ping result:%@",result);
     }
 }
 
@@ -397,14 +490,14 @@
         _stockChartView = [Y_StockChartView new];
 
         _stockChartView.itemModels = @[
-                                       [Y_StockChartViewItemModel itemModelWithTitle:@"15分" type:Y_StockChartcenterViewTypeMenu],
+                                       [Y_StockChartViewItemModel itemModelWithTitle:[NSString stringWithFormat:@"15%@",Localize(@"Min")] type:Y_StockChartcenterViewTypeMenu],
                                        [Y_StockChartViewItemModel itemModelWithTitle:@"MA" type:Y_StockChartcenterViewTypeMenu],
                                        [Y_StockChartViewItemModel itemModelWithTitle:@"MACD" type:Y_StockChartcenterViewTypeMenu],
-                                       [Y_StockChartViewItemModel itemModelWithTitle:@"设置" type:Y_StockChartcenterViewTypeMenu],
+                                       [Y_StockChartViewItemModel itemModelWithTitle:Localize(@"Kline_Settings") type:Y_StockChartcenterViewTypeMenu],
                                        [Y_StockChartViewItemModel itemModelWithTitle:@"" type:Y_StockChartcenterViewTypeMenu],
                                        [Y_StockChartViewItemModel itemModelWithTitle:@"" type:Y_StockChartcenterViewTypeMenu],
                                        [Y_StockChartViewItemModel itemModelWithTitle:@"" type:Y_StockChartcenterViewTypeMenu],
-                                       [Y_StockChartViewItemModel itemModelWithTitle:@"切换" type:Y_StockChartcenterViewTypeMenu],
+                                       [Y_StockChartViewItemModel itemModelWithTitle:Localize(@"Kline_Switch") type:Y_StockChartcenterViewTypeMenu],
 
                                        ];
         _stockChartView.backgroundColor = [UIColor orangeColor];
@@ -429,6 +522,7 @@
     AppDelegate *appdelegate = [UIApplication sharedApplication].delegate;
     appdelegate.isEable = NO;
     [self dismissViewControllerAnimated:YES completion:nil];
+//    [self.navigationController popViewControllerAnimated:YES];
 }
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {

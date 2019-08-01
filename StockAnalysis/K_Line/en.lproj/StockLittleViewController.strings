@@ -1,0 +1,222 @@
+
+/* Class = "UIButton"; normalTitle = "MA"; ObjectID = "0Km-MW-cwU"; */
+"0Km-MW-cwU.normalTitle" = "MA";
+
+/* Class = "UIButton"; normalTitle = "SAR"; ObjectID = "0no-81-GuF"; */
+"0no-81-GuF.normalTitle" = "SAR";
+
+/* Class = "UILabel"; text = "000.0000"; ObjectID = "2RF-7r-R00"; */
+"2RF-7r-R00.text" = "000.0000";
+
+/* Class = "UIButton"; normalTitle = "KDJ"; ObjectID = "3pT-Et-SdF"; */
+"3pT-Et-SdF.normalTitle" = "KDJ";
+
+/* Class = "UILabel"; text = "涨跌幅 +0.00% 振幅 0.00%"; ObjectID = "3vy-nF-mzP"; */
+"3vy-nF-mzP.text" = "涨跌幅 +0.00% 振幅 0.00%";
+
+/* Class = "UIButton"; normalTitle = "OBV"; ObjectID = "4t7-4E-GMO"; */
+"4t7-4E-GMO.normalTitle" = "OBV";
+
+/* Class = "UIButton"; normalTitle = "分时"; ObjectID = "5JV-ee-x9E"; */
+"5JV-ee-x9E.normalTitle" = "分时";
+
+/* Class = "UILabel"; text = "+00.0000"; ObjectID = "5NL-ds-0MI"; */
+"5NL-ds-0MI.text" = "+00.0000";
+
+/* Class = "UIButton"; normalTitle = "CCI"; ObjectID = "5oA-h2-t7l"; */
+"5oA-h2-t7l.normalTitle" = "CCI";
+
+/* Class = "UIButton"; normalTitle = "4小时"; ObjectID = "7BS-lP-Aat"; */
+"7BS-lP-Aat.normalTitle" = "4小时";
+
+/* Class = "UIButton"; normalTitle = "1周"; ObjectID = "7Eu-do-zg1"; */
+"7Eu-do-zg1.normalTitle" = "1周";
+
+/* Class = "UIButton"; normalTitle = "BOLL"; ObjectID = "7tt-8J-fkG"; */
+"7tt-8J-fkG.normalTitle" = "BOLL";
+
+/* Class = "UIButton"; normalTitle = "15分"; ObjectID = "8Ub-3w-BCx"; */
+"8Ub-3w-BCx.normalTitle" = "15分";
+
+/* Class = "UILabel"; text = "卖出量"; ObjectID = "8W7-HO-6r9"; */
+"8W7-HO-6r9.text" = "卖出量";
+
+/* Class = "UIButton"; normalTitle = "默认"; ObjectID = "8qH-HM-tln"; */
+"8qH-HM-tln.normalTitle" = "默认";
+
+/* Class = "UILabel"; text = "2018-5-16 00:00 开 000.0000 高 000.0000 低 000.0000 收 000.0000"; ObjectID = "8z5-SJ-crB"; */
+"8z5-SJ-crB.text" = "2018-5-16 00:00 开 000.0000 高 000.0000 低 000.0000 收 000.0000";
+
+/* Class = "UIButton"; normalTitle = "DMI"; ObjectID = "9EV-I1-P7L"; */
+"9EV-I1-P7L.normalTitle" = "DMI";
+
+/* Class = "UIButton"; normalTitle = "VR"; ObjectID = "9aB-bN-Ecm"; */
+"9aB-bN-Ecm.normalTitle" = "VR";
+
+/* Class = "UIButton"; normalTitle = "2小时"; ObjectID = "9tf-5Z-Bfk"; */
+"9tf-5Z-Bfk.normalTitle" = "2小时";
+
+/* Class = "UIButton"; normalTitle = "RSI"; ObjectID = "A6A-Nf-rvy"; */
+"A6A-Nf-rvy.normalTitle" = "RSI";
+
+/* Class = "UIButton"; normalTitle = "EMV"; ObjectID = "As8-Nz-JiJ"; */
+"As8-Nz-JiJ.normalTitle" = "EMV";
+
+/* Class = "UIButton"; normalTitle = "EMA"; ObjectID = "CXi-8R-vST"; */
+"CXi-8R-vST.normalTitle" = "EMA";
+
+/* Class = "UIButton"; normalTitle = "设置"; ObjectID = "DYU-uk-2sY"; */
+"DYU-uk-2sY.normalTitle" = "设置";
+
+/* Class = "UILabel"; text = "-0.00%"; ObjectID = "EQd-ng-r06"; */
+"EQd-ng-r06.text" = "-0.00%";
+
+/* Class = "UILabel"; text = "000.0000"; ObjectID = "EhO-XO-2Wf"; */
+"EhO-XO-2Wf.text" = "000.0000";
+
+/* Class = "UILabel"; text = "0"; ObjectID = "JXc-2O-Kpm"; */
+"JXc-2O-Kpm.text" = "0";
+
+/* Class = "UIButton"; normalTitle = "6小时"; ObjectID = "K36-3g-n16"; */
+"K36-3g-n16.normalTitle" = "6小时";
+
+/* Class = "UIButton"; normalTitle = "1天"; ObjectID = "Kci-5g-4d2"; */
+"Kci-5g-4d2.normalTitle" = "1天";
+
+/* Class = "UILabel"; text = "MA"; ObjectID = "LFT-YJ-H1g"; */
+"LFT-YJ-H1g.text" = "MA";
+
+/* Class = "UIButton"; normalTitle = "StochRSI"; ObjectID = "MJh-nJ-XGT"; */
+"MJh-nJ-XGT.normalTitle" = "StochRSI";
+
+/* Class = "UIButton"; normalTitle = "BRAR"; ObjectID = "Ngi-RQ-6kz"; */
+"Ngi-RQ-6kz.normalTitle" = "BRAR";
+
+/* Class = "UIButton"; normalTitle = "12"; ObjectID = "P4v-3a-jrv"; */
+"P4v-3a-jrv.normalTitle" = "12";
+
+/* Class = "UIButton"; normalTitle = "买入"; ObjectID = "Str-cx-Hsc"; */
+"Str-cx-Hsc.normalTitle" = "买入";
+
+/* Class = "UILabel"; text = "000.0000"; ObjectID = "VCh-eX-Pzb"; */
+"VCh-eX-Pzb.text" = "000.0000";
+
+/* Class = "UILabel"; text = "¥0000.00"; ObjectID = "Vvx-Sx-F0a"; */
+"Vvx-Sx-F0a.text" = "¥0000.00";
+
+/* Class = "UILabel"; text = "卖出价"; ObjectID = "Vw1-IL-bcf"; */
+"Vw1-IL-bcf.text" = "卖出价";
+
+/* Class = "UIButton"; normalTitle = "1分"; ObjectID = "WLP-CU-8Aq"; */
+"WLP-CU-8Aq.normalTitle" = "1分";
+
+/* Class = "UILabel"; text = "买入价"; ObjectID = "WZb-5v-ubO"; */
+"WZb-5v-ubO.text" = "买入价";
+
+/* Class = "UIButton"; normalTitle = "PSY"; ObjectID = "XGJ-n9-rpu"; */
+"XGJ-n9-rpu.normalTitle" = "PSY";
+
+/* Class = "UILabel"; text = "24h最高价"; ObjectID = "XgE-Sj-RnP"; */
+"XgE-Sj-RnP.text" = "24h最高价";
+
+/* Class = "UIButton"; normalTitle = "3分"; ObjectID = "XkO-js-sDQ"; */
+"XkO-js-sDQ.normalTitle" = "3分";
+
+/* Class = "UILabel"; text = "24h成交量"; ObjectID = "XwB-6U-hWk"; */
+"XwB-6U-hWk.text" = "24h成交量";
+
+/* Class = "UIButton"; normalTitle = "15分"; ObjectID = "YpB-QC-DfA"; */
+"YpB-QC-DfA.normalTitle" = "15分";
+
+/* Class = "UIButton"; normalTitle = "20"; ObjectID = "alk-Q9-Xii"; */
+"alk-Q9-Xii.normalTitle" = "20";
+
+/* Class = "UIButton"; normalTitle = "SAR"; ObjectID = "b4q-o4-7fF"; */
+"b4q-o4-7fF.normalTitle" = "SAR";
+
+/* Class = "UIButton"; normalTitle = "60"; ObjectID = "b6H-D2-YGj"; */
+"b6H-D2-YGj.normalTitle" = "60";
+
+/* Class = "UIButton"; normalTitle = "TRIX"; ObjectID = "bWJ-Z4-eGb"; */
+"bWJ-Z4-eGb.normalTitle" = "TRIX";
+
+/* Class = "UIButton"; normalTitle = "9"; ObjectID = "buY-XO-bEe"; */
+"buY-XO-bEe.normalTitle" = "9";
+
+/* Class = "UILabel"; text = "买入量"; ObjectID = "dSB-iE-X2a"; */
+"dSB-iE-X2a.text" = "买入量";
+
+/* Class = "UIButton"; normalTitle = "1小时"; ObjectID = "dc9-hk-wfU"; */
+"dc9-hk-wfU.normalTitle" = "1小时";
+
+/* Class = "UIButton"; normalTitle = "关闭"; ObjectID = "fBw-lK-DUX"; */
+"fBw-lK-DUX.normalTitle" = "关闭";
+
+/* Class = "UIButton"; normalTitle = "DMA"; ObjectID = "fNf-WO-vgM"; */
+"fNf-WO-vgM.normalTitle" = "DMA";
+
+/* Class = "UIButton"; normalTitle = "5"; ObjectID = "gLP-y5-Nl0"; */
+"gLP-y5-Nl0.normalTitle" = "5";
+
+/* Class = "UIButton"; normalTitle = "WR"; ObjectID = "gSx-0g-Oky"; */
+"gSx-0g-Oky.normalTitle" = "WR";
+
+/* Class = "UIButton"; normalTitle = "ROC"; ObjectID = "gaf-xm-hGK"; */
+"gaf-xm-hGK.normalTitle" = "ROC";
+
+/* Class = "UIButton"; normalTitle = "26"; ObjectID = "hqS-uF-lwx"; */
+"hqS-uF-lwx.normalTitle" = "26";
+
+/* Class = "UIButton"; normalTitle = "保存"; ObjectID = "lOk-cB-8ia"; */
+"lOk-cB-8ia.normalTitle" = "保存";
+
+/* Class = "UILabel"; text = "24h最低价"; ObjectID = "mPS-zN-huH"; */
+"mPS-zN-huH.text" = "24h最低价";
+
+/* Class = "UIButton"; normalTitle = "MTM"; ObjectID = "mYF-99-x78"; */
+"mYF-99-x78.normalTitle" = "MTM";
+
+/* Class = "UIButton"; normalTitle = "12小时"; ObjectID = "mnL-MW-nYD"; */
+"mnL-MW-nYD.normalTitle" = "12小时";
+
+/* Class = "UIButton"; normalTitle = "-"; ObjectID = "n7n-mN-2Y0"; */
+"n7n-mN-2Y0.normalTitle" = "-";
+
+/* Class = "UILabel"; text = "MACD"; ObjectID = "o2d-rN-xa9"; */
+"o2d-rN-xa9.text" = "MACD";
+
+/* Class = "UIButton"; normalTitle = "布局用"; ObjectID = "o83-Gp-Qud"; */
+"o83-Gp-Qud.normalTitle" = "布局用";
+
+/* Class = "UIButton"; normalTitle = "布局用"; ObjectID = "pPf-50-aSX"; */
+"pPf-50-aSX.normalTitle" = "布局用";
+
+/* Class = "UIButton"; normalTitle = "MACD"; ObjectID = "ps9-d3-Yij"; */
+"ps9-d3-Yij.normalTitle" = "MACD";
+
+/* Class = "UIButton"; normalTitle = "MA"; ObjectID = "sSd-Ms-tuX"; */
+"sSd-Ms-tuX.normalTitle" = "MA";
+
+/* Class = "UIButton"; normalTitle = "关闭"; ObjectID = "scF-9I-AI5"; */
+"scF-9I-AI5.normalTitle" = "关闭";
+
+/* Class = "UIButton"; normalTitle = "BOLL"; ObjectID = "shd-xh-SDO"; */
+"shd-xh-SDO.normalTitle" = "BOLL";
+
+/* Class = "UIButton"; normalTitle = "+"; ObjectID = "ucy-yI-Uru"; */
+"ucy-yI-Uru.normalTitle" = "+";
+
+/* Class = "UIButton"; normalTitle = "30分"; ObjectID = "v8B-xu-WeN"; */
+"v8B-xu-WeN.normalTitle" = "30分";
+
+/* Class = "UIButton"; normalTitle = "10"; ObjectID = "vzd-zd-usZ"; */
+"vzd-zd-usZ.normalTitle" = "10";
+
+/* Class = "UIButton"; normalTitle = "指标"; ObjectID = "xOA-1o-Dny"; */
+"xOA-1o-Dny.normalTitle" = "指标";
+
+/* Class = "UIButton"; normalTitle = "5分"; ObjectID = "xmB-hq-p7c"; */
+"xmB-hq-p7c.normalTitle" = "5分";
+
+/* Class = "UIButton"; normalTitle = "卖出"; ObjectID = "yom-UQ-wqB"; */
+"yom-UQ-wqB.normalTitle" = "卖出";

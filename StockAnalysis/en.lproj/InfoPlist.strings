@@ -1,0 +1,22 @@
+/* 
+  InfoPlist.strings
+  StockAnalysis
+
+  Created by Macbook on 2019/7/22.
+  Copyright © 2019 try. All rights reserved.
+*/
+CFBundleDisplayName = "Utilityex";
+//tab栏菜单
+"TabTitle_1" = "ZEDA";
+
+"TabTitle_2" = "行情";
+
+"TabTitle_3" = "交易";
+
+"TabTitle_4" = "商城";
+
+//菜单：
+"Menu_Title" = "提示";
+"Menu_Sure" = "确定";
+"Menu_Cancel" = "取消";
+

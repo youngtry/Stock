@@ -30,11 +30,11 @@
     // Do any additional setup after loading the view from its nib.
     
     
-    
-    UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:@"注册账户" style:UIBarButtonItemStylePlain target:self action:@selector(clickRegist:)];
+    //添加顶栏注册入口
+    UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:Localize(@"Registe_Acc") style:UIBarButtonItemStylePlain target:self action:@selector(clickRegist:)];
     self.navigationItem.rightBarButtonItem = right;
     
-    self.title = @"登录";
+    self.title = Localize(@"Login");
     
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(phoneLoginSuccess) name:@"LoginSuccess" object:nil];
@@ -79,13 +79,15 @@
     [self.view endEditing:YES];
 }
 
+//手机号登录成功
 -(void)phoneLoginSuccess{
     [HUDUtil hideHudView];
     NSDictionary* data = [[HttpRequest getInstance] httpBack];
     NSNumber* number = [data objectForKey:@"ret"];
     if([number intValue] == 1){
-        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"登录成功"];
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:Localize(@"Login_Succ")];
         
+        //设置登录数据
         [GameData setUserAccount:self.usernameInput.text];
         [GameData setUserPassword:self.passwordInput.text];
         [GameData setDistrict:self.distrcLabel.text];
@@ -99,10 +101,11 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:@"ChangeAfterLogin" object:nil];
     }else{
         //登陆失败
-        [HUDUtil showSystemTipView:self title:@"提示" withContent:[data objectForKey:@"msg"]];
+        [HUDUtil showSystemTipView:self title:Localize(@"Menu_Title") withContent:[data objectForKey:@"msg"]];
     }
     
 }
+//邮箱注册
 - (IBAction)clickMailRegist:(id)sender {
     MailLoginViewController *vc = [[MailLoginViewController alloc] initWithNibName:@"MailLoginViewController" bundle:nil];
     [self.navigationController pushViewController:vc animated:YES];
@@ -112,17 +115,18 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+//登录
 - (IBAction)clickLoginIn:(id)sender {
     if(![VerifyRules phoneNumberIsTure:self.usernameInput.text]){
-        [HUDUtil showSystemTipView:self title:@"提示" withContent:@"请输入正确的手机号"];
+        [HUDUtil showSystemTipView:self title:Localize(@"Menu_Title") withContent:Localize(@"Input_Correct_Phone")];
         return;
     }
     if(![VerifyRules passWordIsTure:self.passwordInput.text]){
-        [HUDUtil showSystemTipView:self title:@"密码格式错误" withContent:@"请输入8-16个字符,不能使用中文、空格,至少含数字/字母/符号2种组合,必须要同时包括大小写字母"];
+        [HUDUtil showSystemTipView:self title:Localize(@"Pwd_Error") withContent:Localize(@"Pwd_Error_Tip")];
         return;
     }
     
-    [HUDUtil showHudViewInSuperView:self.view withMessage:@"登录中……"];
+    [HUDUtil showHudViewInSuperView:self.view withMessage:Localize(@"Logining")];
     
     NSString* url = @"account/login/phone";
     NSDictionary *paramDic = @{ @"phone":self.usernameInput.text,
@@ -130,7 +134,7 @@
                                 @"district":self.distrcLabel.text
                                 };
 
-    
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] postWithURL:url parma:paramDic block:^(BOOL success, id data) {
 //        [HUDUtil hideHudView];
         if(success){
@@ -138,39 +142,43 @@
             NSLog(@"登录消息：%@",data);
             NSNumber* number = [data objectForKey:@"ret"];
             if([number intValue] == 1){
-                [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"登录成功"];
+                [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:Localize(@"Login_Succ")];
                 
-                [GameData setUserAccount:self.usernameInput.text];
-                [GameData setUserPassword:self.passwordInput.text];
-                [GameData setDistrict:self.distrcLabel.text];
-                [GameData setAccountList:self.usernameInput.text withPassword:self.passwordInput.text withDistrict:self.distrcLabel.text];
+                [GameData setUserAccount:weakSelf.usernameInput.text];
+                [GameData setUserPassword:weakSelf.passwordInput.text];
+                [GameData setDistrict:weakSelf.distrcLabel.text];
+                [GameData setAccountList:weakSelf.usernameInput.text withPassword:weakSelf.passwordInput.text withDistrict:weakSelf.distrcLabel.text];
+                
+                [GameData setNeedNoticeGuesture:YES];
                 
                 NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
                 [defaultdata setBool:YES forKey:@"IsLogin"];
                 
-                [self.navigationController popViewControllerAnimated:YES];
+                [weakSelf.navigationController popViewControllerAnimated:YES];
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"ChangeAfterLogin" object:nil];
             }else{
                 [HUDUtil hideHudView];
                 //登陆失败
-                [HUDUtil showSystemTipView:self title:@"提示" withContent:[data objectForKey:@"msg"]];
+                [HUDUtil showSystemTipView:weakSelf title:Localize(@"Menu_Title") withContent:[data objectForKey:@"msg"]];
             }
         }else{
-            [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"登录失败"];
+            [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:Localize(@"Login_Fail")];
         }
     }];
 }
-
+//手机号注册
 -(void)clickRegist:(id)sender{
-    DLog(@"clickRegist");
+    NSLog(@"clickRegist");
     
     RegistViewController *vc = [[RegistViewController alloc] initWithNibName:@"RegistViewController" bundle:nil];
     [self.navigationController pushViewController:vc animated:YES];
 }
+//忘记密码
 - (IBAction)clickForgetPassword:(id)sender {
     ResetPasswordViewController *vc = [[ResetPasswordViewController alloc] initWithNibName:@"ResetPasswordViewController" bundle:nil];
     [self.navigationController pushViewController:vc animated:YES];
 }
+//选择区号
 - (IBAction)clickCountryCode:(id)sender {
     
     XWCountryCodeController* countrycodeVC = [[XWCountryCodeController alloc] init];
@@ -185,6 +193,7 @@
 
     [self.navigationController pushViewController:countrycodeVC animated:YES];
 }
+//查看密码
 - (IBAction)clickLookPw:(id)sender {
     
     if (!_lookPwBtn.selected) { // 按下去了就是明文

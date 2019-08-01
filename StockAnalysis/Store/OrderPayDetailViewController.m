@@ -55,7 +55,7 @@
 -(void)tapAction:(id)sender{
     PayStyleView* pay = [[PayStyleView alloc] initWithFrame:CGRectZero withView:self.view];
     pay.block = ^(int index) {
-        NSArray* titles = @[@"银行卡支付",@"微信支付",@"支付宝支付"];
+        NSArray* titles = @[Localize(@"Band_Pay"),Localize(@"Wechat_Pay"),Localize(@"AliPay")];
         NSArray* pics = @[@"card.png",@"weixin.png",@"zhifubao.png"];
         self.payIcon.image = [UIImage imageNamed:pics[index-1]];
         self.payName.text = titles[index-1];

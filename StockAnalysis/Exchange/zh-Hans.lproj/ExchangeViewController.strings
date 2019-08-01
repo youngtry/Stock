@@ -1,0 +1,27 @@
+
+/* Class = "UILabel"; text = "$≈0.00"; ObjectID = "Nq9-uS-XAb"; */
+"Nq9-uS-XAb.text" = "$≈0.00";
+
+/* Class = "UILabel"; text = "充值"; ObjectID = "Vpb-dI-uOi"; */
+"Vpb-dI-uOi.text" = "充值";
+
+/* Class = "UILabel"; text = "资产明细"; ObjectID = "d6i-K5-hFw"; */
+"d6i-K5-hFw.text" = "资产明细";
+
+/* Class = "UILabel"; text = "¥0.00000000"; ObjectID = "joF-NK-Au7"; */
+"joF-NK-Au7.text" = "¥0.00000000";
+
+/* Class = "UILabel"; text = "交易账单"; ObjectID = "qRY-8W-cSx"; */
+"qRY-8W-cSx.text" = "交易账单";
+
+/* Class = "UILabel"; text = "隐藏0余额"; ObjectID = "qxR-Jj-bp2"; */
+"qxR-Jj-bp2.text" = "隐藏0余额";
+
+/* Class = "UILabel"; text = "提现"; ObjectID = "rzZ-XL-XCP"; */
+"rzZ-XL-XCP.text" = "提现";
+
+/* Class = "UILabel"; text = "交易资产估值"; ObjectID = "tgs-qR-mVe"; */
+"tgs-qR-mVe.text" = "交易资产估值";
+
+/* Class = "UILabel"; text = "资金划转"; ObjectID = "wzt-Eq-8H5"; */
+"wzt-Eq-8H5.text" = "资金划转";

@@ -21,6 +21,10 @@
  *  最后一个绘制日期点
  */
 @property (nonatomic, assign) CGPoint lastDrawDatePoint;
+/**
+ *  最后一个绘制日期
+ */
+@property (nonatomic, strong) NSString* lastDrawDate;
 
 @end
 
@@ -33,6 +37,7 @@
     if (self) {
         _context = context;
         _lastDrawDatePoint = CGPointZero;
+        _lastDrawDate = @"";
     }
     return self;
 }
@@ -71,9 +76,11 @@
     NSString *dateStr = [formatter stringFromDate:date];
 //    NSLog(@"**************date = %@",dateStr);
     CGPoint drawDatePoint = CGPointMake(self.kLinePositionModel.LowPoint.x + 1, self.maxY + 1.5);
-    if(CGPointEqualToPoint(self.lastDrawDatePoint, CGPointZero) || drawDatePoint.x - self.lastDrawDatePoint.x > 60 )
+    
+    
+    if(CGPointEqualToPoint(self.lastDrawDatePoint, CGPointZero) || drawDatePoint.x - self.lastDrawDatePoint.x > (kScreenWidth/9))
     {
-        [dateStr drawAtPoint:drawDatePoint withAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:11],NSForegroundColorAttributeName : [UIColor assistTextColor]}];
+        [dateStr drawAtPoint:drawDatePoint withAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:8],NSForegroundColorAttributeName : [UIColor assistTextColor]}];
         self.lastDrawDatePoint = drawDatePoint;
     }
     return strokeColor;

@@ -73,12 +73,12 @@
     NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
     BOOL islogin = [defaultdata boolForKey:@"IsLogin"];
     if(!islogin){
-//        [HUDUtil showSystemTipView:temp title:@"提示" withContent:@"未登录,请先登录"];
+//        [HUDUtil showSystemTipView:temp title:Localize(@"Menu_Title") withContent:Localize(@"Login_Tip")];
         return;
     }
     [self getAllStocks];
     
-    [self.stockNameBtn setTitle:@"全部" forState:UIControlStateNormal];
+    [self.stockNameBtn setTitle:Localize(@"All") forState:UIControlStateNormal];
     
     
 }
@@ -92,7 +92,7 @@
     self.currentPage1 = 0;
     self.isUpdate1 = YES;
     [self getAllStocks];
-    if([self.stockNameBtn.titleLabel.text isEqualToString:@"全部"]){
+    if([self.stockNameBtn.titleLabel.text isEqualToString:Localize(@"All")]){
         [self getAll:1  withName:@""];
     }else{
         [self getAllHistory:1 WithName:self.stockNameBtn.titleLabel.text];
@@ -135,26 +135,27 @@
     
     [self.allStocks removeAllObjects];
 //    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
             [HUDUtil hideHudView];
             if([[data objectForKey:@"ret"] intValue] == 1){
                 if([[data objectForKey:@"data"] objectForKey:@"tabs"]){
                     NSArray* tabs = [[data objectForKey:@"data"] objectForKey:@"tabs"];
-                    [self.allStocks removeAllObjects];
-                    [self.allStocks addObject:@"全部"];
+                    [weakSelf.allStocks removeAllObjects];
+                    [weakSelf.allStocks addObject:Localize(@"All")];
                     
                     for (NSDictionary* tab in tabs) {
                         NSString* asset = [tab objectForKey:@"asset"];
-                        [self.allStocks addObject:asset];
+                        [weakSelf.allStocks addObject:asset];
                     }
                     
-                    [self.stockList reloadData];
+                    [weakSelf.stockList reloadData];
                     
                     
                 }
             }else{
-                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:[data objectForKey:@"msg"]];
             }
         }
     }];
@@ -173,6 +174,7 @@
                              @"state":@"pending"
                              };
 //    [HUDUtil showHudViewInSuperView:self.view withMessage:@"数据加载中……"];
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
         
         if(success){
@@ -180,24 +182,24 @@
             if([[data objectForKey:@"ret"] intValue] == 1){
                 NSArray* trades = [[data objectForKey:@"data"] objectForKey:@"trades"];
                 if(trades.count == 0){
-                    if(self.data.count == 0){
+                    if(weakSelf.data.count == 0){
 //                        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"无数据"];
-                        [self.noPendingLabel setHidden:NO];
+                        [weakSelf.noPendingLabel setHidden:NO];
                     }else{
-                        [self.noPendingLabel setHidden:YES];
-                        self.isUpdate = NO;
-                        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"已经全部加载完毕"];
+                        [weakSelf.noPendingLabel setHidden:YES];
+                        weakSelf.isUpdate = NO;
+                        [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:Localize(@"Load_Finish")];
                     }
                     
                 }else{
-                    [self.noPendingLabel setHidden:YES];
-                    [self.data addObjectsFromArray:trades];
-                    [self.tableView reloadData];
+                    [weakSelf.noPendingLabel setHidden:YES];
+                    [weakSelf.data addObjectsFromArray:trades];
+                    [weakSelf.tableView reloadData];
                 }
                 
                 //                NSLog(@"data = %@",self.data);
             }else{
-                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:[data objectForKey:@"msg"]];
             }
         }
     }];
@@ -208,7 +210,7 @@
         _noPendingLabel = [UILabel new];
         [_noPendingLabel setFrame:CGRectMake(0, kScreenHeight*0.3, kScreenWidth, 90)];
         [_noPendingLabel setFont:[UIFont systemFontOfSize:14]];
-        [_noPendingLabel setText:@"暂无限价单"];
+        [_noPendingLabel setText:Localize(@"NO_Price")];
         [_noPendingLabel setTextColor:[UIColor grayColor]];
         [_noPendingLabel setTextAlignment:NSTextAlignmentCenter];
     }
@@ -256,7 +258,7 @@
         UILabel *lab = [[UILabel alloc] initWithFrame:CGRectMake(16,0,45,14)];
         lab.font = kTextFont(14);
         lab.textColor = kColor(128,128,128);
-        lab.text = @"股票：";
+        lab.text = [NSString stringWithFormat:@"%@: ",Localize(@"Share")];
         [left addSubview:lab];
         lab.centerY = left.centerY;
         
@@ -280,12 +282,12 @@
         UILabel *lab = [[UILabel alloc] initWithFrame:CGRectMake(16,0,45,14)];
         lab.font = kTextFont(14);
         lab.textColor = kColor(128,128,128);
-        lab.text = @"委托：";
+        lab.text = Localize(@"Entrust");
         [right addSubview:lab];
         lab.centerY = right.centerY;
         
         UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(lab.right+2, 0, 90, 20)];
-        [btn setTitle:@"普通委托" forState:UIControlStateNormal];
+        [btn setTitle:Localize(@"Normal_Entrust") forState:UIControlStateNormal];
         [btn setTitleColor:kColor(64,64,64) forState:UIControlStateNormal];
         [btn setImage:[UIImage imageNamed:@"arrow_down"] forState:UIControlStateNormal];
         [btn setTitleEdgeInsets:UIEdgeInsetsMake(0, -btn.imageView.size.width, 0, btn.imageView.size.width)];
@@ -316,11 +318,11 @@
 
 -(void)sendCancelNotice:(BOOL)success withReason:(NSString *)msg{
     if(success){
-        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"撤销成功"];
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:Localize(@"Cancel_Succ")];
         self.currentPage = 0;
         [self.data removeAllObjects];
         self.isUpdate = YES;
-        if([self.stockNameBtn.titleLabel.text isEqualToString:@"全部"]){
+        if([self.stockNameBtn.titleLabel.text isEqualToString:Localize(@"All")]){
             [self.data removeAllObjects];
             [self.tableView reloadData];
             self.isUpdate = YES;
@@ -349,6 +351,7 @@
                              @"market":name
                              };
 //    [HUDUtil showHudViewInSuperView:self.view withMessage:@"数据加载中……"];
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
         
         if(success){
@@ -356,24 +359,24 @@
             if([[data objectForKey:@"ret"] intValue] == 1){
                 NSArray* trades = [[data objectForKey:@"data"] objectForKey:@"trades"];
                 if(trades.count == 0){
-                    if(self.data.count == 0){
+                    if(weakSelf.data.count == 0){
 //                        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"无数据"];
-                        [self.noPendingLabel setHidden:NO];
+                        [weakSelf.noPendingLabel setHidden:NO];
                     }else{
-                        [self.noPendingLabel setHidden:YES];
-                        self.isUpdate1 = NO;
-                        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"已经全部加载完毕"];
+                        [weakSelf.noPendingLabel setHidden:YES];
+                        weakSelf.isUpdate1 = NO;
+                        [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:Localize(@"Load_Finish")];
                     }
                     
                 }else{
-                    [self.noPendingLabel setHidden:YES];
-                    [self.data addObjectsFromArray:trades];
-                    [self.tableView reloadData];
+                    [weakSelf.noPendingLabel setHidden:YES];
+                    [weakSelf.data addObjectsFromArray:trades];
+                    [weakSelf.tableView reloadData];
                 }
                 
                 //                NSLog(@"data = %@",self.data);
             }else{
-                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:[data objectForKey:@"msg"]];
             }
         }
     }];
@@ -385,13 +388,14 @@
                                  @"asset":name
                                  };
     NSString* url = @"market/item";
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
             if([[data objectForKey:@"ret"] intValue] == 1){
                 NSArray* item = [[data objectForKey:@"data"] objectForKey:@"items"];
-                [self.allDetailStocks removeAllObjects];
-                [self.allDetailStocks addObjectsFromArray:item];
-                [self.stockDetailList reloadData];
+                [weakSelf.allDetailStocks removeAllObjects];
+                [weakSelf.allDetailStocks addObjectsFromArray:item];
+                [weakSelf.stockDetailList reloadData];
             }
         }
     }];
@@ -425,15 +429,15 @@
             cell.timeLabel.text = [data objectForKey:@"updated_at"];
             NSString* type = [data objectForKey:@"mode"];
             if([type isEqualToString:@"buy"]){
-                cell.typeLabel.text = @"买入";
+                cell.typeLabel.text = Localize(@"Buy");
                 cell.isBuyIn = YES;
             }else if ([type isEqualToString:@"sell"]){
-                cell.typeLabel.text = @"卖出";
+                cell.typeLabel.text = Localize(@"Sell");
                 cell.isBuyIn = NO;
             }
-            cell.priceLabel.text = [NSString stringWithFormat:@"%.8f",[[data objectForKey:@"price"] floatValue]] ;
-            cell.amountLabel.text = [NSString stringWithFormat:@"%.8f",[[data objectForKey:@"num"] floatValue]] ;
-            cell.realLabel.text = [NSString stringWithFormat:@"%.8f",[[data objectForKey:@"deal_money"] floatValue]] ;
+            cell.priceLabel.text = [NSString stringWithFormat:@"%.8lf",[[data objectForKey:@"price"] doubleValue]] ;
+            cell.amountLabel.text = [NSString stringWithFormat:@"%.8lf",[[data objectForKey:@"num"] doubleValue]] ;
+            cell.realLabel.text = [NSString stringWithFormat:@"%.8lf",[[data objectForKey:@"deal_money"] doubleValue]] ;
             cell.tradeID = [data objectForKey:@"id"];
         }
         
@@ -500,7 +504,7 @@
         [self.stockList setHidden:NO];
         [self.stockDetailList setHidden:NO];
 //        [self.stockNameBtn setTitle:cell.name.text forState:UIControlStateNormal];
-        if([cell.name.text isEqualToString:@"全部"]){
+        if([cell.name.text isEqualToString:Localize(@"All")]){
             [self.data removeAllObjects];
             [self.tableView reloadData];
             [self.stockNameBtn setTitle:cell.name.text forState:UIControlStateNormal];
@@ -537,7 +541,7 @@
         return;
     }
     
-    if([self.stockNameBtn.titleLabel.text isEqualToString:@"全部"]){
+    if([self.stockNameBtn.titleLabel.text isEqualToString:Localize(@"All")]){
         if(!self.isUpdate1){
             
             return;

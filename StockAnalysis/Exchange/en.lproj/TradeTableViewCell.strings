@@ -1,0 +1,24 @@
+
+/* Class = "UILabel"; text = "00:37 05/12"; ObjectID = "1fk-Tj-zAS"; */
+"1fk-Tj-zAS.text" = "00:37 05/12";
+
+/* Class = "UILabel"; text = "期货1"; ObjectID = "9SO-Ym-7QV"; */
+"9SO-Ym-7QV.text" = "期货1";
+
+/* Class = "UILabel"; text = "0.00000000"; ObjectID = "GJF-bw-g7D"; */
+"GJF-bw-g7D.text" = "0.00000000";
+
+/* Class = "UILabel"; text = "已完成"; ObjectID = "JQV-zo-WPo"; */
+"JQV-zo-WPo.text" = "已完成";
+
+/* Class = "UILabel"; text = "数量"; ObjectID = "bLM-Sq-gAh"; */
+"bLM-Sq-gAh.text" = "数量";
+
+/* Class = "UILabel"; text = "状态"; ObjectID = "fse-BQ-r7k"; */
+"fse-BQ-r7k.text" = "状态";
+
+/* Class = "UILabel"; text = "日期"; ObjectID = "r0U-ce-Wis"; */
+"r0U-ce-Wis.text" = "日期";
+
+/* Class = "UILabel"; text = "普通充值"; ObjectID = "zih-vq-gMK"; */
+"zih-vq-gMK.text" = "普通充值";

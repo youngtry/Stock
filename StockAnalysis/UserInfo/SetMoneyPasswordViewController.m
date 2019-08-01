@@ -15,6 +15,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *verifyInput;
 @property (weak, nonatomic) IBOutlet UIButton *lookPwdBtn;
 @property (weak, nonatomic) IBOutlet UIButton *lookPwdAgainBtn;
+@property (weak, nonatomic) IBOutlet UIButton *sendVerifyBtn;
+@property(nonatomic,strong)NSTimer* update1;
 
 @end
 
@@ -22,10 +24,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.update1 = nil;
     // Do any additional setup after loading the view from its nib.
     
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setMoneyPasswordBack) name:@"SetMoneyPasswordBack" object:nil];
-    self.title = @"设置资金密码";
+    self.title = Localize(@"Set_Money_Pwd");
     [_lookPwdBtn setImage:[UIImage imageNamed:@"eye-c.png"] forState:UIControlStateNormal];
     [_lookPwdBtn setImage:[UIImage imageNamed:@"eye-o.png"] forState:UIControlStateSelected];
     
@@ -48,11 +51,17 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.tabBarController.tabBar.hidden = YES;
+    [self.navigationController setNavigationBarHidden:YES];
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     self.tabBarController.tabBar.hidden = NO;
+    [self.navigationController setNavigationBarHidden:NO];
+    [self.update1 invalidate];
+    self.update1 = nil;
+    [_sendVerifyBtn setTitle:Localize(@"Send_Verify") forState:UIControlStateNormal];
+    [_sendVerifyBtn setEnabled:YES];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -79,6 +88,35 @@
 }
 
 - (IBAction)clickVerify:(id)sender {
+    [_sendVerifyBtn setTitle:@"60s" forState:UIControlStateNormal];
+    [_sendVerifyBtn setEnabled:NO];
+    if(_update1){
+        [_update1 invalidate];
+        _update1 = nil;
+    }
+    
+    _update1 = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(changeBtn1) userInfo:nil repeats:YES];
+    //    [_update1 fire];
+    
+    [[NSRunLoop mainRunLoop] addTimer:_update1 forMode:NSDefaultRunLoopMode];
+}
+-(void)changeBtn1{
+    NSString* title = _sendVerifyBtn.titleLabel.text;
+    if([title isEqualToString:Localize(@"Send_Verify")]){
+        return;
+    }
+    NSInteger sec = [[title substringToIndex:[title rangeOfString:@"s"].location] intValue];
+    sec--;
+    if(sec < 0){
+        [_sendVerifyBtn setTitle:Localize(@"Send_Verify") forState:UIControlStateNormal];
+        //        [NSTimer ]
+        [_update1 invalidate];
+        _update1 = nil;
+        [_sendVerifyBtn setEnabled:YES];
+    }else{
+        [_sendVerifyBtn setTitle:[NSString stringWithFormat:@"%lds",(long)sec] forState:UIControlStateNormal];
+    }
+    
 }
 - (IBAction)clickMailVerify:(id)sender {
     if (!_lookPwdAgainBtn.selected) { // 按下去了就是明文
@@ -100,21 +138,21 @@
 }
 - (IBAction)clickResetPassword:(id)sender {
     if(self.moneyPassword.text.length == 0){
-        [HUDUtil showSystemTipView:self title:@"提示" withContent:@"请输入密码"];
+        [HUDUtil showSystemTipView:self title:Localize(@"Menu_Title") withContent:Localize(@"Please_Input_Pwd")];
         return;
     }
 //    if(self.moneyAgainPassword.text.length == 0){
-//        [HUDUtil showSystemTipView:self title:@"提示" withContent:@"请输入邮箱验证码"];
+//        [HUDUtil showSystemTipView:self title:Localize(@"Menu_Title") withContent:@"请输入邮箱验证码"];
 //        return;
 //    }
     
     if(![self.moneyAgainPassword.text isEqualToString:self.moneyPassword.text]){
-        [HUDUtil showSystemTipView:self title:@"提示" withContent:@"两次输入不一致，请重新输入"];
+        [HUDUtil showSystemTipView:self title:Localize(@"Menu_Title") withContent:Localize(@"Input_Dif")];
         return;
     }
     
     if(self.verifyInput.text.length == 0){
-        [HUDUtil showSystemTipView:self title:@"提示" withContent:@"请输入验证码"];
+        [HUDUtil showSystemTipView:self title:Localize(@"Menu_Title") withContent:Localize(@"Input_Verify")];
         return;
     }
     
@@ -127,10 +165,11 @@
     
 //    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"SetMoneyPasswordBack"];
 //    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
             [HUDUtil hideHudView];
-            [self setMoneyPasswordBack:data];
+            [weakSelf setMoneyPasswordBack:data];
         }
     }];
     
@@ -143,7 +182,7 @@
         //设置成功
         [self.navigationController popViewControllerAnimated:YES];
         
-        NSString* msg = @"设置成功";
+        NSString* msg = Localize(@"Set_Success");
         
         [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:msg];
     }else{

@@ -20,7 +20,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.title = @"用户管理";
+    self.title = Localize(@"User_Manager");
     self.accountList.delegate = self;
     self.accountList.dataSource = self;
 }
@@ -108,6 +108,7 @@
         NSString* password = [info objectForKey:@"password"];
         NSString* district = [info objectForKey:@"district"];
 //        NSLog(@"username = %@,password = %@",username,password);
+        WeakSelf(weakSelf);
         if([username containsString:@"@"]){
             //邮箱登录
             NSDictionary *parameters = @{@"email": username,
@@ -124,18 +125,19 @@
                         [GameData setUserAccount:username];
                         [GameData setUserPassword:password];
                         [GameData setAccountList:username withPassword:password withDistrict:district];
+                        [GameData setNeedNoticeGuesture:YES];
                         NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
                         [defaultdata setBool:YES forKey:@"IsLogin"];
                         
-                        [self.navigationController popToRootViewControllerAnimated:YES];
+                        [weakSelf.navigationController popToRootViewControllerAnimated:YES];
                         [[NSNotificationCenter defaultCenter] postNotificationName:@"ChangeAfterLogin" object:nil];
                     }else{
                         NSString* msg = [data objectForKey:@"msg"];
-                        [HUDUtil showSystemTipView:self.navigationController title:@"登录失败" withContent:msg];
+                        [HUDUtil showSystemTipView:weakSelf.navigationController title:Localize(@"Login_Fail") withContent:msg];
                         NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
                         [defaultdata setBool:NO forKey:@"IsLogin"];
                         
-                        [self.navigationController popToRootViewControllerAnimated:YES];
+                        [weakSelf.navigationController popToRootViewControllerAnimated:YES];
                         [[NSNotificationCenter defaultCenter] postNotificationName:@"ChangeAfterLogin" object:nil];
                     }
                 }
@@ -159,18 +161,19 @@
                         [GameData setUserAccount:username];
                         [GameData setUserPassword:password];
                         [GameData setAccountList:username withPassword:password withDistrict:district];
+                        [GameData setNeedNoticeGuesture:YES];
                         NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
                         [defaultdata setBool:YES forKey:@"IsLogin"];
                         
-                        [self.navigationController popToRootViewControllerAnimated:YES];
+                        [weakSelf.navigationController popToRootViewControllerAnimated:YES];
                         [[NSNotificationCenter defaultCenter] postNotificationName:@"ChangeAfterLogin" object:nil];
                     }else{
                         NSString* msg = [data objectForKey:@"msg"];
-                        [HUDUtil showSystemTipView:self.navigationController title:@"登录失败" withContent:msg];
+                        [HUDUtil showSystemTipView:weakSelf.navigationController title:Localize(@"Login_Fail") withContent:msg];
                         NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
                         [defaultdata setBool:NO forKey:@"IsLogin"];
                         
-                        [self.navigationController popToRootViewControllerAnimated:YES];
+                        [weakSelf.navigationController popToRootViewControllerAnimated:YES];
                         [[NSNotificationCenter defaultCenter] postNotificationName:@"ChangeAfterLogin" object:nil];
                     }
                     

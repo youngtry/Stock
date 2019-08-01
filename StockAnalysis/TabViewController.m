@@ -17,6 +17,7 @@
 #import "StoreViewController.h"
 #import "TradeViewController.h"
 #import "SocketInterface.h"
+#import "SetPasswordViewController.h"
 @interface TabViewController ()<UINavigationControllerDelegate>
 
 @property(nonatomic,strong)UINavigationController* nav1;
@@ -35,6 +36,8 @@
         self.viewControllers = [self getControllers];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeAfterLogin) name:@"ChangeAfterLogin" object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setTabIndex) name:@"ChangeTabIndex" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showGuestureSettingView) name:@"UnlockGuesture" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(noNetwork) name:@"NONetwork" object:nil];
 //        self.tabBarController;
         self.tabBar.barStyle = UIBarStyleBlack;
         self.tabBar.barTintColor = [UIColor colorWithRed:38.0/225.0 green:45.0/255.0 blue:53.0/255.0 alpha:1.0];
@@ -61,19 +64,19 @@
     }
 
     [self.nav1 setNavigationBarHidden:YES];
-    self.nav1.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"ZEDA" image:[UIImage imageNamed:@"tabbar_1_n"] selectedImage:[UIImage imageNamed:@"tabbar_1_s"]];
+    self.nav1.tabBarItem = [[UITabBarItem alloc] initWithTitle:Localize(@"TabTitle_1") image:[UIImage imageNamed:@"tabbar_1_n"] selectedImage:[UIImage imageNamed:@"tabbar_1_s"]];
     
     AllInfoViewController *c2 = [[AllInfoViewController alloc] init];
     self.nav2 = [[UINavigationController alloc] initWithRootViewController:c2];
-    self.nav2.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"行情" image:[UIImage imageNamed:@"tabbar_2_n"] selectedImage:[UIImage imageNamed:@"tabbar_2_s"]];
+    self.nav2.tabBarItem = [[UITabBarItem alloc] initWithTitle:Localize(@"TabTitle_2") image:[UIImage imageNamed:@"tabbar_2_n"] selectedImage:[UIImage imageNamed:@"tabbar_2_s"]];
     
     TradeViewController *c3 = [TradeViewController new];
     self.nav3 = [[UINavigationController alloc] initWithRootViewController:c3];
-    self.nav3.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"交易" image:[UIImage imageNamed:@"tabbar_3_n"] selectedImage:[UIImage imageNamed:@"tabbar_3_s"]];
+    self.nav3.tabBarItem = [[UITabBarItem alloc] initWithTitle:Localize(@"TabTitle_3") image:[UIImage imageNamed:@"tabbar_3_n"] selectedImage:[UIImage imageNamed:@"tabbar_3_s"]];
     
     StoreViewController *c4 = [StoreViewController new];
     self.nav4 = [[UINavigationController alloc] initWithRootViewController:c4];
-    self.nav4.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"商城" image:[UIImage imageNamed:@"tabbar_4_n"] selectedImage:[UIImage imageNamed:@"tabbar_4_s"]];
+    self.nav4.tabBarItem = [[UITabBarItem alloc] initWithTitle:Localize(@"TabTitle_4") image:[UIImage imageNamed:@"tabbar_4_n"] selectedImage:[UIImage imageNamed:@"tabbar_4_s"]];
     
 //    self.nav1.navigationBar.backgroundColor = [UIColor colorWithRed:37.0/225.0 green:44.0/255.0 blue:50.0/255.0 alpha:1.0];
     
@@ -117,6 +120,108 @@
         UIBarButtonItem *itemleft = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStylePlain target:self action:@selector(popAction:)];
         viewController.navigationItem.leftBarButtonItem = itemleft;
     }
+}
+
+-(void)noNetwork{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:Localize(@"Menu_Title") message:Localize(@"Network_Tip") preferredStyle:  UIAlertControllerStyleAlert];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:Localize(@"Menu_Sure") style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+        
+    }]];
+    UINavigationController* v = (UINavigationController*)self.selectedViewController;
+    //弹出提示框；
+    [v presentViewController:alert animated:true completion:nil];
+}
+
+-(void)showGuestureSettingView{
+    
+    if(![GameData getNeedNoticeGuesture]){
+        return;
+    }
+    
+    
+    if(![self isNeedShowGuesture]){
+        return;
+    }
+    
+    
+    NSString* url = @"account/has_gesture";
+    NSDictionary* params = @{};
+    WeakSelf(weakSelf);
+    [[HttpRequest getInstance] getWithURL:url parma:params block:^(BOOL success, id data) {
+        if(success){
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                if([[[data objectForKey:@"data"] objectForKey:@"has_gesture"] boolValue]){
+                    //已经设置过手势密码
+                    SetPasswordViewController* vc = [[SetPasswordViewController alloc] initWithNibName:@"SetPasswordViewController" bundle:nil];
+                    [vc setTitle:Localize(@"Input_Gesture")];
+                    UINavigationController* v = (UINavigationController*)weakSelf.selectedViewController;
+                    [v pushViewController:vc animated:YES];
+                }else{
+                    [weakSelf getTempVerify];
+                }
+            }
+        }
+    }];
+}
+
+-(void)getTempVerify{
+    NSString* url = @"account/veritypwd";
+    NSDictionary* params = @{@"password":[GameData getUserPassword]};
+    WeakSelf(weakSelf);
+    [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
+        if(success){
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                NSString* temp = [[data objectForKey:@"data"] objectForKey:@"verity_token"];
+                
+                [[AppData getInstance] setTempVerify:temp];
+                
+                SetPasswordViewController *vc = [[SetPasswordViewController alloc] init];
+                [vc setTitle:Localize(@"Set_Guesture")];
+                UINavigationController* v = (UINavigationController*)weakSelf.selectedViewController;
+                [v pushViewController:vc animated:YES];
+                
+            }else{
+                [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:[data objectForKey:@"msg"]];
+            }
+        }
+    }];
+    
+}
+
+
+
+-(BOOL)isNeedShowGuesture{
+    
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString* lastTimeStr = [userDefaults stringForKey:@"ShowGuestureTime"];
+    
+    if(nil == lastTimeStr){
+        return YES;
+    }
+    
+    NSString* needTime = [GameData getGuestureTime];
+    NSLog(@"needTime = %@",needTime);
+    if([needTime isEqualToString:Localize(@"Right_Now") ]){
+        return YES;
+    }else{
+        NSString* num = [needTime substringToIndex:[needTime rangeOfString:Localize(@"Minite")].location];
+        NSLog(@"num = %@",num);
+        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];// 创建一个时间格式化对象
+        [dateFormatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"]; //设定时间的格式
+        
+        NSDate *tempDate = [dateFormatter dateFromString:lastTimeStr];//将字符串转换为时间对象
+        
+        NSDate* curDate = [NSDate date];
+        NSTimeInterval delta = [curDate timeIntervalSinceDate:tempDate];
+        
+        if(delta < [num intValue]*60){
+            return NO;
+        }
+    }
+    
+    return YES;
 }
 
 

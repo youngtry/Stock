@@ -69,7 +69,22 @@
 /**
  *  ma5的颜色
  */
-+(UIColor *)ma7Color;
++(UIColor *)ma5Color;
+
+/**
+ *  ma10的颜色
+ */
++(UIColor *)ma10Color;
+
+/**
+ *  ma20的颜色
+ */
++(UIColor *)ma20Color;
+
+/**
+ *  ma60的颜色
+ */
++(UIColor *)ma60Color;
 
 /**
  *  ma30颜色

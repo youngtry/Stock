@@ -28,7 +28,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.title = @"发布交易单";
+    self.title = Localize(@"Distribute_Trade");
     [self.view setBackgroundColor:kColor(245, 245, 249)];
     
     [self.view addSubview:self.titleView];
@@ -40,14 +40,14 @@
     [self scrollContent];
     
     NSMutableArray* vcs = [NSMutableArray new];
-    NSArray *titles = @[@"买入",@"卖出"];
+    NSArray *titles = @[Localize(@"Buy"),Localize(@"Sell")];
     {
         TradeDetailViewController *vc1 = [[TradeDetailViewController alloc] initWithNibName:@"TradeDetailViewController" bundle:nil];
-        vc1.title = @"买入";
+        vc1.title = Localize(@"Buy");
         [vcs addObject:vc1];
 
         TradeDetailViewController *vc2 = [[TradeDetailViewController alloc] initWithNibName:@"TradeDetailViewController" bundle:nil];
-        vc2.title = @"卖出";
+        vc2.title = Localize(@"Sell");
         [vcs addObject:vc2];
 //
 //        StorePurchaseViewController*vc3 = [StorePurchaseViewController new];
@@ -99,7 +99,7 @@
 -(UILabel*)titleName{
     if(nil == _titleName){
         _titleName =  [[UILabel alloc] initWithFrame:CGRectMake(16, 0, kScreenWidth* 0.2, 50)];
-        _titleName.text = @"期货1";
+        _titleName.text = [NSString stringWithFormat:@"%@1",Localize(@"Forword")];
         [_titleName setFont:[UIFont systemFontOfSize:22]];
     }
     

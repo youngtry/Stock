@@ -57,6 +57,7 @@
                             @"page_limit":@(10)
                             };
 //    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
         if(success){
             NSLog(@"请求成功");
@@ -64,16 +65,16 @@
             if([[data objectForKey:@"ret"] intValue] == 1){
                 NSArray* list = [[data objectForKey:@"data"] objectForKey:@"feedbacks"];
                 if(list.count == 0){
-                    self.isUpdate = NO;
-                    [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"全部加载完毕"];
+                    weakSelf.isUpdate = NO;
+                    [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:Localize(@"Load_Finish")];
                 }else{
                     [_data addObjectsFromArray:list];
-                    [self.tableView reloadData];
+                    [weakSelf.tableView reloadData];
                 }
                 
             }else{
                 
-                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:[data objectForKey:@"msg"]];
                 
             }
         }
@@ -139,7 +140,7 @@
 //    lab4.text = dic[@"d"];
     if(_data.count>indexPath.row){
         NSDictionary* info = _data[indexPath.row];
-        cell.titleLabel.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"title_id"]] ;
+        cell.titleLabel.text = [NSString stringWithFormat:@"%@-%@",[info objectForKey:@"subtitle"],[info objectForKey:@"title"]] ;
         cell.contentLabel.text = [info objectForKey:@"content"];
         cell.timeLabel.text = [info objectForKey:@"updated_at"];
         cell.stateLabel.text = [info objectForKey:@"state"];

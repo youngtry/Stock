@@ -75,4 +75,8 @@
     return newstring;
     
 }
+
++(NSString*)getLocalString:(NSString*) key{
+    return NSLocalizedStringFromTable(key, @"InfoPlist", nil);
+}
 @end

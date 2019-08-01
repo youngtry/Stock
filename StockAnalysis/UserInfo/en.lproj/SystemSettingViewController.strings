@@ -1,0 +1,15 @@
+
+/* Class = "UILabel"; text = "切换计价货币"; ObjectID = "76z-DF-OeC"; */
+"76z-DF-OeC.text" = "切换计价货币";
+
+/* Class = "UILabel"; text = "人民币"; ObjectID = "I0D-pF-qCB"; */
+"I0D-pF-qCB.text" = "人民币";
+
+/* Class = "UILabel"; text = "汇率概览"; ObjectID = "PaZ-Wt-paI"; */
+"PaZ-Wt-paI.text" = "汇率概览";
+
+/* Class = "UILabel"; text = "费率详情"; ObjectID = "ren-cy-tNT"; */
+"ren-cy-tNT.text" = "费率详情";
+
+/* Class = "UILabel"; text = "关于"; ObjectID = "vHi-F0-PT3"; */
+"vHi-F0-PT3.text" = "关于";

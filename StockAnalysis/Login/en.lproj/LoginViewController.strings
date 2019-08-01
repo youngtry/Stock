@@ -1,0 +1,24 @@
+
+/* Class = "UILabel"; text = "+12345"; ObjectID = "300-G0-GSa"; */
+"300-G0-GSa.text" = "+12345";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "48G-6D-z03"; */
+"48G-6D-z03.normalTitle" = "Button";
+
+/* Class = "UIButton"; normalTitle = "登录"; ObjectID = "7vX-CO-YBv"; */
+"7vX-CO-YBv.normalTitle" = "登录";
+
+/* Class = "UIButton"; normalTitle = "忘记密码"; ObjectID = "Iwy-Li-NvR"; */
+"Iwy-Li-NvR.normalTitle" = "忘记密码";
+
+/* Class = "UITextField"; placeholder = "8~16个字母与数字,至少有一个大写"; ObjectID = "TKs-Z4-E6W"; */
+"TKs-Z4-E6W.placeholder" = "8~16个字母与数字,至少有一个大写";
+
+/* Class = "UIButton"; normalTitle = "使用邮箱登录"; ObjectID = "VKy-fx-ljx"; */
+"VKy-fx-ljx.normalTitle" = "使用邮箱登录";
+
+/* Class = "UITextField"; placeholder = "手机号"; ObjectID = "f7T-iv-6XE"; */
+"f7T-iv-6XE.placeholder" = "手机号";
+
+/* Class = "UIButton"; normalTitle = "密码"; ObjectID = "nvR-1i-5U1"; */
+"nvR-1i-5U1.normalTitle" = "密码";

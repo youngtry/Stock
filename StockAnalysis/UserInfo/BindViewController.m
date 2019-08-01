@@ -38,32 +38,32 @@
     _update1 = nil;
     _update2 = nil;
     
-    if([self.title isEqualToString:@"绑定邮箱"]){
-        _bindName.text = @"邮箱地址";
+    if([self.title isEqualToString:Localize(@"Bind_Mail")]){
+        _bindName.text = Localize(@"Mail_Addr");
         [_bindAddressInput setHidden:YES];
         [_districtbtn setHidden:YES];
         [_mailAddressInput setHidden:NO];
         [self.distrcLabel setHidden:YES];
         [self.arrowImage setHidden:YES];
-        _verify1Name.text = @"邮箱验证码";
-        _verify1Input.placeholder = @"输入邮箱验证码";
-        _verify2name.text = @"短信验证码";
-        _verify2Input.placeholder = @"输入短信验证码";
-        _tipLabel.text = @"注意：一经绑定，无法修改，请填写真实有效邮箱";
-    }else if ([self.title isEqualToString:@"绑定手机"]){
-        _bindName.text = @"手机号码";
+        _verify1Name.text = Localize(@"Mail_Verify");
+        _verify1Input.placeholder = Localize(@"Input_Mail_Verify");
+        _verify2name.text = Localize(@"Phone_Verify");
+        _verify2Input.placeholder = Localize(@"Input_Phone_Verify");
+        _tipLabel.text = Localize(@"Mail_Bind_Tip");
+    }else if ([self.title isEqualToString:Localize(@"Bind_Phone")]){
+        _bindName.text = Localize(@"Phone_Num");
         [_bindAddressInput setHidden:NO];
         [_districtbtn setHidden:NO];
         [_mailAddressInput setHidden:YES];
         [self.distrcLabel setHidden:NO];
         [self.arrowImage setHidden:NO];
-        _verify1Name.text = @"短信验证码";
-        _verify1Input.placeholder = @"输入短信验证码";
-        _verify2name.text = @"邮箱验证码";
-        _verify2Input.placeholder = @"输入邮箱验证码";
+        _verify1Name.text = Localize(@"Phone_Verify");
+        _verify1Input.placeholder = Localize(@"Input_Phone_Verify");
+        _verify2name.text = Localize(@"Mail_Verify");
+        _verify2Input.placeholder = Localize(@"Input_Mail_Verify");
 //        [self returnCountryCode:@"+86"];
         self.distrcLabel.text = @"+86";
-        _tipLabel.text = @"注意：一经绑定，无法修改，请填写真实有效手机号";
+        _tipLabel.text = Localize(@"Phone_Bind_Tip");
     }
     
     UITapGestureRecognizer *f = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(test)];
@@ -80,17 +80,19 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.tabBarController.tabBar.hidden = YES;
+    [self.navigationController setNavigationBarHidden:YES];
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     self.tabBarController.tabBar.hidden = NO;
+    [self.navigationController setNavigationBarHidden:NO];
     [self.update1 invalidate];
     self.update1 = nil;
     [self.update2 invalidate];
     self.update2 = nil;
-    [_verifyBtn1 setTitle:@"发送验证码" forState:UIControlStateNormal];
-    [_verifyBtn2 setTitle:@"发送验证码" forState:UIControlStateNormal];
+    [_verifyBtn1 setTitle:Localize(@"Send_Verify") forState:UIControlStateNormal];
+    [_verifyBtn2 setTitle:Localize(@"Send_Verify") forState:UIControlStateNormal];
     [_verifyBtn1 setEnabled:YES];
     [_verifyBtn2 setEnabled:YES];
 }
@@ -114,28 +116,28 @@
     }
 }
 -(BOOL)chechInput{
-    if([self.title isEqualToString:@"绑定邮箱"]){
+    if([self.title isEqualToString:Localize(@"Bind_Mail")]){
         if(_mailAddressInput.text.length==0){
             
-            [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"输入不正确,请重新输入"];
+            [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:Localize(@"Input_Error")];
             
             return NO;
         }
-    }else if ([self.title isEqualToString:@"绑定手机"]){
+    }else if ([self.title isEqualToString:Localize(@"Bind_Phone")]){
         if(_bindAddressInput.text.length==0){
             
-            [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"输入不正确,请重新输入"];
+            [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:Localize(@"Input_Error")];
             
             return NO;
         }
     }
     
     if(_verify1Input.text.length==0){
-        [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"输入不正确,请重新输入"];
+        [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:Localize(@"Input_Error")];
         return NO;
     }
     if(_verify2Input.text.length==0){
-        [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"输入不正确,请重新输入"];
+        [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:Localize(@"Input_Error")];
         return NO;
     }
     
@@ -143,8 +145,8 @@
     
 }
 - (IBAction)clickComfirm:(id)sender {
-    
-    if([self.title isEqualToString:@"绑定手机"]){
+    WeakSelf(weakSelf);
+    if([self.title isEqualToString:Localize(@"Bind_Phone")]){
         NSString* url = @"account/bind_phone";
         NSDictionary* params = @{@"phone":_bindAddressInput.text,
                                  @"phone_captcha":_verify1Input.text,
@@ -152,18 +154,19 @@
                                  @"district":self.distrcLabel.text
                                  };
 //        [HUDUtil showHudViewInSuperView:self.navigationController.view withMessage:@"请求中…"];
+        
         [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
             if(success){
                 [HUDUtil hideHudView];
                 if([[data objectForKey:@"ret"] intValue] == 1){
-                    [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"绑定成功"];
-                    [self.navigationController popViewControllerAnimated:YES];
+                    [HUDUtil showHudViewTipInSuperView:weakSelf.navigationController.view withMessage:Localize(@"Bind_Success")];
+                    [weakSelf.navigationController popViewControllerAnimated:YES];
                 }else{
-                    [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:[data objectForKey:@"msg"]];
+                    [HUDUtil showHudViewTipInSuperView:weakSelf.navigationController.view withMessage:[data objectForKey:@"msg"]];
                 }
             }
         }];
-    }else if([self.title isEqualToString:@"绑定邮箱"]){
+    }else if([self.title isEqualToString:Localize(@"Bind_Mail")]){
         NSString* url = @"account/bind_email";
         NSDictionary* params = @{@"email":_mailAddressInput.text,
                                  @"phone_captcha":_verify2Input.text,
@@ -174,10 +177,10 @@
             if(success){
                 [HUDUtil hideHudView];
                 if([[data objectForKey:@"ret"] intValue] == 1){
-                    [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"绑定成功"];
-                    [self.navigationController popViewControllerAnimated:YES];
+                    [HUDUtil showHudViewTipInSuperView:weakSelf.navigationController.view withMessage:Localize(@"Bind_Success")];
+                    [weakSelf.navigationController popViewControllerAnimated:YES];
                 }else{
-                    [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:[data objectForKey:@"msg"]];
+                    [HUDUtil showHudViewTipInSuperView:weakSelf.navigationController.view withMessage:[data objectForKey:@"msg"]];
                 }
             }
         }];
@@ -198,9 +201,9 @@
     [self.navigationController pushViewController:countrycodeVC animated:YES];
 }
 - (IBAction)sendVerify1:(id)sender {
-    if([self.title isEqualToString:@"绑定手机"]){
+    if([self.title isEqualToString:Localize(@"Bind_Phone")]){
         
-    }else if([self.title isEqualToString:@"绑定邮箱"]){
+    }else if([self.title isEqualToString:Localize(@"Bind_Mail")]){
         
     }
     [_verifyBtn1 setTitle:@"60s" forState:UIControlStateNormal];
@@ -218,13 +221,13 @@
 
 -(void)changeBtn1{
     NSString* title = _verifyBtn1.titleLabel.text;
-    if([title isEqualToString:@"发送验证码"]){
+    if([title isEqualToString:Localize(@"Send_Verify")]){
         return;
     }
     NSInteger sec = [[title substringToIndex:[title rangeOfString:@"s"].location] intValue];
     sec--;
     if(sec < 0){
-        [_verifyBtn1 setTitle:@"发送验证码" forState:UIControlStateNormal];
+        [_verifyBtn1 setTitle:Localize(@"Send_Verify") forState:UIControlStateNormal];
 //        [NSTimer ]
         [_update1 invalidate];
         _update1 = nil;
@@ -236,9 +239,9 @@
 }
 
 - (IBAction)sendVerify2:(id)sender {
-    if([self.title isEqualToString:@"绑定手机"]){
+    if([self.title isEqualToString:Localize(@"Bind_Phone")]){
         
-    }else if([self.title isEqualToString:@"绑定邮箱"]){
+    }else if([self.title isEqualToString:Localize(@"Bind_Mail")]){
         
     }
     [_verifyBtn2 setTitle:@"60s" forState:UIControlStateNormal];
@@ -256,13 +259,13 @@
 
 -(void)changeBtn2{
     NSString* title = _verifyBtn2.titleLabel.text;
-    if([title isEqualToString:@"发送验证码"]){
+    if([title isEqualToString:Localize(@"Send_Verify")]){
         return;
     }
     NSInteger sec = [[title substringToIndex:[title rangeOfString:@"s"].location] intValue];
     sec--;
     if(sec < 0){
-        [_verifyBtn2 setTitle:@"发送验证码" forState:UIControlStateNormal];
+        [_verifyBtn2 setTitle:Localize(@"Send_Verify") forState:UIControlStateNormal];
         //        [NSTimer ]
         [_update2 invalidate];
         _update2 = nil;

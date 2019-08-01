@@ -1,0 +1,21 @@
+
+/* Class = "UILabel"; text = "涨幅榜"; ObjectID = "2rQ-aP-t1e"; */
+"2rQ-aP-t1e.text" = "涨幅榜";
+
+/* Class = "UILabel"; text = "购买股票"; ObjectID = "Lfk-PX-uwh"; */
+"Lfk-PX-uwh.text" = "购买股票";
+
+/* Class = "UIButton"; normalTitle = "登录/注册"; ObjectID = "af7-eJ-xTE"; */
+"af7-eJ-xTE.normalTitle" = "登录/注册";
+
+/* Class = "UILabel"; text = "手把手实操攻略"; ObjectID = "iT8-5R-J1T"; */
+"iT8-5R-J1T.text" = "手把手实操攻略";
+
+/* Class = "UILabel"; text = "新手引导"; ObjectID = "l8h-MY-3zr"; */
+"l8h-MY-3zr.text" = "新手引导";
+
+/* Class = "UILabel"; text = "ZEDA"; ObjectID = "tTy-eg-KfI"; */
+"tTy-eg-KfI.text" = "ZEDA";
+
+/* Class = "UILabel"; text = "从0到1玩转ZEDA"; ObjectID = "vbq-L0-5hR"; */
+"vbq-L0-5hR.text" = "从0到1玩转ZEDA";

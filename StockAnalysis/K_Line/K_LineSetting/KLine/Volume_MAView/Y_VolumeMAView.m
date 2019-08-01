@@ -28,9 +28,10 @@
         _VolumeMA30Label = [self private_createLabel];
         _volumeDescLabel = [self private_createLabel];
 
-
+        [_VolumeMA7Label setHidden:YES];
+        [_VolumeMA30Label setHidden:YES];
         
-        _VolumeMA7Label.textColor = [UIColor ma7Color];
+        _VolumeMA7Label.textColor = [UIColor ma5Color];
         _VolumeMA30Label.textColor = [UIColor ma30Color];
         
         [_volumeDescLabel mas_makeConstraints:^(MASConstraintMaker *make) {

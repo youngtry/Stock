@@ -23,7 +23,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"提现记录";
+    self.title = Localize(@"Cash_Record");
     self.recordList.delegate = self;
     self.recordList.dataSource = self;
     
@@ -62,17 +62,18 @@
     NSString* url  = @"wallet/externalAddress";
     NSDictionary* parameters = @{};
 //    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
             if([[data objectForKey:@"ret"] intValue] == 1){
                 NSMutableArray* info = [[data objectForKey:@"data"] objectForKey:@"address"];
                 if(info && info.count>0){
-                    self.addressInfo = info;
-                    [self.recordList reloadData];
+                    weakSelf.addressInfo = info;
+                    [weakSelf.recordList reloadData];
                 }
             }else{
                 
-                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:[data objectForKey:@"msg"]];
                 
             }
         }
@@ -90,7 +91,7 @@
     if([self.assetAddress.text length]>0){
         [self.navigationController popToRootViewControllerAnimated:YES];
     }else{
-        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"提现失败，请填写正确的提现账号"];
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:Localize(@"Cash_Fail_Tip")];
     }
     
 }
@@ -126,7 +127,7 @@
     
     [headerView addSubview:label];
     
-    label.text = @"历史提现账号";
+    label.text = Localize(@"Cash_History");
     
     return headerView;
 }

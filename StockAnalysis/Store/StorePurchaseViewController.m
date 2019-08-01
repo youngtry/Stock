@@ -27,7 +27,7 @@
     
     [self addHeader];
     
-    if([self.title isEqualToString:@"卖出"]){
+    if([self.title isEqualToString:Localize(@"Sell")]){
         [self.view addSubview:self.moneyInfoView];
     }
 }
@@ -44,14 +44,14 @@
         [_moneyInfoView setBackgroundColor:kColor(245, 245, 249)];
         
         UILabel* lab1 = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, kScreenWidth*0.3, 44)];
-        lab1.text = @"可用:0.00";
+        lab1.text = [NSString stringWithFormat:@"%@:0.00",Localize(@"Can_Use_1")];
         [lab1 setFont:[UIFont systemFontOfSize:13]];
         [lab1 setAlpha:0.45];
         [lab1 setTextAlignment:NSTextAlignmentLeft];
         [_moneyInfoView addSubview:lab1];
         
         UILabel* lab2 = [[UILabel alloc] initWithFrame:CGRectMake(kScreenWidth*0.45, 0, kScreenWidth*0.3, 44)];
-        lab2.text = @"冻结:0.00";
+        lab2.text = [NSString stringWithFormat:@"%@:0.00",Localize(@"Freeze")];
         [lab2 setFont:[UIFont systemFontOfSize:13]];
         [lab2 setAlpha:0.45];
         [lab2 setTextAlignment:NSTextAlignmentLeft];
@@ -73,7 +73,7 @@
     CGFloat wid = ((kScreenWidth-16*2)-90*3)/2 + 90;
     {
         UIButton *btn1 = [[UIButton alloc] initWithFrame:CGRectMake(16, 0, 90, 22)];
-        [btn1 setTitle:@"  优选商家" forState:UIControlStateNormal];
+        [btn1 setTitle:Localize(@"Greate_Store") forState:UIControlStateNormal];
         [btn1 setTitleColor:kColor(0,0,0) forState:UIControlStateNormal];
         [btn1 setImage:[UIImage imageNamed:@"unselectquan"] forState:UIControlStateNormal];
         [btn1 setImage:[UIImage imageNamed:@"normal"] forState:UIControlStateSelected];
@@ -92,7 +92,7 @@
     }
     {
         UIButton *btn1 = [[UIButton alloc] initWithFrame:CGRectMake(16+wid, 0, 90, 20)];
-        [btn1 setTitle:@"所有金额" forState:UIControlStateNormal];
+        [btn1 setTitle:Localize(@"All_Money") forState:UIControlStateNormal];
         [btn1.titleLabel setTextAlignment:NSTextAlignmentLeft];
         [btn1 setTitleColor:kColor(64,64,64) forState:UIControlStateNormal];
         [btn1 setImage:[UIImage imageNamed:@"arrow_down"] forState:UIControlStateNormal];
@@ -111,7 +111,7 @@
     }
     {
         UIButton *btn1 = [[UIButton alloc] initWithFrame:CGRectMake(16+wid*2, 0, 90, 20)];
-        [btn1 setTitle:@"所有方式" forState:UIControlStateNormal];
+        [btn1 setTitle:Localize(@"All_Way") forState:UIControlStateNormal];
         [btn1.titleLabel setTextAlignment:NSTextAlignmentLeft];
         [btn1 setTitleColor:kColor(64,64,64) forState:UIControlStateNormal];
         [btn1 setImage:[UIImage imageNamed:@"arrow_down"] forState:UIControlStateNormal];
@@ -142,7 +142,7 @@
 -(UITableView*)tableView{
     if(!_tableView){
         CGFloat y = 0;
-        if([self.title isEqualToString:@"卖出"]){
+        if([self.title isEqualToString:Localize(@"Sell")]){
             y = 44;
         }
         _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, y, kScreenWidth, kScreenHeight-kNaviHeight-kTabBarHeight-kScrollTitleHeight-58) style:UITableViewStylePlain];
@@ -164,10 +164,10 @@
         cell = [[[NSBundle mainBundle] loadNibNamed:@"StoreCell" owner:self options:nil] objectAtIndex:0];
     }
     
-    if([self.title isEqualToString:@"买入"]){
+    if([self.title isEqualToString:Localize(@"Buy")]){
         [cell.purchaseBtn setBackgroundColor:kColor(75, 185, 112)];
         [cell.purchaseBtn setTitle:self.title forState:UIControlStateNormal];
-    }else if([self.title isEqualToString:@"卖出"]){
+    }else if([self.title isEqualToString:Localize(@"Sell")]){
         [cell.purchaseBtn setBackgroundColor:kColor(236, 102, 95)];
         [cell.purchaseBtn setTitle:self.title forState:UIControlStateNormal];
     }
@@ -188,7 +188,7 @@
 }
 
 -(void)clickMoney:(id)sender{
-    NSMutableArray *data = @[@"所有金额",@"5万以上",@"10万以上",@"20万以上"].mutableCopy;
+    NSMutableArray *data = @[Localize(@"All_Money"),[NSString stringWithFormat:@"5%@",Localize(@"Select_Money_Label")],[NSString stringWithFormat:@"10%@",Localize(@"Select_Money_Label")],[NSString stringWithFormat:@"20%@",Localize(@"Select_Money_Label")]].mutableCopy;
     
     UIButton* btn = (UIButton*)[self.tableView.tableHeaderView subviewWithTag:1001];
     NSString* title = btn.titleLabel.text;
@@ -213,7 +213,7 @@
 }
 
 -(void)clickWay:(id)sender{
-    NSMutableArray *data = @[@"所有方式",@"银行转账",@"支付宝",@"微信"].mutableCopy;
+    NSMutableArray *data = @[Localize(@"All_Way"),Localize(@"Band_Way"),Localize(@"Ali_Way"),Localize(@"Wechat_Way")].mutableCopy;
     
     UIButton* btn = (UIButton*)[self.tableView.tableHeaderView subviewWithTag:1002];
     NSString* title = btn.titleLabel.text;

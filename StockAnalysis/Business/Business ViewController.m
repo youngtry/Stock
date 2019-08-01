@@ -12,6 +12,8 @@
 #import "PayTYpeViewController.h"
 #import "ChargeViewController.h"
 #import "AppData.h"
+#import "BindViewController.h"
+#import "SetMoneyPasswordViewController.h"
 
 
 @interface Business_ViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -30,7 +32,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self.title = @"商户账户";
+    self.title = Localize(@"Buss_Acc");
     self.businessInfo = [NSMutableDictionary new];
     
     self.moneyList.delegate = self;
@@ -62,16 +64,113 @@
     
     NSString* url = @"wallet/balance";
 //    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
             [HUDUtil hideHudView];
-            [self getBusinessBack:data];
+            [weakSelf getBusinessBack:data];
         }
     }];
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.tabBarController.tabBar.hidden = YES;
+    
+    NSString* url = @"account/bindInfo";
+    NSDictionary* params1 = @{};
+    WeakSelf(weakSelf);
+    [[HttpRequest getInstance] postWithURL:url parma:params1 block:^(BOOL success, id data) {
+        if(success){
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                NSDictionary* bindinfo = [data objectForKey:@"data"];
+                //邮箱判断
+                NSString* email = [bindinfo objectForKey:@"email"];
+                
+                if(email.length == 0){
+                    //强制引导绑定邮箱
+                    SCAlertController *alert = [SCAlertController alertControllerWithTitle:Localize(@"Menu_Title") message:Localize(@"Bind_Mail_Tip") preferredStyle:  UIAlertControllerStyleAlert];
+                    alert.messageColor = kColor(136, 136, 136);
+                    
+                    
+                    //退出
+                    SCAlertAction *exitAction = [SCAlertAction actionWithTitle:Localize(@"Menu_Sure") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {;
+                        BindViewController* vc = [[BindViewController alloc] initWithNibName:@"BindViewController" bundle:nil];
+                        [weakSelf.navigationController pushViewController:vc animated:YES];
+                        vc.title = Localize(@"Bind_Mail");
+                    }];
+                    //单独修改一个按钮的颜色
+                    exitAction.textColor = kColor(243, 186, 46);
+                    [alert addAction:exitAction];
+                    
+                    [weakSelf presentViewController:alert animated:YES completion:nil];
+                    
+                    
+                }
+                
+                NSString* phone = [bindinfo objectForKey:@"phone"];
+                
+                if(phone.length == 0){
+                    //强制引导绑定手机
+                    SCAlertController *alert = [SCAlertController alertControllerWithTitle:Localize(@"Menu_Title") message:Localize(@"Bind_Phone_Tip") preferredStyle:  UIAlertControllerStyleAlert];
+                    alert.messageColor = kColor(136, 136, 136);
+                    
+                    
+                    //退出
+                    SCAlertAction *exitAction = [SCAlertAction actionWithTitle:Localize(@"Menu_Sure") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                        BindViewController* vc = [[BindViewController alloc] initWithNibName:@"BindViewController" bundle:nil];
+                        [weakSelf.navigationController pushViewController:vc animated:YES];
+                        vc.title = Localize(@"Bind_Phone");
+                    }];
+                    //单独修改一个按钮的颜色
+                    exitAction.textColor = kColor(243, 186, 46);
+                    [alert addAction:exitAction];
+                    
+                    [weakSelf presentViewController:alert animated:YES completion:nil];
+                }
+                
+                if(email.length>0 && phone.length>0){
+                    //查看资金密码是否设置
+                    NSString* url1 = @"account/has_assetpwd";
+                    NSDictionary* params = @{};
+                    
+                    
+                    [[HttpRequest getInstance] getWithURL:url1 parma:params block:^(BOOL success, id data) {
+                        if(success){
+                            if([[data objectForKey:@"ret"] intValue] == 1){
+                                if(![[[data objectForKey:@"data"] objectForKey:@"has_assetpwd"] boolValue]){
+                                    //未设置资金密码,强制引导
+                                    
+                                    SCAlertController *alert = [SCAlertController alertControllerWithTitle:Localize(@"Menu_Title") message:Localize(@"Set_Moeny_Pwd_Tip") preferredStyle:  UIAlertControllerStyleAlert];
+                                    alert.messageColor = kColor(136, 136, 136);
+                                    
+                                    
+                                    //退出
+                                    SCAlertAction *exitAction = [SCAlertAction actionWithTitle:Localize(@"Menu_Sure") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                                        SetMoneyPasswordViewController* vc = [[SetMoneyPasswordViewController alloc] initWithNibName:@"SetMoneyPasswordViewController" bundle:nil];
+                                        [weakSelf.navigationController pushViewController:vc animated:YES];
+                                    }];
+                                    //单独修改一个按钮的颜色
+                                    exitAction.textColor = kColor(243, 186, 46);
+                                    [alert addAction:exitAction];
+                                    
+                                    [weakSelf presentViewController:alert animated:YES completion:nil];
+                                    
+                                    
+                                }
+                            }else{
+                                
+                                [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:[data objectForKey:@"msg"]];
+                                
+                            }
+                        }
+                    }];
+                }
+                
+            }else{
+                [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:[data objectForKey:@"msg"]];
+            }
+        }
+    }];
     
     [self requestMoney];
 }
@@ -162,9 +261,9 @@
         NSDictionary* info = [self.businessInfo objectForKey:key];
         
         cell.name.text = key;
-        cell.money.text = [NSString stringWithFormat:@"%.8f",[[info objectForKey:@"available"] floatValue]] ;
+        cell.money.text = [NSString stringWithFormat:@"%.8lf",[[info objectForKey:@"available"] doubleValue]] ;
         
-        cell.frizeeMoney.text = [NSString stringWithFormat:@"冻结%.8f",[[info objectForKey:@"freeze"] floatValue]] ;
+        cell.frizeeMoney.text = [NSString stringWithFormat:@"%@%.8lf",Localize(@"Freeze"),[[info objectForKey:@"freeze"] doubleValue]] ;
     }
     
     

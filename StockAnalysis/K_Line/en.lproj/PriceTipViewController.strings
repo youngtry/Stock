@@ -1,0 +1,30 @@
+
+/* Class = "UIButton"; normalTitle = "保存"; ObjectID = "2g2-wv-frT"; */
+"2g2-wv-frT.normalTitle" = "保存";
+
+/* Class = "UILabel"; text = "输入价格下限"; ObjectID = "7MB-uE-zjZ"; */
+"7MB-uE-zjZ.text" = "输入价格下限";
+
+/* Class = "UITextField"; placeholder = "输入价格上限"; ObjectID = "ABm-gu-OaI"; */
+"ABm-gu-OaI.placeholder" = "输入价格上限";
+
+/* Class = "UILabel"; text = "开启提醒"; ObjectID = "Bxz-bI-OMk"; */
+"Bxz-bI-OMk.text" = "开启提醒";
+
+/* Class = "UILabel"; text = "8369.1000"; ObjectID = "Mvo-Ox-Kj5"; */
+"Mvo-Ox-Kj5.text" = "8369.1000";
+
+/* Class = "UILabel"; text = "¥"; ObjectID = "Qsg-vb-OBH"; */
+"Qsg-vb-OBH.text" = "¥";
+
+/* Class = "UILabel"; text = "输入价格上限"; ObjectID = "h1K-0T-t6W"; */
+"h1K-0T-t6W.text" = "输入价格上限";
+
+/* Class = "UILabel"; text = "股票名称"; ObjectID = "oOe-Vd-psq"; */
+"oOe-Vd-psq.text" = "股票名称";
+
+/* Class = "UILabel"; text = "¥"; ObjectID = "wwc-i3-xq3"; */
+"wwc-i3-xq3.text" = "¥";
+
+/* Class = "UITextField"; placeholder = "输入价格下限"; ObjectID = "x8S-Yj-Wh0"; */
+"x8S-Yj-Wh0.placeholder" = "输入价格下限";

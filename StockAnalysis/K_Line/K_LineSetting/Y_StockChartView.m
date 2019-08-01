@@ -56,8 +56,10 @@
             if(appdelegate.isEable){
                 //横屏
                 make.left.equalTo(self.segmentTimeView.mas_right);
+                
             }else{
                 make.left.equalTo(self.segmentView.mas_right);
+                
             }
 //            make.left.equalTo(self.segmentView.mas_right);
         }];
@@ -79,6 +81,7 @@
                 make.width.equalTo(@50);
             }else{
                 make.width.equalTo(@5);
+                
                 
             }
 //            make.width.equalTo(@5);
@@ -151,7 +154,7 @@
             self.segmentTimeView.selectedIndex = 0;
             self.segmentTimeView.timeSelectedIndex = 4;
         }else{
-            self.segmentView.selectedIndex = 2;
+            self.segmentView.selectedIndex = 4;
         }
 //        self.segmentView.selectedIndex = 2;
     }
@@ -173,6 +176,11 @@
 
 -(void)setSelect:(NSInteger)index{
     self.segmentView.selectedIndex = index;
+}
+
+-(void)setMACDViewHide:(BOOL)ishide{
+    [_kLineView setMACDViewHide:ishide];
+    
 }
 #pragma mark - 代理方法
 
@@ -361,7 +369,7 @@
             
             Y_StockChartCenterViewType type1 = Y_StockChartcenterViewTypeKline;
             
-//            Y_StockChartViewItemModel* itemModel = [Y_StockChartViewItemModel itemModelWithTitle:@"5分" type:Y_StockChartcenterViewTypeTimeLine];
+//            Y_StockChartViewItemModel* itemModel = [Y_StockChartViewItemModel itemModelWithTitle:[NSString stringWithFormat:@"5%@",Localize(@"Min")] type:Y_StockChartcenterViewTypeTimeLine];
             if(index == 100){
                 type1 = Y_StockChartcenterViewTypeTimeLine;
             }
@@ -436,7 +444,7 @@
 //            if(type == Y_StockChartcenterViewTypeMenu){
 //                //                self.currentIndex = 0;
 //                type1 = Y_StockChartcenterViewTypeKline;
-//                itemModel = [Y_StockChartViewItemModel itemModelWithTitle:@"分时" type:Y_StockChartcenterViewTypeTimeLine];
+//                itemModel = [Y_StockChartViewItemModel itemModelWithTitle:Localize(@"Immediate") type:Y_StockChartcenterViewTypeTimeLine];
 //            }
 //
 //            if(type1 != self.currentCenterViewType)

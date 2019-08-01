@@ -20,7 +20,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.title = @"级别2";
+    self.title = Localize(@"Level_2");
     self.nextBtn.layer.cornerRadius = 25;
     self.nextBtn.layer.masksToBounds = YES;
     self.nextBtn.enabled = NO;
@@ -65,7 +65,7 @@
     self.tabBarController.tabBar.hidden = NO;
 }
 -(void)clickAutiImage{
-    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"选择" delegate:self cancelButtonTitle:nil destructiveButtonTitle:@"取消" otherButtonTitles:@"拍照",@"从相册选择", nil];
+    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:Localize(@"Select") delegate:self cancelButtonTitle:nil destructiveButtonTitle:Localize(@"Menu_Cancel") otherButtonTitles:Localize(@"Take_Photo"),Localize(@"Select_Photo"), nil];
     sheet.tag = 2550;
     //显示消息框
     [sheet showInView:self.view];

@@ -27,7 +27,7 @@
     // Do any additional setup after loading the view from its nib.
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mailLoginBack) name:@"MailLoginBack" object:nil];
     
-    self.title =  @"登录";
+    self.title =  Localize(@"Login");
     
     UITapGestureRecognizer *f = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(test)];
     [self.view addGestureRecognizer:f];
@@ -40,12 +40,12 @@
     
     _lookPwBtn.imageEdgeInsets = UIEdgeInsetsMake(6, 10, 6, 10);
     
-    UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:@"注册账户" style:UIBarButtonItemStylePlain target:self action:@selector(clickRegist:)];
+    UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:Localize(@"Registe_Acc") style:UIBarButtonItemStylePlain target:self action:@selector(clickRegist:)];
     self.navigationItem.rightBarButtonItem = right;
     
 }
 -(void)clickRegist:(id)sender{
-    DLog(@"clickRegist");
+    NSLog(@"clickRegist");
     
     MailRegistViewController *vc = [[MailRegistViewController alloc] initWithNibName:@"MailRegistViewController" bundle:nil];
     [self.navigationController pushViewController:vc animated:YES];
@@ -72,31 +72,31 @@
 }
 - (IBAction)clickLogin:(id)sender {
     if(![self.mailInput.text containsString:@"@"]){
-        [HUDUtil showSystemTipView:self title:@"提示" withContent:@"请输入正确的邮箱"];
+        [HUDUtil showSystemTipView:self title:Localize(@"Menu_Title") withContent:Localize(@"Input_Correct_Mail")];
         return;
     }
     
     if(![VerifyRules passWordIsTure:self.passwordInput.text]){
-        [HUDUtil showSystemTipView:self title:@"密码格式错误" withContent:@"请输入8-16个字符,不能使用中文、空格,至少含数字/字母/符号2种组合,必须要同时包括大小写字母"];
+        [HUDUtil showSystemTipView:self title:Localize(@"Pwd_Error") withContent:Localize(@"Pwd_Error_Tip")];
         return;
     }
-    [HUDUtil showHudViewInSuperView:self.view withMessage:@"登录中……"];
+    [HUDUtil showHudViewInSuperView:self.view withMessage:Localize(@"Logining")];
     NSDictionary *parameters = @{ @"email": self.mailInput.text ,
                                   @"password": self.passwordInput.text};
     
 //    NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithDictionary:para];
     NSString* url = @"account/login/email";
-                     
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
         [HUDUtil hideHudView];
         if(success){
-            [self mailLoginBack:data];
+            [weakSelf mailLoginBack:data];
         }
     }];
     
 //    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"MailLoginBack"];
     
-    [HUDUtil showHudViewInSuperView:self.view withMessage:@"登录中……"];
+    [HUDUtil showHudViewInSuperView:self.view withMessage:Localize(@"Logining")];
 }
 - (IBAction)clickPhoneLogin:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
@@ -131,10 +131,11 @@
     
     NSNumber* number = [data objectForKey:@"ret"];
     if([number intValue] == 1){
-        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"登录成功"];
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:Localize(@"Login_Succ")];
         [GameData setUserAccount:self.mailInput.text];
         [GameData setUserPassword:self.passwordInput.text];
         [GameData setAccountList:self.mailInput.text withPassword:self.passwordInput.text withDistrict:@""];
+        [GameData setNeedNoticeGuesture:YES];
         NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];
         [defaultdata setBool:YES forKey:@"IsLogin"];
         
@@ -142,7 +143,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:@"ChangeAfterLogin" object:nil];
     }else{
         //登陆失败
-        [HUDUtil showSystemTipView:self title:@"提示" withContent:[data objectForKey:@"msg"]];
+        [HUDUtil showSystemTipView:self title:Localize(@"Menu_Title") withContent:[data objectForKey:@"msg"]];
     }
     
 }

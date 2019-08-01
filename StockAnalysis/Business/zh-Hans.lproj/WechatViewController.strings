@@ -1,0 +1,30 @@
+
+/* Class = "UIButton"; normalTitle = "发送验证码"; ObjectID = "ACO-bD-NnU"; */
+"ACO-bD-NnU.normalTitle" = "发送验证码";
+
+/* Class = "UIButton"; normalTitle = "保存"; ObjectID = "GWc-MX-A7m"; */
+"GWc-MX-A7m.normalTitle" = "保存";
+
+/* Class = "UITextField"; placeholder = "请输入短信验证码"; ObjectID = "Qhq-Iw-mPE"; */
+"Qhq-Iw-mPE.placeholder" = "请输入短信验证码";
+
+/* Class = "UILabel"; text = "微信收款码"; ObjectID = "fCr-G0-VX6"; */
+"fCr-G0-VX6.text" = "微信收款码";
+
+/* Class = "UILabel"; text = "微信昵称"; ObjectID = "j0s-1Q-S8i"; */
+"j0s-1Q-S8i.text" = "微信昵称";
+
+/* Class = "UIButton"; normalTitle = "上传收款码"; ObjectID = "oXn-OZ-Bhi"; */
+"oXn-OZ-Bhi.normalTitle" = "上传收款码";
+
+/* Class = "UILabel"; text = "短信验证"; ObjectID = "sGj-MS-8vQ"; */
+"sGj-MS-8vQ.text" = "短信验证";
+
+/* Class = "UITextField"; placeholder = "请输入微信昵称"; ObjectID = "tFY-TB-WOl"; */
+"tFY-TB-WOl.placeholder" = "请输入微信昵称";
+
+/* Class = "UITextField"; placeholder = "请输入微信ID"; ObjectID = "vWr-ht-kgR"; */
+"vWr-ht-kgR.placeholder" = "请输入微信ID";
+
+/* Class = "UILabel"; text = "微信ID"; ObjectID = "vxT-YZ-kNV"; */
+"vxT-YZ-kNV.text" = "微信ID";

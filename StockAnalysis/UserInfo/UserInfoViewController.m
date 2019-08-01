@@ -25,7 +25,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.title = @"我的";
+    self.title = Localize(@"Mine");
     
     NSString* username = [GameData getUserAccount];
     _usernameLabel.text = username;
@@ -58,16 +58,16 @@
 }
 - (IBAction)clickExitAccount:(id)sender {
     
-    SCAlertController *alert = [SCAlertController alertControllerWithTitle:@"提示" message:@"是否退出账户" preferredStyle:  UIAlertControllerStyleAlert];
+    SCAlertController *alert = [SCAlertController alertControllerWithTitle:Localize(@"Menu_Title") message:Localize(@"Exit_Acc") preferredStyle:  UIAlertControllerStyleAlert];
     alert.messageColor = kColor(136, 136, 136);
     //取消
-    SCAlertAction *cancelAction = [SCAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+    SCAlertAction *cancelAction = [SCAlertAction actionWithTitle:Localize(@"Menu_Cancel") style:UIAlertActionStyleCancel handler:nil];
     
     
     [alert addAction:cancelAction];
     
     //退出
-    SCAlertAction *exitAction = [SCAlertAction actionWithTitle:@"退出" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    SCAlertAction *exitAction = [SCAlertAction actionWithTitle:Localize(@"Menu_Exit") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [[HttpRequest getInstance] clearToken];
         [self.navigationController popToRootViewControllerAnimated:YES];
         NSUserDefaults* defaultdata = [NSUserDefaults standardUserDefaults];

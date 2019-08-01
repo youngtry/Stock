@@ -1,0 +1,36 @@
+
+/* Class = "UILabel"; text = "问题反馈"; ObjectID = "6j9-ID-bVB"; */
+"6j9-ID-bVB.text" = "问题反馈";
+
+/* Class = "UILabel"; text = "ZEDA"; ObjectID = "GDe-XP-ZvE"; */
+"GDe-XP-ZvE.text" = "ZEDA";
+
+/* Class = "UIButton"; normalTitle = "退出当前用户"; ObjectID = "JNx-Dj-UtW"; */
+"JNx-Dj-UtW.normalTitle" = "退出当前用户";
+
+/* Class = "UILabel"; text = "版本更新"; ObjectID = "aBx-cZ-y5Q"; */
+"aBx-cZ-y5Q.text" = "版本更新";
+
+/* Class = "UILabel"; text = "帮助中心"; ObjectID = "bbD-Es-gOE"; */
+"bbD-Es-gOE.text" = "帮助中心";
+
+/* Class = "UILabel"; text = "17751760720"; ObjectID = "eEV-nN-5FV"; */
+"eEV-nN-5FV.text" = "17751760720";
+
+/* Class = "UILabel"; text = "Z点余额"; ObjectID = "nU7-jj-Jdr"; */
+"nU7-jj-Jdr.text" = "Z点余额";
+
+/* Class = "UILabel"; text = "0.000000"; ObjectID = "ne2-rf-I0p"; */
+"ne2-rf-I0p.text" = "0.000000";
+
+/* Class = "UILabel"; text = "系统设置"; ObjectID = "t3y-dt-hJ1"; */
+"t3y-dt-hJ1.text" = "系统设置";
+
+/* Class = "UILabel"; text = "身份认证"; ObjectID = "tor-cJ-Xc5"; */
+"tor-cJ-Xc5.text" = "身份认证";
+
+/* Class = "UIButton"; normalTitle = "切换账号"; ObjectID = "yeH-44-Sw6"; */
+"yeH-44-Sw6.normalTitle" = "切换账号";
+
+/* Class = "UILabel"; text = "安全中心"; ObjectID = "zEK-iz-SPX"; */
+"zEK-iz-SPX.text" = "安全中心";

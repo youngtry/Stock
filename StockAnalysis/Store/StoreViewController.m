@@ -27,7 +27,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.title =  @"商城";
+    self.title =  Localize(@"Store");
     
     [self addTopView];
     
@@ -40,14 +40,14 @@
     [self.view addSubview:self.addBtn];
     
     NSMutableArray* vcs = [NSMutableArray new];
-    NSArray *titles = @[@"买入",@"卖出",@"交易单",@"订单"];
+    NSArray *titles = @[Localize(@"Buy"),Localize(@"Sell"),@"交易单",@"订单"];
     {
         StorePurchaseViewController *vc1 = [StorePurchaseViewController new];
-        vc1.title = @"买入";
+        vc1.title = Localize(@"Buy");
         [vcs addObject:vc1];
         
         StorePurchaseViewController *vc2 = [StorePurchaseViewController new];
-        vc2.title = @"卖出";
+        vc2.title = Localize(@"Sell");
         [vcs addObject:vc2];
         
         StorePurchaseViewController*vc3 = [StorePurchaseViewController new];
@@ -121,7 +121,7 @@
     v.backgroundColor = [UIColor whiteColor];
     
     UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(16,16, 160, 20)];
-    [btn setTitle:@"美元/人民币" forState:UIControlStateNormal];
+    [btn setTitle:[NSString stringWithFormat:@"%@/%@",Localize(@"CNY"),Localize(@"USD")] forState:UIControlStateNormal];
     [btn setTitleColor:kColor(0, 0, 0) forState:UIControlStateNormal];
     [btn setImage:[UIImage imageNamed:@"arrow_down"] forState:UIControlStateNormal];
     [btn setTitleEdgeInsets:UIEdgeInsetsMake(0, -btn.imageView.size.width-10, 0, btn.imageView.size.width+10)];

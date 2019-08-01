@@ -25,7 +25,7 @@
 //    [self.view addSubview:_firstview];
 //    [_firstview addUI];
     
-//    UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:@"登录" style:UIBarButtonItemStylePlain target:self action:@selector(clickLogin:)];
+//    UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithTitle:Localize(@"Login") style:UIBarButtonItemStylePlain target:self action:@selector(clickLogin:)];
 //    self.navigationItem.rightBarButtonItem = right;
 //
 //    self.title = @"ZEDA";

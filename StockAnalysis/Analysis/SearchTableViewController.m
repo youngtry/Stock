@@ -10,6 +10,7 @@
 #import "SearchTableViewCell.h"
 #import "SearchData.h"
 #import "StockLittleViewController.h"
+#import "TradeViewController.h"
 @interface SearchTableViewController (){
     NSMutableArray* showList;
     
@@ -36,45 +37,73 @@
     NSLog(@"showTableview  %@",[self title]);
  
     [showList removeAllObjects];
-    if([[self title] isEqualToString:@"0"]){
-        for(int i=0;i<[SearchData getInstance].searchList.count;i++){
-            NSDictionary* info = [SearchData getInstance].searchList[i];
-            if(![self isRepeatInShowList:info]){
-
-                if(![info objectForKey:@"asset"]){
-                    //不能是商户搜索,显示关注列表
-                    [showList addObject:info];
-                }
-            }
-        }
-
-        for(int i=0;i<[[SearchData getInstance] getSpecail].count;i++){
-            NSDictionary* info = [[SearchData getInstance] getSpecail][i];
-            if(![self isRepeatInShowList:info]){
-                [showList addObject:info];
-            }
-        }
-    }else if ([[self title] isEqualToString:@"1"]){
-
-        for(int i=0;i<[SearchData getInstance].searchList.count;i++){
-            NSDictionary* info = [SearchData getInstance].searchList[i];
-            if(![self isRepeatInShowList:info]){
-
-                if([info objectForKey:@"asset"]){
-                    //是商户搜索，不显示关注列表
-
-                    [showList addObject:info];
-                }
-            }
-        }
+    NSDictionary* parameters = @{};
+    NSString* url = @"market/search";
+    if([self.title isEqualToString:@"0"]){
+        url = @"market/search";
+    }else if ([self.title isEqualToString:@"1"]){
+        url = @"market/shop/search";
     }
+    WeakSelf(weakSelf);
+    [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
+        if(success){
+            if([[data objectForKey:@"ret"] intValue] == 1){
+                if([weakSelf.title isEqualToString:@"0"]){
+                    NSArray* markets = [[data objectForKey:@"data"] objectForKey:@"market"];
+                    for (NSDictionary* info in markets) {
+                        [showList addObject:info];
+                    }
+                    
+                    for(int i=0;i<[SearchData getInstance].searchList.count;i++){
+                        NSDictionary* info = [SearchData getInstance].searchList[i];
+                        if(![weakSelf isRepeatInShowList:info]){
+                            
+                            if(![info objectForKey:@"asset"]){
+                                //不能是商户搜索,显示关注列表
+                                [showList addObject:info];
+                            }
+                        }
+                    }
+                    
+                    for(int i=0;i<[[SearchData getInstance] getSpecail].count;i++){
+                        NSDictionary* info = [[SearchData getInstance] getSpecail][i];
+                        if(![weakSelf isRepeatInShowList:info]){
+                            [showList addObject:info];
+                        }
+                    }
+                    
+                }else if ([weakSelf.title isEqualToString:@"1"]){
+                    NSArray* markets = [[data objectForKey:@"data"] objectForKey:@"assets"];
+                    for (NSDictionary* info in markets) {
+                        [showList addObject:info];
+                    }
+                    
+                    for(int i=0;i<[SearchData getInstance].searchList.count;i++){
+                        NSDictionary* info = [SearchData getInstance].searchList[i];
+                        if(![weakSelf isRepeatInShowList:info]){
+                            
+                            if([info objectForKey:@"asset"]){
+                                //是商户搜索，不显示关注列表
+                                
+                                [showList addObject:info];
+                            }
+                        }
+                    }
+                }
+                
+                 [_tableView reloadData];
+                
+                
+            }
+        }
+    }];
 
-    [_tableView reloadData];
    
 }
+
 -(void)showSearchList{
     
-    [showList removeAllObjects];
+//    [showList removeAllObjects];
     BOOL isshop = NO;
     for(int i=0;i<[SearchData getInstance].searchList.count;i++){
         NSDictionary* info = [SearchData getInstance].searchList[i];
@@ -167,7 +196,7 @@
     if(searchlist.count>indexPath.row){
         NSDictionary* data = searchlist[[indexPath row]];
         if([data objectForKey:@"asset"]){
-            [cell setName:[data objectForKey:@"name"]];
+            [cell setName:[data objectForKey:@"asset"]];
             [cell setIfShop:YES];
         }else{
             [cell setName:[data objectForKey:@"market"]];
@@ -194,6 +223,27 @@
         NSDictionary* data = [self getShowDataWithName:name];
         if(data){
             [[SearchData getInstance] addhistory:data];
+            
+            for (UIViewController*vc in self.parentViewController.view.selfViewController.navigationController.childViewControllers) {
+                if([vc isKindOfClass:[TradeViewController class]]){
+                    
+                    TradeViewController* trade = (TradeViewController*)vc;
+                    int titleindex = trade.pageIndex;
+                    if(titleindex == 0){
+                        [[AppData getInstance] setTradeInfo:@{@"index":@(0),@"name":name,@"title":Localize(@"Buy")}];
+                        [self.parentViewController.view.selfViewController.navigationController popViewControllerAnimated:YES];
+                        return;
+                    }else if (titleindex == 1){
+                        [[AppData getInstance] setTradeInfo:@{@"index":@(1),@"name":name,@"title":Localize(@"Sell")}];
+                        [self.parentViewController.view.selfViewController.navigationController popViewControllerAnimated:YES];
+                        return;
+                    }
+                    
+                    
+                    
+                    
+                }
+            }
             
             StockLittleViewController* vc = [[StockLittleViewController alloc] initWithNibName:@"StockLittleViewController" bundle:nil];
             vc.title = name;

@@ -1,0 +1,15 @@
+
+/* Class = "UIButton"; normalTitle = "确定"; ObjectID = "HXt-0G-8IL"; */
+"HXt-0G-8IL.normalTitle" = "确定";
+
+/* Class = "UILabel"; text = "请输入资金密码"; ObjectID = "bWa-bj-I4Y"; */
+"bWa-bj-I4Y.text" = "请输入资金密码";
+
+/* Class = "UIButton"; normalTitle = "取消"; ObjectID = "jfa-dS-o5r"; */
+"jfa-dS-o5r.normalTitle" = "取消";
+
+/* Class = "UILabel"; text = "安全验证"; ObjectID = "rab-9S-jtC"; */
+"rab-9S-jtC.text" = "安全验证";
+
+/* Class = "UITextField"; placeholder = "密码"; ObjectID = "vny-11-YXk"; */
+"vny-11-YXk.placeholder" = "密码";

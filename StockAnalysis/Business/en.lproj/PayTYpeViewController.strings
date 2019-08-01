@@ -1,0 +1,24 @@
+
+/* Class = "UILabel"; text = "支付宝"; ObjectID = "2ZU-c2-4U3"; */
+"2ZU-c2-4U3.text" = "支付宝";
+
+/* Class = "UILabel"; text = "Paypal"; ObjectID = "KpL-OF-fi6"; */
+"KpL-OF-fi6.text" = "Paypal";
+
+/* Class = "UILabel"; text = "银行卡"; ObjectID = "MAv-FB-GfX"; */
+"MAv-FB-GfX.text" = "银行卡";
+
+/* Class = "UILabel"; text = "未设置"; ObjectID = "QcS-ig-gDj"; */
+"QcS-ig-gDj.text" = "未设置";
+
+/* Class = "UILabel"; text = "未设置"; ObjectID = "Qe8-wu-rmG"; */
+"Qe8-wu-rmG.text" = "未设置";
+
+/* Class = "UILabel"; text = "敬请期待"; ObjectID = "iVB-0j-xC4"; */
+"iVB-0j-xC4.text" = "敬请期待";
+
+/* Class = "UILabel"; text = "微信支付"; ObjectID = "srS-rJ-k0S"; */
+"srS-rJ-k0S.text" = "微信支付";
+
+/* Class = "UILabel"; text = "必须绑定实名银行卡"; ObjectID = "yVj-5V-a5Y"; */
+"yVj-5V-a5Y.text" = "必须绑定实名银行卡";

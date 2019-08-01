@@ -11,4 +11,6 @@
 @interface FeedbackEditVC : BaseViewController
 @property(nonatomic,strong)NSString* title1;
 @property(nonatomic,strong)NSString* title2;
+@property(nonatomic,strong)NSString* titleid;
+@property(nonatomic,strong)NSString* subid;
 @end

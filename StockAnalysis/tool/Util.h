@@ -15,4 +15,6 @@
 +(UIViewController *)getParentVC:(UIView*)v;
 +(UIViewController *)getParentVC:(Class)c fromView:(UIView*)v;
 +(NSString *)countNumAndChangeformat:(NSString *)num;
+
++(NSString*)getLocalString:(NSString*) key;
 @end

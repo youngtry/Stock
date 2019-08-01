@@ -1,0 +1,24 @@
+
+/* Class = "UILabel"; text = "00：37   21/5"; ObjectID = "1b9-JR-eZP"; */
+"1b9-JR-eZP.text" = "00：37   21/5";
+
+/* Class = "UILabel"; text = "1.00000000"; ObjectID = "56Y-HL-98r"; */
+"56Y-HL-98r.text" = "1.00000000";
+
+/* Class = "UILabel"; text = "数量"; ObjectID = "D2v-Yo-cke"; */
+"D2v-Yo-cke.text" = "数量";
+
+/* Class = "UILabel"; text = "普通充值"; ObjectID = "Dh5-05-Gf5"; */
+"Dh5-05-Gf5.text" = "普通充值";
+
+/* Class = "UILabel"; text = "状态"; ObjectID = "kH4-9y-nwd"; */
+"kH4-9y-nwd.text" = "状态";
+
+/* Class = "UILabel"; text = "已完成"; ObjectID = "qRD-be-vdk"; */
+"qRD-be-vdk.text" = "已完成";
+
+/* Class = "UILabel"; text = "期货1"; ObjectID = "qqZ-y8-DA4"; */
+"qqZ-y8-DA4.text" = "期货1";
+
+/* Class = "UILabel"; text = "日期"; ObjectID = "zL4-Yj-6PN"; */
+"zL4-Yj-6PN.text" = "日期";

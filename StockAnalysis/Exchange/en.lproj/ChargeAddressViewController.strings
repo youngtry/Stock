@@ -1,0 +1,12 @@
+
+/* Class = "UITextView"; text = "1234567894561231231231231231231245435415"; ObjectID = "INc-bI-xjU"; */
+"INc-bI-xjU.text" = "1234567894561231231231231231231245435415";
+
+/* Class = "UILabel"; text = "期货"; ObjectID = "OBm-V7-q2I"; */
+"OBm-V7-q2I.text" = "期货";
+
+/* Class = "UILabel"; text = "选择"; ObjectID = "Tl7-mF-mID"; */
+"Tl7-mF-mID.text" = "选择";
+
+/* Class = "UIButton"; normalTitle = "复制地址"; ObjectID = "W5R-6h-qDz"; */
+"W5R-6h-qDz.normalTitle" = "复制地址";

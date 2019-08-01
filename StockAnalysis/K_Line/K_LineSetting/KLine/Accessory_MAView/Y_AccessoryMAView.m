@@ -35,7 +35,7 @@
         
         
         
-        _DIFLabel.textColor = [UIColor ma7Color];
+        _DIFLabel.textColor = [UIColor ma5Color];
         _DEALabel.textColor = [UIColor ma30Color];
         _MACDLabel.textColor = [UIColor colorWithRGBHex:0xffffff];
 

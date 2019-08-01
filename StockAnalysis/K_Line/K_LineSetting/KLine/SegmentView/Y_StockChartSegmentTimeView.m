@@ -80,7 +80,7 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
         _timeView = [UIView new];
         _timeView.backgroundColor = [UIColor assistBackgroundColor];
         _timeView.userInteractionEnabled = YES;
-        NSArray *titleArr = @[@"分时",@"1分",@"3分",@"5分",@"15分",@"30分",@"1小时",@"2小时",@"4小时",@"6小时",@"12小时",@"1天",@"1周"];
+        NSArray *titleArr = @[Localize(@"Immediate"),[NSString stringWithFormat:@"1%@",Localize(@"Min")],[NSString stringWithFormat:@"3%@",Localize(@"Min")],[NSString stringWithFormat:@"5%@",Localize(@"Min")],[NSString stringWithFormat:@"15%@",Localize(@"Min")],[NSString stringWithFormat:@"30%@",Localize(@"Min")],[NSString stringWithFormat:@"1%@",Localize(@"Hour")],[NSString stringWithFormat:@"2%@",Localize(@"Hour")],[NSString stringWithFormat:@"4%@",Localize(@"Hour")],[NSString stringWithFormat:@"6%@",Localize(@"Hour")],[NSString stringWithFormat:@"12%@",Localize(@"Hour")],@"1天",@"1周"];
         __block UIButton *preBtn;
         [titleArr enumerateObjectsUsingBlock:^(NSString*  _Nonnull title, NSUInteger idx, BOOL * _Nonnull stop) {
             UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -147,7 +147,7 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
         _MAView = [UIView new];
         _MAView.backgroundColor = [UIColor assistBackgroundColor];
         _MAView.userInteractionEnabled = YES;
-        NSArray *titleArr = @[@"MA",@"EMA",@"BOLL",@"SAR",@"关闭"];
+        NSArray *titleArr = @[@"MA",@"EMA",@"BOLL",@"SAR",Localize(@"Close")];
         __block UIButton *preBtn;
         [titleArr enumerateObjectsUsingBlock:^(NSString*  _Nonnull title, NSUInteger idx, BOOL * _Nonnull stop) {
             UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -191,7 +191,7 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
         _MACDView = [UIView new];
         _MACDView.backgroundColor = [UIColor assistBackgroundColor];
         _MACDView.userInteractionEnabled = YES;
-        NSArray *titleArr = @[@"MACD",@"KDJ",@"BOLL",@"RSI",@"StochRSI",@"OBV",@"SAR",@"DMA",@"TRIX",@"VR",@"BRAR",@"EMV",@"WR",@"ROC",@"MTM",@"PSY",@"DMI",@"CCI",@"关闭"];
+        NSArray *titleArr = @[@"MACD",@"KDJ",@"BOLL",@"RSI",@"StochRSI",@"OBV",@"SAR",@"DMA",@"TRIX",@"VR",@"BRAR",@"EMV",@"WR",@"ROC",@"MTM",@"PSY",@"DMI",@"CCI",Localize(@"Close")];
         __block UIButton *preBtn;
         [titleArr enumerateObjectsUsingBlock:^(NSString*  _Nonnull title, NSUInteger idx, BOOL * _Nonnull stop) {
             UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -255,7 +255,7 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
         _settingView = [UIView new];
         _settingView.backgroundColor = [UIColor assistBackgroundColor];
         _settingView.userInteractionEnabled = YES;
-        NSArray *titleArr = @[@"MA",@"5",@"10",@"20",@"60",@"默认",@"MACD",@"12",@"26",@"9",@"默认",@"+",@"-",@"保存"];
+        NSArray *titleArr = @[@"MA",@"5",@"10",@"20",@"60",Localize(@"Default"),@"MACD",@"12",@"26",@"9",Localize(@"Default"),@"+",@"-",Localize(@"Save")];
         __block UIButton *preBtn;
         [titleArr enumerateObjectsUsingBlock:^(NSString*  _Nonnull title, NSUInteger idx, BOOL * _Nonnull stop) {
             UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -445,7 +445,7 @@ static NSInteger const Y_StockChartSegmentStartTag = 2000;
             [view setHidden:YES];
         }
         
-        if([title isEqualToString:@"切换"]){
+        if([title isEqualToString:Localize(@"Kline_Switch")]){
             [btn setImage:[UIImage imageNamed:@"switchphone.png"] forState:UIControlStateNormal];
             [btn setTitle:@"" forState:UIControlStateNormal];
         }

@@ -37,13 +37,15 @@
 #pragma mark 涨的颜色
 +(UIColor *)increaseColor
 {
-    return [UIColor colorWithRGBHex:0xff5353];
+//    return [UIColor colorWithRGBHex:0xff5353];
+    return [UIColor colorWithRGBHex:0x00b07c];
 }
 
 #pragma mark 跌的颜色
 +(UIColor *)decreaseColor
 {
-    return [UIColor colorWithRGBHex:0x00b07c];
+//    return [UIColor colorWithRGBHex:0x00b07c];
+    return [UIColor colorWithRGBHex:0xff5353];
 }
 
 #pragma mark 主文字颜色
@@ -78,9 +80,27 @@
 }
 
 #pragma mark ma5的颜色
-+(UIColor *)ma7Color
++(UIColor *)ma5Color
 {
     return [UIColor colorWithRGBHex:0xff783c];
+}
+
+#pragma mark ma10的颜色
++(UIColor *)ma10Color
+{
+    return [UIColor colorWithRGBHex:0x00FF00];
+}
+
+#pragma mark ma20的颜色
++(UIColor *)ma20Color
+{
+    return [UIColor colorWithRGBHex:0xFF8C00];
+}
+
+#pragma mark ma60的颜色
++(UIColor *)ma60Color
+{
+    return [UIColor colorWithRGBHex:0x1E90FF];
 }
 
 #pragma mark ma30颜色

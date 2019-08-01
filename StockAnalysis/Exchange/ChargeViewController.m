@@ -28,7 +28,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.title = @"选择";
+    self.title = Localize(@"Select");
     self.exchangeInfo = [NSMutableDictionary new];
     self.allInfo = [NSMutableDictionary new];
     _selectTable.delegate = self;
@@ -43,10 +43,11 @@
     
     //    [[HttpRequest getInstance] postWithUrl:url data:parameters notification:@"GetExchangeBack"];
 //    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] postWithURL:url parma:parameters block:^(BOOL success, id data) {
         if(success){
             [HUDUtil hideHudView];
-            [self getExchangeBack:data];
+            [weakSelf getExchangeBack:data];
         }
     }];
 }
@@ -193,8 +194,11 @@
     }else if(self.index == 1){
         GetMoneyViewController *vc = [[GetMoneyViewController alloc] initWithNibName:@"GetMoneyViewController" bundle:nil];
         [self.navigationController pushViewController:vc animated:YES];
-    }else if (self.index == 2){TurnMoneyViewController* vc = [[TurnMoneyViewController alloc] initWithNibName:@"TurnMoneyViewController" bundle:nil];
-        [self.navigationController pushViewController:vc animated:YES];}
+    }else if (self.index == 2){
+        TurnMoneyViewController* vc = [[TurnMoneyViewController alloc] initWithNibName:@"TurnMoneyViewController" bundle:nil];
+        [self.navigationController pushViewController:vc animated:YES];
+        
+    }
     
 }
 

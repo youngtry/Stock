@@ -1,0 +1,54 @@
+
+/* Class = "UIButton"; normalTitle = "   买入价格按指数价格设定"; ObjectID = "1Pp-wx-aws"; */
+"1Pp-wx-aws.normalTitle" = "   买入价格按指数价格设定";
+
+/* Class = "UILabel"; text = "交易说明"; ObjectID = "1st-hx-zql"; */
+"1st-hx-zql.text" = "交易说明";
+
+/* Class = "UILabel"; text = "价格"; ObjectID = "32X-EG-k3J"; */
+"32X-EG-k3J.text" = "价格";
+
+/* Class = "UITextView"; text = "1.订单有效期为15分钟，请及时付款并点击 「我已支付」按钮； 2.股由系统锁定托管， 请安心下单"; ObjectID = "6qT-FS-h18"; */
+"6qT-FS-h18.text" = "1.订单有效期为15分钟，请及时付款并点击 「我已支付」按钮； 2.股由系统锁定托管， 请安心下单";
+
+/* Class = "UITextField"; placeholder = "价格"; ObjectID = "8ZC-oo-FOO"; */
+"8ZC-oo-FOO.placeholder" = "价格";
+
+/* Class = "UITextField"; text = "6.32"; ObjectID = "8ZC-oo-FOO"; */
+"8ZC-oo-FOO.text" = "6.32";
+
+/* Class = "UILabel"; text = "数量"; ObjectID = "D24-yJ-NFa"; */
+"D24-yJ-NFa.text" = "数量";
+
+/* Class = "UILabel"; text = "限额"; ObjectID = "PuI-6i-iPZ"; */
+"PuI-6i-iPZ.text" = "限额";
+
+/* Class = "UILabel"; text = "至"; ObjectID = "QEb-I8-xwn"; */
+"QEb-I8-xwn.text" = "至";
+
+/* Class = "UIButton"; normalTitle = "   只与通过人脸识别的用户进行交易"; ObjectID = "R1C-GM-LkF"; */
+"R1C-GM-LkF.normalTitle" = "   只与通过人脸识别的用户进行交易";
+
+/* Class = "UITextField"; placeholder = "单笔最低(元)"; ObjectID = "TN1-19-FLQ"; */
+"TN1-19-FLQ.placeholder" = "单笔最低(元)";
+
+/* Class = "UILabel"; text = "金额"; ObjectID = "Yb1-zi-qA6"; */
+"Yb1-zi-qA6.text" = "金额";
+
+/* Class = "UILabel"; text = "元"; ObjectID = "ZGm-es-5kU"; */
+"ZGm-es-5kU.text" = "元";
+
+/* Class = "UITextField"; placeholder = "最小交易单总额为2000"; ObjectID = "cB3-dn-BVK"; */
+"cB3-dn-BVK.placeholder" = "最小交易单总额为2000";
+
+/* Class = "UITextField"; placeholder = "请输入交易数量"; ObjectID = "dF3-Zu-Zsq"; */
+"dF3-Zu-Zsq.placeholder" = "请输入交易数量";
+
+/* Class = "UITextField"; placeholder = "单笔最高(元)"; ObjectID = "l4n-Za-fXE"; */
+"l4n-Za-fXE.placeholder" = "单笔最高(元)";
+
+/* Class = "UILabel"; text = "元"; ObjectID = "qqr-0s-rNz"; */
+"qqr-0s-rNz.text" = "元";
+
+/* Class = "UIButton"; normalTitle = "发布交易"; ObjectID = "rY8-tS-9lb"; */
+"rY8-tS-9lb.normalTitle" = "发布交易";

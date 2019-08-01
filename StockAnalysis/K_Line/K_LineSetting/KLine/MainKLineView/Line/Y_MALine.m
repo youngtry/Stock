@@ -71,7 +71,8 @@
             return;
         }
         
-        UIColor *lineColor = self.MAType == Y_MA7Type ? [UIColor ma7Color] : (self.MAType == Y_MA30Type ? [UIColor ma30Color] : [UIColor mainTextColor]);
+//        UIColor *lineColor = self.MAType == Y_MA5Type ? [UIColor ma5Color] : (self.MAType == Y_MA10Type ? [UIColor ma10Color] : [UIColor mainTextColor]);
+        UIColor *lineColor = self.MAType == Y_MA5Type ? [UIColor ma5Color] : (self.MAType == Y_MA10Type ? [UIColor ma10Color] : (self.MAType == Y_MA20Type ? [UIColor ma20Color] :(self.MAType == Y_MA60Type ? [UIColor ma60Color]:[UIColor mainTextColor])));
         
         CGContextSetStrokeColorWithColor(self.context, lineColor.CGColor);
         

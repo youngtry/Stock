@@ -12,6 +12,7 @@
 @property(nonatomic,strong)UITableView *tableView;
 @property(nonatomic,strong)NSMutableArray* data;
 @property(nonatomic,strong)NSMutableArray* switchs;
+@property(nonatomic,strong)NSMutableDictionary* titleid;
 @end
 
 @implementation FeedbackTypeListVC
@@ -29,6 +30,7 @@
     
     _data = [NSMutableArray new];
     _switchs = [NSMutableArray new];
+    _titleid = [NSMutableDictionary new];
     
 }
 
@@ -42,6 +44,7 @@
 -(void)requestAllQuestions{
     NSString* url = @"feedback/type";
     NSDictionary* params = @{};
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] getWithURL:url parma:params block:^(BOOL success, id data) {
         if(success){
             [HUDUtil hideHudView];
@@ -51,21 +54,25 @@
                 for(NSDictionary* qq in allquestions){
                     NSMutableArray* info = [NSMutableArray new];
                     NSString* title = [qq objectForKey:@"title"];
-                    [info addObject:title];
+                    NSString* titleid = [qq objectForKey:@"id"];
+                    NSArray* titleaar = [NSArray arrayWithObjects:title,titleid, nil];
+                    [info addObject:titleaar];
                     NSArray* subquestions = [qq objectForKey:@"sub_questions"];
                     for (NSDictionary* subq in subquestions) {
                         NSString* subtitle = [subq objectForKey:@"title"];
-                        [info addObject:subtitle];
+                        NSString* subid = [subq objectForKey:@"id"];
+                        NSArray* subaar = [NSArray arrayWithObjects:subtitle,subid, nil];
+                        [info addObject:subaar];
                     }
                     [_data addObject:info];
                 }
                 for (int i=0; i<_data.count; i++) {
                     [_switchs addObject:@(0)];
                 }
-                [self.tableView reloadData];
+                [weakSelf.tableView reloadData];
             }else{
                 
-                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:[data objectForKey:@"msg"]];
                 
             }
         }
@@ -119,7 +126,7 @@
     if(_data.count>indexPath.section) {
         NSDictionary* a =_data[indexPath.section];
         if(a.count>indexPath.row){
-            NSString* title = _data[indexPath.section][indexPath.row];
+            NSString* title = _data[indexPath.section][indexPath.row][0];
             titleLab.text = title;
         }
         
@@ -161,8 +168,11 @@
     }
     
     FeedbackEditVC *vc = [[FeedbackEditVC alloc] initWithNibName:@"FeedbackEditVC" bundle:nil];
-    vc.title1 = _data[indexPath.section][0];
-    vc.title2 = _data[indexPath.section][indexPath.row];
+    vc.title1 = _data[indexPath.section][0][0];
+    vc.title2 = _data[indexPath.section][indexPath.row][0];
+    vc.titleid = _data[indexPath.section][0][1];
+    vc.subid = _data[indexPath.section][indexPath.row][1];
+    NSLog(@"title1 = %@,title2 = %@",vc.title1,vc.title2);
     UITabBarController*bar = [UIApplication sharedApplication].keyWindow.rootViewController;
     UINavigationController*nav = bar.viewControllers[0];
     [nav pushViewController:vc animated:YES];

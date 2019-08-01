@@ -1,0 +1,30 @@
+
+/* Class = "UITextField"; placeholder = "请输入支付宝账号"; ObjectID = "4ut-1v-elU"; */
+"4ut-1v-elU.placeholder" = "请输入支付宝账号";
+
+/* Class = "UILabel"; text = "短信验证"; ObjectID = "64i-KR-ab8"; */
+"64i-KR-ab8.text" = "短信验证";
+
+/* Class = "UILabel"; text = "真实姓名"; ObjectID = "FOo-Vs-BRz"; */
+"FOo-Vs-BRz.text" = "真实姓名";
+
+/* Class = "UILabel"; text = "支付宝收款码"; ObjectID = "RqA-Nt-DaY"; */
+"RqA-Nt-DaY.text" = "支付宝收款码";
+
+/* Class = "UIButton"; normalTitle = "保存"; ObjectID = "Vty-Dk-4Kb"; */
+"Vty-Dk-4Kb.normalTitle" = "保存";
+
+/* Class = "UIButton"; normalTitle = "上传收款码"; ObjectID = "kLe-Mh-Utp"; */
+"kLe-Mh-Utp.normalTitle" = "上传收款码";
+
+/* Class = "UILabel"; text = "支付宝账号"; ObjectID = "qPM-MJ-ltX"; */
+"qPM-MJ-ltX.text" = "支付宝账号";
+
+/* Class = "UIButton"; normalTitle = "发送验证码"; ObjectID = "qZ0-A2-3aw"; */
+"qZ0-A2-3aw.normalTitle" = "发送验证码";
+
+/* Class = "UITextField"; placeholder = "请输入短信验证码"; ObjectID = "vP0-Ys-b9G"; */
+"vP0-Ys-b9G.placeholder" = "请输入短信验证码";
+
+/* Class = "UITextField"; placeholder = "请输入真实姓名"; ObjectID = "zoM-Mg-xle"; */
+"zoM-Mg-xle.placeholder" = "请输入真实姓名";

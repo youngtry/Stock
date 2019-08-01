@@ -21,10 +21,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"问题反馈";
+    self.title = Localize(@"Feed_Back");
     // Do any additional setup after loading the view.
     NSMutableArray* vcs = [NSMutableArray new];
-    NSArray *titles = @[@"问题反馈",@"问题列表"];
+    NSArray *titles = @[Localize(@"Feed_Back"),Localize(@"Feed_List")];
     
     {
         FeedbackTypeListVC *vc1 = [FeedbackTypeListVC new];

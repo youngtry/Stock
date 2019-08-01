@@ -1,0 +1,39 @@
+
+/* Class = "UILabel"; text = "元"; ObjectID = "070-Fp-Ocj"; */
+"070-Fp-Ocj.text" = "元";
+
+/* Class = "UITextField"; placeholder = "输入数量"; ObjectID = "C2a-Oa-Opf"; */
+"C2a-Oa-Opf.placeholder" = "输入数量";
+
+/* Class = "UILabel"; text = "金额"; ObjectID = "Fj4-3B-D4F"; */
+"Fj4-3B-D4F.text" = "金额";
+
+/* Class = "UIButton"; normalTitle = "确定"; ObjectID = "HUX-jb-K5Z"; */
+"HUX-jb-K5Z.normalTitle" = "确定";
+
+/* Class = "UILabel"; text = "数量"; ObjectID = "QdS-7a-Rso"; */
+"QdS-7a-Rso.text" = "数量";
+
+/* Class = "UILabel"; text = "单笔限额"; ObjectID = "SvM-BI-XL4"; */
+"SvM-BI-XL4.text" = "单笔限额";
+
+/* Class = "UILabel"; text = "10000-250000"; ObjectID = "WCL-n2-Kjh"; */
+"WCL-n2-Kjh.text" = "10000-250000";
+
+/* Class = "UILabel"; text = "3872单 完成率98.11%"; ObjectID = "aTF-8Z-QC5"; */
+"aTF-8Z-QC5.text" = "3872单 完成率98.11%";
+
+/* Class = "UILabel"; text = "单价"; ObjectID = "bFZ-Xn-9rZ"; */
+"bFZ-Xn-9rZ.text" = "单价";
+
+/* Class = "UILabel"; text = "6.63"; ObjectID = "gol-KK-n6P"; */
+"gol-KK-n6P.text" = "6.63";
+
+/* Class = "UITextField"; placeholder = "最小交易单总额为400"; ObjectID = "pNB-i2-i8z"; */
+"pNB-i2-i8z.placeholder" = "最小交易单总额为400";
+
+/* Class = "UILabel"; text = "元"; ObjectID = "tPa-rI-fQK"; */
+"tPa-rI-fQK.text" = "元";
+
+/* Class = "UILabel"; text = "元"; ObjectID = "u3U-cR-O5b"; */
+"u3U-cR-O5b.text" = "元";

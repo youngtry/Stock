@@ -25,6 +25,9 @@
 +(void)setGuestureTime:(NSString*)time;
 +(NSString*)getGuestureTime;
 
++(void)setNeedNoticeGuesture:(BOOL)isneed;
++(BOOL)getNeedNoticeGuesture;
+
 
 
 @end

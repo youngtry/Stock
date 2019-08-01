@@ -18,6 +18,7 @@
 #import "Y_KLineVolumeView.h"
 #import "Y_StockChartRightYView.h"
 #import "Y_KLineAccessoryView.h"
+#import "AppDelegate.h"
 @interface Y_KLineView() <UIScrollViewDelegate, Y_KLineMainViewDelegate, Y_KLineVolumeViewDelegate, Y_KLineAccessoryViewDelegate>
 
 @property (nonatomic, strong) UIScrollView *scrollView;
@@ -125,7 +126,17 @@
         
         [_scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self);
-            make.right.equalTo(self).offset(-48);
+            AppDelegate *appdelegate = [UIApplication sharedApplication].delegate;
+            if(appdelegate.isEable){
+                //横屏
+                make.right.equalTo(self).offset(-48);
+                
+            }else{
+                make.right.equalTo(self.mas_right);
+                
+            }
+//
+            
             make.left.equalTo(self.mas_left);
             make.bottom.equalTo(self.mas_bottom);
         }];
@@ -170,6 +181,7 @@
     if(!_accessoryMAView) {
         _accessoryMAView = [Y_AccessoryMAView new];
         [self addSubview:_accessoryMAView];
+
         [_accessoryMAView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(self);
             make.left.equalTo(self);
@@ -208,12 +220,16 @@
         _kLineVolumeView = [Y_KLineVolumeView new];
         _kLineVolumeView.delegate = self;
         [self.scrollView addSubview:_kLineVolumeView];
+        
         [_kLineVolumeView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.kLineMainView);
             make.top.equalTo(self.kLineMainView.mas_bottom).offset(10);
             make.width.equalTo(self.kLineMainView.mas_width);
             self.kLineVolumeViewHeightConstraint = make.height.equalTo(self.scrollView.mas_height).multipliedBy(self.volumeViewRatio);
         }];
+        
+        
+        
         [self layoutIfNeeded];
     }
     return _kLineVolumeView;
@@ -226,6 +242,7 @@
         _kLineAccessoryView = [Y_KLineAccessoryView new];
         _kLineAccessoryView.delegate = self;
         [self.scrollView addSubview:_kLineAccessoryView];
+//        [_kLineAccessoryView setHidden:YES];
         [_kLineAccessoryView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.kLineVolumeView);
             make.top.equalTo(self.kLineVolumeView.mas_bottom).offset(10);
@@ -511,6 +528,29 @@
     [self.volumeMAView maProfileWithModel:kLineModel];
     [self.accessoryMAView maProfileWithModel:kLineModel];
 }
+
+#pragma mark - 根据MACD是否显示重新定义成交量线的大小
+
+-(void)setMACDViewHide:(BOOL)ishide{
+    [self.kLineAccessoryView setHidden:ishide];
+    [self.accessoryMAView setHidden:ishide];
+    if(ishide){
+        [_kLineVolumeView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.kLineMainView);
+            make.top.equalTo(self.kLineMainView.mas_bottom).offset(10);
+            make.width.equalTo(self.kLineMainView.mas_width);
+            self.kLineVolumeViewHeightConstraint = make.height.equalTo(self.scrollView.mas_height).multipliedBy(self.volumeViewRatio+0.2);
+        }];
+    }else{
+        [_kLineVolumeView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.kLineMainView);
+            make.top.equalTo(self.kLineMainView.mas_bottom).offset(10);
+            make.width.equalTo(self.kLineMainView.mas_width);
+            self.kLineVolumeViewHeightConstraint = make.height.equalTo(self.scrollView.mas_height).multipliedBy(self.volumeViewRatio);
+        }];
+    }
+}
+
 #pragma mark - UIScrollView代理
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {

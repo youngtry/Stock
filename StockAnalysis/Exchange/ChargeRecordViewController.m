@@ -20,7 +20,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.title = @"最近十天充值记录";
+    self.title = Localize(@"Last_History");
     
     self.recordList.delegate = self;
     self.recordList.dataSource = self;

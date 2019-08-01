@@ -44,6 +44,8 @@
     if (self) {
         _MA7Label = [self private_createLabel];
         _MA30Label = [self private_createLabel];
+        [_MA7Label setHidden:YES];
+        [_MA30Label setHidden:YES];
 //        _dateDescLabel = [self private_createLabel];
         _openDescLabel = [self private_createLabel];
         _openDescLabel.text = @" 开:";
@@ -63,7 +65,7 @@
         _lowLabel = [self private_createLabel];
         
         
-        _MA7Label.textColor = [UIColor ma7Color];
+        _MA7Label.textColor = [UIColor ma5Color];
         _MA30Label.textColor = [UIColor ma30Color];
         _openLabel.textColor = [UIColor whiteColor];
         _highLabel.textColor = [UIColor whiteColor];

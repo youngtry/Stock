@@ -122,4 +122,18 @@
     return username;
 }
 
++(void)setNeedNoticeGuesture:(BOOL)isneed{
+    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    
+    [defaults setBool:isneed forKey:@"NeedGuesture"];
+    
+    [defaults synchronize];
+}
+
++(BOOL)getNeedNoticeGuesture{
+    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    BOOL username = [defaults boolForKey:@"NeedGuesture"];
+    return username;
+}
+
 @end

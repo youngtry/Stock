@@ -37,6 +37,7 @@
     
     _topLab1.text = self.title1;
     _topLab2.text = self.title2;
+
     
     _firstClosebtn.enabled  = NO;
     _firstClosebtn.hidden = YES;
@@ -81,6 +82,10 @@
 }
 - (IBAction)clickCommit:(id)sender {
     
+    if(self.phoneField.text.length == 0){
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:Localize(@"Input_Phone")];
+        return;
+    }
     
     NSString *fullPath1 = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"] stringByAppendingPathComponent:@"up_1.jpg"];
     NSString *fullPath2 = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"] stringByAppendingPathComponent:@"up_2.jpg"];
@@ -100,23 +105,24 @@
     }
     
     NSString* url = @"feedback/add";
-    NSDictionary* params = @{@"question_id":@(1),
-                             @"sub_question_id":@(2),
+    NSDictionary* params = @{@"question_id":self.titleid,
+                             @"sub_question_id":self.subid,
                              @"content":self.questionTextView.text,
                              @"phone":self.phoneField.text,
                              @"extra":@""
                              };
     
     NSDictionary* file = @{@"imgs":fullPath1,
-                           @"imgs":fullPath2};
+                           @"imgs1":fullPath2};
 //    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] postWithURLWithFile:url parma:params file:file block:^(BOOL success, id data) {
         if(success){
             if([[data objectForKey:@"ret"] intValue] == 1){
-                [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"反馈成功"];
-                [self.navigationController popViewControllerAnimated:YES];
+                [HUDUtil showHudViewTipInSuperView:weakSelf.navigationController.view withMessage:Localize(@"Feed_Succ")];
+                [weakSelf.navigationController popViewControllerAnimated:YES];
             }else{
-                [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:[data objectForKey:@"msg"]];
+                [HUDUtil showHudViewTipInSuperView:weakSelf.navigationController.view withMessage:[data objectForKey:@"msg"]];
             }
         }
     }];
@@ -143,7 +149,7 @@
 - (void)headClick {
     //自定义消息框
     _clickIndex = 1;
-    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"选择" delegate:self cancelButtonTitle:nil destructiveButtonTitle:@"取消" otherButtonTitles:@"拍照",@"从相册选择", nil];
+    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:Localize(@"Select") delegate:self cancelButtonTitle:nil destructiveButtonTitle:Localize(@"Menu_Cancel") otherButtonTitles:Localize(@"Take_Photo"),Localize(@"Select_Photo"), nil];
     sheet.tag = 2550;
     //显示消息框
     [sheet showInView:self.view];
@@ -152,7 +158,7 @@
 - (void)headClick1 {
     //自定义消息框
     _clickIndex = 2;
-    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"选择" delegate:self cancelButtonTitle:nil destructiveButtonTitle:@"取消" otherButtonTitles:@"拍照",@"从相册选择", nil];
+    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:Localize(@"Select") delegate:self cancelButtonTitle:nil destructiveButtonTitle:Localize(@"Menu_Cancel") otherButtonTitles:Localize(@"Take_Photo"),Localize(@"Select_Photo"), nil];
     sheet.tag = 2550;
     //显示消息框
     [sheet showInView:self.view];

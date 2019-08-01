@@ -36,7 +36,7 @@
     
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetBack) name:@"ResetPwdBack" object:nil];
     self.update1 = nil;
-    self.title = @"找回登录密码";
+    self.title = Localize(@"Find_Login_Pwd");
     
     self.secondContainer.hidden = YES;
     
@@ -85,7 +85,7 @@
     
     [self.update1 invalidate];
     self.update1 = nil;
-    [_verifybtn setTitle:@"发送验证码" forState:UIControlStateNormal];
+    [_verifybtn setTitle:Localize(@"Send_Verify") forState:UIControlStateNormal];
     [_verifybtn setEnabled:YES];
 }
 
@@ -100,7 +100,7 @@
     
     [self.update1 invalidate];
     self.update1 = nil;
-    [_verifybtn setTitle:@"发送验证码" forState:UIControlStateNormal];
+    [_verifybtn setTitle:Localize(@"Send_Verify") forState:UIControlStateNormal];
     [_verifybtn setEnabled:YES];
 }
 
@@ -114,7 +114,7 @@
 -(void)requestVerifyImage{
     NSString* url = @"captcha/picture";
     NSDictionary* parameters = @{};
-    
+    WeakSelf(weakSelf);
 //    [HUDUtil showHudViewInSuperView:self.view withMessage:@"验证码请求中……"];
     [[HttpRequest getInstance] getWithURL:url parma:parameters block:^(BOOL success, id data) {
         [HUDUtil hideHudView];
@@ -123,7 +123,7 @@
             if([[data objectForKey:@"ret"] intValue] == 1){
                 NSDictionary* picdata = [data objectForKey:@"data"];
                 
-                self.captcha_id = [picdata objectForKey:@"captcha_id"];
+                weakSelf.captcha_id = [picdata objectForKey:@"captcha_id"];
                 
                 NSString* image = [picdata objectForKey:@"base64_png"];
                 
@@ -133,12 +133,12 @@
                 NSData* decodeData = [[NSData alloc] initWithBase64EncodedString:imagestr options:NSDataBase64DecodingIgnoreUnknownCharacters];
                 
                 UIImage* decodeImage = [UIImage imageWithData:decodeData];
-                self.authCodeContainer.image = decodeImage;
+                weakSelf.authCodeContainer.image = decodeImage;
                 
                 
             }else{
                 
-                [HUDUtil showHudViewTipInSuperView:self.view withMessage:[data objectForKey:@"msg"]];
+                [HUDUtil showHudViewTipInSuperView:weakSelf.view withMessage:[data objectForKey:@"msg"]];
                 
             }
         }
@@ -169,12 +169,12 @@
 -(void)verifyAuthImage{
     
     if(IsStrEmpty(self.userNameTextField.text)){
-        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"请输入用户名"];
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:Localize(@"Input_Username")];
         return;
     }
     
     if(self.authCodeTextFiled.text.length == 0){
-        [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"请输入验证码"];
+        [HUDUtil showHudViewTipInSuperView:self.view withMessage:Localize(@"Input_Verify")];
         return;
     }
     
@@ -184,18 +184,19 @@
     NSString* url = @"captcha/picture/verify";
     NSLog(@"输入验证码为:%@",self.authCodeTextFiled.text);
 //    [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] postWithURL:url parma:paremeters block:^(BOOL success, id data) {
         if(success){
             [HUDUtil hideHudView];
             if([[data objectForKey:@"ret"] intValue]== 1){
                 //验证成功
-                self.secondContainer.hidden = NO;
-                self.firstContainer.hidden = YES;
+                weakSelf.secondContainer.hidden = NO;
+                weakSelf.firstContainer.hidden = YES;
             }else if ([[data objectForKey:@"ret"] intValue]== -1){
-                self.authCodeTextFiled.text = @"";
+                weakSelf.authCodeTextFiled.text = @"";
 //                [HUDUtil showHudViewTipInSuperView:self.view withMessage:@"验证码错误请重新输入"];
-                [HUDUtil showSystemTipView:self title:@"提示" withContent:@"验证码错误请重新输入"];
-                [self requestVerifyImage];
+                [HUDUtil showSystemTipView:weakSelf title:Localize(@"Menu_Title") withContent:@"验证码错误请重新输入"];
+                [weakSelf requestVerifyImage];
             }
         }
     }];
@@ -212,22 +213,22 @@
 - (IBAction)clickReset:(id)sender {
     
     if(![VerifyRules passWordIsTure:self.passwordInput.text]){
-        [HUDUtil showSystemTipView:self title:@"密码格式错误" withContent:@"请输入8-16个字符,不能使用中文、空格,至少含数字/字母/符号2种组合,必须要同时包括大小写字母"];
+        [HUDUtil showSystemTipView:self title:Localize(@"Pwd_Error") withContent:Localize(@"Pwd_Error_Tip")];
         return;
     }
     
     
     if(![self.passwordAgainInput.text isEqualToString:self.passwordInput.text]){
-        [HUDUtil showSystemTipView:self title:@"提示" withContent:@"两次输入不一致，请重新输入"];
+        [HUDUtil showSystemTipView:self title:Localize(@"Menu_Title") withContent:Localize(@"Input_Dif")];
         return;
     }
     
     if(self.verifyInput.text.length == 0){
-        [HUDUtil showSystemTipView:self title:@"提示" withContent:@"请输入验证码"];
+        [HUDUtil showSystemTipView:self title:Localize(@"Menu_Title") withContent:Localize(@"Input_Verify")];
         return;
     }
-    [HUDUtil showHudViewInSuperView:self.view withMessage:@"重置中……"];
-    
+    [HUDUtil showHudViewInSuperView:self.view withMessage:Localize(@"Reset")];
+    WeakSelf(weakSelf);
     if([self.userNameTextField.text containsString:@"@"]){
         //邮箱重置
         NSDictionary *parameters = @{ @"email": self.userNameTextField.text ,
@@ -240,11 +241,11 @@
             
             if(success){
                 [HUDUtil hideHudView];
-                [GameData setAccountList:self.userNameTextField.text withPassword:self.passwordInput.text withDistrict:@""];
-                if([[GameData getUserAccount] isEqualToString:self.userNameTextField.text]){
-                    [GameData setUserPassword:self.passwordInput.text];
+                [GameData setAccountList:weakSelf.userNameTextField.text withPassword:weakSelf.passwordInput.text withDistrict:@""];
+                if([[GameData getUserAccount] isEqualToString:weakSelf.userNameTextField.text]){
+                    [GameData setUserPassword:weakSelf.passwordInput.text];
                 }
-                [self resetBack:data];
+                [weakSelf resetBack:data];
             }
         }];
     }else{
@@ -260,11 +261,11 @@
             
             if(success){
                 [HUDUtil hideHudView];
-                [GameData setAccountList:self.userNameTextField.text withPassword:self.passwordInput.text withDistrict:@"+86"];
-                if([[GameData getUserAccount] isEqualToString:self.userNameTextField.text]){
-                    [GameData setUserPassword:self.passwordInput.text];
+                [GameData setAccountList:weakSelf.userNameTextField.text withPassword:weakSelf.passwordInput.text withDistrict:@"+86"];
+                if([[GameData getUserAccount] isEqualToString:weakSelf.userNameTextField.text]){
+                    [GameData setUserPassword:weakSelf.passwordInput.text];
                 }
-                [self resetBack:data];
+                [weakSelf resetBack:data];
             }
         }];
     }
@@ -302,13 +303,13 @@
 }
 -(void)changeBtn1{
     NSString* title = _verifybtn.titleLabel.text;
-    if([title isEqualToString:@"发送验证码"]){
+    if([title isEqualToString:Localize(@"Send_Verify")]){
         return;
     }
     NSInteger sec = [[title substringToIndex:[title rangeOfString:@"s"].location] intValue];
     sec--;
     if(sec < 0){
-        [_verifybtn setTitle:@"发送验证码" forState:UIControlStateNormal];
+        [_verifybtn setTitle:Localize(@"Send_Verify") forState:UIControlStateNormal];
         //        [NSTimer ]
         [_update1 invalidate];
         _update1 = nil;

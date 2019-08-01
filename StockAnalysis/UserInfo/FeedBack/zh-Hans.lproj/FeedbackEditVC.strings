@@ -1,0 +1,30 @@
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "CKy-eP-zmV"; */
+"CKy-eP-zmV.normalTitle" = "Button";
+
+/* Class = "UITextView"; text = "问题描述"; ObjectID = "MX0-OP-dQE"; */
+"MX0-OP-dQE.text" = "问题描述";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "Tgl-ef-fAD"; */
+"Tgl-ef-fAD.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "API问题"; ObjectID = "a8a-Df-NhB"; */
+"a8a-Df-NhB.text" = "API问题";
+
+/* Class = "UILabel"; text = "邮箱"; ObjectID = "ggC-GK-Vdm"; */
+"ggC-GK-Vdm.text" = "邮箱";
+
+/* Class = "UILabel"; text = "REST API"; ObjectID = "gv8-f7-FdQ"; */
+"gv8-f7-FdQ.text" = "REST API";
+
+/* Class = "UIButton"; normalTitle = "提交"; ObjectID = "hYD-7Y-YJy"; */
+"hYD-7Y-YJy.normalTitle" = "提交";
+
+/* Class = "UILabel"; text = "API 连接不上或返回403"; ObjectID = "hvC-ij-zJl"; */
+"hvC-ij-zJl.text" = "API 连接不上或返回403";
+
+/* Class = "UILabel"; text = "使用的API接口"; ObjectID = "nBf-RX-2Ud"; */
+"nBf-RX-2Ud.text" = "使用的API接口";
+
+/* Class = "UILabel"; text = "联系电话"; ObjectID = "wYs-Vl-Ewn"; */
+"wYs-Vl-Ewn.text" = "联系电话";

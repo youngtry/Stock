@@ -28,9 +28,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
     self.accountID = -1;
     self.isUpdate = NO;
     self.isTip = NO;
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.tabBarController.tabBar.hidden = YES;
+    
+    
+    
     NSString* title = self.title;
     
     if([title rangeOfString:@"_"].location != NSNotFound){
@@ -42,8 +51,8 @@
     
     self.isUpdate = self.isTip;
     
-    self.title = @"价格提醒";
-    UIBarButtonItem* mytip = [[UIBarButtonItem alloc] initWithTitle:@"我的提醒" style:UIBarButtonItemStyleDone target:self action:@selector(showMyTips)];
+    self.title = Localize(@"Price_Remind");
+    UIBarButtonItem* mytip = [[UIBarButtonItem alloc] initWithTitle:Localize(@"My_Tips") style:UIBarButtonItemStyleDone target:self action:@selector(showMyTips)];
     self.navigationItem.rightBarButtonItem = mytip;
     [mytip setTintColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.65]];
     
@@ -56,12 +65,8 @@
     if(self.isTip){
         
     }
+    
     [self requetTipInfo];
-}
-
--(void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    self.tabBarController.tabBar.hidden = YES;
     
 }
 
@@ -76,17 +81,17 @@
                              @"page_limit":@(10),
                              @"state":@""
                              };
-    
+    WeakSelf(weakSelf);
     [[HttpRequest getInstance] getWithURL:url parma:params block:^(BOOL success, id data) {
         if(success){
             if([[data objectForKey:@"ret"] intValue] == 1){
                 NSArray* items = [[data objectForKey:@"data"] objectForKey:@"items"];
                 for (NSDictionary* item in items) {
                     if([[item objectForKey:@"market"] isEqualToString:self.stockName.text]){
-                        self.topLimitInput.text = [NSString stringWithFormat:@"%.4f", [[item objectForKey:@"upper_limit"] floatValue]];
-                        self.lowLimitInput.text =[NSString stringWithFormat:@"%.4f", [[item objectForKey:@"lower_limit"] floatValue]] ;
-                        self.accountID = [[item objectForKey:@"id"] intValue];
-                        self.state = [item objectForKey:@"state"];
+                        weakSelf.topLimitInput.text = [NSString stringWithFormat:@"%.4f", [[item objectForKey:@"upper_limit"] floatValue]];
+                        weakSelf.lowLimitInput.text =[NSString stringWithFormat:@"%.4f", [[item objectForKey:@"lower_limit"] floatValue]] ;
+                        weakSelf.accountID = [[item objectForKey:@"id"] intValue];
+                        weakSelf.state = [item objectForKey:@"state"];
                     }
                 }
             }
@@ -119,12 +124,14 @@
 //                                 @"state":self.state
                                  };
 //        [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+        WeakSelf(weakSelf);
         [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
             if(success){
                 if([[data objectForKey:@"ret"] intValue] == 1){
-                    [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"价格提醒删除成功"];
+                    [HUDUtil showHudViewTipInSuperView:weakSelf.navigationController.view withMessage:Localize(@"Price_Delete_Tip")];
+                    [weakSelf.navigationController popViewControllerAnimated:YES];
                 }else{
-                    [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:[data objectForKey:@"msg"]];
+                    [HUDUtil showHudViewTipInSuperView:weakSelf.navigationController.view withMessage:[data objectForKey:@"msg"]];
                 }
             }
         }];
@@ -143,13 +150,14 @@
                                  @"lower_limit":@([self.lowLimitInput.text floatValue])
                                  };
 //        [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+        WeakSelf(weakSelf);
         [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
             if(success){
                 if([[data objectForKey:@"ret"] intValue] == 1){
-                    [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"价格更新成功"];
+                    [HUDUtil showHudViewTipInSuperView:weakSelf.navigationController.view withMessage:Localize(@"Price_Update_Succ")];
                     [self.navigationController popViewControllerAnimated:YES];
                 }else{
-                    [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:[data objectForKey:@"msg"]];
+                    [HUDUtil showHudViewTipInSuperView:weakSelf.navigationController.view withMessage:[data objectForKey:@"msg"]];
                 }
             }
         }];
@@ -160,16 +168,17 @@
                                  @"market":self.stockName.text
                                  };
 //        [HUDUtil showHudViewInSuperView:self.view withMessage:@"请求中…"];
+        WeakSelf(weakSelf);
         [[HttpRequest getInstance] postWithURL:url parma:params block:^(BOOL success, id data) {
             if(success){
                 if([[data objectForKey:@"ret"] intValue] == 1){
 //                    [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:@"价格提醒添加成功"];
 //                    [self.navigationController popViewControllerAnimated:YES];
-                    self.isUpdate = YES;
-                    self.accountID = [[[data objectForKey:@"data"] objectForKey:@"notice_id"] intValue];
-                    [self clickSaveBtn:nil];
+                    weakSelf.isUpdate = YES;
+                    weakSelf.accountID = [[[data objectForKey:@"data"] objectForKey:@"notice_id"] intValue];
+                    [weakSelf clickSaveBtn:nil];
                 }else{
-                    [HUDUtil showHudViewTipInSuperView:self.navigationController.view withMessage:[data objectForKey:@"msg"]];
+                    [HUDUtil showHudViewTipInSuperView:weakSelf.navigationController.view withMessage:[data objectForKey:@"msg"]];
                 }
             }
         }];

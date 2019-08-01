@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface TradeViewController : BaseViewController
+@property(nonatomic,assign)int pageIndex;
 -(void)changeToPage:(NSInteger)index withName:(NSString*)tradename;
 @end
